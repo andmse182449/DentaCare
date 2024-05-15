@@ -14,15 +14,7 @@
     <link rel="stylesheet" href="css/style.css">
     <title>Log in</title>
 </head>
-<style>
-    div.google span {
-        background-image: -webkit-linear-gradient(0deg, #ff55a5 0%, #ff5860 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: #ff5860;
-        opacity: 0.8;
-    }
-</style>
+
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -71,7 +63,7 @@
                         <label for="logCheck" class="text">Remember me</label>
                     </div>
 
-                    <a href="#" class="text">Forgot password?</a>
+                    <a href="forget.jsp" class="text">Forgot password?</a>
                 </div>
 
                 <div class="input-field button">
@@ -83,7 +75,6 @@
 
             <div class="media-options">
                 <a href="#" class="field google">
-<!--                    <i class="fa fa-google" aria-hidden="true"></i>-->
                     <img style="width:30px;height:30px; margin-right: 10px" src="images/Google__G__logo.svg.png" alt=""/>
                     <span>Login with Google</span>
                 </a>
