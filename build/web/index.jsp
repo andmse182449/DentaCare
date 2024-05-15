@@ -64,7 +64,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slider-item" style="background-image: url('images/bg_2.jpg');">
                 <div class="overlay"></div>
                 <div class="container">
