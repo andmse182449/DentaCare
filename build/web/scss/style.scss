@@ -1218,7 +1218,6 @@ textarea.form-control {
 	background: #3c312e;
 }
 
-
 .ftco-footer {
 	font-size: 16px;
 	background: #191919;
@@ -1230,7 +1229,7 @@ textarea.form-control {
 	.ftco-footer-widget {
 		h2 {
 			font-weight: normal;
-			color: $white;
+			color: $black;
 			margin-bottom: 40px;
 			font-size: 18px;
 			font-weight: 400;
@@ -1239,7 +1238,7 @@ textarea.form-control {
 			li{
 				a{
 					span{
-						color: $white;
+						color: $black;
 					}
 				}
 			}
@@ -1254,12 +1253,12 @@ textarea.form-control {
 		}
 	}
 	p {
-		color: rgba($white, .7);
+		color: rgba($black, .7);
 	}
 	a {
-		color: rgba($white, .7);
+		color: rgba($black, .7);
 		&:hover {
-			color: $white;
+			color: $black;
 		}
 	}
 	.ftco-heading-2 {
@@ -1275,7 +1274,7 @@ textarea.form-control {
 				a {
 					color: rgba(255,255,255,.9);
 					&:hover, &:active, &:focus {
-						color: $white;
+						color: $black;
 					}
 				}
 			}
