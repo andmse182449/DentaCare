@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <servlet>
+        <servlet-name>SignOutServlet</servlet-name>
+        <servlet-class>controller.SignOutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>examScheduleController</servlet-name>
+        <servlet-class>controller.ExamScheduleController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProfileController</servlet-name>
+        <servlet-class>controller.ProfileController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HistoryController</servlet-name>
+        <servlet-class>controller.HistoryController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignOutServlet</servlet-name>
+        <url-pattern>/SignOutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>examScheduleController</servlet-name>
+        <url-pattern>/examScheduleController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileController</servlet-name>
+        <url-pattern>/ProfileController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HistoryController</servlet-name>
+        <url-pattern>/HistoryController</url-pattern>
+    </servlet-mapping>
+</web-app>
