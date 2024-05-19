@@ -42,17 +42,17 @@
                 <div class="form login">
                     <span class="title">Login</span>
 
-                    <form action="#">
+                    <form action="LoginActionServlet" method="POST">
 
                         <div class="input-field">
-                            <input type="text" placeholder="Enter your email" required>
+                            <input name="email" type="text" placeholder="Enter your email" required>
                             <i class="uil uil-envelope icon"></i>
                         </div>
 
 
 
                         <div class="input-field">
-                            <input type="password" class="password" placeholder="Enter your password" required>
+                            <input name="password" type="password" class="password" placeholder="Enter your password" required>
                             <i class="uil uil-lock icon"></i>
                             <i class="uil uil-eye-slash showHidePw"></i>
                         </div>
@@ -67,14 +67,16 @@
                         </div>
 
                         <div class="input-field button">
-                            <input type="button" value="Login">
+                            <input type="submit" value="Login">
                         </div>
                     </form>
 
                     <div class="line"></div>
 
                     <div class="media-options">
-                        <a href="#" class="field google">
+                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/DentistBooking/GoogleLoginServlet&response_type=code
+                           &client_id=395837287895-aj8q33ea6m81ua43aej4la6bkikv27pg.apps.googleusercontent.com&approval_prompt=force" 
+                           class="field google">
                             <img style="width:30px;height:30px; margin-right: 10px" src="images/Google__G__logo.svg.png" alt=""/>
                             <span>Login with Google</span>
                         </a>
@@ -90,24 +92,24 @@
                 </div>
 
                 <!-- Registration Form -->
-                <div class="form signup">
+                <div class="form signup" onsubmit="return verifyPasswords()">
                     <span class="title">Registration</span>
 
                     <form action="#">
                         <div class="input-field">
-                            <input type="text" placeholder="Enter your name" required>
+                            <input name="register-name" type="text" placeholder="Enter your name" required>
                             <i class="uil uil-user"></i>
                         </div>
                         <div class="input-field">
-                            <input type="text" placeholder="Enter your email" required>
+                            <input  name="register-mail" type="text" placeholder="Enter your email" required>
                             <i class="uil uil-envelope icon"></i>
                         </div>
                         <div class="input-field">
-                            <input type="password" class="password" placeholder="Create a password" required>
+                            <input name="register-pass" type="password" class="password" placeholder="Create a password" required>
                             <i class="uil uil-lock icon"></i>
                         </div>
                         <div class="input-field">
-                            <input type="password" class="password" placeholder="Confirm a password" required>
+                            <input name="passAgain" type="password" class="password" placeholder="Confirm a password" required>
                             <i class="uil uil-lock icon"></i>
                             <i class="uil uil-eye-slash showHidePw"></i>
                         </div>
@@ -120,7 +122,7 @@
                         </div>
 
                         <div class="input-field button">
-                            <input type="button" value="Signup">
+                            <input type="submit" value="Signup">
                         </div>
                     </form>
 
@@ -132,7 +134,19 @@
                 </div>
             </div>
         </div>
+        <script>
+            function verifyPasswords() {
+                const password = document.getElementsByName("register-pass")[0].value;
+                const confirmPassword = document.getElementsByName("passAgain")[0].value;
 
+                if (password === confirmPassword) {
+                    return true; // Passwords match, allow form submission
+                } else {
+                    alert("Passwords do not match. Please try again.");
+                    return false; // Passwords don't match, prevent form submission
+                }
+            }
+        </script>
         <script src="js/login.js"></script>
     </body>
 </html>

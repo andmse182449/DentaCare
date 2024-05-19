@@ -1,3 +1,4 @@
+<%@include file="/header.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,8 +13,8 @@
 
 
     <body>
-        <div class="container">
-            <nav class="navbar">
+        <div class="container user">
+            <nav class="navbar user">
                 <ul>
                     <li><a href="ProfileController" id="userProfileLink">User Profile</a></li>
                     <li><a href="ExamScheduleController" id="bookingScheduleLink">Examination Schedule</a></li>

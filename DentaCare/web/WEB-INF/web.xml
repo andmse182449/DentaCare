@@ -16,6 +16,10 @@
         <servlet-name>HistoryController</servlet-name>
         <servlet-class>controller.HistoryController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginActionServlet</servlet-name>
+        <servlet-class>controller.LoginActionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/SignOutServlet</url-pattern>
@@ -32,4 +36,18 @@
         <servlet-name>HistoryController</servlet-name>
         <url-pattern>/HistoryController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginActionServlet</servlet-name>
+        <url-pattern>/LoginActionServlet</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.4.0-b180830.0359</version>
+    </dependency>
 </web-app>
