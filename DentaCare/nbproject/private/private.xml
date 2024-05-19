@@ -2,6 +2,11 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/index.jsp</file>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/clinic.jsp</file>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/clinic/ClinicDAO.java</file>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/LoadAllDentaListServlet.java</file>
+        </group>
     </open-files>
 </project-private>

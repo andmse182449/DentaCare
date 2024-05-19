@@ -5,7 +5,7 @@ go
 
 create table CLINIC
 (
-	clinicID int not null primary key,
+	clinicID int IDENTITY(0, 1) not null primary key,
 	clinicName varchar(50),
 	clinicAddress nvarchar(100),
 	city varchar(50),
@@ -14,7 +14,7 @@ create table CLINIC
 
 create table CLINICSCHEDULE
 (
-	clinicScheduleID int not null primary key,
+	clinicScheduleID int IDENTITY(0, 1) not null primary key,
 	startTimeClinic time,
 	endTimeClinic time,
 	workingDay date,
@@ -25,13 +25,13 @@ create table CLINICSCHEDULE
 
 create table TimeSlot
 (
-	slotID int not null primary key,
+	slotID int IDENTITY(0, 1) not null primary key,
 	timePeriod varchar(20)
 )
 
 create table SlotDetail
 (
-	clinicScheduleID int not null,
+	clinicScheduleID int IDENTITY(0, 1) not null,
 	slotID int not null,
 
 	PRIMARY KEY (clinicScheduleID, slotID), 
@@ -42,7 +42,7 @@ create table SlotDetail
 
 create table ROLE
 (
-	roleID int not null primary key,
+	roleID int IDENTITY(0, 1) not null primary key,
 	roleName varchar(50)
 )
 
@@ -107,7 +107,7 @@ create table FEEDBACK
 
 create  table SERVICE
 (
-	serviceID int not null primary key,
+	serviceID int IDENTITY(0, 1) not null primary key,
 	serviceName nvarchar(50),
 	serviceType nvarchar(50),
 	price money 
@@ -140,4 +140,6 @@ create table MEDIICALRECORDS
 
 	CONSTRAINT FK_bookingID1 foreign key(bookingID) references BOOKING(bookingID)
 )
+
+
 
