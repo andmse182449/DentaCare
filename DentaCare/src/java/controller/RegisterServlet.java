@@ -45,16 +45,25 @@ public class RegisterServlet extends HttpServlet {
         try {
             AccountDAO accountDAO = new AccountDAO();
             int numOfUsers = accountDAO.countAccount();
+
             AccountDTO existed = accountDAO.checkExistAccount(username, pass);
             if (existed == null) {
                 String accountId = "CUS" + Year.now().getValue() % 100 + String.format("%05d", numOfUsers + 1);
                 AccountDTO newAccount = accountDAO.createAnNormalAccount(username, pass, mail, accountId);
                 session.setAttribute("account", newAccount);
+            } else if (mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
+                request.setAttribute("error", "Email registed !");
+                request.setAttribute("ac", " active");
+                url = "login.jsp";
             } else {
                 res = true;
             }
             if (res == true) {
                 request.setAttribute("error", "User Name existed !");
+                request.setAttribute("ac", " active");
+                url = "login.jsp";
+            } else if (mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
+                request.setAttribute("error", "Email registed !");
                 request.setAttribute("ac", " active");
                 url = "login.jsp";
             } else {

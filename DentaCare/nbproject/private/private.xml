@@ -3,12 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/web/index.jsp</file>
-            <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/web/scss/style.scss</file>
-            <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/web/css/account-information.css</file>
-            <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/web/exam-schedule.jsp</file>
-            <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/web/userWeb-page.jsp</file>
+            <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/web/login.jsp</file>
             <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/src/java/controller/LoginChangePage.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/src/java/controller/RegisterServlet.java</file>
         </group>
     </open-files>
 </project-private>
