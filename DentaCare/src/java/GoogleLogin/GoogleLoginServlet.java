@@ -40,14 +40,17 @@ public class GoogleLoginServlet extends HttpServlet {
                 AccountDAO accountDAO = new AccountDAO();
                 int numOfUsers = accountDAO.countAccount();
                 String accountId = "CUS" + Year.now().getValue() + String.format("%03d", numOfUsers + 1);
-                accountDAO.createAccountGG(googlePojo.getId(), googlePojo.getEmail(),accountId);
-                AccountDTO checkAccountGG1 = accountDAO.checkAccountGG(googlePojo.getEmail());
-                session.setAttribute("account", checkAccountGG1);
+                AccountDTO checkAccountGG = accountDAO.checkAccountGG(googlePojo.getEmail());
+                if (checkAccountGG == null) {
+                    checkAccountGG = accountDAO.createAccountGG(googlePojo.getId(), googlePojo.getEmail(), accountId);
+                }
+
+                session.setAttribute("account", checkAccountGG);
                 request.getRequestDispatcher(url).forward(request, response);
             }
         } catch (SQLException ex) {
             Logger.getLogger(GoogleLoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

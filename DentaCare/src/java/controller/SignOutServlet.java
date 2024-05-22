@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author ROG STRIX
  */
 @WebServlet(name="SignOutController", urlPatterns={"/SignOutController"})
-public class SignOutController extends HttpServlet {
+public class SignOutServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

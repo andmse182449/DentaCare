@@ -8,7 +8,6 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,8 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ROG STRIX
  */
-@WebServlet(name="ExamScheduleController", urlPatterns={"/ExamScheduleController"})
-public class ExamScheduleController extends HttpServlet {
+public class ProfileServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,7 +28,8 @@ public class ExamScheduleController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = "exam-schedule.jsp";
+          response.setContentType("text/html;charset=UTF-8");
+        String url = "user-information.jsp";
         try {
             request.getRequestDispatcher(url).forward(request, response);
         }catch(IOException e){

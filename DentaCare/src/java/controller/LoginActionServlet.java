@@ -1,4 +1,3 @@
-
 package controller;
 
 import account.AccountDAO;
@@ -10,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+
 public class LoginActionServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -18,29 +18,47 @@ public class LoginActionServlet extends HttpServlet {
         String userName = request.getParameter("email");
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
-        String url = null;
         try {
             AccountDAO dao = new AccountDAO();
+            // check email
             AccountDTO checkAccount = dao.checkExistAccount(userName, password);
+            String checkPass = dao.checkExistPass(userName);
+            String checkName = dao.checkExistName(userName);
+            // check password
             if (checkAccount != null) {
-                if (checkAccount.isRoleID() == 4) {
-                    url = "adminWeb-page.jsp";
-                    response.sendRedirect(url);
-                } else {
-                    url = "userWeb-page.jsp";
-                    response.sendRedirect(url);
+                switch (checkAccount.isRoleID()) {
+                    // admin
+                    case 4 -> {
+                        response.sendRedirect(".jsp");
+                    }
+                    // staff
+                    case 3 -> {
+                        response.sendRedirect(".jsp");
+                    }
+                    //dentist
+                    case 2 -> {
+                        response.sendRedirect(".jsp");
+                    }
+                    default -> {
+                        response.sendRedirect("userWeb-page.jsp");
+                    }
                 }
                 session.setAttribute("account", checkAccount);
             } else {
-                url = "signin.jsp";
-                response.sendRedirect(url);
+                if (!checkPass.equals(password) && checkName.equals(userName)) {
+                    request.setAttribute("error", "Password is not corrected !");
+                } else  {
+                    request.setAttribute("error", "User name is not matched with any !");
+
+                }
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         } catch (SQLException ex) {
             System.out.println("SQL: " + ex);
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

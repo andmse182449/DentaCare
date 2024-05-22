@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,13 +9,35 @@
         <link rel="icon" href="images/logo_dentist.jpg" type="image/png">
         <!-- ===== Iconscout CSS ===== -->
         <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- ===== CSS ===== -->
         <link rel="stylesheet" href="css/login.css">
         <link rel="stylesheet" href="css/style.css">
         <title>Log in</title>
-    </head>
 
+        <style>
+            .alert {
+                position: fixed;
+                top: 100px; /* Adjust this value to position the alert higher or lower */
+                left: 50%;
+                transform: translateX(-50%); /* Center the alert horizontally */
+                background-color: #f44336;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                opacity: 0;
+                transition: opacity 0.5s ease-out;
+                display: none;
+                z-index: 1000; /* Ensure the alert appears above other elements */
+            }
+
+            .alert.show {
+                display: block;
+                opacity: 1;
+            }
+        </style>
+    </head>
     <body>
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -37,8 +60,15 @@
                 </div>
             </div>
         </nav>
-        <div class="container-login">
+
+        <c:set var="ac" value="${requestScope.ac}"/>
+        <c:set var="err" value="${requestScope.error}"/>
+
+        <div class="container-login${ac}">
+            <div class="alert sec ">${err}</div>
+
             <div class="forms">
+
                 <div class="form login">
                     <span class="title">Login</span>
 
@@ -48,8 +78,6 @@
                             <input name="email" type="text" placeholder="Enter your email" required>
                             <i class="uil uil-envelope icon"></i>
                         </div>
-
-
 
                         <div class="input-field">
                             <input name="password" type="password" class="password" placeholder="Enter your password" required>
@@ -82,8 +110,6 @@
                         </a>
                     </div>
 
-
-
                     <div class="login-signup">
                         <span class="text">Not a member?
                             <a href="#" class="text signup-link">Signup Now</a>
@@ -92,16 +118,19 @@
                 </div>
 
                 <!-- Registration Form -->
+
                 <div class="form signup" onsubmit="return verifyPasswords()">
+
                     <span class="title">Registration</span>
 
-                    <form action="#">
+                    <form action="RegisterServlet" method="POST">
+
                         <div class="input-field">
                             <input name="register-name" type="text" placeholder="Enter your name" required>
                             <i class="uil uil-user"></i>
                         </div>
                         <div class="input-field">
-                            <input  name="register-mail" type="text" placeholder="Enter your email" required>
+                            <input name="register-mail" type="text" placeholder="Enter your email" required>
                             <i class="uil uil-envelope icon"></i>
                         </div>
                         <div class="input-field">
@@ -113,39 +142,61 @@
                             <i class="uil uil-lock icon"></i>
                             <i class="uil uil-eye-slash showHidePw"></i>
                         </div>
-
-                        <div class="checkbox-text">
-                            <div class="checkbox-content">
-                                <input type="checkbox" id="termCon">
-                                <label for="termCon" class="text">I accepted all terms and conditions</label>
-                            </div>
-                        </div>
-
+                        <div class="alert">Passwords do not match. Please try again.</div>
                         <div class="input-field button">
                             <input type="submit" value="Signup">
                         </div>
                     </form>
-
                     <div class="login-signup">
                         <span class="text">Already a member?
                             <a href="#" class="text login-link">Login Now</a>
                         </span>
                     </div>
                 </div>
+
             </div>
+
         </div>
+
         <script>
-            function verifyPasswords() {
+            document.addEventListener("DOMContentLoaded", function () {
+                const alertBox2 = document.querySelector(".alert.sec");
+                if (alertBox2 && alertBox2.textContent.trim()) {
+                    alertBox2.style.display = "block"; // Show the alert if there's an error message
+                    alertBox2.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                    setTimeout(function () {
+                        alertBox2.classList.remove("show");
+                        setTimeout(function () {
+                            alertBox2.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                }
+            });
+
+            function verifyPasswords(event) {
+                event.preventDefault(); // Prevent form submission
                 const password = document.getElementsByName("register-pass")[0].value;
                 const confirmPassword = document.getElementsByName("passAgain")[0].value;
+                const alertBox = document.querySelector(".signup .alert");
 
                 if (password === confirmPassword) {
-                    return true; // Passwords match, allow form submission
+                    alertBox.classList.remove("show");
+                    event.target.submit(); // Submit the form if passwords match
                 } else {
-                    alert("Passwords do not match. Please try again.");
-                    return false; // Passwords don't match, prevent form submission
+                    alertBox.style.display = "block"; // Show the alert immediately
+                    alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+
+                    // Remove the 'show' class after a delay to trigger the fade-out animation
+                    setTimeout(function () {
+                        alertBox.classList.remove("show");
+                        setTimeout(function () {
+                            alertBox.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
                 }
             }
+
+            document.querySelector(".signup form").addEventListener("submit", verifyPasswords);
         </script>
         <script src="js/login.js"></script>
     </body>
