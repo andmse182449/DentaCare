@@ -29,15 +29,15 @@ public class LoginActionServlet extends HttpServlet {
                 switch (checkAccount.isRoleID()) {
                     // admin
                     case 4 -> {
-                        response.sendRedirect(".jsp");
+                        response.sendRedirect("adminWeb-page.jsp");
                     }
                     // staff
                     case 3 -> {
-                        response.sendRedirect(".jsp");
+                        response.sendRedirect("staffWeb-page.jsp");
                     }
                     //dentist
                     case 2 -> {
-                        response.sendRedirect(".jsp");
+                        response.sendRedirect("dentistWeb-page.jsp");
                     }
                     default -> {
                         response.sendRedirect("userWeb-page.jsp");

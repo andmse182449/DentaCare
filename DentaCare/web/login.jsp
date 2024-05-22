@@ -65,7 +65,7 @@
         <c:set var="err" value="${requestScope.error}"/>
 
         <div class="container-login${ac}">
-            <div class="alert sec ">${err}</div>
+            <div class="alert sec">${err}</div>
 
             <div class="forms">
 
