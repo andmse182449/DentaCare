@@ -1,5 +1,5 @@
 
-
+<%@include file="/headerLog.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,13 +14,13 @@
 
 
     <body>
-        <div class="container">
-            <nav class="navbar">
+        <div class="container user">
+            <nav class="navbar user">
                 <ul>
-                    <li><a href="ProfileController" id="userProfileLink">User Profile</a></li>
+                    <li><a href="ProfileServlet" id="userProfileLink">User Profile</a></li>
                     <li><a href="#" id="bookingScheduleLink" class="active">Examination Schedule</a></li>
-                    <li><a href="HistoryController" id="bookingHistoryLink">Booking History</a></li>
-                    <li><a href="SignOutController" >Sign out</a></li>
+                    <li><a href="HistoryServlet" id="bookingHistoryLink">Booking History</a></li>
+                    <li><a href="SignOutServlet" >Sign out</a></li>
                 </ul>
             </nav>
             <div class="content active" id="bookingScheduleContent">

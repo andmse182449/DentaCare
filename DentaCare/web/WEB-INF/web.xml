@@ -5,31 +5,65 @@
         <servlet-class>controller.SignOutServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>examScheduleController</servlet-name>
-        <servlet-class>controller.ExamScheduleController</servlet-class>
+        <servlet-name>examScheduleServlet</servlet-name>
+        <servlet-class>controller.ExamScheduleServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ProfileController</servlet-name>
-        <servlet-class>controller.ProfileController</servlet-class>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-class>controller.ProfileServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>HistoryController</servlet-name>
-        <servlet-class>controller.HistoryController</servlet-class>
+        <servlet-name>HistoryServlet</servlet-name>
+        <servlet-class>controller.HistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginActionServlet</servlet-name>
+        <servlet-class>controller.LoginActionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>controller.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginChangePage</servlet-name>
+        <servlet-class>controller.LoginChangePage</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/SignOutServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>examScheduleController</servlet-name>
-        <url-pattern>/examScheduleController</url-pattern>
+        <servlet-name>examScheduleServlet</servlet-name>
+        <url-pattern>/examScheduleServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProfileController</servlet-name>
-        <url-pattern>/ProfileController</url-pattern>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/ProfileServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>HistoryController</servlet-name>
-        <url-pattern>/HistoryController</url-pattern>
+        <servlet-name>HistoryServlet</servlet-name>
+        <url-pattern>/HistoryServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginActionServlet</servlet-name>
+        <url-pattern>/LoginActionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/RegisterServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginChangePage</servlet-name>
+        <url-pattern>/LoginChangePage</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.4.0-b180830.0359</version>
+    </dependency>
 </web-app>
