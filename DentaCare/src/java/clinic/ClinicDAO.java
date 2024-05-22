@@ -96,4 +96,42 @@ public class ClinicDAO {
         }
         return null;
     }
+    
+    public ClinicDTO getClinicByID(int clinicID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("SELECT * FROM CLINIC WHERE clinicID = ?");
+        try {
+            con = DBUtils.getConnection();
+            String sql;
+            sql = String.valueOf(query);
+            stm = con.prepareStatement(sql);
+            stm.setInt(1, clinicID);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                clinicID = rs.getInt("clinicID");
+                String clinicName = rs.getString("clinicName");
+                String clinicAddress = rs.getString("clinicAddress");
+                String city = rs.getString("city");
+                String hotline = rs.getString("hotline");
+                ClinicDTO clinic = new ClinicDTO(clinicID, clinicName, clinicAddress, city, hotline);
+                return clinic;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                con.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return null;
+    }
 }
