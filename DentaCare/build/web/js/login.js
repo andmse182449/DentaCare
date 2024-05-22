@@ -3,8 +3,9 @@ const container = document.querySelector(".container-login"),
     pwFields = document.querySelectorAll(".password"),
     signUp = document.querySelector(".signup-link"),
     login = document.querySelector(".login-link");
+    password = document.getElementsByName("register-pass")[0].value;
+    confirmPassword = document.getElementsByName("passAgain")[0].value;
 
-//   js code to show/hide password and change icon
 pwShowHide.forEach(eyeIcon =>{
     eyeIcon.addEventListener("click", ()=>{
         pwFields.forEach(pwField =>{
