@@ -324,4 +324,12 @@ public class AccountDAO implements Serializable {
         }
         return 0;
     }
+    
+    public AccountDTO createDentist() {
+        return null;
+    }
+    
+    public AccountDTO createStaff() {
+        return null;
+    }
 }
