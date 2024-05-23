@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AccountDAO implements Serializable {
-    StringEncoder strE = new StringEncoder();
+    Encoder strE = new Encoder();
     public AccountDTO updateProfileAccount(String fullName, String phone, boolean gender, String userName) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;

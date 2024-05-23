@@ -3,12 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/GoogleLogin/GoogleUtils.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/userInfo.css</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-page.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/account/Encoder.java</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/style.css</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/utils/DBUtils.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-staff.jsp</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/LoginActionServlet.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/ExamScheduleServlet.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/RegisterServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/register.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-clinic.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-dashboard.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-dentist.jsp</file>
         </group>
     </open-files>
 </project-private>
