@@ -41,10 +41,53 @@
 
             <!-- MAIN -->
             <div class="main-container">
-                <h2>STAFF</h2>
+                <div class="main-header">
+                    <h2>Staff</h2>
+                    <button id="createButton" class="create-button">Create Dentist Account</button>
+                </div>
+
+                        <div id="form-dentist">
+                            <form id="dentistForm" action="CreateStaffServlet" method="post">
+                                <label for="sta-username">Username</label>
+                                <input type="text" id="den-username" name="sta-username" required />
+                
+                                <label for="sta-password">Password</label>
+                                <input type="password" id="den-password" name="sta-password" required />
+                
+                                <label for="sta-email">Email</label>
+                                <input type="email" id="den-email" name="sta-email" required />
+                
+                                <label for="sta-fullName">Full Name</label>
+                                <input type="text" id="den-fullName" name="sta-fullName" required />
+                
+                                <label for="sta-phone">Phone</label>
+                                <input type="text" id="den-phone" name="sta-phone" required />  
+                                
+                                <label for="sta-address">Address</label>
+                                <input type="text" id="den-address" name="sta-address" required /> 
+                                
+                                <label></label>
+                                <input type="submit" value="Submit" />
+                            </form>
+                        </div>
+                        ${requestScope.error}
             </div>
         </div>
-        <script src="js/script.js"></script>
+<!--            <script>
+                document.addEventListener('DOMContentLoaded', (event) => {
+                    const createButton = document.getElementById('createButton');
+                    const formDentist = document.getElementById('form-dentist');
+                    const dentistForm = document.getElementById('dentistForm');
+
+                    createButton.addEventListener('click', () => {
+                        formDentist.style.display = 'block';
+                    });
+
+                    dentistForm.addEventListener('submit', (event) => {
+                        event.preventDefault(); // Prevent actual form submission for demonstration
+                        formDentist.style.display = 'none';
+                    });
+                });
+            </script>-->
     </body>
 </html>
-

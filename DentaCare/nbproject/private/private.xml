@@ -3,18 +3,31 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/userInfo.css</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-page.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/headerLog.jsp</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/account/Encoder.java</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/style.css</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/utils/DBUtils.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-staff.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/LoginActionServlet.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/register.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/calendarview.js</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-clinic.jsp</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-dashboard.jsp</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-dentist.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/script.js</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/utils/DBUtils.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/login.js</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/login.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/protoplus-ui-form.js</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/bootstrap.min.js</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/aos.js</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/RegisterServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/style.css</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-staff.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/location.js</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/bootstrap-datepicker.js</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/stylesheet.css</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/userInfo.css</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-page.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/jquery.waypoints.min.js</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/LoginActionServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/register.jsp</file>
         </group>
     </open-files>
 </project-private>

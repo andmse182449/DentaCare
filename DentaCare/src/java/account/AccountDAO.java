@@ -8,11 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AccountDAO implements Serializable {
+
     Encoder strE = new Encoder();
+
     public AccountDTO updateProfileAccount(String fullName, String phone, boolean gender, String userName) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -338,11 +341,26 @@ public class AccountDAO implements Serializable {
         }
         return 0;
     }
-    
-    public void createDentist(String accountId, String userNameK, String passwordK, String email, String fullName) throws SQLException {
-        String en_passowrd = passwordK;
+
+    public int countDentist() {
+        String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT WHERE ROLE = 1";
+        Connection con = DBUtils.getConnection();
         try {
-            en_passowrd = strE.encode(passwordK);
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("Numb");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return 0;
+    }
+
+    public AccountDTO createDentist(String accountId, String userNameK, String passwordK, String email, String fullName, String phone, String address) throws SQLException {
+        String en_password = passwordK;
+        try {
+            en_password = strE.encode(passwordK);
         } catch (Exception ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -355,11 +373,11 @@ public class AccountDAO implements Serializable {
 
             stm.setString(1, accountId);
             stm.setString(2, userNameK);
-            stm.setString(3, en_passowrd);
+            stm.setString(3, en_password);
             stm.setString(4, email);
             stm.setString(5, fullName);
-            stm.setString(6, null);
-            stm.setString(7, null);
+            stm.setString(6, phone);
+            stm.setString(7, address);
             stm.setDate(8, null);
             stm.setString(9, null);
             stm.setString(10, null);
@@ -379,12 +397,28 @@ public class AccountDAO implements Serializable {
                 con.close();
             }
         }
+        return null;
     }
-    
-    public void createStaff(String accountId, String userNameK, String passwordK, String email, String fullName) throws SQLException {
-        String en_passowrd = passwordK;
+
+    public int countStaff() {
+        String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT WHERE ROLE = 1";
+        Connection con = DBUtils.getConnection();
         try {
-            en_passowrd = strE.encode(passwordK);
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("Numb");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return 0;
+    }
+
+    public AccountDTO createStaff(String accountId, String userNameK, String passwordK, String email, String fullName, String phone, String address) throws SQLException {
+        String en_password = passwordK;
+        try {
+            en_password = strE.encode(passwordK);
         } catch (Exception ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -397,11 +431,11 @@ public class AccountDAO implements Serializable {
 
             stm.setString(1, accountId);
             stm.setString(2, userNameK);
-            stm.setString(3, en_passowrd);
+            stm.setString(3, en_password);
             stm.setString(4, email);
             stm.setString(5, fullName);
-            stm.setString(6, null);
-            stm.setString(7, null);
+            stm.setString(6, phone);
+            stm.setString(7, address);
             stm.setDate(8, null);
             stm.setString(9, null);
             stm.setString(10, null);
@@ -421,5 +455,36 @@ public class AccountDAO implements Serializable {
                 con.close();
             }
         }
+        return null;
+    }
+
+    public List<AccountDTO> listAllDentist() throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE ROLE = 2");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String userName = rs.getString("userName");
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: " + e);
+
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
     }
 }

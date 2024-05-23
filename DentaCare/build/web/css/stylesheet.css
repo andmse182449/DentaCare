@@ -23,7 +23,7 @@ body {
     display: grid;
     grid-template-columns: 260px 1fr 1fr 1fr;
     grid-template-rows: 0.2fr 3fr;
-    grid-template-areas: 
+    grid-template-areas:
         "sidebar header header header"
         "sidebar main main main";
     height: 100vh;
@@ -66,11 +66,12 @@ body {
 .sidebar-list-item {
     padding: 20px 20px 20px 20px;
     font-size: 18px;
+    font-weight: 500;
 }
 .sidebar-list a {
     text-decoration: none;
     color: #f4f4f4;
-} 
+}
 
 .sidebar-list-item:hover {
     background-color: rgba(255, 255, 255, 0.2);
@@ -91,5 +92,60 @@ body {
     color: #333;
 }
 
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 50px 0 50px;
+}
 
 
+/*----------- CREATE DENTIST FORM ------------*/
+.create-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+
+}
+
+.create-button:hover {
+    background-color: #45a049;
+    cursor: pointer;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+form label {
+    text-align: right;
+    padding-right: 10px;
+    align-self: center;
+}
+
+form input {
+    padding: 8px;
+    font-size: 14px;
+}
+
+form input[type="text"],
+form input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+form input[type="submit"] {
+    width: 30%;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
