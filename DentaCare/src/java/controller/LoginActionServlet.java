@@ -45,12 +45,9 @@ public class LoginActionServlet extends HttpServlet {
                 }
                 session.setAttribute("account", checkAccount);
             } else {
-                if (!checkPass.equals(password) && checkName.equals(userName)) {
-                    request.setAttribute("error", "Password is not corrected !");
-                } else  {
-                    request.setAttribute("error", "User name is not matched with any !");
-
-                }
+                if (!checkPass.equals(password) || !checkName.equals(userName)) {
+                    request.setAttribute("error", "Password or Username is not correct!");
+                } 
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         } catch (SQLException ex) {

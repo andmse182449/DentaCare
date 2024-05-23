@@ -8,9 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AccountDAO implements Serializable {
-
+    StringEncoder strE = new StringEncoder();
     public AccountDTO updateProfileAccount(String fullName, String phone, boolean gender, String userName) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -60,6 +62,12 @@ public class AccountDAO implements Serializable {
     }
 
     public AccountDTO createAnNormalAccount(String userNameK, String passwordK, String email, String accountId) throws SQLException {
+        String en_password = passwordK;
+        try {
+            en_password = strE.encode(passwordK);
+        } catch (Exception ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Connection con = null;
         PreparedStatement stm = null;
         String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -69,7 +77,7 @@ public class AccountDAO implements Serializable {
 
             stm.setString(1, accountId);
             stm.setString(2, userNameK);
-            stm.setString(3, passwordK);
+            stm.setString(3, en_password);
             stm.setString(4, email);
             stm.setString(5, null);
             stm.setString(6, null);
@@ -78,7 +86,7 @@ public class AccountDAO implements Serializable {
             stm.setString(9, null);
             stm.setString(10, null);
             stm.setString(11, null);
-            stm.setInt(12, 1);
+            stm.setInt(12, 0);
 
             stm.executeUpdate();
 
@@ -97,6 +105,12 @@ public class AccountDAO implements Serializable {
     }
 
     public AccountDTO checkExistAccount(String userNameK, String passwordK) throws SQLException {
+        String en_password = passwordK;
+        try {
+            en_password = strE.encode(passwordK);
+        } catch (Exception ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -106,7 +120,7 @@ public class AccountDAO implements Serializable {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
             stm.setString(1, userNameK);
-            stm.setString(2, passwordK);
+            stm.setString(2, en_password);
             rs = stm.executeQuery();
             while (rs.next()) {
                 String accountID = rs.getString("accountID");
@@ -229,7 +243,7 @@ public class AccountDAO implements Serializable {
             stm.setString(9, null);
             stm.setString(10, googleID);
             stm.setString(11, googleName);
-            stm.setInt(12, 1);
+            stm.setInt(12, 0);
 
             stm.executeUpdate();
 
@@ -325,11 +339,87 @@ public class AccountDAO implements Serializable {
         return 0;
     }
     
-    public AccountDTO createDentist() {
-        return null;
+    public void createDentist(String accountId, String userNameK, String passwordK, String email, String fullName) throws SQLException {
+        String en_passowrd = passwordK;
+        try {
+            en_passowrd = strE.encode(passwordK);
+        } catch (Exception ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Connection con = null;
+        PreparedStatement stm = null;
+        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+
+            stm.setString(1, accountId);
+            stm.setString(2, userNameK);
+            stm.setString(3, en_passowrd);
+            stm.setString(4, email);
+            stm.setString(5, fullName);
+            stm.setString(6, null);
+            stm.setString(7, null);
+            stm.setDate(8, null);
+            stm.setString(9, null);
+            stm.setString(10, null);
+            stm.setString(11, null);
+            stm.setInt(12, 1);
+
+            stm.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
     }
     
-    public AccountDTO createStaff() {
-        return null;
+    public void createStaff(String accountId, String userNameK, String passwordK, String email, String fullName) throws SQLException {
+        String en_passowrd = passwordK;
+        try {
+            en_passowrd = strE.encode(passwordK);
+        } catch (Exception ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Connection con = null;
+        PreparedStatement stm = null;
+        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+
+            stm.setString(1, accountId);
+            stm.setString(2, userNameK);
+            stm.setString(3, en_passowrd);
+            stm.setString(4, email);
+            stm.setString(5, fullName);
+            stm.setString(6, null);
+            stm.setString(7, null);
+            stm.setDate(8, null);
+            stm.setString(9, null);
+            stm.setString(10, null);
+            stm.setString(11, null);
+            stm.setInt(12, 2);
+
+            stm.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
     }
 }
