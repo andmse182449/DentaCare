@@ -364,7 +364,7 @@ public class AccountDAO implements Serializable {
     // return acc;
     // }
     public int countAccount() {
-        String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT";
+        String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT WHERE roleID = 0";
         Connection con = DBUtils.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);
@@ -379,7 +379,7 @@ public class AccountDAO implements Serializable {
     }
 
     public int countDentist() {
-        String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT WHERE ROLE = 1";
+        String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT WHERE roleID = 1";
         Connection con = DBUtils.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);
@@ -438,7 +438,7 @@ public class AccountDAO implements Serializable {
     }
 
     public int countStaff() {
-        String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT WHERE ROLE = 1";
+        String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT WHERE roleID = 1";
         Connection con = DBUtils.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);

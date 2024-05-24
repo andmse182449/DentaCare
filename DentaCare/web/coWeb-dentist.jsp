@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin</title>
         <link rel="stylesheet" href="css/stylesheet.css">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
@@ -56,30 +56,30 @@
                     <div class="close-btn" id="close-btn">&times;</div>
                     <div class="form">
                         <h2>CREATE A DENTIST ACCOUNT</h2>
-                        <form action="your-action-url" method="post">
+                        <form action="CreateDentistServlet" method="post">
                             <div class="form-element">
                                 <label for="username">Username</label>
-                                <input type="text" name="username" required>
+                                <input type="text" name="den-username" required>
                             </div>
                             <div class="form-element">
                                 <label for="password">Password</label>
-                                <input type="password" name="password" required>
+                                <input type="password" name="den-password" required>
                             </div>
                             <div class="form-element">
                                 <label for="email">Email</label>
-                                <input type="email" name="email" required>
+                                <input type="email" name="den-email" required>
                             </div>
                             <div class="form-element">
                                 <label for="fullname">Full name</label>
-                                <input type="text" name="fullName" required>
+                                <input type="text" name="den-fullName" required>
                             </div>
                             <div class="form-element">
                                 <label for="phone">Phone</label>
-                                <input type="text" name="phone" required>
+                                <input type="text" name="den-phone" required>
                             </div>
                             <div class="form-element">
                                 <label for="address">Address</label>
-                                <input type="text" name="address" required>
+                                <input type="text" name="den-address" required>
                             </div>
                             <div class="form-element">
                                 <input type="submit" value="Submit">
@@ -92,7 +92,14 @@
             </div>
         </div>
 
-        <script src="js/script.js">
+        <script>
+            document.querySelector("#create-button").addEventListener("click", function () {
+                document.querySelector(".popup").classList.add("active");
+            });
+
+            document.querySelector(".popup .close-btn").addEventListener("click", function () {
+                document.querySelector(".popup").classList.remove("active");
+            });
         </script>
     </body>
 </html>

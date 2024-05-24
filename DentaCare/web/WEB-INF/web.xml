@@ -36,6 +36,10 @@
         <servlet-name>CreateStaffServlet</servlet-name>
         <servlet-class>controller.CreateStaffServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DentistServlet</servlet-name>
+        <servlet-class>controller.DentistServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/SignOutServlet</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>CreateStaffServlet</servlet-name>
         <url-pattern>/CreateStaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DentistServlet</servlet-name>
+        <url-pattern>/DentistServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
