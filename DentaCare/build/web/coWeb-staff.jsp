@@ -46,48 +46,43 @@
                     <button id="createButton" class="create-button">Create Dentist Account</button>
                 </div>
 
-                        <div id="form-dentist">
-                            <form id="dentistForm" action="CreateStaffServlet" method="post">
-                                <label for="sta-username">Username</label>
-                                <input type="text" id="den-username" name="sta-username" required />
-                
-                                <label for="sta-password">Password</label>
-                                <input type="password" id="den-password" name="sta-password" required />
-                
-                                <label for="sta-email">Email</label>
-                                <input type="email" id="den-email" name="sta-email" required />
-                
-                                <label for="sta-fullName">Full Name</label>
-                                <input type="text" id="den-fullName" name="sta-fullName" required />
-                
-                                <label for="sta-phone">Phone</label>
-                                <input type="text" id="den-phone" name="sta-phone" required />  
-                                
-                                <label for="sta-address">Address</label>
-                                <input type="text" id="den-address" name="sta-address" required /> 
-                                
-                                <label></label>
-                                <input type="submit" value="Submit" />
-                            </form>
-                        </div>
+                <div class="popup">
+                    <div class="close-btn">&times;</div>
+                    <div class="form">
+                        <h2>CREATE A DENTIST ACCOUNT</h2>
+                        <form action="">
+                            <div class="form-element">
+                                <label for="username">Username</label>
+                                <input type="text" name="sta-username" required>
+                            </div>
+                            <div class="form-element">
+                                <label for="password">Password</label>
+                                <input type="password" name="sta-password" required>
+                            </div>
+                            <div class="form-element">
+                                <label for="email">Email</label>
+                                <input type="email" name="sta-email" required>
+                            </div>
+                            <div class="form-element">
+                                <label for="fullname">Full name</label>
+                                <input type="text" name="sta-fullName" required>
+                            </div>
+                            <div class="form-element">
+                                <label for="phone">Phone</label>
+                                <input type="text" name="sta-phone" required>
+                            </div>
+                            <div class="form-element">
+                                <label for="address">Address</label>
+                                <input type="text" name="sta-address" required>
+                            </div>
+                            <div class="form-element">
+                                <input type="submit" value="Submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
                         ${requestScope.error}
             </div>
         </div>
-<!--            <script>
-                document.addEventListener('DOMContentLoaded', (event) => {
-                    const createButton = document.getElementById('createButton');
-                    const formDentist = document.getElementById('form-dentist');
-                    const dentistForm = document.getElementById('dentistForm');
-
-                    createButton.addEventListener('click', () => {
-                        formDentist.style.display = 'block';
-                    });
-
-                    dentistForm.addEventListener('submit', (event) => {
-                        event.preventDefault(); // Prevent actual form submission for demonstration
-                        formDentist.style.display = 'none';
-                    });
-                });
-            </script>-->
     </body>
 </html>
