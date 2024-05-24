@@ -72,7 +72,6 @@
         <servlet-name>CreateStaffServlet</servlet-name>
         <url-pattern>/CreateStaffServlet</url-pattern>
     </servlet-mapping>
-
     <session-config>
         <session-timeout>
             30
