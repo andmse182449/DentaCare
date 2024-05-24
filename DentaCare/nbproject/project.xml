@@ -7,7 +7,6 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
-<<<<<<< HEAD
                     <file>${file.reference.commons-logging-1.2.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -45,13 +44,10 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.jaxb-runtime-4.0.5.jar}</file>
-=======
-                    <file>${file.reference.jstl-1.2.jar}</file>
->>>>>>> f59f49d2de3e7552f59384690402a50b71f02ff6
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.mssql-jdbc-9.4.1.jre8.jar}</file>
+                    <file>${file.reference.jstl-1.2.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
