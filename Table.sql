@@ -140,4 +140,3 @@ create table MEDIICALRECORDS
 
 	CONSTRAINT FK_bookingID1 foreign key(bookingID) references BOOKING(bookingID)
 )
-
