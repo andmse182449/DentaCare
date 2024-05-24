@@ -11,10 +11,6 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.commons-logging-1.2.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
                     <file>${file.reference.fluent-hc-4.5.5.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -28,6 +24,14 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.httpcore-4.4.9.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.servlet.jsp.jstl-2.0.0.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
@@ -47,11 +51,7 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jakarta.servlet.jsp.jstl-2.0.0.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0.jar}</file>
+                    <file>${file.reference.sqljdbc42.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
