@@ -5,7 +5,6 @@
 package controller;
 
 import clinicSchedule.ClinicScheduleDAO;
-import clinicSchedule.ClinicScheduleDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,8 +12,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -36,16 +33,17 @@ public class AddClinicScheduleServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String workingDay = request.getParameter("eventDate");
+            String workingDay = request.getParameter("workingDay");
             String clinicID_raw = request.getParameter("clinicID");
+            String description = request.getParameter("description");
             int clinic;
             ClinicScheduleDAO dao = new ClinicScheduleDAO();
-            System.out.println("Day: " + workingDay);
+
             try {
                 clinic = Integer.parseInt(clinicID_raw);
-                boolean addClinicSchedule = dao.addNewClinicSchedule(workingDay, clinic);
+                boolean addClinicSchedule = dao.addNewClinicSchedule(workingDay, clinic, description);
                 request.setAttribute("addClinicSchedule", addClinicSchedule);
-                request.getRequestDispatcher("cal2.jsp").forward(request, response);
+                request.getRequestDispatcher("addNewClinicSchedule.jsp").forward(request, response);
 
             } catch (Exception e) {
             }

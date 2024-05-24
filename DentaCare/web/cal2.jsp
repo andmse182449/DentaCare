@@ -54,12 +54,9 @@
 
                     <c:set value="${requestScope.clinicByID}" var="clinicByID"/>
                     <form action="AddClinicScheduleServlet?clinicByID=${clinicByID.clinicID}" method="post" id="scheduleForm">
-                        <c:forEach items="${requestScope.clinicSchedule}" var="clinicSchedule">
-                            <div class="days"> 
-                                <input type="hidden" value="${clinicSchedule.workingDay}">
-<!--                                <p>${clinicSchedule.workingDay} </p>-->
-                            </div>
-                        </c:forEach>
+                        <div class="days" id="days"></div>
+                        <script>
+                        </script>
                         <div class="goto-today">
                             <div class="goto">
                                 <input type="text" placeholder="mm/yyyy" class="date-input" name="date"/>

@@ -6,8 +6,6 @@ package controller;
 
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
-import clinicSchedule.ClinicScheduleDAO;
-import clinicSchedule.ClinicScheduleDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,17 +14,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.JSONArray;             
-import org.json.JSONObject;
+
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "LoadFromClinicToSchedule", urlPatterns = {"/LoadFromClinicToSchedule"})
-public class LoadFromClinicToSchedule extends HttpServlet {
+@WebServlet(name = "LoadFromClinicScheduleToAddServlet", urlPatterns = {"/LoadFromClinicScheduleToAddServlet"})
+public class LoadFromClinicScheduleToAddServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,17 +37,11 @@ public class LoadFromClinicToSchedule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String id_raw = request.getParameter("id");
+            String id_raw = request.getParameter("clinicByID");
             int id = 0;
             try {
                 id = Integer.parseInt(id_raw);
                 ClinicDAO dao = new ClinicDAO();
-
-                // send attribute clinicSchedule
-                ClinicScheduleDAO clinicScheduleDao = new ClinicScheduleDAO();
-                List<ClinicScheduleDTO> clinicSchedule = clinicScheduleDao.getAllClinicSchedule();
-                request.setAttribute("clinicSchedule", clinicSchedule);
-
                 ClinicDTO clinicByID = null;
                 clinicByID = dao.getClinicByID(id);
                 if (clinicByID != null) {
@@ -59,12 +49,9 @@ public class LoadFromClinicToSchedule extends HttpServlet {
                 } else {
                     System.out.println("kh co clinicByID ne` !");
                 }
-                request.getRequestDispatcher("cal2.jsp").forward(request, response);
-            } catch (NumberFormatException e) {
-                System.out.println("parse sai");
-                e.printStackTrace();
+                request.getRequestDispatcher("addNewClinicSchedule.jsp").forward(request, response);
             } catch (SQLException ex) {
-                Logger.getLogger(LoadFromClinicToSchedule.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LoadFromClinicScheduleToAddServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

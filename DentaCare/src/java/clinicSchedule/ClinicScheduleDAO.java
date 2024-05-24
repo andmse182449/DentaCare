@@ -4,14 +4,11 @@
  */
 package clinicSchedule;
 
-import clinic.ClinicDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import utils.DBUtils;
 
@@ -21,18 +18,19 @@ import utils.DBUtils;
  */
 public class ClinicScheduleDAO {
 
-    public boolean addNewClinicSchedule(String workingDay, int clinicID) throws SQLException {
+    public boolean addNewClinicSchedule(String workingDay, int clinicID, String description) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        StringBuilder query = new StringBuilder("INSERT INTO CLINICSCHEDULE (workingDay, clinicID) VALUES (?, ?)");
+        StringBuilder query = new StringBuilder("INSERT INTO CLINICSCHEDULE (workingDay, clinicID, description) VALUES (?, ?, ?)");
         try {
             String sql = null;
             sql = String.valueOf(query);
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
-            
+
             stm.setString(1, workingDay);
             stm.setInt(2, clinicID);
+            stm.setString(3, description);
 
             stm.executeUpdate();
             return true;
@@ -49,7 +47,7 @@ public class ClinicScheduleDAO {
         }
         return false;
     }
-    
+
     public List<ClinicScheduleDTO> getAllClinicSchedule() throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -66,7 +64,8 @@ public class ClinicScheduleDAO {
                 String endTimeClinic = rs.getString("endTimeClinic");
                 String workingDay = rs.getString("workingDay");
                 int clinicID = rs.getInt("clinicID");
-                ClinicScheduleDTO clinicSchedule = new ClinicScheduleDTO(clinicScheduleID, startTimeClinic, endTimeClinic, workingDay, clinicID);
+                String description = rs.getString("description");
+                ClinicScheduleDTO clinicSchedule = new ClinicScheduleDTO(clinicScheduleID, startTimeClinic, endTimeClinic, workingDay, clinicID, description);
                 list.add(clinicSchedule);
             }
             return list;
@@ -85,6 +84,53 @@ public class ClinicScheduleDAO {
         }
         return null;
     }
-    
-    
+
+    public List<ClinicScheduleDTO> getWorkingDaysByClinicId(int clinicID) throws SQLException {
+    Connection con = null;
+    PreparedStatement stm = null;
+    ResultSet rs = null;
+    List<ClinicScheduleDTO> list = new ArrayList<>();
+    String sql = "SELECT workingDay FROM CLINICSCHEDULE WHERE clinicID = ?";
+    try {
+        con = DBUtils.getConnection();
+        stm = con.prepareStatement(sql);
+        stm.setInt(1, clinicID);
+        rs = stm.executeQuery();
+        
+        while (rs.next()) {
+            String workingDay = rs.getString("workingDay");
+            ClinicScheduleDTO clinicSchedule = new ClinicScheduleDTO();
+            clinicSchedule.setWorkingDay(workingDay);
+            clinicSchedule.setClinicID(clinicID); // You might still want to set clinicID
+            list.add(clinicSchedule);
+        }
+    } catch (SQLException e) {
+        System.err.println("SQL Error: " + e.getMessage());
+    } finally {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error closing ResultSet: " + e.getMessage());
+        }
+        try {
+            if (stm != null) {
+                stm.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error closing PreparedStatement: " + e.getMessage());
+        }
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error closing Connection: " + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+
 }

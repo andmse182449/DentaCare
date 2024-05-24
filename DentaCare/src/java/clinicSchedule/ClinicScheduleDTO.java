@@ -18,16 +18,18 @@ public class ClinicScheduleDTO {
     private String endTimeClinic;
     private String workingDay;
     private int clinicID;
+    private String description;
 
     public ClinicScheduleDTO() {
     }
 
-    public ClinicScheduleDTO(int clinicScheduleID, String startTimeClinic, String endTimeClinic, String workingDay, int clinicID) {
+    public ClinicScheduleDTO(int clinicScheduleID, String startTimeClinic, String endTimeClinic, String workingDay, int clinicID, String description) {
         this.clinicScheduleID = clinicScheduleID;
         this.startTimeClinic = startTimeClinic;
         this.endTimeClinic = endTimeClinic;
         this.workingDay = workingDay;
         this.clinicID = clinicID;
+        this.description = description;
     }
 
     public int getClinicScheduleID() {
@@ -70,9 +72,12 @@ public class ClinicScheduleDTO {
         this.clinicID = clinicID;
     }
 
-    @Override
-    public String toString() {
-        return "ClinicScheduleDTO{" + "clinicScheduleID=" + clinicScheduleID + ", startTimeClinic=" + startTimeClinic + ", endTimeClinic=" + endTimeClinic + ", workingDay=" + workingDay + ", clinicID=" + clinicID + '}';
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
