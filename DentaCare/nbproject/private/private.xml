@@ -6,6 +6,13 @@
             <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/web/login.jsp</file>
             <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/web/register.jsp</file>
             <file>file:/C:/Users/ROG%20STRIX/Documents/GitHub/DentaCare/DentaCare/web/header.jsp</file>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/AddClinicScheduleServlet.java</file>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/clinic.jsp</file>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/LoadFromClinicToScheduleServlet.java</file>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/LoadAllDentaListServlet.java</file>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/LoadFromClinicScheduleToAddServlet.java</file>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/addNewClinicSchedule.jsp</file>
+            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/clinicSchedule.jsp</file>
         </group>
     </open-files>
 </project-private>
