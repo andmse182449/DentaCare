@@ -7,12 +7,11 @@ package controller;
 import account.AccountDAO;
 import account.AccountDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+
 import java.sql.SQLException;
 import java.time.Year;
 import java.util.logging.Level;
@@ -20,72 +19,72 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author ROG STRIX
+ * @author Admin
  */
-public class RegisterServlet extends HttpServlet {
+public class CreateDentistServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String username = request.getParameter("register-name");
-        String mail = request.getParameter("register-mail");
-        String pass = request.getParameter("register-pass");
-        HttpSession session = request.getSession();
+        String username = request.getParameter("den-username");
+        String mail = request.getParameter("den-email");
+        String pass = request.getParameter("den-password");
+        String fullName = request.getParameter("den-fullName");
+        String phone = request.getParameter("den-phone");
+        String address = request.getParameter("den-address");
         boolean res = false;
-        String url = "userWeb-page.jsp";
+        String url = "coWeb-dentist.jsp";
+
         try {
             AccountDAO accountDAO = new AccountDAO();
-            int numOfUsers = accountDAO.countAccount();
-            AccountDTO existed = accountDAO.checkExistAccount(username, pass);
-            if (existed == null) {
-                String accountId = "CUS" + Year.now().getValue() % 100 + String.format("%05d", numOfUsers + 1);
-                AccountDTO newAccount = accountDAO.createAnNormalAccount(username, pass, mail, accountId);
-                session.setAttribute("account", newAccount);
+            int numOfDens = accountDAO.countDentist();
 
-            } else if (mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
-                request.setAttribute("error", "Email registed !");
-                request.setAttribute("ac", " active");
-                url = "login.jsp";
-
+            if (!phone.matches("\\d+")) { // Changed regex to match one or more digits
+                request.setAttribute("error", "Phone number must contain only digits");
+                request.getRequestDispatcher(url).forward(request, response);
+                return;
             } else {
-                res = true;
-            }
-            if (res == true) {
-                request.setAttribute("error", "User Name existed !");
-                request.setAttribute("ac", " active");
-                url = "login.jsp";
-            } else if (mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
-                request.setAttribute("error", "Email registed !");
-                request.setAttribute("ac", " active");
-                url = "login.jsp";
-            } else {
-                request.setAttribute("error", "");
+                AccountDTO existed = accountDAO.checkExistAccount(username, pass);
+                if (existed == null) {
+                    String accountId = "DEN" + Year.now().getValue() % 100 + String.format("%05d", numOfDens + 1);
+                    accountDAO.createDentist(accountId, username, pass, mail, fullName, phone, address);
+                } else {
+                    res = true;
+                }
 
+                if (res) {
+                    request.setAttribute("error", "User Name existed !");
+                    request.setAttribute("ac", " active");
+                } else {
+                    request.setAttribute("error", "");
+                }
             }
+
             request.getRequestDispatcher(url).forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("error", "An error occurred while processing your request.");
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
-    // + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -96,10 +95,10 @@ public class RegisterServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
