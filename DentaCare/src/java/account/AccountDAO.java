@@ -177,21 +177,21 @@ public class AccountDAO implements Serializable {
         }
         return "";
     }
-
-    public String checkExistName(String userNameK) throws SQLException {
+ 
+    public String checkExistEmail(String email) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        StringBuilder query = new StringBuilder("SELECT userName FROM ACCOUNT WHERE USERNAME = ?");
+        StringBuilder query = new StringBuilder("SELECT email FROM ACCOUNT WHERE email = ?");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
-            stm.setString(1, userNameK);
+            stm.setString(1, email);
             rs = stm.executeQuery();
             while (rs.next()) {
-                String userName = rs.getString("userName");
-                return userName;
+                String gmail = rs.getString("email");
+                return gmail;
             }
         } catch (SQLException e) {
             System.out.println("SQL: " + e);
