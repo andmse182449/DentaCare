@@ -87,6 +87,15 @@
                     <a href="LoadFromClinicToScheduleServlet?clinicByID=${clinicByID.clinicID}"><input type="button" value="Return"></a>
                     <input type="submit" value="Create">
                 </div>
+                <c:set value="${requestScope.alreadyHave}" var="existingSchedule"/>
+                <% String existingSchedule = (String) request.getAttribute("alreadyHave");
+                    if (existingSchedule != null) {
+                %>
+                <p style="font-weight: bold; color: red" class="error-message">${existingSchedule}</p>
+                <%
+                    }
+                %>
+                
                 <%
                     Boolean addClinicSchedule = (Boolean) request.getAttribute("addClinicSchedule");
                     if (Boolean.TRUE.equals(addClinicSchedule)) {
