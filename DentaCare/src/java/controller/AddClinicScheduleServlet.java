@@ -4,7 +4,10 @@
  */
 package controller;
 
+import clinic.ClinicDAO;
+import clinic.ClinicDTO;
 import clinicSchedule.ClinicScheduleDAO;
+import clinicSchedule.ClinicScheduleDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -33,19 +37,51 @@ public class AddClinicScheduleServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            String id_raw = request.getParameter("clinicByID");
             String workingDay = request.getParameter("workingDay");
             String clinicID_raw = request.getParameter("clinicID");
             String description = request.getParameter("description");
-            int clinic;
-            ClinicScheduleDAO dao = new ClinicScheduleDAO();
+
+            int id = 0;
+            int clinic = 0;
 
             try {
+                id = Integer.parseInt(id_raw);
                 clinic = Integer.parseInt(clinicID_raw);
-                boolean addClinicSchedule = dao.addNewClinicSchedule(workingDay, clinic, description);
-                request.setAttribute("addClinicSchedule", addClinicSchedule);
+
+                ClinicDAO clinicDao = new ClinicDAO();
+                ClinicDTO clinicByID = clinicDao.getClinicByID(id);
+
+                if (clinicByID != null) {
+                    request.setAttribute("clinicByID", clinicByID);
+
+                    ClinicScheduleDAO dao = new ClinicScheduleDAO();
+                    List<ClinicScheduleDTO> listGetAll = dao.getAllClinicSchedule();
+
+                    boolean workingDayExists = false;
+                    for (ClinicScheduleDTO clinicScheduleDTO : listGetAll) {
+                        if (clinicScheduleDTO.getWorkingDay().equals(workingDay)) {
+                            workingDayExists = true;
+                            break;
+                        }
+                    }
+
+                    if (!workingDayExists) {
+                        boolean addClinicSchedule = dao.addNewClinicSchedule(workingDay, clinic, description);
+                        request.setAttribute("addClinicSchedule", addClinicSchedule);
+                    } else {
+                        request.setAttribute("alreadyHave", "This working day already exists. Please choose another day.");
+                    }
+                } else {
+                    System.out.println("Clinic with ID " + id + " not found.");
+                }
+
                 request.getRequestDispatcher("addNewClinicSchedule.jsp").forward(request, response);
 
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input: " + e.getMessage());
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
