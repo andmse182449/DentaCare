@@ -28,15 +28,16 @@ public class LoginActionServlet extends HttpServlet {
             if (checkAccount != null) {
                 switch (checkAccount.isRoleID()) {
                     // admin
-                    case 4 -> {
-                        response.sendRedirect("adminWeb-page.jsp");
+
+                    case 3 -> {
+                        response.sendRedirect("coWeb-dashboard.jsp");
                     }
                     // staff
-                    case 3 -> {
+                    case 2 -> {
                         response.sendRedirect("staffWeb-page.jsp");
                     }
-                    //dentist
-                    case 2 -> {
+                    // dentist
+                    case 1 -> {
                         response.sendRedirect("dentistWeb-page.jsp");
                     }
                     default -> {
@@ -45,11 +46,9 @@ public class LoginActionServlet extends HttpServlet {
                 }
                 session.setAttribute("account", checkAccount);
             } else {
-                if (!checkPass.equals(password) && checkName.equals(userName)) {
-                    request.setAttribute("error", "Password is not corrected !");
-                } else  {
-                    request.setAttribute("error", "User name is not matched with any !");
 
+                if (!checkPass.equals(password) || !checkName.equals(userName)) {
+                    request.setAttribute("error", "Password or Username is not correct!");
                 }
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
@@ -58,14 +57,15 @@ public class LoginActionServlet extends HttpServlet {
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -76,10 +76,10 @@ public class LoginActionServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

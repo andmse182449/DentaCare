@@ -1,4 +1,3 @@
-
 package utils;
 
 
@@ -37,4 +36,6 @@ public class DBUtils {
     private final static String instance = "";
     private final static String userID = "sa";
     private final static String password = "12345";
+
 }
+
