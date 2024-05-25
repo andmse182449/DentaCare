@@ -31,8 +31,25 @@
                 display: none;
                 z-index: 1000; /* Ensure the alert appears above other elements */
             }
-
+            .success {
+                position: fixed;
+                top: 100px; /* Adjust this value to position the alert higher or lower */
+                left: 50%;
+                transform: translateX(-50%); /* Center the alert horizontally */
+                background-color: #22bb33;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                opacity: 0;
+                transition: opacity 0.5s ease-out;
+                display: none;
+                z-index: 1000; /* Ensure the alert appears above other elements */
+            }
             .alert.show {
+                display: block;
+                opacity: 1;
+            }
+            .success.show {
                 display: block;
                 opacity: 1;
             }
@@ -63,10 +80,10 @@
 
         <c:set var="ac" value="${requestScope.ac}"/>
         <c:set var="err" value="${requestScope.error}"/>
-
+        <c:set var="suc" value="${requestScope.success}"/>
         <div class="container-login${ac}">
             <div class="alert sec">${err}</div>
-
+            <div class="success sec">${suc}</div>
             <div class="forms">
 
                 <div class="form login">
@@ -172,7 +189,19 @@
                     }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
                 }
             });
-
+            document.addEventListener("DOMContentLoaded", function () {
+                const successBox = document.querySelector(".success.sec");
+                if (successBox && successBox.textContent.trim()) {
+                    successBox.style.display = "block"; // Show the alert if there's an error message
+                    successBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                    setTimeout(function () {
+                        successBox.classList.remove("show");
+                        setTimeout(function () {
+                            successBox.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                }
+            });
             function verifyPasswords(event) {
                 event.preventDefault(); // Prevent form submission
                 const password = document.getElementsByName("register-pass")[0].value;
