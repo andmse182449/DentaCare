@@ -86,41 +86,41 @@ public class ClinicScheduleDAO {
     }
 
     public List<ClinicScheduleDTO> getWorkingDaysByClinicId(int clinicID) throws SQLException {
-    Connection con = null;
-    PreparedStatement stm = null;
-    ResultSet rs = null;
-    List<ClinicScheduleDTO> list = new ArrayList<>();
-    String sql = "SELECT workingDay FROM CLINICSCHEDULE WHERE clinicID = ?";
-    try {
-        con = DBUtils.getConnection();
-        stm = con.prepareStatement(sql);
-        stm.setInt(1, clinicID);
-        rs = stm.executeQuery();
-        
-        while (rs.next()) {
-            String workingDay = rs.getString("workingDay");
-            ClinicScheduleDTO clinicSchedule = new ClinicScheduleDTO();
-            clinicSchedule.setWorkingDay(workingDay);
-            clinicSchedule.setClinicID(clinicID); // You might still want to set clinicID
-            list.add(clinicSchedule);
-        }
-    } catch (SQLException e) {
-        System.err.println("SQL Error: " + e.getMessage());
-    } finally {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<ClinicScheduleDTO> list = new ArrayList<>();
+        String sql = "SELECT workingDay FROM CLINICSCHEDULE WHERE clinicID = ?";
         try {
-            if (rs != null) {
-                rs.close();
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setInt(1, clinicID);
+            rs = stm.executeQuery();
+
+            while (rs.next()) {
+                String workingDay = rs.getString("workingDay");
+                ClinicScheduleDTO clinicSchedule = new ClinicScheduleDTO();
+                clinicSchedule.setWorkingDay(workingDay);
+                clinicSchedule.setClinicID(clinicID); // You might still want to set clinicID
+                list.add(clinicSchedule);
             }
         } catch (SQLException e) {
-            System.err.println("Error closing ResultSet: " + e.getMessage());
-        }
-        try {
-            if (stm != null) {
-                stm.close();
+            System.err.println("SQL Error: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error closing ResultSet: " + e.getMessage());
             }
-        } catch (SQLException e) {
-            System.err.println("Error closing PreparedStatement: " + e.getMessage());
-        }
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error closing PreparedStatement: " + e.getMessage());
+            }
             try {
                 if (con != null) {
                     con.close();
@@ -132,5 +132,83 @@ public class ClinicScheduleDAO {
         return list;
     }
 
+    public ClinicScheduleDTO checkExistWorkingID(int clinicID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "SELECT workingDay FROM CLINICSCHEDULE WHERE clinicID = ?";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setInt(1, clinicID);
+            rs = stm.executeQuery();
 
+            while (rs.next()) {
+                String workingDay = rs.getString("workingDay");
+                ClinicScheduleDTO clinicSchedule = new ClinicScheduleDTO();
+                clinicSchedule.setWorkingDay(workingDay);
+                clinicSchedule.setClinicID(clinicID);
+                return clinicSchedule;
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error closing ResultSet: " + e.getMessage());
+            }
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error closing PreparedStatement: " + e.getMessage());
+            }
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error closing Connection: " + e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    public boolean modifyClinicSchedule(int clinicScheduleID, String workingDay, String description) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            String query = "UPDATE CLINICSCHEDULE SET workingDay = ?,  description = ? WHERE clinicScheduleID = ?";
+            stm = con.prepareStatement(query);
+            stm.setString(1, workingDay);
+            stm.setString(2, description);
+            stm.setInt(3, clinicScheduleID);
+            int e = stm.executeUpdate();
+            if (e > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("An error occurred while closing the resources: ");
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 }
