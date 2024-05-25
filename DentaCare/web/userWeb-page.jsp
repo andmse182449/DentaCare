@@ -7,6 +7,8 @@
         <title>DentaCare</title>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700" rel="stylesheet">
 
+        <link href="css/drop-down.css" rel="stylesheet"/>
+
         <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
         <link rel="stylesheet" href="css/animate.css">
 
@@ -43,7 +45,32 @@
                         <li class="nav-item"><a href="doctors.html" class="nav-link" style="color: black">Doctors</a></li>
                         <li class="nav-item"><a href="blog.html" class="nav-link" style="color: black">Blog</a></li>
                         <li class="nav-item"><a href="contact.html" class="nav-link" style="color: black">Contact</a></li>
-                        <li class="nav-item cta"><a href="#" class="nav-link show-popup" data-target="#modalRequest">Log in</a></li>
+                        <li class="nav-item">
+                        <c:set var="account" value="${sessionScope.account}"/>
+                        <div href="contact.html" class="nav-link" style="color: black">
+                            <div class="action">
+                                <div class="" onclick="menuToggle();">
+                                    <a href="#" style="color:black">${account.getUserName()}</a>
+                                </div>
+                                <div class="menu">
+                                    <ul>
+                                        <li>
+                                            <img src="images/user.png" /><a href="ProfileServlet">Profile</a>
+                                        </li>
+                                        <li>
+                                            <img src="images/schedule.png"/><a href="ExamScheduleServlet">Examination Schedule</a>
+                                        </li>
+                                        <li>
+                                            <img src="images/history.png" /><a href="HistoryServlet">Booking History</a>
+                                        </li>
+                                        <li>
+                                            <img src="images/log-out.png" /><a href="SignOutServlet">Logout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -51,6 +78,12 @@
         <div class="container user">
             <h1>Hello World!</h1>
         </div>
+        <script>
+            function menuToggle() {
+                const toggleMenu = document.querySelector(".menu");
+                toggleMenu.classList.toggle("active");
+            }
+        </script>
         <%@include file="/footer.jsp" %>
     </body>
 </html>
