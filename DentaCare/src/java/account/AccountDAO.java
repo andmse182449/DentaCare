@@ -314,6 +314,7 @@ public class AccountDAO implements Serializable {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String address = rs.getString("address");
+                String fullname = rs.getString("fullName");
                 LocalDate dob = null;
                 java.sql.Date dobSql = rs.getDate("dob");
                 if (dobSql != null) {
@@ -324,8 +325,7 @@ public class AccountDAO implements Serializable {
                 String googleName = rs.getString("googleName");
                 int role = rs.getInt("roleID");
 
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, userName, phone,
-                        address, gender, googleID, googleName, role);
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullname, phone, address, gender, googleID, googleName, role);
                 return accountDTO;
             }
         } catch (SQLException e) {
