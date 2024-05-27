@@ -1,0 +1,138 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+.hero {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #eceaff;
+    color: #525252;
+}
+
+nav {
+    background: #1a1a1a;
+    width: 100%;
+    padding: 10px 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.logo {
+    font-size: 50px;
+    color: #e1e1e8;
+}
+
+.material-symbols-outlined {
+    color: #e1e1e8;
+    cursor: pointer;
+}
+
+nav ul {
+    width: 100%;
+    text-align: right;
+}
+
+nav ul li {
+    display: inline-block;
+    list-style: none;
+    margin: 10px 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.sub-menu-wrap {
+    position: absolute;
+    top: 100%;
+    right: 10%;
+    width: 300px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+
+.sub-menu-wrap.open-menu {
+    max-height: 400px;
+}
+
+.sub-menu {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info h3 {
+    color: #1a1a1a;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.user-info .material-symbols-outlined {
+    color: #1a1a1a;
+    width: 60px;
+    margin-right: 15px;
+}
+
+.sub-menu hr {
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #ccc;    
+    margin: 15px 0 10px 0;
+}
+
+.sub-menu-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color:#525252;
+    margin: 12px 0;
+}
+
+.sub-menu-link p{
+    font-size: 16px;
+    width: 100%;
+}
+
+.sub-menu-link i {
+    font-size: 16px;
+}
+
+.sub-menu-link .material-symbols-outlined {
+    color: #1a1a1a;
+    width: 40px;
+    background: #e5e5e5;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 15px;
+}
+
+.sub-menu-link .chevron-right {
+    font-weight: 500;
+    transition: trasform 0.5s;
+}
+
+.sub-menu-link:hover span{
+    transform: translateX(5px);
+}
+
+.sub-menu-link:hover p{
+    font-weight: 600;
+}
+
+.sub-menu-link:hover i{
+    font-size: 20px;
+}
+

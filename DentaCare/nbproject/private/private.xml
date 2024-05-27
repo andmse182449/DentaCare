@@ -3,24 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/DentistServlet.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/ServiceController.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/admin-front-end/profile.html</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-staff.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/WEB-INF/web.xml</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/user-information.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-dentist.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/ProfileServlet.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/CreateDentistServlet.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/script.js</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/services.html</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/CreateStaffServlet.java</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/RegisterServlet.java</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/AddClinicScheduleServlet.java</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/LoadFromClinicScheduleToAddServlet.java</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/LoadAllDentaListServlet.java</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/addNewClinicSchedule.jsp</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/clinicSchedule.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/admin-front-end/tableList.jsp</file>
         </group>
     </open-files>
 </project-private>

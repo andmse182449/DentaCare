@@ -403,7 +403,7 @@ public class AccountDAO implements Serializable {
         }
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -420,6 +420,7 @@ public class AccountDAO implements Serializable {
             stm.setString(10, null);
             stm.setString(11, null);
             stm.setInt(12, 1);
+            stm.setInt(13, 2);
 
             stm.executeUpdate();
 
@@ -462,7 +463,7 @@ public class AccountDAO implements Serializable {
         }
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -479,6 +480,7 @@ public class AccountDAO implements Serializable {
             stm.setString(10, null);
             stm.setString(11, null);
             stm.setInt(12, 2);
+            stm.setInt(13, 2);
 
             stm.executeUpdate();
 

@@ -38,7 +38,7 @@ public class LoginActionServlet extends HttpServlet {
                     }
                     // dentist
                     case 1 -> {
-                        response.sendRedirect("dentistWeb-page.jsp");
+                        response.sendRedirect("denWeb-dentitstSchedule.jsp");
                     }
                     default -> {
                         response.sendRedirect("userWeb-page.jsp");
