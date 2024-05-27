@@ -46,8 +46,7 @@ public class LoginActionServlet extends HttpServlet {
                 }
                 session.setAttribute("account", checkAccount);
             } else {
-
-                if (!checkPass.equals(password) || !checkName.equals(userName)) {
+                if (!checkPass.equals(password)) {
                     request.setAttribute("error", "Password or Username is not correct!");
                 }
                 request.getRequestDispatcher("login.jsp").forward(request, response);

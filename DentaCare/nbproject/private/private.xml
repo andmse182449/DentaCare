@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/css/style.css</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/login.jsp</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/GoogleLogin/GoogleLoginServlet.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/RegisterServlet.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/GoogleVerify/SendPasswordServlet.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/VerifyServlet.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/ForgetPasswordServlet.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/Token/TokenValidator.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/GoogleVerify/SendEmail.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/Token/TokenGenerator.java</file>
         </group>
     </open-files>
 </project-private>

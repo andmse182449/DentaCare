@@ -77,10 +77,8 @@
                 </div>
             </div>
         </nav>
-
-        <c:set var="ac" value="${requestScope.ac}"/>
         <c:set var="err" value="${requestScope.error}"/>
-        <c:set var="suc" value="${requestScope.success}"/>
+         <c:set var="suc" value="${requestScope.success}"/>
         <div class="container-login${ac}">
             <div class="alert sec">${err}</div>
             <div class="success sec">${suc}</div>
@@ -108,7 +106,7 @@
                                 <label for="logCheck" class="text">Remember me</label>
                             </div>
 
-                            <a href="forget.jsp" class="text">Forgot password?</a>
+                            <a href="forgetPassword.jsp" class="text">Forgot password?</a>
                         </div>
 
                         <div class="input-field button">

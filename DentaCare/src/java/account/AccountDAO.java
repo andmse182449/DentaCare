@@ -343,25 +343,31 @@ public class AccountDAO implements Serializable {
         return null;
     }
 
-    // public AccountDTO findAccountByEmail(String email) {
-    // AccountDTO acc = null;
-    // Connection con = DBUtils.getConnection();
-    // String sql = "SELECT * FROM ACCOUNT WHERE email = ?";
-    // try {
-    // PreparedStatement st = con.prepareStatement(sql);
-    // st.setString(1, email);
-    // ResultSet rs = st.executeQuery();
-    //
-    // if (rs.next()) {
-    // acc = new AccountDTO(rs.getString("userName"), rs.getString("password"),
-    // null, null, null, rs.getString("email"), null, null, true);
-    // }
-    // } catch (SQLException e) {
-    // System.out.println(e);
-    // }
-    //
-    // return acc;
-    // }
+    public AccountDTO findAccountByEmail(String email) {
+        AccountDTO acc = null;
+        Connection con = DBUtils.getConnection();
+        String sql = "SELECT * FROM ACCOUNT WHERE email = ?";
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                acc = new AccountDTO(rs.getString("accountID"), rs.getString("userName"), rs.getString("password"), rs.getString("email"), dob, rs.getString("fullName"), rs.getString("phone"),
+                        rs.getString("address"), rs.getBoolean("gender"), rs.getString("googleID"), rs.getString("googleName"), 0);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return acc;
+    }
+
     public int countAccount() {
         String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT";
         Connection con = DBUtils.getConnection();
@@ -524,4 +530,38 @@ public class AccountDAO implements Serializable {
         }
         return null;
     }
+
+    public void resetPassword(String email, String password) throws SQLException {
+        String en_password = password;
+        try {
+            en_password = strE.encode(password);
+        } catch (Exception ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Connection con = null;
+        PreparedStatement stm = null;
+        String query = "UPDATE ACCOUNT SET PASSWORD = ? WHERE EMAIL = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+
+            stm.setString(1, en_password);
+            stm.setString(2, email);
+
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+
+    }
+
 }
