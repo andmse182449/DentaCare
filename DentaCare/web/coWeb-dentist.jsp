@@ -56,7 +56,7 @@
                     <div class="close-btn" id="close-btn">&times;</div>
                     <div class="form">
                         <h2>CREATE A DENTIST ACCOUNT</h2>
-                        <form action="CreateDentistServlet" method="post">
+                        <form action="DentistServlet" method="post">
                             <div class="form-element">
                                 <label for="username">Username</label>
                                 <input type="text" name="den-username" required>
@@ -81,6 +81,7 @@
                                 <label for="address">Address</label>
                                 <input type="text" name="den-address" required>
                             </div>
+                            <input type="hidden" name="action" value="create"/>
                             <div class="form-element">
                                 <input type="submit" value="Submit">
                             </div>

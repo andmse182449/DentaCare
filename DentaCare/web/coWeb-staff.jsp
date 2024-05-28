@@ -56,7 +56,7 @@
                     <div class="close-btn" id="close-btn">&times;</div>
                     <div class="form">
                         <h2>CREATE A STAFF ACCOUNT</h2>
-                        <form action="CreateStaffServlet" method="post">
+                        <form action="StaffServlet" method="post">
                             <div class="form-element">
                                 <label for="username">Username</label>
                                 <input type="text" name="sta-username" required>
@@ -81,6 +81,7 @@
                                 <label for="address">Address</label>
                                 <input type="text" name="sta-address" required>
                             </div>
+                            <input type="hidden" name="action" value="create"/>
                             <div class="form-element">
                                 <input type="submit" value="Submit">
                             </div>

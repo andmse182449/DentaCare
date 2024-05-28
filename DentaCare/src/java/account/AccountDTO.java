@@ -18,11 +18,12 @@ public class AccountDTO implements Serializable {
     private String googleName;
     private boolean gender;
     private int roleID;
+    private int status;
 
     public AccountDTO() {
     }
 
-    public AccountDTO(String accountID, String userName, String password, String email, LocalDate dob, String fullName, String phone, String address, boolean gender,String googleID, String googleName, int roleID) {
+    public AccountDTO(String accountID, String userName, String password, String email, LocalDate dob, String fullName, String phone, String address, boolean gender,String googleID, String googleName, int roleID, int status) {
         this.accountID = accountID;
         this.userName = userName;
         this.password = password;
@@ -35,6 +36,7 @@ public class AccountDTO implements Serializable {
         this.googleName = googleName;
         this.gender = gender;
         this.roleID = roleID;
+        this.status = status;
     }
 
     public String getAccountID() {
@@ -125,7 +127,7 @@ public class AccountDTO implements Serializable {
         this.gender = gender;
     }
 
-    public int isRoleID() {
+    public int getRoleID() {
         return roleID;
     }
 
@@ -133,11 +135,13 @@ public class AccountDTO implements Serializable {
         this.roleID = roleID;
     }
 
-    @Override
-    public String toString() {
-        return "AccountDTO{" + "accountID=" + accountID + ", userName=" + userName + ", password=" + password + ", email=" + email + ", dob=" + dob + ", fullName=" + fullName + ", phone=" + phone + ", address=" + address + ", googleID=" + googleID + ", googleName=" + googleName + ", gender=" + gender + ", roleID=" + roleID + '}';
+    public int getStatus() {
+        return status;
     }
 
- 
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
 
 }

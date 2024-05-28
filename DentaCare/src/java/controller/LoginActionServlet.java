@@ -26,9 +26,8 @@ public class LoginActionServlet extends HttpServlet {
             String checkName = dao.checkExistName(userName);
             // check password
             if (checkAccount != null) {
-                switch (checkAccount.isRoleID()) {
+                switch (checkAccount.getRoleID()) {
                     // admin
-
                     case 3 -> {
                         response.sendRedirect("coWeb-dashboard.jsp");
                     }
