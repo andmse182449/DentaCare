@@ -14,16 +14,30 @@
         <link rel="stylesheet" href="css/stylesheet.css">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
         <div class="grid-container">
             <!-- HEADER -->
             <header class="header">
-                <div></div>
+                <div><h1>STAFF</h1></div>
                 <div class="header-icon">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span class="material-symbols-outlined">mail</span>
-                    <span class="material-symbols-outlined">account_circle</span>
+                    <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
+                    <!-- Dropdown Content -->
+                    <div class="sub-menu-wrap" id="sub-menu-wrap">
+                        <div class="sub-menu">
+                            <div class="user-info">
+                                <h3>${sessionScope.account.userName}</h3>
+                            </div>
+                            <hr>
+                            <a href="SignOutServlet" class="sub-menu-link">
+                                <span class="material-symbols-outlined">logout</span>
+                                <p>Logout</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
             </header>
             <!-- SIDEBAR -->
@@ -47,12 +61,12 @@
             </aside>
             <!-- MAIN -->
             <div class="main-container">
-                <div class="main-header">
+                <div class="main-content">
                     <div class="alert-error sec">${error}</div>
                     <div class="alert-message sec">${message}</div>
-                    <h2>STAFF</h2>
                     <button id="create-button" class="create-button">Create Dentist Account</button>
                 </div>
+                <br>
                 <!-- FORM POPUP-->
                 <div class="popup" id="popup-form">
                     <div class="close-btn" id="close-btn">&times;</div>
@@ -91,7 +105,9 @@
                     </div>
                 </div>
                 <!-- END POPUP -->
-                ABC XYZ
+                <div class="main-content">
+                    ABC XYZ
+                </div>
             </div>
         </div>
 
@@ -103,7 +119,7 @@
             document.querySelector(".popup .close-btn").addEventListener("click", function () {
                 document.querySelector(".popup").classList.remove("active");
             });
-            
+
             document.addEventListener("DOMContentLoaded", function () {
                 const alertBox = document.querySelector(".alert-error.sec");
                 if (alertBox && alertBox.textContent.trim()) {
@@ -117,7 +133,7 @@
                     }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
                 }
             });
-            
+
             document.addEventListener("DOMContentLoaded", function () {
                 const alertBox2 = document.querySelector(".alert-message.sec");
                 if (alertBox2 && alertBox2.textContent.trim()) {
@@ -131,6 +147,11 @@
                     }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
                 }
             });
+
+            let subMenu = document.getElementById("sub-menu-wrap");
+            function toggleDropdown() {
+                subMenu.classList.toggle("open-menu");
+            }
         </script>
     </body>
 </html>

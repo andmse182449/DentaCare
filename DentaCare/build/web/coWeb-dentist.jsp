@@ -1,10 +1,3 @@
-<%-- 
-    Document   : coWeb-dentist
-    Created on : May 24, 2024, 6:43:11 PM
-    Author     : Admin
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,16 +7,30 @@
         <link rel="stylesheet" href="css/stylesheet.css">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
         <div class="grid-container">
             <!-- HEADER -->
             <header class="header">
-                <div></div>
+                <div><h1>DENTIST</h1></div>
                 <div class="header-icon">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span class="material-symbols-outlined">mail</span>
-                    <span class="material-symbols-outlined">account_circle</span>
+                    <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
+                    <!-- Dropdown Content -->
+                    <div class="sub-menu-wrap" id="sub-menu-wrap">
+                        <div class="sub-menu">
+                            <div class="user-info">
+                                <h3>${sessionScope.account.userName}</h3>
+                            </div>
+                            <hr>
+                            <a href="SignOutServlet" class="sub-menu-link">
+                                <span class="material-symbols-outlined">logout</span>
+                                <p>Logout</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
             </header>
             <!-- SIDEBAR -->
@@ -49,10 +56,10 @@
             <div class="main-container">
                 <div class="alert-error sec">${error}</div>
                 <div class="alert-message sec">${message}</div>
-                <div class="main-header">
-                    <h2>DENTIST</h2>
+                <div class="main-content">
                     <button id="create-button" class="create-button">Create Dentist Account</button>
                 </div>
+                <br>
                 <!-- FORM POPUP-->
                 <div class="popup" id="popup-form">
                     <div class="close-btn" id="close-btn">&times;</div>
@@ -65,7 +72,13 @@
                             </div>
                             <div class="form-element">
                                 <label for="password">Password</label>
-                                <input type="password" name="den-password" value="abc" required readonly>
+                                <input
+                                    type="password"
+                                    name="den-password"
+                                    value="abc"
+                                    required
+                                    readonly
+                                    >
                             </div>
                             <div class="form-element">
                                 <label for="email">Email</label>
@@ -83,27 +96,31 @@
                                 <label for="address">Address</label>
                                 <input type="text" name="den-address" required>
                             </div>
-                            <input type="hidden" name="action" value="create"/>
+                            <input type="hidden" name="action" value="create">
                             <div class="form-element">
                                 <input type="submit" value="Submit">
                             </div>
                         </form>
                     </div>
+
                 </div>
                 <!-- END POPUP -->
-                ABC XYZ
+                <div class="main-content">
+                    ABC XYZ
+                </div>
             </div>
         </div>
-
         <script>
             document.querySelector("#create-button").addEventListener("click", function () {
                 document.querySelector(".popup").classList.add("active");
             });
 
-            document.querySelector(".popup .close-btn").addEventListener("click", function () {
-                document.querySelector(".popup").classList.remove("active");
-            });
-            
+            document
+                    .querySelector(".popup .close-btn")
+                    .addEventListener("click", function () {
+                        document.querySelector(".popup").classList.remove("active");
+                    });
+
             document.addEventListener("DOMContentLoaded", function () {
                 const alertBox = document.querySelector(".alert-error.sec");
                 if (alertBox && alertBox.textContent.trim()) {
@@ -117,7 +134,7 @@
                     }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
                 }
             });
-            
+
             document.addEventListener("DOMContentLoaded", function () {
                 const alertBox2 = document.querySelector(".alert-message.sec");
                 if (alertBox2 && alertBox2.textContent.trim()) {
@@ -131,6 +148,12 @@
                     }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
                 }
             });
+
+            let subMenu = document.getElementById("sub-menu-wrap");
+            function toggleDropdown() {
+                subMenu.classList.toggle("open-menu");
+            }
+
         </script>
     </body>
 </html>

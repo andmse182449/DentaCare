@@ -27,8 +27,9 @@ body {
     height: 40px;
     display: flex;
     justify-content: space-between;
-    padding: 20px 30px 0px 30px;
+    padding: 30px 5%;
     box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+    align-items: center;
 }
 
 .header-icon span{
@@ -37,6 +38,96 @@ body {
 }
 .material-symbols-outlined:hover {
     cursor: pointer;
+}
+
+/* dropdown for header */
+.sub-menu-wrap {
+    position: absolute;
+    right: 5%;
+    width: 50%;
+    max-width: 300px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+
+.sub-menu-wrap.open-menu {
+    max-height: 400px;
+}
+
+.sub-menu {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(73, 127, 189, 0.1);
+    border-radius: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info h3 {
+    color: #1a1a1a;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.user-info .material-symbols-outlined {
+    color: #1a1a1a;
+    width: 60px;
+    margin-right: 15px;
+}
+
+.sub-menu hr {
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #ccc;
+    margin: 15px 0 10px 0;
+}
+
+.sub-menu-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #525252;
+    margin: 12px 0;
+}
+
+.sub-menu-link p {
+    font-size: 16px;
+    width: 100%;
+}
+
+.sub-menu-link i {
+    font-size: 16px;
+}
+
+.sub-menu-link .material-symbols-outlined {
+    color: #1a1a1a;
+    background: #e5e5e5;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 15px;
+}
+
+.sub-menu-link .chevron-right {
+    font-weight: 500;
+    transition: transform 0.5s;
+}
+
+.sub-menu-link:hover span {
+    transform: translateX(5px);
+}
+
+.sub-menu-link:hover p {
+    font-weight: 600;
+}
+
+.sub-menu-link:hover i {
+    font-size: 20px;
 }
 
 /*----------- Sideber ------------*/
@@ -84,7 +175,7 @@ body {
     color: #333;
 }
 
-.main-header {
+.main-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
