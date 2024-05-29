@@ -44,6 +44,10 @@
         <servlet-name>VerifyServlet</servlet-name>
         <servlet-class>controller.VerifyServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>VerifyEmailServlet</servlet-name>
+        <servlet-class>SendEmail.VerifyEmailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/SignOutServlet</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>VerifyServlet</servlet-name>
         <url-pattern>/VerifyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyEmailServlet</servlet-name>
+        <url-pattern>/VerifyEmailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

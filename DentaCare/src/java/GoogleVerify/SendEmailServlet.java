@@ -1,35 +1,25 @@
 package GoogleVerify;
 
-import Token.TokenGenerator;
-import account.AccountDAO;
-import account.AccountDTO;
 import java.io.IOException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "SendPasswordServlet", urlPatterns = {"/SendPasswordServlet"})
-public class SendPasswordServlet extends HttpServlet {
+@WebServlet(name = "SendEmailServlet", urlPatterns = {"/SendEmailServlet"})
+public class SendEmailServlet extends HttpServlet {
 
-    final String subject = "Reset Password";
+    final String subject = "Register Account";
     private static final long TOKEN_EXPIRATION_TIME = 60000;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String mail_raw = request.getParameter("mail");
-        AccountDAO d = new AccountDAO();
-        AccountDTO account = d.findAccountByEmail(mail_raw);
 
         try {
-            if (account == null) {
-                request.setAttribute("error", "Your email has not been registered !");
-            } else {
-                String token = TokenGenerator.generateToken(TOKEN_EXPIRATION_TIME);
-                String link = "http://localhost:8080/DentistBooking/ForgetPasswordServlet?key=" + mail_raw + "&action=changePage" + "&token=" + token;
+                String link = "http://localhost:8080/DentistBooking/RegisterServlet?key=" + mail_raw + "&action=verify";
                 String body = "<!DOCTYPE html>"
                         + "<html>"
                         + "<head>"
@@ -42,32 +32,27 @@ public class SendPasswordServlet extends HttpServlet {
                         + "<body>"
                         + "<div class=''>"
                         + "Hello,<br><br>"
-                        + "You have requested to reset your password. Please click the button below to reset your password:<br><br>"
-                        + "<a class='button-link' style='color: #fff' href='" + link + "'>Reset Password</a>"
+                        + "You have requested to register your account. Please click the button below to access register page:<br><br>"
+                        + "<a class='button-link' style='color: #fff' href='" + link + "'>Register Account</a>"
                         + "<br><br>"
-                        + "If you did not request a password reset, please ignore this email.<br><br>"
+                        + "If you did not request your account registered, please ignore this email.<br><br>"
                         + "Thank you,<br>"
                         + "DentaCare"
                         + "</div>"
                         + "</body>"
                         + "</html>";
 
-                SendEmail send = new SendEmail(account.getEmail(), subject, body);
+                SendEmail send = new SendEmail(mail_raw, subject, body);
                 request.setAttribute("sendEmail", send);
                 request.setAttribute("email", mail_raw);
                 request.setAttribute("success", "Please check your Email for further information !");
-            }
-            // Correctly forward to the JSP page
-            request.getRequestDispatcher("forgetPassword.jsp").forward(request, response);
-        } catch (Exception e) {
-            // Log the error for debugging
-            e.printStackTrace();
-            // Optionally, forward to an error page
+            
+            request.getRequestDispatcher("userWeb-verifyEmail.jsp").forward(request, response);
+        } catch (ServletException | IOException e) {
             request.setAttribute("error", "An error occurred while processing your request.");
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

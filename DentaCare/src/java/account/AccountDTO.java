@@ -3,7 +3,6 @@ package account;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-
 public class AccountDTO implements Serializable {
 
     private String accountID;
@@ -18,11 +17,12 @@ public class AccountDTO implements Serializable {
     private String googleName;
     private boolean gender;
     private int roleID;
+    private int status;
 
     public AccountDTO() {
     }
 
-    public AccountDTO(String accountID, String userName, String password, String email, LocalDate dob, String fullName, String phone, String address, boolean gender,String googleID, String googleName, int roleID) {
+    public AccountDTO(String accountID, String userName, String password, String email, LocalDate dob, String fullName, String phone, String address, boolean gender, String googleID, String googleName, int roleID, int status) {
         this.accountID = accountID;
         this.userName = userName;
         this.password = password;
@@ -35,6 +35,7 @@ public class AccountDTO implements Serializable {
         this.googleName = googleName;
         this.gender = gender;
         this.roleID = roleID;
+        this.status = status;
     }
 
     public String getAccountID() {
@@ -133,9 +134,33 @@ public class AccountDTO implements Serializable {
         this.roleID = roleID;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return "AccountDTO{" + "accountID=" + accountID + ", userName=" + userName + ", password=" + password + ", email=" + email + ", dob=" + dob + ", fullName=" + fullName + ", phone=" + phone + ", address=" + address + ", googleID=" + googleID + ", googleName=" + googleName + ", gender=" + gender + ", roleID=" + roleID + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("AccountDTO{");
+        sb.append("accountID=").append(accountID);
+        sb.append(", userName=").append(userName);
+        sb.append(", password=").append(password);
+        sb.append(", email=").append(email);
+        sb.append(", dob=").append(dob);
+        sb.append(", fullName=").append(fullName);
+        sb.append(", phone=").append(phone);
+        sb.append(", address=").append(address);
+        sb.append(", googleID=").append(googleID);
+        sb.append(", googleName=").append(googleName);
+        sb.append(", gender=").append(gender);
+        sb.append(", roleID=").append(roleID);
+        sb.append(", status=").append(status);
+        sb.append('}');
+        return sb.toString();
     }
 
  

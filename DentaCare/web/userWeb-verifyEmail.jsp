@@ -79,101 +79,34 @@
         </nav>
         <c:set var="err" value="${requestScope.error}"/>
         <c:set var="suc" value="${requestScope.success}"/>
-        <c:set var="email" value="${requestScope.email}"/>
-        <div class="container-login${ac}">
-            <div class="alert sec">${err}</div>
-            <div class="success sec">${suc}</div>
+        <div class="container-login">
             <div class="forms">
+                <div class="form login" method="POST">
+                    <span class="title">Register</span>
 
-                <div class="form login">
-                    <span class="title">Login</span>
-
-                    <form action="LoginActionServlet" method="POST">
+                    <c:set value="${requestScope.error}" var="err" />
+                    <c:set value="${requestScope.success}" var="suc" />
+                    <div class="alert sec">${err}</div>
+                    <div class="success sec">${suc}</div>
+                    <form action="RegisterServlet?action=checkEmail" method="POST" onsubmit="return sendPassword()">
 
                         <div class="input-field">
-                            <input name="email" type="text" placeholder="Enter your email" required>
+                            <input type="text" name="key" placeholder="Enter your email" required>
                             <i class="uil uil-envelope icon"></i>
                         </div>
-
-                        <div class="input-field">
-                            <input name="password" type="password" class="password" placeholder="Enter your password" required>
-                            <i class="uil uil-lock icon"></i>
-                            <i class="uil uil-eye-slash showHidePw"></i>
-                        </div>
-
-                        <div class="checkbox-text">
-                            <div class="checkbox-content">
-                                <input type="checkbox" id="logCheck">
-                                <label for="logCheck" class="text">Remember me</label>
-                            </div>
-
-                            <a href="forgetPassword.jsp" class="text">Forgot password?</a>
+                        <div class="login-signup">
+                            <span class="text">Already a member?
+                                <a href="login.jsp" class="text">Login Now</a>
+                            </span>
                         </div>
 
                         <div class="input-field button">
-                            <input type="submit" value="Login">
+                            <input type="submit" value="Send">
                         </div>
                     </form>
-
-                    <div class="line"></div>
-
-                    <div class="media-options">
-                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/DentistBooking/GoogleLoginServlet&response_type=code
-                           &client_id=395837287895-aj8q33ea6m81ua43aej4la6bkikv27pg.apps.googleusercontent.com&approval_prompt=force" 
-                           class="field google">
-                            <img style="width:30px;height:30px; margin-right: 10px" src="images/Google__G__logo.svg.png" alt=""/>
-                            <span>Login with Google</span>
-                        </a>
-                    </div>
-
-                    <div class="login-signup">
-                        <span class="text">Not a member?
-                            <a href="userWeb-verifyEmail.jsp">Signup Now</a>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Registration Form -->
-
-                <div class="form signup" onsubmit="return verifyPasswords()">
-
-                    <span class="title">Registration</span>
-
-                    <form action="RegisterServlet?action=register" method="POST">
-
-                        <div class="input-field">
-                            <input name="register-name" type="text" placeholder="Enter your name" required>
-                            <i class="uil uil-user"></i>
-                        </div>
-                        <div class="input-field">
-                            <input name="key" type="text" value="${email}" readonly >
-                            <i class="uil uil-envelope icon"></i>
-                        </div>
-                        <div class="input-field">
-                            <input name="register-pass" type="password" class="password" placeholder="Create a password" required>
-                            <i class="uil uil-lock icon"></i>
-                        </div>
-                        <div class="input-field">
-                            <input name="passAgain" type="password" class="password" placeholder="Confirm a password" required>
-                            <i class="uil uil-lock icon"></i>
-                            <i class="uil uil-eye-slash showHidePw"></i>
-                        </div>
-                        <div class="alert">Passwords do not match. Please try again.</div>
-                        <div class="input-field button">
-                            <input type="submit" value="Signup">
-                        </div>
-                    </form>
-<!--                    <div class="login-signup">
-                        <span class="text">Already a member?
-                            <a href="#" class="text login-link">Login Now</a>
-                        </span>
-                    </div>-->
-                </div>
-
+                </div>s
             </div>
-
         </div>
-
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const alertBox2 = document.querySelector(".alert.sec");

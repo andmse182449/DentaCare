@@ -47,9 +47,10 @@ public class AccountDAO implements Serializable {
                 String googleID = rs.getString("googleID");
                 String googleName = rs.getString("googleName");
                 int role = rs.getInt("role");
+                int status = rs.getInt("status");
 
                 AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone + "",
-                        address, gender, googleID, googleName, role);
+                        address, gender, googleID, googleName, role, status);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -76,7 +77,7 @@ public class AccountDAO implements Serializable {
         }
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -93,6 +94,7 @@ public class AccountDAO implements Serializable {
             stm.setString(10, null);
             stm.setString(11, null);
             stm.setInt(12, 0);
+            stm.setInt(13, 0);
             stm.executeUpdate();
 
         } catch (SQLException e) {
@@ -144,8 +146,8 @@ public class AccountDAO implements Serializable {
                 String googleID = rs.getString("googleID");
                 String googleName = rs.getString("googleName");
                 int role = rs.getInt("roleID");
-
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, gender, googleID, googleName, role);
+                int status = rs.getInt("status");
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, gender, googleID, googleName, role, status);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -323,8 +325,8 @@ public class AccountDAO implements Serializable {
                 String googleID = rs.getString("googleID");
                 String googleName = rs.getString("googleName");
                 int role = rs.getInt("roleID");
-
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullname, phone, address, gender, googleID, googleName, role);
+                int status = rs.getInt("status");
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullname, phone, address, gender, googleID, googleName, role, status);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -359,7 +361,7 @@ public class AccountDAO implements Serializable {
                     dob = dobSql.toLocalDate();
                 }
                 acc = new AccountDTO(rs.getString("accountID"), rs.getString("userName"), rs.getString("password"), rs.getString("email"), dob, rs.getString("fullName"), rs.getString("phone"),
-                        rs.getString("address"), rs.getBoolean("gender"), rs.getString("googleID"), rs.getString("googleName"), 0);
+                        rs.getString("address"), rs.getBoolean("gender"), rs.getString("googleID"), rs.getString("googleName"), 0,0);
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -368,8 +370,8 @@ public class AccountDAO implements Serializable {
         return acc;
     }
 
-    public int countAccount() {
-        String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT";
+    public int countUserAccount() {
+        String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT Where accountID LIKE 'CUS%'";
         Connection con = DBUtils.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);

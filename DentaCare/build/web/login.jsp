@@ -78,7 +78,8 @@
             </div>
         </nav>
         <c:set var="err" value="${requestScope.error}"/>
-         <c:set var="suc" value="${requestScope.success}"/>
+        <c:set var="suc" value="${requestScope.success}"/>
+        <c:set var="email" value="${requestScope.email}"/>
         <div class="container-login${ac}">
             <div class="alert sec">${err}</div>
             <div class="success sec">${suc}</div>
@@ -127,7 +128,7 @@
 
                     <div class="login-signup">
                         <span class="text">Not a member?
-                            <a href="#" class="text signup-link">Signup Now</a>
+                            <a href="userWeb-verifyEmail.jsp">Signup Now</a>
                         </span>
                     </div>
                 </div>
@@ -138,14 +139,14 @@
 
                     <span class="title">Registration</span>
 
-                    <form action="RegisterServlet" method="POST">
+                    <form action="RegisterServlet?action=register" method="POST">
 
                         <div class="input-field">
                             <input name="register-name" type="text" placeholder="Enter your name" required>
                             <i class="uil uil-user"></i>
                         </div>
                         <div class="input-field">
-                            <input name="register-mail" type="text" placeholder="Enter your email" required>
+                            <input name="key" type="text" value="${email}" readonly >
                             <i class="uil uil-envelope icon"></i>
                         </div>
                         <div class="input-field">
@@ -162,11 +163,11 @@
                             <input type="submit" value="Signup">
                         </div>
                     </form>
-                    <div class="login-signup">
+<!--                    <div class="login-signup">
                         <span class="text">Already a member?
                             <a href="#" class="text login-link">Login Now</a>
                         </span>
-                    </div>
+                    </div>-->
                 </div>
 
             </div>
