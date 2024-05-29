@@ -2,13 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/GoogleVerify/SendPasswordServlet.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/VerifyServlet.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/ForgetPasswordServlet.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/Token/TokenValidator.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/GoogleVerify/SendEmail.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/Token/TokenGenerator.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
