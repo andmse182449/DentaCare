@@ -66,6 +66,7 @@
                         </div>
                     </div>                
                     <div class="right-card">
+                        <!-- PROFILE -->
                         <form action="DentistServlet" id="dentist-profile-form">
                             <div class="card-content">
                                 <div class="card-body">
@@ -110,6 +111,9 @@
                             <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
                             <input type="submit" id="saveDenButton" value="Save" style="display: none;">
                         </form>
+                        
+                        <!-- PASSWORD -->
+                        
                     </div>
                 </div>
             </div>

@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -39,9 +40,23 @@ public class DentistServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String action = request.getParameter("action");
+        if (action == null) {
+            action = (String) request.getAttribute("action");
+        }
 
-        /*CREATE DENTIST ACCOUNT */
-        if (action.equals("create")) {
+        
+        if (action == null || action.equals("dentistLogin") || action == "") {
+            HttpSession session = request.getSession();
+            AccountDTO account = (AccountDTO) session.getAttribute("account");
+            String url = "denWeb-dentitstSchedule.jsp";
+            if (account.getStatus() == 2) {
+                url = "denWeb-changePassword.jsp";
+                request.getRequestDispatcher(url).forward(request, response);
+            } else {
+                response.sendRedirect(url);
+            }
+        }   /*CREATE DENTIST ACCOUNT */
+            else if (action.equals("create")) {
             String username = request.getParameter("den-username").trim();
             String mail = request.getParameter("den-email").trim();
             String pass = request.getParameter("den-password").trim();
@@ -80,7 +95,8 @@ public class DentistServlet extends HttpServlet {
                 request.setAttribute("error", "An error occurred while processing your request.");
                 request.getRequestDispatcher(url).forward(request, response);
             }
-        } /* UPDATE DENTIST PROFILE */ else if (action.equals("update")) {
+        } /* UPDATE DENTIST PROFILE */ 
+            else if (action.equals("update")) {
             String fullName = request.getParameter("den-fullName").trim();
             String phone = request.getParameter("den-phone").trim();
             String address = request.getParameter("den-address").trim();
@@ -112,7 +128,8 @@ public class DentistServlet extends HttpServlet {
                 request.setAttribute("error", "An error occurred while processing your request.");
                 request.getRequestDispatcher(url).forward(request, response);
             }
-        } /* LOAD DENTIST PROFILE */ else if (action.equals("profile")) {
+        } /* LOAD DENTIST PROFILE */ 
+            else if (action.equals("profile")) {
             String accountId = (String) request.getAttribute("accountID");
             if (accountId == null) {
                 accountId = request.getParameter("accountID");
@@ -129,7 +146,6 @@ public class DentistServlet extends HttpServlet {
                 request.getRequestDispatcher(url).forward(request, response);
             }
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

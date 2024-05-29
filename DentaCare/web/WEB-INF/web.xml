@@ -40,6 +40,10 @@
         <servlet-name>DentistProfileServlet</servlet-name>
         <servlet-class>controller.DentistProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SendDentistAccountServlet</servlet-name>
+        <servlet-class>GoogleVerify.SendDentistAccountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/SignOutServlet</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>DentistProfileServlet</servlet-name>
         <url-pattern>/DentistProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendDentistAccountServlet</servlet-name>
+        <url-pattern>/SendDentistAccountServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
