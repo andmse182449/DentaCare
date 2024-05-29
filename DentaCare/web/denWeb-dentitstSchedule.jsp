@@ -18,7 +18,7 @@
         <div class="hero">
             <!-- MENU -->
             <nav>
-                <span class="logo">Dentist</span>
+                <span class="logo">Dentist (thay logo sau)</span>
                 <ul>
                     <li><a href="denWeb-dentitstSchedule.jsp">My Schedule</a></li>
                     <li><a href="#">My Patients</a></li>
@@ -27,14 +27,20 @@
                 <div class="sub-menu-wrap" id="sub-menu-wrap">
                     <div class="sub-menu">
                         <div class="user-info">
-                            <h3>Hugo</h3>
+                            <h3>${sessionScope.account.userName}</h3>
                         </div>
                         <hr>
-                        <a href="denWeb-dentistProfile.jsp" class="sub-menu-link">
-                            <span class="material-symbols-outlined">person</span>
-                            <p>Profile</p>
-                            <i class="fa fa-chevron-right"></i>
-                        </a>
+                        <form action="DentistServlet" method="post" style="display: inline;">
+                            <input type="hidden" name="action" value="profile">
+                            <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
+                            <button type="submit" class="sub-menu-link" style="border: none; background: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: space-between; width: 100%; cursor: pointer;">
+                                <div style="display: flex; align-items: center;">
+                                    <span class="material-symbols-outlined">person</span>
+                                    <p>Profile</p>
+                                </div>
+                                <i class="fa fa-chevron-right"></i>
+                            </button>
+                        </form>
                         <a href="SignOutServlet" class="sub-menu-link">
                             <span class="material-symbols-outlined">logout</span>
                             <p>Logout</p>

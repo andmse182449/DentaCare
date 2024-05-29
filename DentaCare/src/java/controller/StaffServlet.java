@@ -45,7 +45,6 @@ public class StaffServlet extends HttpServlet {
             String fullName = request.getParameter("sta-fullName");
             String phone = request.getParameter("sta-phone");
             String address = request.getParameter("sta-address");
-            boolean res = false;
             String url = "coWeb-staff.jsp";
 
             try {
@@ -57,22 +56,22 @@ public class StaffServlet extends HttpServlet {
                     request.getRequestDispatcher(url).forward(request, response);
                     return;
                 } else {
-                    AccountDTO existed = accountDAO.checkExistAccount(username, pass);
+                    String existed = accountDAO.checkExistName(username);
                     if (existed == null) {
-                        String accountId = "STA" + Year.now().getValue() % 100 + String.format("%05d", numOfStas + 1);
-                        accountDAO.createStaff(accountId, username, pass, mail, fullName, phone, address);
+                        if (!mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
+                            String accountId = "STA" + Year.now().getValue() % 100 + String.format("%05d", numOfStas + 1);
+                            if (accountDAO.createDentist(accountId, username, pass, mail, fullName, phone, address)) {
+                                request.setAttribute("message", "Create successfully!");
+                            } else {
+                                request.setAttribute("error", "Create failed!");
+                            }
+                        } else {
+                            request.setAttribute("error", "Email registed!");
+                        }
                     } else {
-                        res = true;
-                    }
-
-                    if (res) {
-                        request.setAttribute("error", "User Name existed !");
-                        request.setAttribute("ac", " active");
-                    } else {
-                        request.setAttribute("error", "");
+                        request.setAttribute("error", "Username existed !");
                     }
                 }
-
                 request.getRequestDispatcher(url).forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);

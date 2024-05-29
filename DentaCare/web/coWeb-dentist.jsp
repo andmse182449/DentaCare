@@ -47,6 +47,8 @@
             </aside>
             <!-- MAIN -->
             <div class="main-container">
+                <div class="alert-error sec">${error}</div>
+                <div class="alert-message sec">${message}</div>
                 <div class="main-header">
                     <h2>DENTIST</h2>
                     <button id="create-button" class="create-button">Create Dentist Account</button>
@@ -63,7 +65,7 @@
                             </div>
                             <div class="form-element">
                                 <label for="password">Password</label>
-                                <input type="password" name="den-password" required>
+                                <input type="password" name="den-password" value="abc" required readonly>
                             </div>
                             <div class="form-element">
                                 <label for="email">Email</label>
@@ -100,6 +102,34 @@
 
             document.querySelector(".popup .close-btn").addEventListener("click", function () {
                 document.querySelector(".popup").classList.remove("active");
+            });
+            
+            document.addEventListener("DOMContentLoaded", function () {
+                const alertBox = document.querySelector(".alert-error.sec");
+                if (alertBox && alertBox.textContent.trim()) {
+                    alertBox.style.display = "block"; // Show the alert if there's an error message
+                    alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                    setTimeout(function () {
+                        alertBox.classList.remove("show");
+                        setTimeout(function () {
+                            alertBox.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                }
+            });
+            
+            document.addEventListener("DOMContentLoaded", function () {
+                const alertBox2 = document.querySelector(".alert-message.sec");
+                if (alertBox2 && alertBox2.textContent.trim()) {
+                    alertBox2.style.display = "block"; // Show the alert if there's an error message
+                    alertBox2.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                    setTimeout(function () {
+                        alertBox2.classList.remove("show");
+                        setTimeout(function () {
+                            alertBox2.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                }
             });
         </script>
     </body>

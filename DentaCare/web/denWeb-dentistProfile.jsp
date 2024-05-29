@@ -18,7 +18,7 @@
         <div class="hero">
             <!-- MENU -->
             <nav>
-                <span class="logo">Dentist</span>
+                <span class="logo">Dentist (thay logo sau)</span>
                 <ul>
                     <li><a href="denWeb-dentitstSchedule.jsp">My Schedule</a></li>
                     <li><a href="#">My Patients</a></li>
@@ -27,14 +27,20 @@
                 <div class="sub-menu-wrap" id="sub-menu-wrap">
                     <div class="sub-menu">
                         <div class="user-info">
-                            <h3>Hugo</h3>
+                            <h3>${sessionScope.account.userName}</h3>
                         </div>
                         <hr>
-                        <a href="denWeb-dentistProfile.jsp" class="sub-menu-link">
-                            <span class="material-symbols-outlined">person</span>
-                            <p>Profile</p>
-                            <i class="fa fa-chevron-right"></i>
-                        </a>
+                        <form action="DentistServlet" method="post" style="display: inline;">
+                            <input type="hidden" name="action" value="profile">
+                            <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
+                            <button type="submit" class="sub-menu-link" style="border: none; background: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: space-between; width: 100%; cursor: pointer;">
+                                <div style="display: flex; align-items: center;">
+                                    <span class="material-symbols-outlined">person</span>
+                                    <p>Profile</p>
+                                </div>
+                                <i class="fa fa-chevron-right"></i>
+                            </button>
+                        </form>
                         <a href="SignOutServlet" class="sub-menu-link">
                             <span class="material-symbols-outlined">logout</span>
                             <p>Logout</p>
@@ -44,12 +50,14 @@
                 </div>
             </nav>
             <div class="main">
+                <div class="alert-error sec">${error}</div>
+                <div class="alert-message sec">${message}</div>
                 <div class="card-info">
                     <div class="left-card">
                         <div class="card-body">
                             <span class="material-symbols-outlined">person</span>
-                            <h3>Hugo</h3>
                         </div>
+                        <h3>${sessionScope.account.userName}</h3>
                         <div class="card-body">
                             <ul>
                                 <li onclick="updateDenProfile()">Update my profile</li>
@@ -58,50 +66,43 @@
                         </div>
                     </div>                
                     <div class="right-card">
-                        <form action="" id="dentist-profile-form">
+                        <form action="DentistServlet" id="dentist-profile-form">
                             <div class="card-content">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="label"><h5>Name</h5></div>
-                                        <input type="text" name="den-fullName" value="${sessionScope.account.fullName}" readonly>
+                                        <input type="text" name="den-fullName" value="${requestScope.account.fullName.trim()}" readonly>
                                     </div>
                                     <hr>
                                     <div class="row">
                                         <div class="label"><h5>Phone</h5></div>
-                                        <input type="text" name="den-phone" value="${sessionScope.account.phone}" readonly>
+                                        <input type="text" name="den-phone" value="${requestScope.account.phone.trim()}" readonly>
                                     </div>
                                     <hr>
                                     <div class="row">
                                         <div class="label"><h5>Address</h5></div>
-                                        <input type="text" name="den-address" value="${sessionScope.account.address}" readonly>
+                                        <input type="text" name="den-address" value="${requestScope.account.address.trim()}" readonly>
                                     </div>
                                     <hr>
                                     <div class="row">
                                         <div class="label"><h5>Email</h5></div>
-                                        <input type="email" name="den-email" value="${sessionScope.account.email}" readonly>
+                                        <input type="email" name="den-email" value="${requestScope.account.email.trim()}" readonly>
                                     </div>
                                     <hr>
                                     <div class="row">
                                         <div class="label"><h5>Date of Birth</h5></div>
-                                        <input type="text" name="den-dob" value="${sessionScope.account.dob}" readonly>
+                                        <input type="date" name="den-dob" value="${requestScope.account.dob}" readonly>
                                     </div>
+
                                     <hr>
                                     <div class="row">
                                         <div class="label"><h5>Gender</h5></div>
                                         <div class="label">
                                             <label style="font-size: 16px">Male</label>
-                                            <input type="radio" name="den-gender" value="0" ${sessionScope.account.gender == 0 ? 'checked' : ''} disabled style="margin-right: 15px;">
+                                            <input type="radio" name="den-gender" value="true" ${requestScope.account.gender == 'true' ? 'checked' : ''} disabled style="margin-right: 15px;">
                                             <label style="font-size: 16px">Female</label>
-                                            <input type="radio" name="den-gender" value="1" ${sessionScope.account.gender == 1 ? 'checked' : ''}  disabled>
+                                            <input type="radio" name="den-gender" value="false" ${requestScope.account.gender == 'false' ? 'checked' : ''}  disabled>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="label"><h5>??</h5></div>
-                                        <input type="text" name="??" value="??" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -127,6 +128,35 @@
                 document.getElementById('saveDenButton').style.display = 'block';
                 document.getElementById('den-name').focus();
             }
+            
+            document.addEventListener("DOMContentLoaded", function () {
+                const alertBox = document.querySelector(".alert-error.sec");
+                if (alertBox && alertBox.textContent.trim()) {
+                    alertBox.style.display = "block"; // Show the alert if there's an error message
+                    alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                    setTimeout(function () {
+                        alertBox.classList.remove("show");
+                        setTimeout(function () {
+                            alertBox.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                }
+            });
+            
+            document.addEventListener("DOMContentLoaded", function () {
+                const alertBox2 = document.querySelector(".alert-message.sec");
+                if (alertBox2 && alertBox2.textContent.trim()) {
+                    alertBox2.style.display = "block"; // Show the alert if there's an error message
+                    alertBox2.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                    setTimeout(function () {
+                        alertBox2.classList.remove("show");
+                        setTimeout(function () {
+                            alertBox2.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                }
+            });
         </script>
     </body>
 </html>
+

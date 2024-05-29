@@ -187,3 +187,44 @@ body {
     border-radius: 10px;
     cursor: pointer;
 }
+
+/*----------- ALERT ------------*/
+.alert-error {
+    position: fixed;
+    top: 100px; /* Adjust this value to position the alert higher or lower */
+    left: 50%;
+    transform: translateX(-50%); /* Center the alert horizontally */
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    display: none;
+    z-index: 1000; /* Ensure the alert appears above other elements */
+}
+
+.alert-error.show {
+    display: block;
+    opacity: 1;
+}
+
+.alert-message {
+    position: fixed;
+    top: 100px; /* Adjust this value to position the alert higher or lower */
+    left: 50%;
+    transform: translateX(-50%); /* Center the alert horizontally */
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    display: none;
+    z-index: 1000; /* Ensure the alert appears above other elements */
+}
+
+.alert-message.show {
+    display: block;
+    opacity: 1;
+}

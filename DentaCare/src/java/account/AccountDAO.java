@@ -4,6 +4,7 @@ import utils.DBUtils;
 
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,7 +35,7 @@ public class AccountDAO implements Serializable {
 
             stm.executeUpdate();
 
-            stm = con.prepareStatement("Select * from account where username = ?");
+            stm = con.prepareStatement("Select * from account where userName = ?");
             stm.setString(1, userName);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -121,7 +122,7 @@ public class AccountDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE USERNAME = ? AND PASSWORD = ?");
+        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE userName = ? AND password = ?");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -173,7 +174,7 @@ public class AccountDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        StringBuilder query = new StringBuilder("SELECT password FROM ACCOUNT WHERE USERNAME = ?");
+        StringBuilder query = new StringBuilder("SELECT password FROM ACCOUNT WHERE userName = ?");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -237,7 +238,7 @@ public class AccountDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        StringBuilder query = new StringBuilder("SELECT userName FROM ACCOUNT WHERE USERNAME = ?");
+        StringBuilder query = new StringBuilder("SELECT userName FROM ACCOUNT WHERE userName = ?");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -262,7 +263,7 @@ public class AccountDAO implements Serializable {
                 con.close();
             }
         }
-        return "";
+        return null;
     }
 
     public AccountDTO createAccountGG(String googleID, String googleName, String accountId) throws SQLException {
@@ -369,7 +370,57 @@ public class AccountDAO implements Serializable {
     // return acc;
     // }
     
-            
+    public AccountDTO searchAccountByID(String accountId) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE accountID = ? ");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, accountId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String accountID = rs.getString("accountID");
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                boolean gender = rs.getBoolean("gender");
+                String googleID = rs.getString("googleID");
+                String googleName = rs.getString("googleName");
+                int role = rs.getInt("roleID");
+                int status = rs.getInt("status");
+
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone,
+                        address, gender, googleID, googleName, role, status);
+                return accountDTO;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: " + e);
+
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
+
     public int countAccount() {
         String sql = "SELECT COUNT(*) AS Numb FROM ACCOUNT WHERE roleID = 0";
         Connection con = DBUtils.getConnection();
@@ -400,9 +451,10 @@ public class AccountDAO implements Serializable {
         return 0;
     }
 
-    public AccountDTO createDentist(String accountId, String userNameK, String passwordK, String email, String fullName,
+    public boolean createDentist(String accountId, String userNameK, String passwordK, String email, String fullName,
             String phone, String address) throws SQLException {
         String en_password = passwordK;
+        boolean flag = false;
         try {
             en_password = strE.encode(passwordK);
         } catch (Exception ex) {
@@ -429,7 +481,9 @@ public class AccountDAO implements Serializable {
             stm.setInt(12, 1);
             stm.setInt(13, 2);
 
-            stm.executeUpdate();
+            if (stm.executeUpdate() != 0) {
+                flag = true;
+            }
 
         } catch (SQLException e) {
             System.out.println("An SQL error occurred: ");
@@ -442,7 +496,7 @@ public class AccountDAO implements Serializable {
                 con.close();
             }
         }
-        return null;
+        return flag;
     }
 
     public int countStaff() {
@@ -460,9 +514,10 @@ public class AccountDAO implements Serializable {
         return 0;
     }
 
-    public AccountDTO createStaff(String accountId, String userNameK, String passwordK, String email, String fullName,
+    public boolean createStaff(String accountId, String userNameK, String passwordK, String email, String fullName,
             String phone, String address) throws SQLException {
         String en_password = passwordK;
+        boolean flag = false;
         try {
             en_password = strE.encode(passwordK);
         } catch (Exception ex) {
@@ -488,8 +543,10 @@ public class AccountDAO implements Serializable {
             stm.setString(11, null);
             stm.setInt(12, 2);
             stm.setInt(13, 2);
-
-            stm.executeUpdate();
+            
+            if (stm.executeUpdate() != 0) {
+                flag = true;
+            }
 
         } catch (SQLException e) {
             System.out.println("An SQL error occurred: ");
@@ -502,6 +559,44 @@ public class AccountDAO implements Serializable {
                 con.close();
             }
         }
-        return null;
+        return flag;
     }
+
+    public boolean updateDentistProfile(String fullName, String phone, String address, String email, LocalDate date, boolean gender, String accountId)
+            throws SQLException {
+        boolean flag = false;
+        Connection con = null;
+        PreparedStatement stm = null;
+        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET fullName = ?, phone = ?, address = ?, email = ?, dob = ?, gender = ? WHERE accountID = ?");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+
+            stm.setString(1, fullName);
+            stm.setString(2, phone);
+            stm.setString(3, address);
+            stm.setString(4, email);
+            stm.setDate(5, Date.valueOf(date));
+            stm.setBoolean(6, gender);
+            stm.setString(7, accountId);
+
+            if (stm.executeUpdate() != 0) {
+                flag = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return flag;
+    }
+
 }
