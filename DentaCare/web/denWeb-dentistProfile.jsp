@@ -83,29 +83,38 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="label"><h6>Name</h6></div>
-                                    <input type="text" name="den-fullName" value="${requestScope.account.fullName.trim()}" readonly>
+                                    <input type="text" name="den-fullName" value="${requestScope.account.fullName.trim()}" required readonly>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="label"><h6>Phone</h6></div>
-                                    <input type="text" name="den-phone" value="${requestScope.account.phone.trim()}" readonly>
+                                    <input type="text" name="den-phone" value="${requestScope.account.phone.trim()}" required readonly>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="label"><h6>Address</h6></div>
-                                    <input type="text" name="den-address" value="${requestScope.account.address.trim()}" readonly>
+                                    <input type="text" name="den-address" value="${requestScope.account.address.trim()}" required readonly>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="label"><h6>Email</h6></div>
-                                    <input type="email" name="den-email" value="${requestScope.account.email.trim()}" readonly>
+                                    <input type="email" name="den-email" value="${requestScope.account.email.trim()}" required readonly>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="label"><h6>Date of Birth</h6></div>
-                                    <input type="date" name="den-dob" value="${requestScope.account.dob}" readonly>
+                                    <input type="date" name="den-dob" value="${requestScope.account.dob}" required readonly>
                                 </div>
-
+                                <hr>
+                                <div class="row">
+                                    <div class="label"><h6>Clinic</h6></div>
+                                    <input type="text" name="den-clinic" value="" required readonly>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="label"><h6>Major</h6></div>
+                                    <input type="text" name="den-major" value="" readonly>
+                                </div>
                                 <hr>
                                 <div class="row">
                                     <div class="label"><h6>Gender</h6></div>
