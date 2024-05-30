@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(name = "SendPasswordServlet", urlPatterns = {"/SendPasswordServlet"})
 public class SendPasswordServlet extends HttpServlet {
 
-    final String subject = "Reset Password";
+    final String subject = "[DentaCare] Reset Password ";
     private static final long TOKEN_EXPIRATION_TIME = 60000;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

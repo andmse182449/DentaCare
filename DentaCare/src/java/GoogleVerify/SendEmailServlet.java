@@ -10,8 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(name = "SendEmailServlet", urlPatterns = {"/SendEmailServlet"})
 public class SendEmailServlet extends HttpServlet {
 
-    final String subject = "Register Account";
-    private static final long TOKEN_EXPIRATION_TIME = 60000;
+    final String subject = "[DentaCare] Register Account";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
