@@ -35,7 +35,8 @@ public class LoginActionServlet extends HttpServlet {
                     // staff
                     case 2 -> {
                         session.setAttribute("account", checkAccount);
-                        response.sendRedirect("staffWeb-page.jsp");
+                        request.setAttribute("action", "staffLogin");
+                        request.getRequestDispatcher("StaffServlet").forward(request, response);
                     }
                     // dentist
                     case 1 -> {

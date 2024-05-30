@@ -94,7 +94,7 @@ public class AccountDAO implements Serializable {
             stm.setString(9, null);
             stm.setString(10, null);
             stm.setString(11, null);
-            stm.setInt(12, 3);
+            stm.setInt(12, 0);
             stm.setInt(13, 0);
             stm.executeUpdate();
 
@@ -306,7 +306,7 @@ public class AccountDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE USERNAME = ?");
+        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE username = ?");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -350,25 +350,30 @@ public class AccountDAO implements Serializable {
         return null;
     }
 
-    // public AccountDTO findAccountByEmail(String email) {
-    // AccountDTO acc = null;
-    // Connection con = DBUtils.getConnection();
-    // String sql = "SELECT * FROM ACCOUNT WHERE email = ?";
-    // try {
-    // PreparedStatement st = con.prepareStatement(sql);
-    // st.setString(1, email);
-    // ResultSet rs = st.executeQuery();
-    //
-    // if (rs.next()) {
-    // acc = new AccountDTO(rs.getString("userName"), rs.getString("password"),
-    // null, null, null, rs.getString("email"), null, null, true);
-    // }
-    // } catch (SQLException e) {
-    // System.out.println(e);
-    // }
-    //
-    // return acc;
-    // }
+    public AccountDTO findAccountByEmail(String email) {
+        AccountDTO acc = null;
+        Connection con = DBUtils.getConnection();
+        String sql = "SELECT * FROM ACCOUNT WHERE email = ?";
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                acc = new AccountDTO(rs.getString("accountID"), rs.getString("userName"), rs.getString("password"), rs.getString("email"), dob, rs.getString("fullName"), rs.getString("phone"),
+                        rs.getString("address"), rs.getBoolean("gender"), rs.getString("googleID"), rs.getString("googleName"), rs.getInt("roleID"),rs.getInt("status"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return acc;
+    }
     
     public AccountDTO searchAccountByID(String accountId) throws SQLException {
         Connection con = null;
@@ -598,5 +603,38 @@ public class AccountDAO implements Serializable {
         }
         return flag;
     }
+    
+    public boolean changePasswordFirstLogin(String password, String accountId)
+            throws SQLException {
+        boolean flag = false;
+        String en_pass = new Encoder().encode(password);
+        Connection con = null;
+        PreparedStatement stm = null;
+        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET password = ?, status = ? WHERE accountID = ?");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
 
+            stm.setString(1, en_pass);
+            stm.setInt(2, 0);
+            stm.setString(3, accountId);
+
+            if (stm.executeUpdate() != 0) {
+                flag = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return flag;
+    }
 }

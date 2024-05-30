@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>SignOutServlet</servlet-name>
         <servlet-class>controller.SignOutServlet</servlet-class>
@@ -41,8 +49,12 @@
         <servlet-class>controller.DentistProfileServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SendDentistAccountServlet</servlet-name>
-        <servlet-class>GoogleVerify.SendDentistAccountServlet</servlet-class>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>controller.ChangePasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendEmailAccountInfoServlet</servlet-name>
+        <servlet-class>GoogleVerify.SendEmailAccountInfoServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
@@ -85,8 +97,12 @@
         <url-pattern>/DentistProfileServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SendDentistAccountServlet</servlet-name>
-        <url-pattern>/SendDentistAccountServlet</url-pattern>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <url-pattern>/ChangePasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendEmailAccountInfoServlet</servlet-name>
+        <url-pattern>/SendEmailAccountInfoServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

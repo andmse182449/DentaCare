@@ -15,16 +15,20 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
-        <div class="hero">
-            <!-- MENU -->
-            <nav>
-                <span class="logo">Dentist (thay logo sau)</span>
+        <div class="header">
+            <nav class="menu">
+                <span class="logo">logo</span>
                 <ul>
-                    <li><a href="denWeb-dentitstSchedule.jsp">My Schedule</a></li>
-                    <li><a href="#">My Patients</a></li>
+                    <li>
+                        <a href="#">my schedule</a>
+                    </li>
+                    <li>
+                        <a href="#">my patient</a>
+                    </li>
                 </ul>
-                <span class="material-symbols-outlined" onclick="toggleMenu()">account_circle</span>
-                <div class="sub-menu-wrap" id="sub-menu-wrap">
+                <spadn class="material-symbols-outlined" onclick="toggleMenu()">account_circle
+                    </span>
+                    <div class="sub-menu-wrap" id="sub-menu-wrap">
                     <div class="sub-menu">
                         <div class="user-info">
                             <h3>${sessionScope.account.userName}</h3>
@@ -43,7 +47,7 @@
                         </form>
                         <a href="SignOutServlet" class="sub-menu-link">
                             <span class="material-symbols-outlined">logout</span>
-                            <p>Logout</p>
+                            <p>Sign out</p>
                             <i class="fa fa-chevron-right"></i>
                         </a>
                     </div>

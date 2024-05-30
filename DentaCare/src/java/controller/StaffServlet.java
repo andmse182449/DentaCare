@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.sql.SQLException;
 import java.time.Year;
@@ -35,22 +36,34 @@ public class StaffServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+        AccountDAO accountDAO = new AccountDAO();
         String action = request.getParameter("action");
+        if (action == null) {
+            action = (String) request.getAttribute("action");
+        }
         
-        if (action.equals("create")) {
-            String username = request.getParameter("sta-username");
-            String mail = request.getParameter("sta-email");
-            String pass = request.getParameter("sta-password");
-            String fullName = request.getParameter("sta-fullName");
-            String phone = request.getParameter("sta-phone");
-            String address = request.getParameter("sta-address");
+        if (action == null || action.equals("staffLogin") || action == "") {
+            HttpSession session = request.getSession();
+            AccountDTO account = (AccountDTO) session.getAttribute("account");
+            String url = "staWeb-abc.jsp";
+            if (account.getStatus() == 2) {
+                url = "changePasswordFirstTime.jsp";
+                request.getRequestDispatcher(url).forward(request, response);
+            } else {
+                response.sendRedirect(url);
+            }
+        }
+        else if (action.equals("create")) {
+            int numOfStas = accountDAO.countStaff();
+            String username = "nv-" + request.getParameter("sta-email").trim().split("@")[0] + String.format("%03d", numOfStas + 1);
+            String mail = request.getParameter("sta-email").trim();
+            String pass = "abc@demo";
+            String fullName = request.getParameter("sta-fullName").trim();
+            String phone = request.getParameter("sta-phone").trim();
+            String address = request.getParameter("sta-address").trim();
             String url = "coWeb-staff.jsp";
 
             try {
-                AccountDAO accountDAO = new AccountDAO();
-                int numOfStas = accountDAO.countStaff();
-
                 if (!phone.matches("\\d+")) { // Changed regex to match one or more digits
                     request.setAttribute("error", "Phone number must contain only digits");
                     request.getRequestDispatcher(url).forward(request, response);
@@ -60,8 +73,9 @@ public class StaffServlet extends HttpServlet {
                     if (existed == null) {
                         if (!mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
                             String accountId = "STA" + Year.now().getValue() % 100 + String.format("%05d", numOfStas + 1);
-                            if (accountDAO.createDentist(accountId, username, pass, mail, fullName, phone, address)) {
-                                request.setAttribute("message", "Create successfully!");
+                            if (accountDAO.createStaff(accountId, username, pass, mail, fullName, phone, address)) {
+                                request.setAttribute("mail", mail);
+                                url = "SendEmailAccountInfoServlet";
                             } else {
                                 request.setAttribute("error", "Create failed!");
                             }

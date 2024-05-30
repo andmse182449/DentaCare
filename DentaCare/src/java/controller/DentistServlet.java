@@ -38,36 +38,33 @@ public class DentistServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        AccountDAO accountDAO = new AccountDAO();
         String action = request.getParameter("action");
         if (action == null) {
             action = (String) request.getAttribute("action");
         }
 
-        
         if (action == null || action.equals("dentistLogin") || action == "") {
             HttpSession session = request.getSession();
             AccountDTO account = (AccountDTO) session.getAttribute("account");
             String url = "denWeb-dentitstSchedule.jsp";
             if (account.getStatus() == 2) {
-                url = "denWeb-changePassword.jsp";
+                url = "changePasswordFirstTime.jsp";
                 request.getRequestDispatcher(url).forward(request, response);
             } else {
                 response.sendRedirect(url);
             }
-        }   /*CREATE DENTIST ACCOUNT */
+        } /*CREATE DENTIST ACCOUNT */ 
             else if (action.equals("create")) {
-            String username = request.getParameter("den-username").trim();
+            int numOfDens = accountDAO.countDentist();
+            String username = "bs-" + request.getParameter("den-email").trim().split("@")[0] + String.format("%03d", numOfDens + 1);
             String mail = request.getParameter("den-email").trim();
-            String pass = request.getParameter("den-password").trim();
+            String pass = "abc@demo";
             String fullName = request.getParameter("den-fullName").trim();
             String phone = request.getParameter("den-phone").trim();
             String address = request.getParameter("den-address").trim();
             String url = "coWeb-dentist.jsp";
             try {
-                AccountDAO accountDAO = new AccountDAO();
-                int numOfDens = accountDAO.countDentist();
-
                 if (!phone.matches("\\d+")) { // Changed regex to match one or more digits
                     request.setAttribute("error", "Phone number must contain only digits");
                     request.getRequestDispatcher(url).forward(request, response);
@@ -78,7 +75,8 @@ public class DentistServlet extends HttpServlet {
                         if (!mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
                             String accountId = "DEN" + Year.now().getValue() % 100 + String.format("%05d", numOfDens + 1);
                             if (accountDAO.createDentist(accountId, username, pass, mail, fullName, phone, address)) {
-                                request.setAttribute("message", "Create successfully!");
+                                request.setAttribute("mail", mail);
+                                url = "SendEmailAccountInfoServlet";
                             } else {
                                 request.setAttribute("error", "Create failed!");
                             }
@@ -89,14 +87,14 @@ public class DentistServlet extends HttpServlet {
                         request.setAttribute("error", "Username existed !");
                     }
                 }
+
                 request.getRequestDispatcher(url).forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
                 request.setAttribute("error", "An error occurred while processing your request.");
                 request.getRequestDispatcher(url).forward(request, response);
             }
-        } /* UPDATE DENTIST PROFILE */ 
-            else if (action.equals("update")) {
+        } /* UPDATE DENTIST PROFILE */ else if (action.equals("update")) {
             String fullName = request.getParameter("den-fullName").trim();
             String phone = request.getParameter("den-phone").trim();
             String address = request.getParameter("den-address").trim();
@@ -106,7 +104,6 @@ public class DentistServlet extends HttpServlet {
             String accountID = request.getParameter("accountID");
             String url = "denWeb-dentistProfile.jsp";
             try {
-                AccountDAO accountDAO = new AccountDAO();
                 if (!phone.matches("\\d+")) { // Changed regex to match one or more digits
                     request.setAttribute("error", "Phone number must contain only digits");
                     request.getRequestDispatcher(url).forward(request, response);
@@ -128,15 +125,13 @@ public class DentistServlet extends HttpServlet {
                 request.setAttribute("error", "An error occurred while processing your request.");
                 request.getRequestDispatcher(url).forward(request, response);
             }
-        } /* LOAD DENTIST PROFILE */ 
-            else if (action.equals("profile")) {
+        } /* LOAD DENTIST PROFILE */ else if (action.equals("profile")) {
             String accountId = (String) request.getAttribute("accountID");
             if (accountId == null) {
                 accountId = request.getParameter("accountID");
             }
             String url = "denWeb-dentistProfile.jsp";
             try {
-                AccountDAO accountDAO = new AccountDAO();
                 AccountDTO account = accountDAO.searchAccountByID(accountId);
                 request.setAttribute("account", account);
                 request.getRequestDispatcher(url).forward(request, response);

@@ -67,20 +67,6 @@
                         <h2>CREATE A DENTIST ACCOUNT</h2>
                         <form action="DentistServlet" method="post">
                             <div class="form-element">
-                                <label for="username">Username</label>
-                                <input type="text" name="den-username" required>
-                            </div>
-                            <div class="form-element">
-                                <label for="password">Password</label>
-                                <input
-                                    type="password"
-                                    name="den-password"
-                                    value="abc"
-                                    required
-                                    readonly
-                                    >
-                            </div>
-                            <div class="form-element">
                                 <label for="email">Email</label>
                                 <input type="email" name="den-email" required>
                             </div>

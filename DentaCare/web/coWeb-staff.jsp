@@ -74,14 +74,6 @@
                         <h2>CREATE A STAFF ACCOUNT</h2>
                         <form action="StaffServlet" method="post">
                             <div class="form-element">
-                                <label for="username">Username</label>
-                                <input type="text" name="sta-username" required>
-                            </div>
-                            <div class="form-element">
-                                <label for="password">Password</label>
-                                <input type="password" name="sta-password" value="abc" required readonly>
-                            </div>
-                            <div class="form-element">
                                 <label for="email">Email</label>
                                 <input type="email" name="sta-email" required>
                             </div>
