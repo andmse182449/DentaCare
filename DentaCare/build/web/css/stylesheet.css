@@ -175,7 +175,7 @@ body {
     color: #333;
 }
 
-.main-content {
+.main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -185,7 +185,7 @@ body {
 
 /*----------- CREATE DENTIST FORM ------------*/
 .create-button {
-    background-color: #4CAF50; /* Green */
+    background-color: #2f89fc; /* Green */
     color: white;
     padding: 10px 20px;
     margin-top: 10px;
@@ -196,7 +196,7 @@ body {
 }
 
 .create-button:hover {
-    background-color: #45a049;
+    background-color: #1b79ed;
     cursor: pointer;
 }
 
@@ -273,10 +273,24 @@ body {
     border: none;
     outline: none;
     font-size: 18px;
-    background: #4CAF50;
+    background: #2f89fc;
     color: #f4f4f4;
     border-radius: 10px;
     cursor: pointer;
+}
+
+.popup .form .form-element select {
+    margin-top: 5px;
+    display: block;
+    width: 106%;
+    padding: 10px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.popup .form .form-element select option{
+    font-size: 16px ;
 }
 
 /*----------- ALERT ------------*/

@@ -94,9 +94,11 @@ public class LoginFilter implements Filter {
         excludedUrls.add("/LoginActionServlet");
         excludedUrls.add("/LoginChangePage");
         excludedUrls.add("/RegisterServlet");
+        excludedUrls.add("/SignOutServlet");
         excludedUrls.add("/index.jsp");
         excludedUrls.add("/login.jsp");
         excludedUrls.add("/register.jsp");
+        excludedUrls.add("/forget.jsp");
         excludedUrls.add("/css"); // Exclude CSS files
         excludedUrls.add("/js");  // Exclude JavaScript files
         excludedUrls.add("/images"); // Exclude images

@@ -1,3 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="clinic.*" %>
+<%@ page import="java.util.List" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -82,6 +87,20 @@
                                 <label for="address">Address</label>
                                 <input type="text" name="den-address" required>
                             </div>
+                            <%
+                                ClinicDAO clinicDao = new ClinicDAO();
+                                List<ClinicDTO> clinics = clinicDao.getAllClinic();
+                            %>
+
+                            <div class="form-element">
+                                <label for="clinic">Clinic</label>
+                                <select name="den-clinic" required>
+                                    <c:forEach items="<%= clinics %>" var="clinic">
+                                        <option value="${clinic.clinicID}">${clinic.clinicName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
                             <input type="hidden" name="action" value="create">
                             <div class="form-element">
                                 <input type="submit" value="Submit">

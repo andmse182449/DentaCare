@@ -6,6 +6,7 @@ package controller;
 
 import account.AccountDAO;
 import account.AccountDTO;
+import clinic.ClinicDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -63,6 +64,7 @@ public class DentistServlet extends HttpServlet {
             String fullName = request.getParameter("den-fullName").trim();
             String phone = request.getParameter("den-phone").trim();
             String address = request.getParameter("den-address").trim();
+            int clinicID = Integer.parseInt(request.getParameter("den-clinic"));
             String url = "coWeb-dentist.jsp";
             try {
                 if (!phone.matches("\\d+")) { // Changed regex to match one or more digits
@@ -74,7 +76,7 @@ public class DentistServlet extends HttpServlet {
                     if (existed == null) {
                         if (!mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
                             String accountId = "DEN" + Year.now().getValue() % 100 + String.format("%05d", numOfDens + 1);
-                            if (accountDAO.createDentist(accountId, username, pass, mail, fullName, phone, address)) {
+                            if (accountDAO.createDentist(accountId, username, pass, mail, fullName, phone, address, clinicID)) {
                                 request.setAttribute("mail", mail);
                                 url = "SendEmailAccountInfoServlet";
                             } else {
@@ -125,7 +127,8 @@ public class DentistServlet extends HttpServlet {
                 request.setAttribute("error", "An error occurred while processing your request.");
                 request.getRequestDispatcher(url).forward(request, response);
             }
-        } /* LOAD DENTIST PROFILE */ else if (action.equals("profile")) {
+        } /* LOAD DENTIST PROFILE */ 
+            else if (action.equals("profile")) {
             String accountId = (String) request.getAttribute("accountID");
             if (accountId == null) {
                 accountId = request.getParameter("accountID");
@@ -134,6 +137,11 @@ public class DentistServlet extends HttpServlet {
             try {
                 AccountDTO account = accountDAO.searchAccountByID(accountId);
                 request.setAttribute("account", account);
+                
+                ClinicDAO clinicDao = new ClinicDAO();
+                String clinicName = clinicDao.getClinicByID(account.getClinicID()).getClinicName();
+                
+                request.setAttribute("clinic", clinicName);
                 request.getRequestDispatcher(url).forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);

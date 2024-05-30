@@ -55,7 +55,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[CLINIC](
-	[clinicID] [int] IDENTITY(0,1) NOT NULL,
+	[clinicID] [int] IDENTITY(1,1) NOT NULL,
 	[clinicName] [varchar](50) NULL,
 	[clinicAddress] [nvarchar](100) NULL,
 	[city] [varchar](50) NULL,
@@ -305,6 +305,6 @@ GO
 ALTER TABLE [dbo].[SlotDetail] CHECK CONSTRAINT [FK_slotID1]
 GO
 
-INSERT INTO ROLE VALUES ('Customer'), ('Dentist'), ('Staff'), ('Clinic Owner')
+INSERT INTO ROLE VALUES ('Customer'), ('Dentist'), ('Staff'), ('Clinic Owner');
 insert into CLINIC values ('DentaCare1', 'clinicAddress1', 'city', '0123456789');
 insert into CLINIC values ('DentaCare2', 'clinicAddress2', 'city', '0123456789');

@@ -61,6 +61,7 @@ public class StaffServlet extends HttpServlet {
             String fullName = request.getParameter("sta-fullName").trim();
             String phone = request.getParameter("sta-phone").trim();
             String address = request.getParameter("sta-address").trim();
+            int clinicID = Integer.parseInt(request.getParameter("sta-clinic"));
             String url = "coWeb-staff.jsp";
 
             try {
@@ -73,7 +74,7 @@ public class StaffServlet extends HttpServlet {
                     if (existed == null) {
                         if (!mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
                             String accountId = "STA" + Year.now().getValue() % 100 + String.format("%05d", numOfStas + 1);
-                            if (accountDAO.createStaff(accountId, username, pass, mail, fullName, phone, address)) {
+                            if (accountDAO.createStaff(accountId, username, pass, mail, fullName, phone, address, clinicID)) {
                                 request.setAttribute("mail", mail);
                                 url = "SendEmailAccountInfoServlet";
                             } else {

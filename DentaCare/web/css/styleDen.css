@@ -158,7 +158,6 @@ body {
     margin: auto;
     padding: 32px;
     display: flex;
-    height: 600px;
 }
 
 .navbar.user {
@@ -190,7 +189,7 @@ body {
 }
 
 .content {
-    width: 80%;
+    width: 100%;
     display: none;
     padding: 20px;
     background: #fff;
@@ -244,6 +243,8 @@ hr {
     max-width: 700px;
     font-size: 32px;
     margin: auto;
+    margin-bottom: 50px;
+
 }
 
 form input[type="text"],
@@ -267,8 +268,6 @@ form input[type="submit"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
-    display: block;
     width: 100px;
     text-align: center;
 }

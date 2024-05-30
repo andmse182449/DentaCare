@@ -2,6 +2,8 @@ package controller;
 
 import account.AccountDAO;
 import account.AccountDTO;
+import clinic.ClinicDAO;
+import clinic.ClinicDTO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
 
 public class LoginActionServlet extends HttpServlet {
 
@@ -24,6 +27,7 @@ public class LoginActionServlet extends HttpServlet {
             AccountDTO checkAccount = dao.checkExistAccount(userName, password);
             String checkPass = dao.checkExistPass(userName);
             String checkName = dao.checkExistName(userName);
+
             // check password
             if (checkAccount != null) {
                 switch (checkAccount.getRoleID()) {
@@ -65,10 +69,10 @@ public class LoginActionServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -79,10 +83,10 @@ public class LoginActionServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

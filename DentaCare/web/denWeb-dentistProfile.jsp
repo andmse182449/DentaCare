@@ -75,7 +75,7 @@
                 </ul>
             </nav>
             <div class="content active" id="userProfileContent">
-                <h1>DENTIST PROFILE</h1>
+                <h1 style="padding: 30px 30px 0 30px;">DENTIST PROFILE</h1>
                 <br>
                 <div class="form-profile">
                     <form action="DentistServlet" id="dentist-profile-form">
@@ -107,16 +107,6 @@
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="label"><h6>Clinic</h6></div>
-                                    <input type="text" name="den-clinic" value="" required readonly>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="label"><h6>Major</h6></div>
-                                    <input type="text" name="den-major" value="" readonly>
-                                </div>
-                                <hr>
-                                <div class="row">
                                     <div class="label"><h6>Gender</h6></div>
                                     <div class="label">
                                         <label style="font-size: 16px">Male</label>
@@ -126,11 +116,25 @@
                                     </div>
                                 </div>
                             </div>
+                            <input type="hidden" name="action" value="update">
+                            <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
+                            <input type="submit" id="saveDenButton" value="Save" style="display: none;">
                         </div>
-                        <input type="hidden" name="action" value="update">
-                        <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
-                        <input type="submit" id="saveDenButton" value="Save" style="display: none;">
                     </form>
+                </div>
+
+                <div class="form-profile">
+                    <h5>Job Description</h5>
+                    <div class="row">
+                        <div class="label"><h6>Clinic</h6></div>
+                        <div style="font-size: 20px;">${requestScope.clinic}</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="label"><h6>Major</h6></div>
+                        <div style="font-size: 20px;">${requestScope.clinic}</div>
+                    </div>
+                    <hr>
                 </div>
             </div>
         </div>
