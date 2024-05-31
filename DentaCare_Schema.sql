@@ -200,7 +200,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[SlotDetail](
-	[clinicScheduleID] [int] IDENTITY(0,1) NOT NULL,
+	[clinicScheduleID] [int] NOT NULL,
 	[slotID] [int] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
