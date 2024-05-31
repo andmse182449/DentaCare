@@ -34,7 +34,7 @@
                         <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
                         <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
                         <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
-                        <a href="coWeb-clinic.jsp"><li class="sidebar-list-item">Manage Clinic</li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
                     </ul>
                 </div>
             </aside>

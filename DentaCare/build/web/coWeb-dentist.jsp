@@ -34,7 +34,7 @@
                         <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
                         <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
                         <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
-                        <a href="coWeb-clinic.jsp"><li class="sidebar-list-item">Manage Clinic</li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
                     </ul>
                 </div>
             </aside>
@@ -46,49 +46,52 @@
                     <button id="createButton" class="create-button">Create Dentist Account</button>
                 </div>
 
-                        <div id="form-dentist">
-                            <form id="dentistForm" action="CreateDentistServlet" method="post">
-                                <label for="den-username">Username</label>
-                                <input type="text" id="den-username" name="den-username" required />
-                
-                                <label for="den-password">Password</label>
-                                <input type="password" id="den-password" name="den-password" required />
-                
-                                <label for="den-email">Email</label>
-                                <input type="email" id="den-email" name="den-email" required />
-                
-                                <label for="den-fullName">Full Name</label>
-                                <input type="text" id="den-fullName" name="den-fullName" required />
-                
-                                <label for="den-phone">Phone</label>
-                                <input type="text" id="den-phone" name="den-phone" required />  
-                                
-                                <label for="den-address">Address</label>
-                                <input type="text" id="den-address" name="den-address" required /> 
-                                
-                                <label></label>
-                                <input type="submit" value="Submit" />
-                            </form>
-                        </div>
-                        ${requestScope.error}
+                <div id="form-dentist">
+                    <form id="dentistForm" action="CreateDentistServlet" method="post">
+                        <label for="den-username">Username</label>
+                        <input type="text" id="den-username" name="den-username" required />
+
+                        <label for="den-password">Password</label>
+                        <input type="password" id="den-password" name="den-password" required />
+
+                        <label for="den-email">Email</label>
+                        <input type="email" id="den-email" name="den-email" required />
+
+                        <label for="den-fullName">Full Name</label>
+                        <input type="text" id="den-fullName" name="den-fullName" required />
+
+                        <label for="den-phone">Phone</label>
+                        <input type="text" id="den-phone" name="den-phone" required />  
+
+                        <label for="den-address">Address</label>
+                        <input type="text" id="den-address" name="den-address" required /> 
+
+                        <label></label>
+                        <input type="submit" value="Submit" />
+                    </form>
+                </div>
+                ${requestScope.error}
+                <button type="button">Load lịch</button>
+
             </div>
+
         </div>
-<!--            <script>
-                document.addEventListener('DOMContentLoaded', (event) => {
-                    const createButton = document.getElementById('createButton');
-                    const formDentist = document.getElementById('form-dentist');
-                    const dentistForm = document.getElementById('dentistForm');
-
-                    createButton.addEventListener('click', () => {
-                        formDentist.style.display = 'block';
-                    });
-
-                    dentistForm.addEventListener('submit', (event) => {
-                        event.preventDefault(); // Prevent actual form submission for demonstration
-                        formDentist.style.display = 'none';
-                    });
-                });
-            </script>-->
+        <!--            <script>
+                        document.addEventListener('DOMContentLoaded', (event) => {
+                            const createButton = document.getElementById('createButton');
+                            const formDentist = document.getElementById('form-dentist');
+                            const dentistForm = document.getElementById('dentistForm');
+        
+                            createButton.addEventListener('click', () => {
+                                formDentist.style.display = 'block';
+                            });
+        
+                            dentistForm.addEventListener('submit', (event) => {
+                                event.preventDefault(); // Prevent actual form submission for demonstration
+                                formDentist.style.display = 'none';
+                            });
+                        });
+                    </script>-->
     </body>
 </html>
 
