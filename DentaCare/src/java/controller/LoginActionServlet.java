@@ -20,6 +20,7 @@ public class LoginActionServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String userName = request.getParameter("email");
         String password = request.getParameter("password");
+        String key = request.getParameter("key");
         HttpSession session = request.getSession();
         try {
             AccountDAO dao = new AccountDAO();
@@ -44,13 +45,24 @@ public class LoginActionServlet extends HttpServlet {
                     }
                     // dentist
                     case 1 -> {
-                        session.setAttribute("account", checkAccount);
-                        request.setAttribute("action", "dentistLogin");
-                        request.getRequestDispatcher("DentistServlet").forward(request, response);
+                        if (key.equals("bs")) {
+                            session.setAttribute("account", checkAccount);
+                            request.setAttribute("action", "dentistLogin");
+                            request.getRequestDispatcher("DentistServlet").forward(request, response);
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
                     }
                     default -> {
-                        session.setAttribute("account", checkAccount);
-                        response.sendRedirect("userWeb-page.jsp");
+                        if (key.equals("cus")) {
+                            session.setAttribute("account", checkAccount);
+                            response.sendRedirect("userWeb-page.jsp");
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
+
                     }
                 }
             } else {

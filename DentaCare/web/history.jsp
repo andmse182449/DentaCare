@@ -16,7 +16,7 @@
         <div class="container user">
             <nav class="navbar user">
                 <ul>
-                    <li><a href="ProfileServlet id="userProfileLink">User Profile</a></li>
+                    <li><a href="ProfileServlet" id="userProfileLink">User Profile</a></li>
                     <li><a href="ExamScheduleServlet" id="bookingScheduleLink">Examination Schedule</a></li>
                     <li><a href="#" id="bookingHistoryLink" class="active">Booking History</a></li>
                     <li><a href="SignOutServlet" >Sign out</a></li>

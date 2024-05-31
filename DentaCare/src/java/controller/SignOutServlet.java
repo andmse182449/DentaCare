@@ -33,9 +33,11 @@ public class SignOutServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         session.invalidate();
+        String error = (String) request.getAttribute("error");
         String url = "index.jsp";
         try {
-            response.sendRedirect(url);
+            request.setAttribute("error", error);
+            request.getRequestDispatcher(url).forward(request, response);
         }catch(IOException e){
             System.out.println(e);
         }

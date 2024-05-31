@@ -3,15 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/DentistServlet.java</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/clinic/ClinicDAO.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/account/AccountDTO.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/DentistServlet.java</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/StaffServlet.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/LoginActionServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/user-information.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/filter/LoginFilter.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/LoadFromClinicScheduleToAddServlet.java</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-dentist.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/ExamScheduleServlet.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/RegisterServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-dashboard.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-modifyClinicSchedule.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/stylesheet.css</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/denWeb-dentistProfile.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/LoginActionServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/styleDen.css</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/GoogleVerify/SendEmailAccountInfoServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/clinic/ClinicDTO.java</file>
         </group>
     </open-files>
 </project-private>

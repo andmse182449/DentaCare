@@ -19,8 +19,10 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author Admin
  */
 public class SendEmailAccountInfoServlet extends HttpServlet {
+
     private static final long TOKEN_EXPIRATION_TIME = 60000;
     final String subject = "[DentaCare] Login Account Information";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,7 +38,12 @@ public class SendEmailAccountInfoServlet extends HttpServlet {
         String mail_raw = (String) request.getAttribute("mail");
         AccountDAO dao = new AccountDAO();
         AccountDTO account = dao.findAccountByEmail(mail_raw);
-
+        String verify_code_page = "";
+        if (account.getRoleID() == 1) {
+            verify_code_page = "1234";
+        } else if (account.getRoleID() == 2) {
+            verify_code_page = "4321";
+        }
         try {
             if (account == null) {
                 request.setAttribute("error", "Your email has not been registered !");
@@ -46,7 +53,7 @@ public class SendEmailAccountInfoServlet extends HttpServlet {
                         + "<html>"
                         + "<head>"
                         + "<style>"
-                        + "body { font-family: Arial, sans-serif; font-size: 16px; color: #333; height: 100vh; margin: 0; background-color: #f4f4f4; display: flex; align-items: center; justify-content: center; }" 
+                        + "body { font-family: Arial, sans-serif; font-size: 16px; color: #333; height: 100vh; margin: 0; background-color: #f4f4f4; display: flex; align-items: center; justify-content: center; }"
                         + ".button-link { background-color: #007bff; color: #fff; text-decoration: none; padding: 10px 20px; display: inline-block; border-radius: 5px; }"
                         + ".button-link:hover { background-color: #0056b3; color: #fff;}"
                         + "</style>"
@@ -58,7 +65,8 @@ public class SendEmailAccountInfoServlet extends HttpServlet {
                         + "Here is your account information:"
                         + "<br>"
                         + "\t - Username: " + account.getUserName() + "<br>"
-                        + "\t - Password: " + "abc@demo"
+                        + "\t - Password: " + "abc@demo" + "<br>"
+                        + "\t - Verify Code page: " + verify_code_page
                         + "<br><br>"
                         + "Remember to change your password on the firs time login.<br>"
                         + "For security reasons, do not share information with anyone<br><br>"
