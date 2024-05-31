@@ -308,3 +308,4 @@ GO
 INSERT INTO ROLE VALUES ('Customer'), ('Dentist'), ('Staff'), ('Clinic Owner')
 insert into CLINIC values ('DentaCare1', 'clinicAddress1', 'city', '0123456789');
 insert into CLINIC values ('DentaCare2', 'clinicAddress2', 'city', '0123456789');
+INSERT INTO ACCOUNT VALUES('OWN2400001', 'hungAdmin', '993f2322f02ec3ce3d7849391b6f3668124130e83d32b96074bfa29c15d051b8', 'abc@gmail.com', null, null, null, null, null, null, null, 3, 0, null)
