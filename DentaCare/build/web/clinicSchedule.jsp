@@ -71,6 +71,145 @@
             a {
                 text-decoration: none;
             }
+            .create-button {
+                background-color: #4CAF50; /* Green */
+                color: white;
+                padding: 10px 20px;
+                margin-top: 10px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+
+            }
+
+            .create-button:hover {
+                background-color: #45a049;
+                cursor: pointer;
+            }
+
+            .popup {
+                position: absolute;
+                top: -150%;
+                left: 50%;
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.25);
+                width: 300px;
+                padding: 10px 60px;
+                background: #fff;
+                box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
+                border-radius: 10px;
+                transition: top 0ms ease-in-out 200ms,
+                    opacity 200ms ease-in-out 0ms,
+                    transform 200ms ease-in-out 0ms;
+            }
+
+            .popup.active {
+                top: 50%;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+                transition: top 0ms ease-in-out 0ms,
+                    opacity 200ms ease-in-out 0ms,
+                    transform 200ms ease-in-out 0ms;
+            }
+
+            .popup .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                width: 15px;
+                height: 15px;
+                background-color: #888;
+                color: #eee;
+                text-align: center;
+                line-height: 15px;
+                border-radius: 15px;
+                cursor: pointer;
+            }
+
+            .popup .form h2 {
+                text-align: center;
+                color: #222;
+                margin: 10px 0px 20px;
+                font-size: 25px;
+            }
+
+            .popup .form .form-element {
+                margin: 15px 0px;
+            }
+
+            .popup .form .form-element label {
+                font-size: 14px;
+                color: #222;
+            }
+
+            .popup .form .form-element input[type="submit"] {
+                width: 50%;
+                height: 40px;
+                border: none;
+                outline: none;
+                font-size: 18px;
+                background: #4CAF50;
+                color: #f4f4f4;
+                border-radius: 10px;
+                cursor: pointer;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            input[type="date"],
+            input[type="text"],
+            select {
+                width: 100%;
+                padding: 8px;
+                border-radius: 3px;
+                border: 1px solid #ccc;
+            }
+
+            input[type="submit"] {
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+
+            /* Style the form heading */
+            h2 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            select {
+                width: 200px;
+                padding: 8px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                cursor: pointer;
+            }
+
+            /* Style option items */
+            select option {
+                padding: 5px;
+            }
+
+            /* Style the select container */
+            .select-container {
+                margin-bottom: 15px;
+            }
+
+            /* Style the select labels */
+            .label {
+                font-weight: bold;
+            }
+
         </style>
     </head>
     <body>
@@ -120,7 +259,6 @@
                                 %>
                             </select>
                         </th>
-
                         <th>MON</th>
                         <th>TUE</th>
                         <th>WED</th>
@@ -128,40 +266,43 @@
                         <th>FRI</th>
                         <th>SAT</th>
                         <th>SUN</th>
-                    </tr>
+
+                    </tr>    
                     <th>
                         <% 
-                            String yearStr = (String) request.getAttribute("yearStr");
-                            String weekStr = (String) request.getAttribute("weekStr");
-                            int clinicID = (int) request.getAttribute("clinicID");
+                            
+                        String yearStr = (String) request.getAttribute("yearStr");
+                        String weekStr = (String) request.getAttribute("weekStr");
+                        int clinicID = (int) request.getAttribute("clinicID");
                         
-                            List<ClinicScheduleDTO> workingDayByID = (List<ClinicScheduleDTO>) request.getAttribute("getAllClinicSchedule");
+                        List<ClinicScheduleDTO> workingDayByID = (List<ClinicScheduleDTO>) request.getAttribute("getAllClinicSchedule");
 
-                            if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
-                                int year = Integer.parseInt(yearStr);
-                                int week = Integer.parseInt(weekStr);
+                        if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
+                            int year = Integer.parseInt(yearStr);
+                            int week = Integer.parseInt(weekStr);
 
-                                Calendar calendar = new GregorianCalendar();
-                                calendar.set(Calendar.YEAR, year);
-                                calendar.set(Calendar.WEEK_OF_YEAR, week);
-                                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                            Calendar calendar = new GregorianCalendar();
+                            calendar.set(Calendar.YEAR, year);
+                            calendar.set(Calendar.WEEK_OF_YEAR, week);
+                            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                                for (int i = 0; i < 7; i++) {
-                                    String currentDate = sdf.format(calendar.getTime());
-                                    out.println("<td>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
-                                    calendar.add(Calendar.DAY_OF_MONTH, 1);
-                                }
-                            } else {
-                                for (int i = 0; i < 7; i++) {
-                                    out.println("<td></td>");
-                                }
+                            for (int i = 0; i < 7; i++) {
+                                String currentDate = sdf.format(calendar.getTime());
+                                out.println("<td>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
+                                calendar.add(Calendar.DAY_OF_MONTH, 1);
                             }
+                        } else {
+                            for (int i = 0; i < 8; i++) {
+                                out.println("<td></td>");
+                            }
+                        }
                         %>
-                    </th>
+                    </th>                                  
                     <tr>
                         <% 
+                            out.println("<th></th>");
                             if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
                                 int year = Integer.parseInt(yearStr);
                                 int week = Integer.parseInt(weekStr);
@@ -200,10 +341,73 @@
                         %>
                     </tr>
                 </table>
+
+                <!-- END POPUP -->
+
                 <a href="LoadFromClinicScheduleToAddServlet?clinicByID=${clinicByID.clinicID}"><input type="button" name="" value="Add new schedule"></a>
                 <a href="LoadFromClinicScheduleToModifyServlet?clinicByID=${clinicByID.clinicID}"><input type="button" name="" value="Modify new schedule"></a>
 
             </form>  
+            <!-- MAIN -->
+            <div class="main-container">
+                <div class="main-header">
+                    <button id="create-button" class="create-button">CREATE CLINIC SCHEDULE</button>
+                </div>
+                <!-- FORM POPUP-->
+                <div class="popup">
+                    <div class="close-btn">&times;</div>
+                    <div class="form">
+                        <h2>CREATE CLINIC SCHEDULE</h2>
+                        <form action="AddClinicScheduleServlet?clinicID=${clinicByID.clinicID}" method="get">
+                            <div class="form-element">
+                                <label for="username">workingDay</label>
+                                <input type="date" name="workingDay" required>
+                            </div> 
+                            <div class="form-element">
+                                <label for="email">clinicID</label>
+                                <input readonly type="text" name="clinicID" value="${clinicByID.clinicID} ">
+                            </div>
+
+                            <div class="form-element">
+                                <label for="fullname">description</label>
+                                <select name="description">
+                                    <option value="di lam">đi làm</option>
+                                    <option value="nghi le">nghỉ lễ</option>
+                                </select>                              
+                            </div>
+                            <div class="form-element">
+                                <input type="submit" value="Submit">
+                            </div>
+                            <c:set value="${requestScope.alreadyHave}" var="existingSchedule"/>
+                            <% String existingSchedule = (String) request.getAttribute("alreadyHave");
+                                if (existingSchedule != null) {
+                            %>
+                            <p style="font-weight: bold; color: red" class="error-message">${existingSchedule}</p>
+                            <%
+                                }
+                            %>
+
+                            <%
+                                Boolean addClinicSchedule = (Boolean) request.getAttribute("addClinicSchedule");
+                                if (Boolean.TRUE.equals(addClinicSchedule)) {
+                            %>
+                            <p style="font-weight: bold; color: green">Create New Schedule Successfully!</p>
+                            <%
+                                }
+                            %>
+                        </form>
+                    </div>
+                </div>
+                <script>
+                    document.querySelector("#create-button").addEventListener("click", function () {
+                        document.querySelector(".popup").classList.add("active");
+                    });
+
+                    document.querySelector(".popup .close-btn").addEventListener("click", function () {
+                        document.querySelector(".popup").classList.remove("active");
+                    });
+                </script>
+            </div>
         </div>
     </body>
 </html>
