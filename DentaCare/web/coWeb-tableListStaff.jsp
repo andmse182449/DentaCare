@@ -26,8 +26,8 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link href="admin-front-end/css/style.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/stylesheet.css">
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<!--        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
     </head>
 
     <body>
@@ -66,66 +66,44 @@
                             <div class="white-box">
                                 <h3 class="box-title">Table Staff</h3>
 
-                                <c:if test="${not empty error}">
-                                    <div id="errorPopup" class="popup-content">
-                                        <span class="close" onclick="closePopup()">&times;</span>
-                                        <p>${error}</p>
-                                    </div>
-                                    <div id="overlay" class="popup-overlay"></div>
-                                </c:if>
+
 
                                 <%-- Existing table code --%>
 
                                 <!-- Add your CSS for the popup -->
-                                <style>
-                                    .popup-content {
-                                        display: none;
-                                        position: fixed;
-                                        left: 50%;
-                                        top: 50%;
-                                        transform: translate(-50%, -50%);
-                                        background-color: #f9f9f9;
-                                        padding: 20px;
-                                        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                                        z-index: 1001;
-                                    }
 
-                                    .popup-overlay {
-                                        display: none;
-                                        position: fixed;
-                                        left: 0;
-                                        top: 0;
-                                        width: 100%;
-                                        height: 100%;
-                                        background-color: rgba(0,0,0,0.5);
-                                        z-index: 1000;
-                                    }
-
-                                    .popup-overlay.active, .popup-content.active {
-                                        display: block;
-                                    }
-
-                                    .close {
-                                        cursor: pointer;
-                                        float: right;
-                                    }
-                                </style>
 
                                 <!-- Add your JavaScript for the popup -->
+
+                                <div>
+                                    <form id="clinicForm" action="./ManageStaffServlet" method="post">
+                                        <select name="clinicName-1" id="clinicSelect" onchange="submitFormWithSelectedValue()">
+                                            <c:forEach items="${clinicName}" var="name">
+                                                <option value="${name}" <c:if test="${name == clinic.clinicName}">selected</c:if>>${name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </form>
+                                </div>
                                 <script>
-                                    function closePopup() {
-                                        document.getElementById("errorPopup").classList.remove("active");
-                                        document.getElementById("overlay").classList.remove("active");
+                                    function submitFormWithSelectedValue() {
+                                        var selectElement = document.getElementById('clinicSelect');
+                                        var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+                                        var formElement = document.getElementById('clinicForm');
+                                        formElement.action = './ManageStaffServlet?selectedClinic=' + encodeURIComponent(selectedValue);
+                                        formElement.submit();
                                     }
 
+                                    // Preserve selected value on page load
                                     window.onload = function () {
-                                        var errorPopup = document.getElementById("errorPopup");
-                                        if (errorPopup) {
-                                            errorPopup.classList.add("active");
-                                            document.getElementById("overlay").classList.add("active");
+                                        var urlParams = new URLSearchParams(window.location.search);
+                                        var selectedClinic = urlParams.get('selectedClinic');
+                                        if (selectedClinic) {
+                                            var selectElement = document.getElementById('clinicSelect');
+                                            selectElement.value = selectedClinic;
                                         }
-                                    }
+                                    };
                                 </script>
+
                                 <div class="table-responsive">
                                     <table class="table text-nowrap">
                                         <thead>
@@ -151,9 +129,9 @@
                                                     <td>${staff.address}</td>
                                                     <td>
                                                         <i class="fa-solid fa-trash" onclick="submitForm(this.nextElementSibling)"></i>
-                                                        <form action="./ServiceController" method="post">
-                                                            <input name="action" value="delete" type="hidden" />
-                                                            <input name="serviceId" value="${service.serviceID}" type="hidden" />
+                                                        <form action="./ManageStaffServlet" method="post">
+                                                            <input name="action" value="deteleStaff" type="hidden" />
+                                                            <input name="staffUserName" value="${staff.userName}" type="hidden" />
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -212,9 +190,9 @@
                                                     <td>${staff.address}</td>
                                                     <td>
                                                         <i class="fa-solid fa-plus" onclick="submitForm(this.nextElementSibling)"></i>
-                                                        <form action="./ServiceController" method="post">
-                                                            <input name="action" value="addAgain" type="hidden" />
-                                                            <input name="serviceId" value="${service.serviceID}" type="hidden" />
+                                                        <form action="./ManageStaffServlet" method="post">
+                                                            <input name="action" value="addAgainStaff" type="hidden" />
+                                                            <input name="staffUserName" value="${staff.userName}" type="hidden" />
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -238,33 +216,18 @@
                     <!-- ============================================================== -->
                 </div>
 
-                <!-- ============================================================== -->
-                <!-- End footer -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- End Page wrapper  -->
-                <!-- ============================================================== -->
 
-                <!-- ============================================================== -->
-                <!-- End Wrapper -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- All Jquery -->
-                <!-- ============================================================== -->
                 <script src="admin-front-end/plugins/bower_components/jquery/dist/jquery.min.js"></script>
                 <!-- Bootstrap tether Core JavaScript -->
                 <script src="admin-front-end/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
                 <script src="admin-front-end/js/app-style-switcher.js"></script>
-                <!--Wave Effects -->
-                <script src="admin-front-end/js/waves.js"></script>
-                <!--Menu sidebar -->
-                <script src="admin-front-end/js/sidebarmenu.js"></script>
+
                 <!--Custom JavaScript -->
                 <script src="admin-front-end/js/custom.js"></script>
                 <script>
-                                                        function submitForm(formElement) {
-                                                            formElement.submit();
-                                                        }
+                                                            function submitForm(formElement) {
+                                                                formElement.submit();
+                                                            }
                 </script>
 
             </div>

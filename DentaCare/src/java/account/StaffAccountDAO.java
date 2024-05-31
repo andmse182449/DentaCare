@@ -16,98 +16,98 @@ import java.util.List;
  * @author ADMIN
  */
 public class StaffAccountDAO {
-    public List<AccountDTO> listAccountStaff(){
-        String sql = "select * from account where roleid = 3 and accountstatus = 1";
+
+    public List<AccountDTO> listAccountStaffClinic1(String clinicName) {
+        String sql = "SELECT * FROM account a, clinic b "
+                + "WHERE a.roleid = 2 AND a.status = 0 AND a.clinicid = b.clinicid AND b.clinicname = ?";
+
         List<AccountDTO> list = new ArrayList<>();
-        try {
-            Connection con = utils.DBUtils.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery();
-             while(rs.next()){
-                 AccountDTO staff = new AccountDTO();
-                 staff.setEmail(rs.getString("email"));
-                 staff.setFullName(rs.getString("fullname"));
-                 staff.setAddress(rs.getString("address"));
-                 staff.setDob(rs.getDate("dob").toLocalDate());
-                 staff.setPhone(rs.getString("phone"));
-                 staff.setUserName(rs.getString("username"));
-                 list.add(staff);
-             }
+        try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, clinicName);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    AccountDTO staff = new AccountDTO();
+                    staff.setEmail(rs.getString("email"));
+                    staff.setFullName(rs.getString("fullname"));
+                    staff.setAddress(rs.getString("address"));
+                    staff.setDob(rs.getDate("dob").toLocalDate());
+                    staff.setPhone(rs.getString("phone"));
+                    staff.setUserName(rs.getString("username"));
+                    list.add(staff);
+                }
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return list;
     }
-    
-     public List<AccountDTO> listAccountStaffRemoved(){
-        String sql = "select * from account where roleid = 3 and accountstatus = 0";
+
+
+    public List<AccountDTO> listAccountStaffRemovedClinic(String clinicName) {
+        String sql = "SELECT * FROM account a, clinic b "
+                + "WHERE a.roleid = 2 AND a.status = 1 AND a.clinicid = b.clinicid AND b.clinicname = ?";
         List<AccountDTO> list = new ArrayList<>();
-        try {
-            Connection con = utils.DBUtils.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery();
-             while(rs.next()){
-                 AccountDTO staff = new AccountDTO();
-                 staff.setUserName(rs.getString("username"));
-                 staff.setEmail(rs.getString("email"));
-                 staff.setFullName(rs.getString("fullname"));
-                 staff.setAddress(rs.getString("address"));
-                 staff.setDob(rs.getDate("dob").toLocalDate());
-                 staff.setPhone(rs.getString("phone"));
-                 list.add(staff);
-             }
+        try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, clinicName);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    AccountDTO staff = new AccountDTO();
+                    staff.setUserName(rs.getString("username"));
+                    staff.setEmail(rs.getString("email"));
+                    staff.setFullName(rs.getString("fullname"));
+                    staff.setAddress(rs.getString("address"));
+                    staff.setDob(rs.getDate("dob").toLocalDate());
+                    staff.setPhone(rs.getString("phone"));
+                    list.add(staff);
+                }
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return list;
     }
-    
-    public boolean updateStaffAccountUnactive(String staffAccountId){
-        String sql = "update account set statusAccount = 1 where accountid = ?";
+
+
+    public boolean updateStaffAccountUnactive(String staffUserName) {
+        String sql = "update account set status = 1 where username = ?";
         try {
             Connection con = utils.DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, staffAccountId);
+            ps.setString(1, staffUserName);
             ps.execute();
         } catch (SQLException e) {
             System.out.println("updateStaffAccount: " + e.getMessage());
         }
         return true;
     }
-     public boolean updateStaffAccountActive(String staffAccountId){
-        String sql = "update account set statusAccount = 0 where accountid = ?";
+
+    public boolean updateStaffAccountActive(String staffUserName) {
+        String sql = "update account set status = 0 where username = ?";
         try {
             Connection con = utils.DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, staffAccountId);
+            ps.setString(1, staffUserName);
             ps.execute();
         } catch (SQLException e) {
             System.out.println("updateStaffAccountUnactive: " + e.getMessage());
         }
         return true;
     }
-     
-      public AccountDTO accountStaff(String staffAccountId){
-        String sql = "select * from account where accountid = ?";
+
+    public List<String> listClinicName() {
+        String sql = "select clinicname from clinic group by clinicname";
+        List<String> list = new ArrayList<>();
         try {
             Connection con = utils.DBUtils.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery();
-             while(rs.next()){
-                 AccountDTO staff = new AccountDTO();
-                 staff.setEmail(rs.getString("email"));
-                 staff.setFullName(rs.getString("fullname"));
-                 staff.setAddress(rs.getString("address"));
-                 staff.setDob(rs.getDate("dob").toLocalDate());
-                 staff.setPhone(rs.getString("phone"));
-                 staff.setUserName(rs.getString("username"));
-                 return staff;
-             }
-        } catch (SQLException e) {
-            System.out.println("Account staff: "+e.getMessage());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getString("clinicname"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("listClinicName: " + ex.getMessage());
         }
-       return null;
+        return list;
     }
-     
-     
+
 }

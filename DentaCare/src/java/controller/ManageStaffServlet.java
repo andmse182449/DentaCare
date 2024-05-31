@@ -37,22 +37,35 @@ public class ManageStaffServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             StaffAccountDAO dao = new StaffAccountDAO();
+            String clinicName = request.getParameter("clinicName-1");
+            System.out.println(clinicName);
+            List<String> listClinicName = dao.listClinicName();
+            request.setAttribute("clinicName", listClinicName);
             if (action == null) {
-                List<AccountDTO> listStaffActive = dao.listAccountStaff();
-                List<AccountDTO> listStaffUnactive = dao.listAccountStaffRemoved();
+                List<AccountDTO> listStaffActive = dao.listAccountStaffClinic1(clinicName);
+                List<AccountDTO> listStaffUnactive = dao.listAccountStaffRemovedClinic(clinicName);
                 request.setAttribute("listAccount", listStaffActive);
                 request.setAttribute("listAccountRemoved", listStaffUnactive);
                 request.getRequestDispatcher("coWeb-tableListStaff.jsp").forward(request, response);
-            } else if (action.equals("detele")) {
-                String accountId = request.getParameter("accountId");
-                dao.updateStaffAccountUnactive(accountId);
-                List<AccountDTO> listStaffActive = dao.listAccountStaff();
-                List<AccountDTO> listStaffUnactive = dao.listAccountStaffRemoved();
+            } else if (action.equals("deteleStaff")) {
+                String userName = request.getParameter("staffUserName");
+                dao.updateStaffAccountUnactive(userName);
+                List<AccountDTO> listStaffActive = dao.listAccountStaffClinic1(clinicName);
+                List<AccountDTO> listStaffUnactive = dao.listAccountStaffRemovedClinic(clinicName);
                 request.setAttribute("listAccount", listStaffActive);
                 request.setAttribute("listAccountRemoved", listStaffUnactive);
                 request.getRequestDispatcher("coWeb-tableListStaff.jsp").forward(request, response);
-
+            } else if (action.equals("addAgainStaff")) {
+                String userName = request.getParameter("staffUserName");
+                dao.updateStaffAccountActive(userName);
+                List<AccountDTO> listStaffActive = dao.listAccountStaffClinic1(clinicName);
+                List<AccountDTO> listStaffUnactive = dao.listAccountStaffRemovedClinic(clinicName);
+                request.setAttribute("listAccount", listStaffActive);
+                request.setAttribute("listAccountRemoved", listStaffUnactive);
+                request.getRequestDispatcher("coWeb-tableListStaff.jsp").forward(request, response);
             }
+            
+            System.out.println(action);
         }
     }
 
