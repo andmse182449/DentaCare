@@ -15,14 +15,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "CreateEventClinicScheduleServlet2", urlPatterns = {"/CreateEventClinicScheduleServlet2"})
-public class CreateEventClinicScheduleServlet2 extends HttpServlet {
+@WebServlet(name = "LoadFromClinicScheduleToCreateEventServlet2", urlPatterns = {"/LoadFromClinicScheduleToCreateEventServlet2"})
+public class LoadFromClinicScheduleToCreateEventServlet2 extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,55 +39,25 @@ public class CreateEventClinicScheduleServlet2 extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-//            String clincScheduleId_raw = request.getParameter("clinicScheduleID");
             String id_raw = request.getParameter("clinicByID");
-            String workingDay = request.getParameter("workingDay");
-            String description = request.getParameter("description");
 
             int id = 0;
-            int clinic = 0;
-            int clincScheduleID = 0;
-
             try {
                 id = Integer.parseInt(id_raw);
-//                clinic = Integer.parseInt(clinicID_raw);
-//                clincScheduleID = Integer.parseInt(clincScheduleId_raw);
+                ClinicDAO dao = new ClinicDAO();
+                ClinicDTO clinicByID = null;
+                clinicByID = dao.getClinicByID(id);
 
-                ClinicDAO clinicDao = new ClinicDAO();
-                ClinicDTO clinicByID = clinicDao.getClinicByID(id);
-
+                //clinicSchedule
                 if (clinicByID != null) {
                     request.setAttribute("clinicByID", clinicByID);
-
-                    ClinicScheduleDAO dao = new ClinicScheduleDAO();
-                    List<ClinicScheduleDTO> listGetAll = dao.getAllClinicSchedule();
-
-                    //clinicSchedule
-                    ClinicScheduleDTO getByCliScheID = dao.getInfoByClinicScheduleID(clincScheduleID); // nay de lay all Info cua clinicSchedule
-                    request.setAttribute("getByCliScheID", getByCliScheID);
-
-                    boolean workingDayExists = false;
-                    for (ClinicScheduleDTO clinicScheduleDTO : listGetAll) {
-                        if (clinicScheduleDTO.getWorkingDay().equals("07:00 AM - 05:00 PM")) {
-                            workingDayExists = true;
-                            break;
-                        }
-                    }
-                    if (!workingDayExists) {
-                        boolean createEventClinicSchedule = dao.createEventClinicSchedule2(description, workingDay);
-                        request.setAttribute("createEventClinicSchedule", createEventClinicSchedule);
-                    } else {
-                        request.setAttribute("eventAlready", "This day is an event ! Choose another days");
-                    }
-
                 } else {
-                    System.out.println("Clinic with ID " + id + " not found.");
+                    System.out.println("kh co clinicByID ne` !");
                 }
                 request.getRequestDispatcher("coWeb-createEventClinic2.jsp").forward(request, response);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input: " + e.getMessage());
-            } catch (Exception e) {
-                e.printStackTrace();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LoadFromClinicScheduleToAddServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
