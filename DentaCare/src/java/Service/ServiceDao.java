@@ -17,30 +17,18 @@ import java.util.List;
  */
 public class ServiceDao {
 
-    public int maxId() {
-        String sql = "select max(serviceid) as max from service";
-        try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-
-            if (rs.next()) {
-                int maxId = rs.getInt("max");
-                return maxId;
-            }
-        } catch (SQLException e) {
-            System.out.println("Get max ID: " + e.getMessage());
-        }
-        return 0;
-    }
+    
 
     public boolean addService(ServiceDTO service) {
-        String sql = "INSERT INTO service (serviceid, servicename, servicetype, price, status) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO service (servicename, servicetype, price, status, description) VALUES (?,?,?,?,?)";
         try {
             Connection con = utils.DBUtils.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, service.getServiceID());
-            ps.setString(2, service.getServiceName());
-            ps.setString(3, service.getServiceType());
-            ps.setFloat(4, service.getServiceMoney());
-            ps.setFloat(5, service.getServiceStatus());
+            PreparedStatement ps = con.prepareStatement(sql);       
+            ps.setString(1, service.getServiceName());
+            ps.setString(2, service.getServiceType());
+            ps.setFloat(3, service.getServiceMoney());
+            ps.setFloat(4, service.getServiceStatus());
+            ps.setString(5, service.getServiceDescription());
             ps.execute();
         } catch (SQLException e) {
             System.out.println("Add service: " + e.getMessage());
@@ -78,7 +66,7 @@ public class ServiceDao {
     }
 
     public boolean updateService(ServiceDTO service) {
-        String sql = "UPDATE service SET servicename = ?, servicetype = ?, price = ?, status = ? WHERE serviceid = ?";
+        String sql = "UPDATE service SET servicename = ?, servicetype = ?, price = ?, status = ?, description = ? WHERE serviceid = ?";
         try {
             Connection con = utils.DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -86,7 +74,8 @@ public class ServiceDao {
             ps.setString(2, service.getServiceType());
             ps.setFloat(3, service.getServiceMoney());
             ps.setInt(4, service.getServiceStatus());
-            ps.setInt(5, service.getServiceID());
+            ps.setString(5, service.getServiceDescription());
+            ps.setInt(6, service.getServiceID());
             ps.execute();
         } catch (SQLException e) {
             System.out.println("Update service: " + e.getMessage());
@@ -100,11 +89,27 @@ public class ServiceDao {
         try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, serviceName);
             ResultSet rs = ps.executeQuery();
-            return rs.next(); 
+            return rs.next();
         } catch (SQLException e) {
             System.out.println("Check service: " + e.getMessage());
         }
         return false;
+    }
+
+    public int countServiceName(String serviceName) {
+        String sql = "select count(serviceId) from service where servicename = ? group by servicename";
+        try {
+            Connection con = utils.DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, serviceName);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
     }
 
     public List<ServiceDTO> listAllServiceActive() {
@@ -120,6 +125,7 @@ public class ServiceDao {
                 service.setServiceName(rs.getString("servicename"));
                 service.setServiceType(rs.getString("servicetype"));
                 service.setServiceMoney(rs.getFloat("price"));
+                service.setServiceDescription(rs.getString("description"));
                 list.add(service);
             }
         } catch (SQLException e) {
@@ -142,6 +148,7 @@ public class ServiceDao {
                 service.setServiceName(rs.getString("servicename"));
                 service.setServiceType(rs.getString("servicetype"));
                 service.setServiceMoney(rs.getFloat("price"));
+                service.setServiceDescription(rs.getString("description"));
                 list.add(service);
             }
         } catch (SQLException e) {
@@ -149,6 +156,23 @@ public class ServiceDao {
             return null;
         }
         return list;
+    }
+
+    public List<String> listServiceType() {
+        String sql = "select servicetype from service group by servicetype";
+        List<String> listServiceType = new ArrayList<>();
+        try {
+            Connection con = utils.DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String serviceType = rs.getString("servicetype");
+                listServiceType.add(serviceType);
+            }
+        } catch (SQLException e) {
+            System.out.println("List Service Type: " + e.getMessage());
+        }
+        return listServiceType;
     }
 
 }

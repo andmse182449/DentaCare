@@ -58,6 +58,11 @@
 .popup-content form input[type="submit"]:hover {
     background-color: #45a049;
 }
+.serviceType{
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
 /*!
  * Bootstrap v5.0.0-beta1 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
