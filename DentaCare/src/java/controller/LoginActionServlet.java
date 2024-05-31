@@ -4,7 +4,7 @@ import Service.ServiceDAO;
 import account.AccountDAO;
 import account.AccountDTO;
 import clinic.ClinicDAO;
-import clinic.ClinicDTO;
+
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -28,6 +28,7 @@ public class LoginActionServlet extends HttpServlet {
             // check email
             AccountDTO checkAccount = dao.checkExistAccount(userName, password);
             String checkPass = dao.checkExistPass(userName);
+            String checkName = dao.checkExistName(userName);
             // check password
             if (checkAccount != null) {
                 ClinicDAO clinicDAO = new ClinicDAO();
@@ -43,9 +44,14 @@ public class LoginActionServlet extends HttpServlet {
                     }
                     // staff
                     case 2 -> {
-                        session.setAttribute("account", checkAccount);
-                        request.setAttribute("action", "staffLogin");
-                        request.getRequestDispatcher("StaffServlet").forward(request, response);
+                        if (key.equals("nv")) {
+                            session.setAttribute("account", checkAccount);
+                            request.setAttribute("action", "staffLogin");
+                            request.getRequestDispatcher("StaffServlet").forward(request, response);
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
                     }
                     // dentist
                     case 1 -> {
@@ -61,7 +67,7 @@ public class LoginActionServlet extends HttpServlet {
                     default -> {
                         if (key.equals("cus")) {
                             session.setAttribute("account", checkAccount);
-                            response.sendRedirect("userWeb-page.jsp");
+                            request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
                         } else {
                             request.setAttribute("error", "Something went wrong!");
                             request.getRequestDispatcher("SignOutServlet").forward(request, response);

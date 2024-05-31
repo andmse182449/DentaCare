@@ -61,13 +61,42 @@
         <servlet-class>controller.ForgetPasswordServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>VerifyServlet</servlet-name>
-        <servlet-class>controller.VerifyServlet</servlet-class>
+        <servlet-name>SendPasswordServlet</servlet-name>
+        <servlet-class>GoogleVerify.SendPasswordServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>VerifyEmailServlet</servlet-name>
-        <servlet-class>SendEmail.VerifyEmailServlet</servlet-class>
+        <servlet-name>LoadDataServlet</servlet-name>
+        <servlet-class>controller.LoadDataServlet</servlet-class>
     </servlet>
+      
+      
+      
+    <servlet>
+        <servlet-name>LoadFromClinicScheduleToAddServlet</servlet-name>
+        <servlet-class>controller.LoadFromClinicScheduleToAddServlet</servlet-class>
+    </servlet>     
+    <servlet>
+        <servlet-name>LoadFromClinicScheduleToCreateEventServlet</servlet-name>
+        <servlet-class>controller.LoadFromClinicScheduleToCreateEventServlet</servlet-class>
+    </servlet>     
+    <servlet>
+        <servlet-name>LoadFromClinicScheduleToCreateEventServlet2</servlet-name>
+        <servlet-class>controller.LoadFromClinicScheduleToCreateEventServlet2</servlet-class>
+    </servlet>     
+    <servlet>
+        <servlet-name>LoadFromClinicScheduleToDentistScheduleServlet</servlet-name>
+        <servlet-class>controller.LoadFromClinicScheduleToDentistScheduleServlet</servlet-class>
+    </servlet>     
+    <servlet>
+        <servlet-name>LoadFromClinicToScheduleServlet</servlet-name>
+        <servlet-class>controller.LoadFromClinicToScheduleServlet</servlet-class>
+    </servlet>     
+    <servlet>
+        <servlet-name>LoadFromDentistScheduleToAddServlet</servlet-name>
+        <servlet-class>controller.LoadFromDentistScheduleToAddServlet</servlet-class>
+    </servlet>
+    
+    
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/SignOutServlet</url-pattern>
@@ -121,16 +150,40 @@
         <url-pattern>/ForgetPasswordServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>VerifyServlet</servlet-name>
-        <url-pattern>/VerifyServlet</url-pattern>
+        <servlet-name>SendPasswordServlet</servlet-name>
+        <url-pattern>/SendPasswordServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>LoadDataServlet</servlet-name>
+        <url-pattern>/LoadDataServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>VerifyEmailServlet</servlet-name>
-        <url-pattern>/VerifyEmailServlet</url-pattern>
+        <servlet-name>LoadFromClinicScheduleToAddServlet</servlet-name>
+        <url-pattern>/LoadFromClinicScheduleToAddServlet</url-pattern>
     </servlet-mapping>
-    <welcome-file-list>
-        <welcome-file>LoadDataServlet</welcome-file>
-    </welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>LoadFromClinicScheduleToCreateEventServlet</servlet-name>
+        <url-pattern>/LoadFromClinicScheduleToCreateEventServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadFromClinicScheduleToCreateEventServlet2</servlet-name>
+        <url-pattern>/LoadFromClinicScheduleToCreateEventServlet2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadFromClinicScheduleToDentistScheduleServlet</servlet-name>
+        <url-pattern>/LoadFromClinicScheduleToDentistScheduleServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>LoadFromClinicToScheduleServlet</servlet-name>
+        <url-pattern>/LoadFromClinicToScheduleServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>LoadFromDentistScheduleToAddServlet</servlet-name>
+        <url-pattern>/LoadFromDentistScheduleToAddServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

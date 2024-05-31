@@ -152,5 +152,27 @@ public class AccountDTO implements Serializable {
         this.clinicID = clinicID;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("AccountDTO{");
+        sb.append("accountID=").append(accountID);
+        sb.append(", userName=").append(userName);
+        sb.append(", password=").append(password);
+        sb.append(", email=").append(email);
+        sb.append(", dob=").append(dob);
+        sb.append(", fullName=").append(fullName);
+        sb.append(", phone=").append(phone);
+        sb.append(", address=").append(address);
+        sb.append(", googleID=").append(googleID);
+        sb.append(", googleName=").append(googleName);
+        sb.append(", gender=").append(gender);
+        sb.append(", roleID=").append(roleID);
+        sb.append(", status=").append(status);
+        sb.append(", clinicID=").append(clinicID);
+        sb.append('}');
+        return sb.toString();
+    }
+
 
 }

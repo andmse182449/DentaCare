@@ -1,9 +1,3 @@
-<%-- 
-    Document   : coWeb-clinic
-    Created on : May 23, 2024, 2:21:53 PM
-    Author     : Admin
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Calendar, java.util.GregorianCalendar" %>
@@ -15,7 +9,6 @@
 <%@ page import="timeSlot.TimeSlotDTO" %>
 <%@ page import="slotDetail.SlotDetailDAO" %>
 <%@ page import="slotDetail.SlotDetailDTO" %>
-<!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
     <head>

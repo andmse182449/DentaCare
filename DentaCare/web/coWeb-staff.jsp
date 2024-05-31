@@ -67,7 +67,7 @@
                 <div class="main-content">
                     <div class="alert-error sec">${error}</div>
                     <div class="alert-message sec">${message}</div>
-                    <button id="create-button" class="create-button">Create Dentist Account</button>
+                    <button id="create-button" class="create-button">Create Staff Account</button>
                 </div>
                 <br>
                 <!-- FORM POPUP-->
