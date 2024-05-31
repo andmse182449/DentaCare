@@ -96,6 +96,9 @@
         <servlet-name>VerifyEmailServlet</servlet-name>
         <url-pattern>/VerifyEmailServlet</url-pattern>
     </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>LoadDataServlet</welcome-file>
+    </welcome-file-list>
     <session-config>
         <session-timeout>
             30

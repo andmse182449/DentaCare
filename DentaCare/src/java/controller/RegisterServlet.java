@@ -12,8 +12,12 @@ import java.sql.SQLException;
 import java.time.Year;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterServlet extends HttpServlet {
+
+    private static final String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -36,10 +40,17 @@ public class RegisterServlet extends HttpServlet {
                 }
                 request.getRequestDispatcher(url).forward(request, response);
             } else if (action.equalsIgnoreCase("checkEmail")) {
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(mail);
+                boolean chk = matcher.matches() == ("invalid".equals("invalid"));
                 if (mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
                     request.setAttribute("error", "Email registed !");
                     request.setAttribute("ac", " active");
-                    url="userWeb-verifyEmail.jsp";
+                    url = "userWeb-verifyEmail.jsp";
+                } else if (chk == false) {
+                    request.setAttribute("error", "Email is invalid !");
+                    request.setAttribute("ac", " active");
+                    url = "userWeb-verifyEmail.jsp";
                 } else {
                     url = "SendEmailServlet?mail=" + mail;
                 }

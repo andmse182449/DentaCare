@@ -1,7 +1,9 @@
 package controller;
 
+import Service.ServiceDAO;
 import account.AccountDAO;
 import account.AccountDTO;
+import clinic.ClinicDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -23,9 +25,13 @@ public class LoginActionServlet extends HttpServlet {
             // check email
             AccountDTO checkAccount = dao.checkExistAccount(userName, password);
             String checkPass = dao.checkExistPass(userName);
-//            String checkName = dao.checkExistName(userName);
             // check password
             if (checkAccount != null) {
+                ClinicDAO clinicDAO = new ClinicDAO();
+                ServiceDAO serviceDAO = new ServiceDAO();
+                request.setAttribute("CLINIC", clinicDAO.getAllClinic());
+                request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+                request.setAttribute("DENTIST", dao.getAllDentists());
                 switch (checkAccount.isRoleID()) {
                     // admin
 
@@ -45,10 +51,9 @@ public class LoginActionServlet extends HttpServlet {
                     }
                     default -> {
                         session.setAttribute("account", checkAccount);
-                        response.sendRedirect("userWeb-page.jsp");
+                        request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
                     }
                 }
-                session.setAttribute("account", checkAccount);
             } else {
                 if (!checkPass.equals(password)) {
                     request.setAttribute("error", "Password or Username is not correct!");

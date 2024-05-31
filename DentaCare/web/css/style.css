@@ -1,9 +1,13 @@
-/*!
- * Bootstrap v4.1.0 (https://getbootstrap.com/)
- * Copyright 2011-2018 The Bootstrap Authors
- * Copyright 2011-2018 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
+.scrollmenu {
+  overflow: auto;
+  white-space: nowrap;
+  display: flex;
+  list-style: none;
+}
+.service-item{
+    cursor: pointer;
+}
+/*//*/
 :root {
     --blue: #007bff;
     --indigo: #6610f2;
@@ -8525,10 +8529,10 @@ button.bg-dark:focus {
     padding-right: 3rem !important;
 }
 
-.pb-5,
+/*.pb-5,
 .py-5 {
     padding-bottom: 3rem !important;
-}
+}*/
 
 .pl-5,
 .px-5 {
@@ -10385,7 +10389,7 @@ h1, h2, h3, h4, h5,
 }
 
 .ftco-navbar-light.scrolled .nav-link {
-    padding-top: 0.9rem !important;
+    /*    padding-top: 0.9rem !important;*/
     padding-bottom: 0.9rem !important;
     color: #000 !important;
 }
@@ -10514,7 +10518,7 @@ h1, h2, h3, h4, h5,
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    height: 700px;
+    height: 560px;
     position: relative;
 }
 
@@ -10625,7 +10629,7 @@ h1, h2, h3, h4, h5,
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 130px;
+    bottom: 40px;
     width: 100%;
     text-align: center;
 }
@@ -11099,7 +11103,7 @@ h1, h2, h3, h4, h5,
 
 .staff {
     width: 100%;
-    display: block;
+    display: grid;
     padding: 25px;
     bordeR: 1px solid whitesmoke;
     -webkit-box-shadow: 0px 3px 66px -24px rgba(0, 0, 0, 0.2);
@@ -11512,7 +11516,7 @@ textarea.form-control {
 }
 
 .ftco-section {
-    padding: 7em 0;
+    padding: 3em 0;
     position: relative;
 }
 

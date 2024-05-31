@@ -44,7 +44,7 @@ public class GoogleLoginServlet extends HttpServlet {
                     String accountId = "CUS" + Year.now().getValue() % 100 + String.format("%05d", numOfUsers + 1);
                     checkAccountGG = accountDAO.createAccountGG(googlePojo.getId(), googlePojo.getEmail(), accountId);
                 }
-//                String name = checkAccountGG.getUserName();
+                String name = checkAccountGG.getUserName();
                 session.setAttribute("account", checkAccountGG);
                 request.getRequestDispatcher(url).forward(request, response);
             }

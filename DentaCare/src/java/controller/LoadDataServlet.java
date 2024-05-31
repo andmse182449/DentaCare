@@ -5,6 +5,9 @@
 
 package controller;
 
+import Service.ServiceDAO;
+import account.AccountDAO;
+import clinic.ClinicDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,14 +15,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ROG STRIX
  */
-@WebServlet(name="SignOutController", urlPatterns={"/SignOutController"})
-public class SignOutServlet extends HttpServlet {
+@WebServlet(name="LoadDataServlet", urlPatterns={"/LoadDataServlet"})
+public class LoadDataServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -31,13 +36,16 @@ public class SignOutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = "index.jsp";
         try {
-            HttpSession session = request.getSession();
-            session.invalidate();
-            response.sendRedirect(url);
-        }catch(IOException e){
-            System.out.println(e);
+            ClinicDAO clinicDAO = new ClinicDAO();
+            AccountDAO accountDAO = new AccountDAO();
+            ServiceDAO serviceDAO = new ServiceDAO();
+            request.setAttribute("CLINIC", clinicDAO.getAllClinic());
+            request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+            request.setAttribute("DENTIST", clinicDAO.getAllClinic());
+              request.getRequestDispatcher("index.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoadDataServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
 

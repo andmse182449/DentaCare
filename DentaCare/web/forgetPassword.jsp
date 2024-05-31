@@ -87,7 +87,7 @@
                     <form action="SendPasswordServlet" method="POST" onsubmit="return sendPassword()">
 
                         <div class="input-field">
-                            <input type="text" name="mail" placeholder="Enter your email" required>
+                            <input type="email" name="mail" placeholder="Enter your email" required>
                             <i class="uil uil-envelope icon"></i>
                         </div>
                         <div class="login-signup">
