@@ -76,7 +76,7 @@ CREATE TABLE [dbo].[CLINICSCHEDULE](
 	[startTimeClinic] [time](7) NULL,
 	[endTimeClinic] [time](7) NULL,
 	[workingDay] [date] NULL,
-	[description] [nvarchar](10) NULL,
+	[description] [nvarchar](100) NULL,
 	[clinicID] [int] NULL,
 PRIMARY KEY CLUSTERED 
 (
