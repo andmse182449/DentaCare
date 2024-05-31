@@ -405,7 +405,8 @@
                                         <th>SUN</th>
                                     </tr>    
                                     <tr>
-
+                                        <%--<c:forEach items="${requestScope.clinicScheduleByClinicIDToDen}" var="clinicScheduleByClinicIDToDen">--%>
+                                    <div class="clinic-card" data-url="LoadFromClinicToScheduleServlet?clinicScheduleID=${clinicScheduleByClinicIDToDen.getClinicScheduleID()}&clinicByID=${clinicList.clinicID}">   
                                         <% 
                                             out.println("<th></th>");
                                         String yearStr = (String) request.getAttribute("yearStr");
@@ -433,17 +434,19 @@
                                                         int clinicScheduleIDToDen = clinicScheduleDTO.getClinicScheduleID();
                                                  //cho nay dang bi sai (load clinicScheduleID cho nay ban dau la null, sau khi add moi het null nen moi add thi kh hien gi)
                                                         out.println("<td><a href=\"CreateEventClinicScheduleServlet?clinicScheduleID=" + clinicScheduleIDToDen + "&clinicByID=" + clinicID + "\">" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");  
-                                                        //out.println("<td><a>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");  
+//                                                            out.println("<td><a>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");  
                                                         calendar.add(Calendar.DAY_OF_MONTH, 1);
                                                     }
                                                 }
                                             }
+                                           
                                         } else {
                                             for (int i = 0; i < 8; i++) {
                                                 out.println("<td></td>");
                                             }
                                         }
                                         %>
+                                    </div> 
                                     </tr>     
                                     <tr>
                                     <div class="clickDay">
@@ -525,6 +528,7 @@
                                                 break;
                                             }
                                         }
+                                      
                         
                                             if (isWorkingDay) {
                                                 if (!checkEvent.equals("07:00 AM - 05:00 PM")) {
@@ -562,7 +566,7 @@
                                     </table>
                                 </div>                <!-- END POPUP -->
 
-                <!--<a href="LoadFromClinicScheduleToCreateEventServlet?clinicByID=${clinicByID.clinicID}"><input type="button" name="" value="Add new event for clinic schedule"></a>-->
+                <a href="LoadFromClinicScheduleToCreateEventServlet?clinicByID=${clinicByID.clinicID}"><input type="button" name="" value="Add new event for clinic schedule"></a>
                                 <div class="center-button">
                                     <a href="LoadFromClinicScheduleToDentistScheduleServlet?clinicByID=${clinicByID.clinicID}">
                                         <input type="button" name="" value="View Dentist Schedule">
@@ -643,7 +647,16 @@
                                 document.querySelector(".popup").classList.remove("active");
                             });
 
+                            document.addEventListener('DOMContentLoaded', (event) => {
+                                const clinicCards = document.querySelectorAll('.clinic-card');
 
+                                clinicCards.forEach(card => {
+                                    card.addEventListener('click', () => {
+                                        const url = card.getAttribute('data-url');
+                                        window.location.href = url;
+                                    });
+                                });
+                            });
                         </script>
 
                         <!-- JavaScript code for handling calendar cell clicks -->
