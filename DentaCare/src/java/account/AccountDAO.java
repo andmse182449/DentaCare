@@ -739,6 +739,15 @@ public class AccountDAO implements Serializable {
             System.out.println("An SQL error occurred: ");
 
         } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
     public List<AccountDTO> getAccountDentistByRoleID1() throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;

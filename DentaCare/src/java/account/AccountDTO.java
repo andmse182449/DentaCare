@@ -129,7 +129,6 @@ public class AccountDTO implements Serializable {
     }
 
     public int getRoleID() {
-    public int isRoleID() {
         return roleID;
     }
 
