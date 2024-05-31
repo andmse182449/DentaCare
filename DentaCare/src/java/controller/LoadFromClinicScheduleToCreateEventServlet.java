@@ -15,14 +15,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "AddClinicScheduleServlet", urlPatterns = {"/AddClinicScheduleServlet"})
-public class AddClinicScheduleServlet extends HttpServlet {
+@WebServlet(name = "LoadFromClinicScheduleToCreateEventServlet", urlPatterns = {"/LoadFromClinicScheduleToCreateEventServlet"})
+public class LoadFromClinicScheduleToCreateEventServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,51 +40,32 @@ public class AddClinicScheduleServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String id_raw = request.getParameter("clinicByID");
-            String workingDay = request.getParameter("workingDay");
-            String clinicID_raw = request.getParameter("clinicID");
-            String description = request.getParameter("description");
+            String clincScheduleId_raw = request.getParameter("clinicScheduleID");
 
+            int clincScheduleID = 0;
             int id = 0;
-            int clinic = 0;
-
             try {
+                clincScheduleID = Integer.parseInt(clincScheduleId_raw);
                 id = Integer.parseInt(id_raw);
-                clinic = Integer.parseInt(clinicID_raw);
+                ClinicDAO dao = new ClinicDAO();
+                ClinicDTO clinicByID = null;
+                clinicByID = dao.getClinicByID(id);
 
-                ClinicDAO clinicDao = new ClinicDAO();
-                ClinicDTO clinicByID = clinicDao.getClinicByID(id);
+                //clinicSchedule
+                ClinicScheduleDAO cliDao = new ClinicScheduleDAO();
+                ClinicScheduleDTO getByCliScheID = cliDao.getInfoByClinicScheduleID(clincScheduleID); // nay de lay all Info cua clinicSchedule
+                request.setAttribute("getByCliScheID", getByCliScheID);
 
                 if (clinicByID != null) {
                     request.setAttribute("clinicByID", clinicByID);
-
-                    ClinicScheduleDAO dao = new ClinicScheduleDAO();
-                    List<ClinicScheduleDTO> listGetAll = dao.getAllClinicSchedule();
-
-                    boolean workingDayExists = false;
-                    
-                    for (ClinicScheduleDTO clinicScheduleDTO : listGetAll) {
-                        if (clinicScheduleDTO.getWorkingDay().equals(workingDay)) {
-                            workingDayExists = true;
-                            break;
-                        }
-                    }
-
-                    if (!workingDayExists) {
-                        boolean addClinicSchedule = dao.addNewClinicSchedule(workingDay, clinic, description);
-                        request.setAttribute("addClinicSchedule", addClinicSchedule);
-                    } else {
-                        request.setAttribute("alreadyHave", "This working day already exists. Please choose another day.");
-                    }
                 } else {
-                    System.out.println("Clinic with ID " + id + " not found.");
+                    System.out.println("kh co clinicByID ne` !");
                 }
+                request.getRequestDispatcher("coWeb-createEventClinic.jsp").forward(request, response);
+                request.getRequestDispatcher("coWeb-createEventClinic2.jsp").forward(request, response);
 
-                request.getRequestDispatcher("addNewClinicSchedule.jsp").forward(request, response);
-
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input: " + e.getMessage());
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (SQLException ex) {
+                Logger.getLogger(LoadFromClinicScheduleToAddServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -127,4 +110,3 @@ public class AddClinicScheduleServlet extends HttpServlet {
     }// </editor-fold>
 
 }
-

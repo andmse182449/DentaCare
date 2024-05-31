@@ -4,10 +4,14 @@
  */
 package controller;
 
+import account.AccountDAO;
+import account.AccountDTO;
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
 import clinicSchedule.ClinicScheduleDAO;
 import clinicSchedule.ClinicScheduleDTO;
+import dentistSchedule.DentistScheduleDAO;
+import dentistSchedule.DentistScheduleDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -21,8 +25,8 @@ import java.util.List;
  *
  * @author Admin
  */
-@WebServlet(name = "AddClinicScheduleServlet", urlPatterns = {"/AddClinicScheduleServlet"})
-public class AddClinicScheduleServlet extends HttpServlet {
+@WebServlet(name = "ModifyDentistScheduleServlet", urlPatterns = {"/ModifyDentistScheduleServlet"})
+public class ModifyDentistScheduleServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,47 +41,51 @@ public class AddClinicScheduleServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            String clincScheduleId_raw = request.getParameter("clinicScheduleID");
+            String accountID = request.getParameter("accountID");
+            String accountID2 = request.getParameter("accountID2");
             String id_raw = request.getParameter("clinicByID");
-            String workingDay = request.getParameter("workingDay");
-            String clinicID_raw = request.getParameter("clinicID");
-            String description = request.getParameter("description");
 
             int id = 0;
-            int clinic = 0;
+            int clincScheduleID = 0;
 
             try {
                 id = Integer.parseInt(id_raw);
-                clinic = Integer.parseInt(clinicID_raw);
+                ClinicDAO cliao = new ClinicDAO();
 
-                ClinicDAO clinicDao = new ClinicDAO();
-                ClinicDTO clinicByID = clinicDao.getClinicByID(id);
-
-                if (clinicByID != null) {
-                    request.setAttribute("clinicByID", clinicByID);
-
-                    ClinicScheduleDAO dao = new ClinicScheduleDAO();
-                    List<ClinicScheduleDTO> listGetAll = dao.getAllClinicSchedule();
-
-                    boolean workingDayExists = false;
-                    
-                    for (ClinicScheduleDTO clinicScheduleDTO : listGetAll) {
-                        if (clinicScheduleDTO.getWorkingDay().equals(workingDay)) {
-                            workingDayExists = true;
-                            break;
-                        }
-                    }
-
-                    if (!workingDayExists) {
-                        boolean addClinicSchedule = dao.addNewClinicSchedule(workingDay, clinic, description);
-                        request.setAttribute("addClinicSchedule", addClinicSchedule);
-                    } else {
-                        request.setAttribute("alreadyHave", "This working day already exists. Please choose another day.");
-                    }
-                } else {
-                    System.out.println("Clinic with ID " + id + " not found.");
+                ClinicDTO clinicByID = cliao.getClinicByID(id);
+                if (clinicByID == null) {
+                    System.out.println("Clinic with ID " + id + " not found!");
+                    request.setAttribute("error", "Clinic not found!");
+                    request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+                    return;
                 }
 
-                request.getRequestDispatcher("addNewClinicSchedule.jsp").forward(request, response);
+                clincScheduleID = Integer.parseInt(clincScheduleId_raw);
+
+                //acoutn
+                AccountDAO accDao = new AccountDAO();
+                List<AccountDTO> denList = accDao.getAccountDentistByRoleID1();   // lay all account Den 
+
+                //clinicSchedule
+                ClinicScheduleDAO cliDao = new ClinicScheduleDAO();
+                ClinicScheduleDTO getByCliScheID = cliDao.getInfoByClinicScheduleID(clincScheduleID); // nay de lay all Info cua clinicSchedule
+
+                DentistScheduleDAO dao = new DentistScheduleDAO();
+                DentistScheduleDTO checkAlreadyDentistInDenSche = dao.checkAlreadyDentistInDenSche(accountID, clincScheduleID);
+                System.out.println(checkAlreadyDentistInDenSche);
+                System.out.println(accountID2);
+                if (checkAlreadyDentistInDenSche != null) {
+                    boolean modifyDentistSchedule = dao.modifyDentistSchedule(accountID2, clincScheduleID, accountID);
+                    request.setAttribute("successfully", "Add dentist to the schedule successfully !");
+                    request.setAttribute("modifyDentistSchedule", modifyDentistSchedule);
+                } else {
+                    request.setAttribute("notExist", "This dentist is not going to work this day, please choose another dentist !!");
+                }
+                request.setAttribute("denList", denList);
+                request.setAttribute("clinicByID", clinicByID);
+                request.setAttribute("getByCliScheID", getByCliScheID);
+                request.getRequestDispatcher("denWeb-addDenToSchedule.jsp").forward(request, response);
 
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input: " + e.getMessage());
@@ -87,7 +95,7 @@ public class AddClinicScheduleServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -127,4 +135,3 @@ public class AddClinicScheduleServlet extends HttpServlet {
     }// </editor-fold>
 
 }
-

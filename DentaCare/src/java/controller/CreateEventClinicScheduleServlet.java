@@ -6,6 +6,8 @@ package controller;
 
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
+import clinicSchedule.ClinicScheduleDAO;
+import clinicSchedule.ClinicScheduleDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,16 +15,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "LoadFromClinicScheduleToModifyServlet", urlPatterns = {"/LoadFromClinicScheduleToModifyServlet"})
-public class LoadFromClinicScheduleToModifyServlet extends HttpServlet {
+@WebServlet(name = "CreateEventClinicScheduleServlet", urlPatterns = {"/CreateEventClinicScheduleServlet"})
+public class CreateEventClinicScheduleServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,21 +37,56 @@ public class LoadFromClinicScheduleToModifyServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            String clincScheduleId_raw = request.getParameter("clinicScheduleID");
             String id_raw = request.getParameter("clinicByID");
+//            String workingDay = request.getParameter("workingDay");
+//            String clinicID_raw = request.getParameter("clinicID");
+            String description = request.getParameter("description");
+
             int id = 0;
+            int clinic = 0;
+            int clincScheduleID = 0;
+
             try {
                 id = Integer.parseInt(id_raw);
-                ClinicDAO dao = new ClinicDAO();
-                ClinicDTO clinicByID = null;
-                clinicByID = dao.getClinicByID(id);
+//                clinic = Integer.parseInt(clinicID_raw);
+                clincScheduleID = Integer.parseInt(clincScheduleId_raw);
+
+                ClinicDAO clinicDao = new ClinicDAO();
+                ClinicDTO clinicByID = clinicDao.getClinicByID(id);
+
                 if (clinicByID != null) {
                     request.setAttribute("clinicByID", clinicByID);
+
+                    ClinicScheduleDAO dao = new ClinicScheduleDAO();
+                    List<ClinicScheduleDTO> listGetAll = dao.getAllClinicSchedule();
+
+                    //clinicSchedule
+                    ClinicScheduleDTO getByCliScheID = dao.getInfoByClinicScheduleID(clincScheduleID); // nay de lay all Info cua clinicSchedule
+                    request.setAttribute("getByCliScheID", getByCliScheID);
+
+                    boolean workingDayExists = false;
+                    for (ClinicScheduleDTO clinicScheduleDTO : listGetAll) {
+                        if (clinicScheduleDTO.getWorkingDay().equals("07:00 AM - 05:00 PM")) {
+                            workingDayExists = true;
+                            break;
+                        }
+                    }
+                    if (!workingDayExists) {
+                        boolean createEventClinicSchedule = dao.createEventClinicSchedule(description, clincScheduleID);
+                        request.setAttribute("createEventClinicSchedule", createEventClinicSchedule);
+                    } else {
+                        request.setAttribute("eventAlready", "This day is an event ! Choose another days");
+                    }
+
                 } else {
-                    System.out.println("kh co clinicByID ne` !");
+                    System.out.println("Clinic with ID " + id + " not found.");
                 }
-                request.getRequestDispatcher("coWeb-modifyClinicSchedule.jsp").forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(LoadFromClinicScheduleToAddServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.getRequestDispatcher("coWeb-createEventClinic.jsp").forward(request, response);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input: " + e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

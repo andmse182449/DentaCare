@@ -1,10 +1,5 @@
-<%-- 
-    Document   : coWeb-modifyClinicSchedule
-    Created on : May 25, 2024, 1:21:39 AM
-    Author     : Admin
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -47,7 +42,7 @@
                 margin-top: 20px;
             }
             .form-container .check-button input[type="submit"],
-            .form-container .check-button input[type="button"]{
+            .form-container .check-button input[type="button"] {
                 text-decoration: none;
                 display: inline-block;
                 padding: 10px 20px;
@@ -59,8 +54,8 @@
                 cursor: pointer;
                 font-size: 16px;
             }
-            .form-container .check-button a:hover,
-            .form-container .check-button input[type="submit"]:hover {
+            .form-container .check-button input[type="submit"]:hover,
+            .form-container .check-button input[type="button"]:hover {
                 background-color: #0056b3;
             }
             .form-container p {
@@ -72,37 +67,35 @@
     <body>
         <div class="form-container">
             <c:set var="clinicByID" value="${requestScope.clinicByID}" />
+            <c:set var="getByCliScheID" value="${requestScope.getByCliScheID}" />
 
-            <form action="AddClinicScheduleServlet?clinicByID=${clinicByID.clinicID}" method="post">
-                <h1>Modify Schedule</h1>
-                <input required="true" type="date" name="workingDay" placeholder="Working Day"><br>
-                <input readonly type="text" name="clinicID" placeholder="Clinic ID" value="${clinicByID.clinicID}"><br>
-                DESCRIPTION 
-                <select name="description">
-                    <option value="di lam">đi làm</option>
-                    <option value="nghi le">nghỉ lễ</option>
-                </select>
+            <form action="CreateEventClinicScheduleServlet?clinicByID=${clinicByID.clinicID}&clinicScheduleID=${getByCliScheID.clinicScheduleID}" method="post">
+                <h1>Create new event</h1>
+                <input readonly required="true" type="text" name="clinicScheduleID" value="${getByCliScheID.clinicScheduleID}"><br>
+                <input required="true" type="text" name="description" placeholder="Name of event" ><br>
+
                 <div class="check-button">
                     <a href="LoadFromClinicToScheduleServlet?clinicByID=${clinicByID.clinicID}"><input type="button" value="Return"></a>
                     <input type="submit" value="Create">
                 </div>
-                <c:set value="${requestScope.alreadyHave}" var="existingSchedule"/>
-                <% String existingSchedule = (String) request.getAttribute("alreadyHave");
-                    if (existingSchedule != null) {
-                %>
-                <p style="font-weight: bold; color: red" class="error-message">${existingSchedule}</p>
-                <%
-                    }
-                %>
+                <c:set value="${requestScope.eventAlready}" var="eventAlready" />
+                    <% String eventAlready = (String) request.getAttribute("eventAlready");
+                        if (eventAlready != null) {
+                    %>
+                    <p style="font-weight: bold; color: red" class="error-message">${eventAlready}</p>
+                    <%
+                        }
+                    %>
 
-                <%
-                    Boolean addClinicSchedule = (Boolean) request.getAttribute("addClinicSchedule");
-                    if (Boolean.TRUE.equals(addClinicSchedule)) {
-                %>
-                <p style="font-weight: bold; color: green">Create New Schedule Successfully!</p>
-                <%
-                    }
-                %>
-            </form>
-        </div>
-    </body>
+                    <%
+                        Boolean createEventClinicSchedule = (Boolean) request.getAttribute("createEventClinicSchedule");
+                        if (Boolean.TRUE.equals(createEventClinicSchedule)) {
+                    %>
+                    <p style="font-weight: bold; color: green">Create New Event Successfully!</p>
+                    <%
+                        }
+                    %>
+                </form>
+            </div>
+        </body>
+    </html>

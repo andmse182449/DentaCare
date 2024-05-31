@@ -4,10 +4,14 @@
  */
 package controller;
 
+import account.AccountDAO;
+import account.AccountDTO;
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
 import clinicSchedule.ClinicScheduleDAO;
 import clinicSchedule.ClinicScheduleDTO;
+import dentistSchedule.DentistScheduleDAO;
+import dentistSchedule.DentistScheduleDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,16 +23,13 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import slotDetail.SlotDetailDAO;
-import timeSlot.TimeSlotDAO;
-import timeSlot.TimeSlotDTO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "LoadFromClinicToSchedule", urlPatterns = {"/LoadFromClinicToScheduleServlet"})
-public class LoadFromClinicToScheduleServlet extends HttpServlet {
+@WebServlet(name = "LoadFromClinicScheduleToDentistScheduleServlet", urlPatterns = {"/LoadFromClinicScheduleToDentistScheduleServlet"})
+public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,9 +44,10 @@ public class LoadFromClinicToScheduleServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String id_raw = request.getParameter("clinicByID");
             String yearStr = request.getParameter("year");
             String weekStr = request.getParameter("week");
+            String id_raw = request.getParameter("clinicByID");
+
             int id = 0;
             System.out.println(yearStr);
             System.out.println(weekStr);
@@ -61,31 +63,21 @@ public class LoadFromClinicToScheduleServlet extends HttpServlet {
                     return;
                 }
 
-                // Time Slot
-                TimeSlotDAO timeDao = new TimeSlotDAO();
-                List<TimeSlotDTO> getAllTimeSlot = timeDao.getAllTimeSLot();
-                for (TimeSlotDTO timeSlotDTO : getAllTimeSlot) {
-                    System.out.println(timeSlotDTO.getSlotID());   
-                }
-                
-                
-                // SlotDetail
-                SlotDetailDAO slotDao = new SlotDetailDAO();
-
                 // Send attribute clinicSchedule
                 ClinicScheduleDAO clinicScheduleDao = new ClinicScheduleDAO();
                 List<ClinicScheduleDTO> clinicScheduleByClinicID = clinicScheduleDao.getWorkingDaysByClinicId(id);
                 List<ClinicScheduleDTO> getAllClinicSchedule = clinicScheduleDao.getAllClinicSchedule();
-                
-//            for (ClinicScheduleDTO clinicScheduleDTO : clinicScheduleByClinicID) {
-//                String workingDay = clinicScheduleDTO.getWorkingDay();
-//                String[] split = workingDay.split("-");
-//
-//                System.out.println("day: " + split[0]);
-//                System.out.println("month: " + split[1]);
-//                System.out.println("year: " + split[2]);
-//            }
+                // dentist
+                DentistScheduleDAO dentDao = new DentistScheduleDAO();
+                List<DentistScheduleDTO> getAllDentistToClinic = dentDao.getAccountDentistByRoleID1();   // send to addDenToSchedule.jsp to load all list of dentist
+                ClinicScheduleDTO getClinicSchedule = clinicScheduleDao.getClinicSchedule(id);
 
+                // account
+                AccountDAO accDao = new AccountDAO();
+                List<AccountDTO> denList = accDao.getAccountDentistByRoleID1();
+                for (AccountDTO accountDTO : denList) {
+                    System.out.println(accountDTO.getFullName());
+                }
                 // Send month and year to clinicSchedule.jsp
                 request.setAttribute("yearStr", yearStr);
                 request.setAttribute("weekStr", weekStr);
@@ -93,14 +85,13 @@ public class LoadFromClinicToScheduleServlet extends HttpServlet {
                 request.setAttribute("getAllClinicSchedule", getAllClinicSchedule);
                 request.setAttribute("clinicScheduleByClinicID", clinicScheduleByClinicID);
                 request.setAttribute("clinicByID", clinicByID);
-                request.setAttribute("getAllTimeSlot", getAllTimeSlot);
-//coWeb-clinic
-                request.getRequestDispatcher("coWeb-clinic.jsp").forward(request, response);
-            } catch (NumberFormatException e) {
-                System.out.println("Parse error");
-                e.printStackTrace();
+                request.setAttribute("getAllDentistToClinic", getAllDentistToClinic);
+                request.setAttribute("denList", denList);
+                request.setAttribute("getClinicSchedule", getClinicSchedule);
+
+                request.getRequestDispatcher("denWeb-Schedule.jsp").forward(request, response);
             } catch (SQLException ex) {
-                Logger.getLogger(LoadFromClinicToScheduleServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LoadFromClinicScheduleToDentistScheduleServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

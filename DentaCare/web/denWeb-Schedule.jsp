@@ -1,9 +1,3 @@
-<%-- 
-    Document   : coWeb-clinic
-    Created on : May 23, 2024, 2:21:53 PM
-    Author     : Admin
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Calendar, java.util.GregorianCalendar" %>
@@ -11,21 +5,23 @@
 <%@ page import="clinicSchedule.ClinicScheduleDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="clinicSchedule.ClinicScheduleDAO" %>
-<%@ page import="timeSlot.TimeSlotDAO" %>
-<%@ page import="timeSlot.TimeSlotDTO" %>
-<%@ page import="slotDetail.SlotDetailDAO" %>
-<%@ page import="slotDetail.SlotDetailDTO" %>
+<%@ page import="account.AccountDAO" %>
+<%@ page import="account.AccountDTO" %>
+<%@ page import="dentistSchedule.DentistScheduleDAO" %>
+<%@ page import="dentistSchedule.DentistScheduleDTO" %>
+<%@ page import="java.util.ArrayList" %>
+
 <!DOCTYPE html>
-<!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin</title>
+        <title>Dentist Schedule</title>
         <!--<link rel="stylesheet" href="css/stylesheet.css">-->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
     </head>
+
     <style>
         /* Styles for the entire document */
 
@@ -342,17 +338,12 @@
                             </ul>
                         </div>
                     </aside>
-
-                    <!-- MAIN -->
+                    <% ClinicScheduleDAO clinicScheduleDAO = new ClinicScheduleDAO(); %>
                     <div class="main-container">
-                        <h2>CLINIC</h2>
-                        <% ClinicScheduleDAO clinicScheduleDAO = new ClinicScheduleDAO(); %>
-                        <% TimeSlotDAO timeDao = new TimeSlotDAO(); %>
-
-                        <c:set value="${clinicByID.clinicID}" var="clinicID" />
                         <div class="form-container">
-                            <h1>Clinic Schedule</h1>
-                            <form method="post" action="LoadFromClinicToScheduleServlet?clinicByID=${clinicByID.clinicID}">
+
+                            <h1>Dentist Schedule</h1>
+                            <form method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?clinicByID=${clinicByID.clinicID}">
                                 <table>
                                     <tr>
                                         <th>
@@ -370,7 +361,7 @@
                                             </select> 
                                             <br>
                                             WEEK
-                                            <select name="week" onchange="this.form.submit()" id="weekSelect">
+                                            <select name="week" onchange="this.form.submit()">
                                                 <option value="">Select Week</option>
                                                 <% 
                                                     String selectedWeek = request.getParameter("week");
@@ -404,18 +395,22 @@
                                         <th>SAT</th>
                                         <th>SUN</th>
                                     </tr>    
-                                    <tr>
-                                        <%--<c:forEach items="${requestScope.clinicScheduleByClinicIDToDen}" var="clinicScheduleByClinicIDToDen">--%>
-                                    <div class="clinic-card" data-url="LoadFromClinicToScheduleServlet?clinicScheduleID=${clinicScheduleByClinicIDToDen.getClinicScheduleID()}&clinicByID=${clinicList.clinicID}">   
+                                    <th>
                                         <% 
-                                            out.println("<th></th>");
+                            
                                         String yearStr = (String) request.getAttribute("yearStr");
                                         String weekStr = (String) request.getAttribute("weekStr");
+                                        String currentDateStr = (String) request.getAttribute("currentDate");
+                        
                                         int clinicID = (int) request.getAttribute("clinicID");
                         
                                         List<ClinicScheduleDTO> workingDayByID = (List<ClinicScheduleDTO>) request.getAttribute("getAllClinicSchedule");
                                         List<ClinicScheduleDTO> clinicScheduleByClinicIDToDen = (List<ClinicScheduleDTO>) request.getAttribute("clinicScheduleByClinicID");
 
+                                        List<AccountDTO> denList = (List<AccountDTO>) request.getAttribute("denList");
+                                        ClinicScheduleDTO getClinicSchedule = (ClinicScheduleDTO) request.getAttribute("getClinicSchedule");
+                                        int clinicScheduleID = getClinicSchedule.getClinicScheduleID();
+                        
                                         if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
                                             int year = Integer.parseInt(yearStr);
                                             int week = Integer.parseInt(weekStr);
@@ -425,29 +420,26 @@
                                             calendar.set(Calendar.WEEK_OF_YEAR, week);
                                             calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-                                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");                    
+                                                for (int i = 0; i < 7; i++) {
+                                                    String currentDate = sdf.format(calendar.getTime());
+                                                    for (ClinicScheduleDTO clinicScheduleDTO : clinicScheduleByClinicIDToDen) {
+                                                        if (clinicScheduleDTO.getWorkingDay().equals(currentDate)) {
+                                                            int clinicScheduleIDToDen = clinicScheduleDTO.getClinicScheduleID();
+                //                                            out.println("<td><a href=\"LoadFromDentistScheduleToAddServlet?clinicScheduleID=" + clinicScheduleIDToDen + "&date=" + currentDate + "\">" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");
+                                                            out.println("<td><a href=\"LoadFromDentistScheduleToAddServlet?clinicScheduleID=" + clinicScheduleIDToDen + "&clinicByID=" + clinicID + "\">" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");
 
-                                            for (int i = 0; i < 7; i++) {
-                                                String currentDate = sdf.format(calendar.getTime());
-                                                for (ClinicScheduleDTO clinicScheduleDTO : clinicScheduleByClinicIDToDen) {
-                                                    if (clinicScheduleDTO.getWorkingDay().equals(currentDate)) {
-                                                        int clinicScheduleIDToDen = clinicScheduleDTO.getClinicScheduleID();
-                                                 //cho nay dang bi sai (load clinicScheduleID cho nay ban dau la null, sau khi add moi het null nen moi add thi kh hien gi)
-                                                        out.println("<td><a href=\"CreateEventClinicScheduleServlet?clinicScheduleID=" + clinicScheduleIDToDen + "&clinicByID=" + clinicID + "\">" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");  
-//                                                            out.println("<td><a>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");  
-                                                        calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                                            calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                                        } 
                                                     }
                                                 }
-                                            }
-                                           
                                         } else {
                                             for (int i = 0; i < 8; i++) {
                                                 out.println("<td></td>");
                                             }
                                         }
                                         %>
-                                    </div> 
-                                    </tr>     
+                                    </th>     
                                     <tr>
                                     <div class="clickDay">
                                         <% 
@@ -466,77 +458,55 @@
                                                for (int i = 0; i < 7; i++) {
                                         String currentDate = sdf.format(calendar.getTime());
                                         boolean isWorkingDay = false;
-                                        String workingDayInfo = "";
+                                        boolean isAccount = false;
+                                        String dentistInfo = "";
                                         String checkEvent = "";
                         
                                         // add
                                         //List<ClinicScheduleDTO> clinicScheduleByClinicID = clinicScheduleDao.getWorkingDaysByClinicId(id);
                                         List<ClinicScheduleDTO> clinicScheduleByClinicID = (List<ClinicScheduleDTO>) request.getAttribute("clinicScheduleByClinicID");
-                                        List<TimeSlotDTO> getAllTimeSlot = (List<TimeSlotDTO>) request.getAttribute("getAllTimeSlot");
-                                        List<TimeSlotDTO> getAllTimeSl = (List<TimeSlotDTO>) timeDao.getAllTimeSLot();
-                                        // líst này thì được nha
-                //                        for (TimeSlotDTO timeSlotDTOCheck : getAllTimeSl) {
-                //                                    System.out.println("Time slot " + timeSlotDTOCheck.getSlotID());
-                //                            }
-                                        SlotDetailDAO slotDao = new SlotDetailDAO();
-                        
-                                        boolean workingDayExists = false;
-                                        // new test
-                                        boolean scheduleExists = clinicScheduleByClinicID.stream().anyMatch(schedule -> schedule.getWorkingDay().equals(currentDate));
+                                        List<DentistScheduleDTO> getAllDentistToClinic = (List<DentistScheduleDTO>) request.getAttribute("getAllDentistToClinic");
+                                        List<ClinicScheduleDTO> getAllClinicSchedule = (List<ClinicScheduleDTO>) request.getAttribute("getAllClinicSchedule");
 
-                                    if (!scheduleExists && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                //                        System.out.println("Adding new clinic schedule for date: " + currentDate);
-                                        boolean addClinicSchedule = clinicScheduleDAO.addNewClinicSchedule(currentDate, clinicID, "07:00 AM - 05:00 PM");
-    
-                                    if (addClinicSchedule) {
-                //                        System.out.println("New clinic schedule added successfully for date: " + currentDate);
-                                        workingDayByID = clinicScheduleDAO.getWorkingDaysByClinicId(clinicID);              
-                                        for (ClinicScheduleDTO schedule : workingDayByID) {
-                                            if (schedule.getWorkingDay().equals(currentDate)) {
-                //                                System.out.println("Processing time slots for schedule ID: " + schedule.getClinicScheduleID());
-                                                for (TimeSlotDTO timeSlotDTO : getAllTimeSl) {
-                //                                    System.out.println("Time slot " + timeSlotDTO.getSlotID());
-                                                    boolean addSlotToSchedule = slotDao.addSlotToSchedule(timeSlotDTO.getSlotID(), schedule.getClinicScheduleID());
-                                                    if (addSlotToSchedule) {
-                                                        System.out.println("Time slot " + timeSlotDTO.getSlotID() + " added to schedule ID: " + schedule.getClinicScheduleID());
-                                                    } else {
-                                                        System.err.println("Failed to add time slot " + timeSlotDTO.getSlotID() + " to schedule ID: " + schedule.getClinicScheduleID());
+                                        boolean workingDayExists = false;
+                                        boolean scheduleExists = clinicScheduleByClinicID.stream().anyMatch(schedule -> schedule.getWorkingDay().equals(currentDate));
+                    
+                                        workingDayByID = clinicScheduleDAO.getWorkingDaysByClinicId(clinicID);
+         
+                                            for (ClinicScheduleDTO schedule : workingDayByID) {
+                                                if (schedule.getWorkingDay().equals(currentDate) && clinicID == schedule.getClinicID()) {
+                                                    // Initialize a list to store all dentist names for the current schedule
+                                                    List<String> dentistNames = new ArrayList<>();
+                                                    for (DentistScheduleDTO dentistScheduleDTO : getAllDentistToClinic) {
+                                                        if (schedule.getClinicScheduleID() == dentistScheduleDTO.getClinicScheduleID()) {
+                                                            for (AccountDTO accountDTO : denList) {
+                                                                if (dentistScheduleDTO.getAccountID().equals(accountDTO.getAccountID())) {
+                                                                    dentistNames.add(accountDTO.getFullName());
+                                                                }
+                                                            }
+                                                        }
                                                     }
+
+                                                    // Check if we found any dentists for the current schedule
+                                                    if (!dentistNames.isEmpty()) {
+                                                        // Join all dentist names into a single string
+                                                        dentistInfo = "Dentist list today: <br>" + String.join("<br>", dentistNames);
+                                                        isAccount = true;
+                                                    }
+
+                                                    isWorkingDay = true;
+                                                    checkEvent = schedule.getDescription();
+                                                    break; // Break the outer loop once we find a matching working day
                                                 }
                                             }
-                                        }
-                                    } else {
-                                        System.err.println("Failed to add new clinic schedule for date: " + currentDate);
-                                    }
-                                } else {
-                                    if (scheduleExists) {
-                                        System.out.println("Schedule already exists for date: " + currentDate);
-                                    }
-                                    if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                                        System.out.println("Today is Sunday, no schedule to add.");
-                                    }
-                                }
 
-
-                                                 workingDayByID = clinicScheduleDAO.getWorkingDaysByClinicId(clinicID);              
-                                        for (ClinicScheduleDTO schedule : workingDayByID) {
-                                            //can get schedule.getClinicID()
-                                            if (schedule.getWorkingDay().equals(currentDate) && clinicID == schedule.getClinicID()) {     
-                                                isWorkingDay = true;
-                                                workingDayInfo = "Working Time " + "<br><br>" + schedule.getDescription();
-                                                checkEvent = schedule.getDescription();
-                                                break;
-                                            }
-                                        }
-                                      
-                        
-                                            if (isWorkingDay) {
-                                                if (!checkEvent.equals("07:00 AM - 05:00 PM")) {
+                                        if (isWorkingDay) {
+                                            if (!checkEvent.equals("07:00 AM - 05:00 PM")) {
                                                 out.println("<td class=\"event-day\">" + checkEvent + "</td>");
                                             } else {
-                                                out.println("<td class=\"working-day\">" + workingDayInfo + "</td>");
+                                                out.println("<td class=\"working-day\">" + dentistInfo + "</td>");
                                             }
-                                            } else {
+                                        } else {
                                                 out.println("<td></td>");
                                             }
                                                 calendar.add(Calendar.DAY_OF_MONTH, 1);
@@ -546,76 +516,54 @@
                                                     out.println("<td></td>");
                                                 }
                                             }
-                //                                      response.setHeader("Refresh", "10; URL=http://localhost:9090/J2EE_Exercise/index.html");
                                         %>
                                     </div>
                                     </tr>
                                 </table>
-                                <!--TIME SLOT-->
-                                <div style="margin-top: 100px" class="time-slot-container">
-                                    <h1>Time Slot</h1>
-                                    <table class="time-slot-table">
-                                        <tr>
-                                            <!-- <th>Time Periods</th> --> 
-                                        </tr>
-                                        <tr>
-                                            <c:forEach items="${requestScope.getAllTimeSlot}" var="getAllTimeSlot">
-                                                <td>${getAllTimeSlot.getTimePeriod()}</td>
-                                            </c:forEach>
-                                        </tr>
-                                    </table>
-                                </div>                <!-- END POPUP -->
+                                <a href="LoadFromClinicToScheduleServlet?clinicByID=${clinicID}" 
+                                   style="background-color: red;
+                                color: white;
+                                padding: 10px 20px;
+                                text-decoration: none;
+                                border-radius: 4px;
+                                font-size: 16px;
+                                display: inline-block;
+                                text-align: center;">
+                                Return
+                            </a>
+                            <!-- END POPUP -->
 
-                <a href="LoadFromClinicScheduleToCreateEventServlet2?clinicByID=${clinicByID.clinicID}"><input type="button" name="" value="Add new event for clinic schedule"></a>
-                                <div class="center-button">
-                                    <a href="LoadFromClinicScheduleToDentistScheduleServlet?clinicByID=${clinicByID.clinicID}">
-                                        <input type="button" name="" value="View Dentist Schedule">
-                                    </a>
-                                </div>
-                            </form>  
-                            <a href="LoadAllDentaListServlet" style="background-color: red;
-                            color: white;
-                            padding: 10px 20px;
-                            text-decoration: none;
-                            border-radius: 4px;
-                            font-size: 16px;
-                            display: inline-block;
-                            text-align: center;">
-                            Return
-                        </a>
-
-                        <!--                         MAIN 
-                                                <div class="main-container2">
-                                                    <div class="main-header">
-                                                        <button id="create-button" class="create-button">CREATE CLINIC SCHEDULE</button>
-                                                                        <a href="LoadFromClinicScheduleToCreateEventServlet?clinicByID=${clinicByID.clinicID}"><input type="button" name="" value="Add new event for clinic schedule"></a>
+                        </form>  
+                        <!--                     MAIN 
+                                            <div class="main-container">
+                                                <div class="main-header">
+                                                    <button id="create-button" class="create-button">CREATE CLINIC SCHEDULE</button>
+                                                </div>
+                                                 FORM POPUP
+                                                <div class="popup">
+                                                    <div class="close-btn">&times;</div>
+                                                    <div class="form">
+                                                        <h2>CREATE CLINIC SCHEDULE</h2>
+                                                        <form action="AddClinicScheduleServlet?clinicID=${clinicByID.clinicID}" method="get">
+                                                            <div class="form-element">
+                                                                <label for="username">workingDay</label>
+                                                                <input type="date" name="workingDay" required>
+                                                            </div> 
+                                                            <div class="form-element">
+                                                                <label for="email">clinicID</label>
+                                                                <input readonly type="text" name="clinicID" value="${clinicByID.clinicID} ">
+                                                            </div>
                         
-                                                    </div>
-                                                     FORM POPUP
-                                                    <div class="popup">
-                                                        <div class="close-btn">&times;</div>
-                                                        <div class="form">
-                                                            <h2>CREATE CLINIC SCHEDULE</h2>
-                                                            <form action="AddClinicScheduleServlet?clinicID=${clinicByID.clinicID}" method="get">
-                                                                <div class="form-element">
-                                                                    <label for="username">workingDay</label>
-                                                                    <input type="date" name="workingDay" required>
-                                                                </div> 
-                                                                <div class="form-element">
-                                                                    <label for="email">clinicID</label>
-                                                                    <input readonly type="text" name="clinicID" value="${clinicByID.clinicID} ">
-                                                                </div>
-                        
-                                                                <div class="form-element">
-                                                                    <label for="fullname">description</label>
-                                                                    <select name="description">
-                                                                        <option value="di lam">đi làm</option>
-                                                                        <option value="nghi le">nghỉ lễ</option>
-                                                                    </select>                              
-                                                                </div>
-                                                                <div class="form-element">
-                                                                    <input type="submit" value="Submit">
-                                                                </div>
+                                                            <div class="form-element">
+                                                                <label for="fullname">description</label>
+                                                                <select name="description">
+                                                                    <option value="di lam">đi làm</option>
+                                                                    <option value="nghi le">nghỉ lễ</option>
+                                                                </select>                              
+                                                            </div>
+                                                            <div class="form-element">
+                                                                <input type="submit" value="Submit">
+                                                            </div>
                         <c:set value="${requestScope.alreadyHave}" var="existingSchedule"/>
                         <% String existingSchedule = (String) request.getAttribute("alreadyHave");
                             if (existingSchedule != null) {
@@ -627,11 +575,11 @@
                         %>
 
                         <%
-                            Boolean createEventClinicSchedule = (Boolean) request.getAttribute("createEventClinicSchedule");
-                            if (Boolean.TRUE.equals(createEventClinicSchedule)) {
+                            Boolean addClinicSchedule = (Boolean) request.getAttribute("addClinicSchedule");
+                            if (Boolean.TRUE.equals(addClinicSchedule)) {
                         %>
                         <p style="font-weight: bold;
-                        color: green">Create New Schedule Successfully!</p>
+                        color: green">Add dentist to the schedule successfully !</p>
                         <%
                             }
                         %>
@@ -647,16 +595,6 @@
                                 document.querySelector(".popup").classList.remove("active");
                             });
 
-                            document.addEventListener('DOMContentLoaded', (event) => {
-                                const clinicCards = document.querySelectorAll('.clinic-card');
-
-                                clinicCards.forEach(card => {
-                                    card.addEventListener('click', () => {
-                                        const url = card.getAttribute('data-url');
-                                        window.location.href = url;
-                                    });
-                                });
-                            });
                         </script>
 
                         <!-- JavaScript code for handling calendar cell clicks -->
@@ -669,12 +607,9 @@
                                 window.location.href = "handleDayClickServlet?date=" + date;
                             }
                         </script>
-
-
                     </div>
                 </div>
-            </div>
-        </div>
-    </body>
-</html>
 
+            </div>
+        </body>
+    </html>

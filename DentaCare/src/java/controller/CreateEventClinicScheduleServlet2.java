@@ -21,8 +21,8 @@ import java.util.List;
  *
  * @author Admin
  */
-@WebServlet(name = "AddClinicScheduleServlet", urlPatterns = {"/AddClinicScheduleServlet"})
-public class AddClinicScheduleServlet extends HttpServlet {
+@WebServlet(name = "CreateEventClinicScheduleServlet2", urlPatterns = {"/CreateEventClinicScheduleServlet2"})
+public class CreateEventClinicScheduleServlet2 extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,17 +37,19 @@ public class AddClinicScheduleServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+//            String clincScheduleId_raw = request.getParameter("clinicScheduleID");
             String id_raw = request.getParameter("clinicByID");
             String workingDay = request.getParameter("workingDay");
-            String clinicID_raw = request.getParameter("clinicID");
             String description = request.getParameter("description");
 
             int id = 0;
             int clinic = 0;
+            int clincScheduleID = 0;
 
             try {
                 id = Integer.parseInt(id_raw);
-                clinic = Integer.parseInt(clinicID_raw);
+//                clinic = Integer.parseInt(clinicID_raw);
+//                clincScheduleID = Integer.parseInt(clincScheduleId_raw);
 
                 ClinicDAO clinicDao = new ClinicDAO();
                 ClinicDTO clinicByID = clinicDao.getClinicByID(id);
@@ -58,27 +60,28 @@ public class AddClinicScheduleServlet extends HttpServlet {
                     ClinicScheduleDAO dao = new ClinicScheduleDAO();
                     List<ClinicScheduleDTO> listGetAll = dao.getAllClinicSchedule();
 
+                    //clinicSchedule
+                    ClinicScheduleDTO getByCliScheID = dao.getInfoByClinicScheduleID(clincScheduleID); // nay de lay all Info cua clinicSchedule
+                    request.setAttribute("getByCliScheID", getByCliScheID);
+
                     boolean workingDayExists = false;
-                    
                     for (ClinicScheduleDTO clinicScheduleDTO : listGetAll) {
-                        if (clinicScheduleDTO.getWorkingDay().equals(workingDay)) {
+                        if (clinicScheduleDTO.getWorkingDay().equals("07:00 AM - 05:00 PM")) {
                             workingDayExists = true;
                             break;
                         }
                     }
-
                     if (!workingDayExists) {
-                        boolean addClinicSchedule = dao.addNewClinicSchedule(workingDay, clinic, description);
-                        request.setAttribute("addClinicSchedule", addClinicSchedule);
+                        boolean createEventClinicSchedule = dao.createEventClinicSchedule2(description, workingDay);
+                        request.setAttribute("createEventClinicSchedule", createEventClinicSchedule);
                     } else {
-                        request.setAttribute("alreadyHave", "This working day already exists. Please choose another day.");
+                        request.setAttribute("eventAlready", "This day is an event ! Choose another days");
                     }
+
                 } else {
                     System.out.println("Clinic with ID " + id + " not found.");
                 }
-
-                request.getRequestDispatcher("addNewClinicSchedule.jsp").forward(request, response);
-
+                request.getRequestDispatcher("coWeb-createEventClinic2.jsp").forward(request, response);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input: " + e.getMessage());
             } catch (Exception e) {
@@ -87,7 +90,7 @@ public class AddClinicScheduleServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -127,4 +130,3 @@ public class AddClinicScheduleServlet extends HttpServlet {
     }// </editor-fold>
 
 }
-
