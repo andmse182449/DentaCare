@@ -30,17 +30,21 @@ public class LoginActionServlet extends HttpServlet {
                     // admin
 
                     case 3 -> {
+                         session.setAttribute("account", checkAccount);
                         response.sendRedirect("coWeb-dashboard.jsp");
                     }
                     // staff
                     case 2 -> {
+                         session.setAttribute("account", checkAccount);
                         response.sendRedirect("staffWeb-page.jsp");
                     }
                     // dentist
                     case 1 -> {
+                         session.setAttribute("account", checkAccount);
                         response.sendRedirect("dentistWeb-page.jsp");
                     }
                     default -> {
+                         session.setAttribute("account", checkAccount);
                         response.sendRedirect("userWeb-page.jsp");
                     }
                 }

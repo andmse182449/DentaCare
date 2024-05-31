@@ -64,7 +64,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="white-box">
-                                <h3 class="box-title">Table Service</h3>
+                                <h3 class="box-title">Table Staff</h3>
 
                                 <c:if test="${not empty error}">
                                     <div id="errorPopup" class="popup-content">
@@ -131,37 +131,24 @@
                                         <thead>
                                             <tr>
                                                 <th class="border-top-0">#</th>
-                                                <th class="border-top-0">Service Name</th>
-                                                <th class="border-top-0">Service Type</th>
-                                                <th class="border-top-0">Price</th>
+                                                <th class="border-top-0">Staff-Username</th>
+                                                <th class="border-top-0">Email</th>
+                                                <th class="border-top-0">Full Name</th>
+                                                <th class="border-top-0">Dob</th>
+                                                <th class="border-top-0">Address</th>
 
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="${listActive}" var="service" varStatus="status">
+                                            <c:forEach items="${listAccount}" var="staff" varStatus="status">
                                                 <tr>
                                                     <td>${status.index + 1}</td>
-                                                    <td>${service.serviceName}</td>
-                                                    <td>${service.serviceType}</td>
-                                                    <td>${service.serviceMoney}</td>
-                                                    <td>
-                                                        <button onclick="toggleEditForm(this)">Edit</button>
-                                                        <div class="popup-overlay"></div>
-                                                        <div class="popup-content">
-                                                            <form id="EditPopUp" action="./ServiceController">
-                                                                <input name="serviceId" value="${service.serviceID}" type="hidden"/>
-                                                                <label>Name:</label>
-                                                                <input type="text" name="serviceName" value="${service.serviceName}" />
-                                                                <label>Type:</label>
-                                                                <input type="text" name="serviceType" value="${service.serviceType}" />
-                                                                <label>Price:</label>
-                                                                <input type="number" name="serviceMoney" value="${service.serviceMoney}" />
-                                                                <input name="action" value="update" type="hidden" />
-                                                                <input type="submit" value="Update" />
-                                                            </form>
-                                                        </div>
-                                                    </td>
+                                                    <td>${staff.userName}</td>
+                                                    <td>${staff.email}</td>
+                                                    <td>${staff.fullName}</td>
+                                                    <td>${staff.dob}</td>     
+                                                    <td>${staff.address}</td>
                                                     <td>
                                                         <i class="fa-solid fa-trash" onclick="submitForm(this.nextElementSibling)"></i>
                                                         <form action="./ServiceController" method="post">
@@ -173,20 +160,7 @@
                                             </c:forEach>
                                         </tbody>
                                     </table>
-                                    <button onclick="toggleEditForm(this)">Add new service</button>
-                                    <div class="popup-overlay"></div>
-                                    <div class="popup-content">
-                                        <form id="EditPopUp" action="./ServiceController">
-                                            <label>Name:</label>
-                                            <input type="text" name="serviceName"/>
-                                            <label>Type:</label>
-                                            <input type="text" name="serviceType" />
-                                            <label>Price:</label>
-                                            <input type="number" name="serviceMoney" />
-                                            <input name="action" value="add" type="hidden" />
-                                            <input type="submit" value="Add" />
-                                        </form>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -210,7 +184,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="white-box">
-                                <h3 class="box-title">Table Service Removed</h3>
+                                <h3 class="box-title">Table Account Staff Removed</h3>
 
 
                                 <div class="table-responsive">
@@ -218,21 +192,24 @@
                                         <thead>
                                             <tr>
                                                 <th class="border-top-0">#</th>
-                                                <th class="border-top-0">Service Name</th>
-                                                <th class="border-top-0">Service Type</th>
-                                                <th class="border-top-0">Price</th>
+                                                <th class="border-top-0">Staff-Username</th>
+                                                <th class="border-top-0">Email</th>
+                                                <th class="border-top-0">Full Name</th>
+                                                <th class="border-top-0">Dob</th>
+                                                <th class="border-top-0">Address</th>
 
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="${listUnactive}" var="service" varStatus="status">
+                                            <c:forEach items="${listAccountRemoved}" var="staff" varStatus="status">
                                                 <tr>
                                                     <td>${status.index + 1}</td>
-                                                    <td>${service.serviceName}</td>
-                                                    <td>${service.serviceType}</td>
-                                                    <td>${service.serviceMoney}</td>
-
+                                                    <td>${staff.userName}</td>
+                                                    <td>${staff.email}</td>
+                                                    <td>${staff.fullName}</td>
+                                                    <td>${staff.dob}</td> 
+                                                    <td>${staff.address}</td>
                                                     <td>
                                                         <i class="fa-solid fa-plus" onclick="submitForm(this.nextElementSibling)"></i>
                                                         <form action="./ServiceController" method="post">
@@ -285,10 +262,11 @@
                 <!--Custom JavaScript -->
                 <script src="admin-front-end/js/custom.js"></script>
                 <script>
-                                                            function submitForm(formElement) {
-                                                                formElement.submit();
-                                                            }
+                                                        function submitForm(formElement) {
+                                                            formElement.submit();
+                                                        }
                 </script>
+
             </div>
         </div>
     </body>

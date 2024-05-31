@@ -133,6 +133,7 @@
                                                 <th class="border-top-0">#</th>
                                                 <th class="border-top-0">Service Name</th>
                                                 <th class="border-top-0">Service Type</th>
+                                                <th class="border-top-0">Service Description</th>
                                                 <th class="border-top-0">Price</th>
 
 
@@ -144,6 +145,7 @@
                                                     <td>${status.index + 1}</td>
                                                     <td>${service.serviceName}</td>
                                                     <td>${service.serviceType}</td>
+                                                    <td style="white-space: pre-wrap;">${service.serviceDescription}</td>
                                                     <td>${service.serviceMoney}</td>
                                                     <td>
                                                         <button onclick="toggleEditForm(this)">Edit</button>
@@ -152,11 +154,17 @@
                                                             <form id="EditPopUp" action="./ServiceController">
                                                                 <input name="serviceId" value="${service.serviceID}" type="hidden"/>
                                                                 <label>Name:</label>
-                                                                <input type="text" name="serviceName" value="${service.serviceName}" />
+                                                                <input type="text" name="serviceName" value="${service.serviceName}"  required/>
                                                                 <label>Type:</label>
-                                                                <input type="text" name="serviceType" value="${service.serviceType}" />
-                                                                <label>Price:</label>
-                                                                <input type="number" name="serviceMoney" value="${service.serviceMoney}" />
+                                                                <select class="serviceType" name="serviceType" required>
+                                                                    <c:forEach var="serviceType" items="${listServiceType}">
+                                                                        <option value="${serviceType}" <c:if test="${serviceType == service.serviceType}">selected</c:if>>${serviceType}</option>
+                                                                    </c:forEach>
+                                                                </select>
+                                                                <label>Description:</label>
+                                                                <input type="text" name="serviceDescription" value="${service.serviceDescription}"  required/>
+                                                                <label>Price (Min 100 and Max 300):</label>
+                                                                <input type="number" name="serviceMoney" value="${service.serviceMoney}" min="100" max="300" required/>
                                                                 <input name="action" value="update" type="hidden" />
                                                                 <input type="submit" value="Update" />
                                                             </form>
@@ -178,11 +186,18 @@
                                     <div class="popup-content">
                                         <form id="EditPopUp" action="./ServiceController">
                                             <label>Name:</label>
-                                            <input type="text" name="serviceName"/>
+                                            <input type="text" name="serviceName" required/>
                                             <label>Type:</label>
-                                            <input type="text" name="serviceType" />
-                                            <label>Price:</label>
-                                            <input type="number" name="serviceMoney" />
+                                            <select class="serviceType" name="serviceType" required>
+                                                <c:forEach var="serviceType" items="${listServiceType}">
+                                                    <option value="${serviceType}" <c:if test="${serviceType == service.serviceType}">selected</c:if>>${serviceType}</option>
+                                                </c:forEach>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                            <label>Description:</label>
+                                            <input type="text" name="serviceDescription" required/>
+                                            <label>Price (Min 100 and Max 300):</label>
+                                            <input type="number" name="serviceMoney" value="${service.serviceMoney}" min="100" max="300" required/>
                                             <input name="action" value="add" type="hidden" />
                                             <input type="submit" value="Add" />
                                         </form>
@@ -220,6 +235,7 @@
                                                 <th class="border-top-0">#</th>
                                                 <th class="border-top-0">Service Name</th>
                                                 <th class="border-top-0">Service Type</th>
+                                                <th class="border-top-0">Service Description</th>
                                                 <th class="border-top-0">Price</th>
 
 
@@ -231,8 +247,8 @@
                                                     <td>${status.index + 1}</td>
                                                     <td>${service.serviceName}</td>
                                                     <td>${service.serviceType}</td>
+                                                    <td style="white-space: pre-wrap;">${service.serviceDescription}</td>
                                                     <td>${service.serviceMoney}</td>
-
                                                     <td>
                                                         <i class="fa-solid fa-plus" onclick="submitForm(this.nextElementSibling)"></i>
                                                         <form action="./ServiceController" method="post">
@@ -289,6 +305,7 @@
                                                                 formElement.submit();
                                                             }
                 </script>
+
             </div>
         </div>
     </body>
