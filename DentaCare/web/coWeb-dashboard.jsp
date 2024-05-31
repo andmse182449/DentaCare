@@ -18,15 +18,27 @@
     <body>
         <div class="grid-container">
             <!-- HEADER -->
-            <header class="header"> 
-                <div></div>
+            <header class="header">
+                <div><h1>DASHBOARD</h1></div>
                 <div class="header-icon">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span class="material-symbols-outlined">mail</span>
-                    <span class="material-symbols-outlined">account_circle</span>
+                    <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
+                    <!-- Dropdown Content -->
+                    <div class="sub-menu-wrap" id="sub-menu-wrap">
+                        <div class="sub-menu">
+                            <div class="user-info">
+                                <h3>${sessionScope.account.userName}</h3>
+                            </div>
+                            <hr>
+                            
+                            <a href="SignOutServlet" class="sub-menu-link">
+                                <span class="material-symbols-outlined">logout</span>
+                                <p>Logout</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </header>
-
             <!-- SIDEBAR -->
             <aside id="sidebar">
                 <div>
@@ -41,10 +53,14 @@
 
             <!-- MAIN -->
             <div class="main-container">
-                <h2>DASHBOARD</h2>
             </div>
         </div>
-        <script src="js/script.js"></script>
+        <script>
+            let subMenu = document.getElementById("sub-menu-wrap");
+            function toggleDropdown() {
+                subMenu.classList.toggle("open-menu");
+            }
+        </script>
     </body>
 </html>
 

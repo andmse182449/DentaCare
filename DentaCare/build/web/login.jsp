@@ -93,7 +93,7 @@
 
                             <a href="forget.jsp" class="text">Forgot password?</a>
                         </div>
-
+                        <input type="hidden" name="key" value="cus">
                         <div class="input-field button">
                             <input type="submit" value="Login">
                         </div>
