@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -370,7 +371,7 @@ public class AccountDAO implements Serializable {
 
         return acc;
     }
-    
+
     public AccountDTO searchAccountByID(String accountId) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -547,7 +548,7 @@ public class AccountDAO implements Serializable {
             stm.setInt(12, 2);
             stm.setInt(13, 2);
             stm.setInt(14, clinicID);
-            
+
             if (stm.executeUpdate() != 0) {
                 flag = true;
             }
@@ -602,7 +603,7 @@ public class AccountDAO implements Serializable {
         }
         return flag;
     }
-    
+
     public boolean changePasswordFirstLogin(String password, String accountId)
             throws SQLException {
         boolean flag = false;
@@ -636,4 +637,139 @@ public class AccountDAO implements Serializable {
         }
         return flag;
     }
+
+    public List<AccountDTO> listAllDentist() throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE ROLE = 2");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String userName = rs.getString("userName");
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: " + e);
+
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
+
+    public List<AccountDTO> getAccountDentistByRoleID1() throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<AccountDTO> list = new ArrayList<>();
+        StringBuilder query = new StringBuilder("select ACCOUNT.* from ACCOUNT where roleID = 1");
+        try {
+            String sql = null;
+            sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String accountID = rs.getString("accountID");
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                boolean gender = rs.getBoolean("gender");
+                String googleID = rs.getString("googleID");
+                String googleName = rs.getString("googleName");
+                int role = rs.getInt("roleID");
+                int status = rs.getInt("status");
+                int clinicID = rs.getInt("clinicID");
+
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, gender, googleID, googleName, role, status, clinicID);
+                list.add(accountDTO);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
+
+    public AccountDTO getAccountIdByName(String fullName) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("select accountID from ACCOUNT WHERE fullName = ? AND roleID = 2");
+        try {
+            String sql = null;
+            sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, fullName);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String accountID = rs.getString("accountID");
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                boolean gender = rs.getBoolean("gender");
+                String googleID = rs.getString("googleID");
+                String googleName = rs.getString("googleName");
+                int role = rs.getInt("roleID");
+                int status = rs.getInt("status");
+                int clinicID = rs.getInt("clinicID");
+
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, gender, googleID, googleName, role, status, clinicID);
+                return accountDTO;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
+
 }
