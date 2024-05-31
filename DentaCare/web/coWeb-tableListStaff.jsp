@@ -26,8 +26,6 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link href="admin-front-end/css/style.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/stylesheet.css">
-<!--        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
     </head>
 
     <body>
@@ -84,7 +82,7 @@
                                         </select>
                                     </form>
                                 </div>
-                                <script>
+                                <<script>
                                     function submitFormWithSelectedValue() {
                                         var selectElement = document.getElementById('clinicSelect');
                                         var selectedValue = selectElement.options[selectElement.selectedIndex].value;
@@ -93,11 +91,17 @@
                                         formElement.submit();
                                     }
 
-                                    // Preserve selected value on page load
+                                    // Automatically select the first clinic on page load if no selection exists
                                     window.onload = function () {
                                         var urlParams = new URLSearchParams(window.location.search);
                                         var selectedClinic = urlParams.get('selectedClinic');
-                                        if (selectedClinic) {
+                                        if (!selectedClinic) {
+                                            var selectElement = document.getElementById('clinicSelect');
+                                            var firstClinic = selectElement.options[0].value;
+                                            var formElement = document.getElementById('clinicForm');
+                                            formElement.action = './ManageStaffServlet?selectedClinic=' + encodeURIComponent(firstClinic);
+                                            formElement.submit();
+                                        } else {
                                             var selectElement = document.getElementById('clinicSelect');
                                             selectElement.value = selectedClinic;
                                         }
@@ -132,6 +136,7 @@
                                                         <form action="./ManageStaffServlet" method="post">
                                                             <input name="action" value="deteleStaff" type="hidden" />
                                                             <input name="staffUserName" value="${staff.userName}" type="hidden" />
+                                                            <input name="selectedClinic" value="${param.selectedClinic}" type="hidden" />
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -193,6 +198,7 @@
                                                         <form action="./ManageStaffServlet" method="post">
                                                             <input name="action" value="addAgainStaff" type="hidden" />
                                                             <input name="staffUserName" value="${staff.userName}" type="hidden" />
+                                                            <input name="selectedClinic" value="${param.selectedClinic}" type="hidden" />
                                                         </form>
                                                     </td>
                                                 </tr>

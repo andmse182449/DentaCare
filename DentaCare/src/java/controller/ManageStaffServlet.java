@@ -38,6 +38,9 @@ public class ManageStaffServlet extends HttpServlet {
             String action = request.getParameter("action");
             StaffAccountDAO dao = new StaffAccountDAO();
             String clinicName = request.getParameter("clinicName-1");
+            if (clinicName == null) {
+                clinicName = request.getParameter("selectedClinic");
+            }
             System.out.println(clinicName);
             List<String> listClinicName = dao.listClinicName();
             request.setAttribute("clinicName", listClinicName);
@@ -64,7 +67,7 @@ public class ManageStaffServlet extends HttpServlet {
                 request.setAttribute("listAccountRemoved", listStaffUnactive);
                 request.getRequestDispatcher("coWeb-tableListStaff.jsp").forward(request, response);
             }
-            
+
             System.out.println(action);
         }
     }
