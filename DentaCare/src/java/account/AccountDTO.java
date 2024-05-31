@@ -3,7 +3,6 @@ package account;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-
 public class AccountDTO implements Serializable {
 
     private String accountID;
@@ -130,6 +129,7 @@ public class AccountDTO implements Serializable {
     }
 
     public int getRoleID() {
+    public int isRoleID() {
         return roleID;
     }
 

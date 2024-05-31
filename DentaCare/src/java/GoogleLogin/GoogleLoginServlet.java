@@ -38,13 +38,13 @@ public class GoogleLoginServlet extends HttpServlet {
                 GoogleDTO googlePojo = GoogleUtils.getUserInfo(accessToken);
 
                 AccountDAO accountDAO = new AccountDAO();
-                int numOfUsers = accountDAO.countAccount();
-                String accountId = "CUS" + Year.now().getValue() + String.format("%03d", numOfUsers + 1);
+                int numOfUsers = accountDAO.countUserAccount();
                 AccountDTO checkAccountGG = accountDAO.checkAccountGG(googlePojo.getEmail());
                 if (checkAccountGG == null) {
+                    String accountId = "CUS" + Year.now().getValue() % 100 + String.format("%05d", numOfUsers + 1);
                     checkAccountGG = accountDAO.createAccountGG(googlePojo.getId(), googlePojo.getEmail(), accountId);
                 }
-
+                String name = checkAccountGG.getUserName();
                 session.setAttribute("account", checkAccountGG);
                 request.getRequestDispatcher(url).forward(request, response);
             }

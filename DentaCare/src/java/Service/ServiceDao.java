@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author ADMIN
  */
-public class ServiceDao {
+public class ServiceDAO {
 
     
 
