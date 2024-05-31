@@ -69,9 +69,12 @@
             <c:set var="clinicByID" value="${requestScope.clinicByID}" />
             <c:set var="getByCliScheID" value="${requestScope.getByCliScheID}" />
 
-            <form action="CreateEventClinicScheduleServlet?clinicByID=${clinicByID.clinicID}&clinicScheduleID=${getByCliScheID.clinicScheduleID}" method="post">
+            <form action="CreateEventClinicScheduleServlet2?clinicByID=${clinicByID.clinicID}" method="post">
                 <h1>Create new event</h1>
-                <input readonly required="true" type="text" name="clinicScheduleID" value="${getByCliScheID.clinicScheduleID}"><br>
+<!--                <input readonly required="true" type="text" name="clinicScheduleID" value="${getByCliScheID.clinicScheduleID}"><br>-->
+                
+                <input required="true" type="date" name="workingDay" placeholder="" ><br>
+                
                 <input required="true" type="text" name="description" placeholder="Name of event" ><br>
 
                 <div class="check-button">
@@ -79,23 +82,23 @@
                     <input type="submit" value="Create">
                 </div>
                 <c:set value="${requestScope.eventAlready}" var="eventAlready" />
-                    <% String eventAlready = (String) request.getAttribute("eventAlready");
-                        if (eventAlready != null) {
-                    %>
-                    <p style="font-weight: bold; color: red" class="error-message">${eventAlready}</p>
-                    <%
-                        }
-                    %>
+                <% String eventAlready = (String) request.getAttribute("eventAlready");
+                    if (eventAlready != null) {
+                %>
+                <p style="font-weight: bold; color: red" class="error-message">${eventAlready}</p>
+                <%
+                    }
+                %>
 
-                    <%
-                        Boolean createEventClinicSchedule = (Boolean) request.getAttribute("createEventClinicSchedule");
-                        if (Boolean.TRUE.equals(createEventClinicSchedule)) {
-                    %>
-                    <p style="font-weight: bold; color: green">Create New Event Successfully!</p>
-                    <%
-                        }
-                    %>
-                </form>
-            </div>
-        </body>
-    </html>
+                <%
+                    Boolean createEventClinicSchedule = (Boolean) request.getAttribute("createEventClinicSchedule");
+                    if (Boolean.TRUE.equals(createEventClinicSchedule)) {
+                %>
+                <p style="font-weight: bold; color: green">Create New Event Successfully!</p>
+                <%
+                    }
+                %>
+            </form>
+        </div>
+    </body>
+</html>

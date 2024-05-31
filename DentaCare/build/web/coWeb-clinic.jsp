@@ -566,7 +566,7 @@
                                     </table>
                                 </div>                <!-- END POPUP -->
 
-                <a href="LoadFromClinicScheduleToCreateEventServlet?clinicByID=${clinicByID.clinicID}"><input type="button" name="" value="Add new event for clinic schedule"></a>
+                <a href="LoadFromClinicScheduleToCreateEventServlet2?clinicByID=${clinicByID.clinicID}"><input type="button" name="" value="Add new event for clinic schedule"></a>
                                 <div class="center-button">
                                     <a href="LoadFromClinicScheduleToDentistScheduleServlet?clinicByID=${clinicByID.clinicID}">
                                         <input type="button" name="" value="View Dentist Schedule">

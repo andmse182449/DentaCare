@@ -215,7 +215,39 @@ public class ClinicScheduleDAO {
         }
         return false;
     }
-    
+
+    public boolean createEventClinicSchedule2(String description, String workingDay) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            String query = "UPDATE CLINICSCHEDULE SET description = ? WHERE workingDay = ?";
+            stm = con.prepareStatement(query);
+            stm.setString(1, description);
+            stm.setString(2, workingDay); // workingDay moi
+            int e = stm.executeUpdate();
+            if (e > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("An error occurred while closing the resources: ");
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
     public ClinicScheduleDTO getClinicSchedule(int clinicID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -261,7 +293,7 @@ public class ClinicScheduleDAO {
         }
         return null;
     }
-    
+
     public ClinicScheduleDTO getInfoByClinicScheduleID(int clinicScheduleID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
