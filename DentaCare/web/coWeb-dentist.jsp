@@ -47,18 +47,12 @@
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp">
-                            <li class="sidebar-list-item">Dashboard</li>
-                        </a>
-                        <a href="coWeb-dentist.jsp">
-                            <li class="sidebar-list-item">Manage Dentist</li>
-                        </a>
-                        <a href="coWeb-staff.jsp">
-                            <li class="sidebar-list-item">Manage Staff</li>
-                        </a>
-                        <a href="coWeb-clinic.jsp">
-                            <li class="sidebar-list-item">Manage Clinic</li>
-                        </a>
+                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
+                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
+                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
+                        <a href="ServiceController"><li class="sidebar-list-item">Manage Service</li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
                     </ul>
                 </div>
             </aside>

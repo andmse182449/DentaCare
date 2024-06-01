@@ -26,8 +26,8 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link href="admin-front-end/css/style.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/stylesheet.css">
-<!--        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
+        <!--        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
     </head>
 
     <body>
@@ -49,8 +49,9 @@
                         <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
                         <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
                         <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
-                        <a href="coWeb-clinic.jsp"><li class="sidebar-list-item">Manage Clinic</li></a>
-                        <a href="coWeb-clinic.jsp"><li class="sidebar-list-item">Manage Service</li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
+                        <a href="ServiceController"><li class="sidebar-list-item">Manage Service</li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
                     </ul>
                 </div>
             </aside>
@@ -294,7 +295,7 @@
                 <!-- Bootstrap tether Core JavaScript -->
                 <script src="admin-front-end/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
                 <script src="admin-front-end/js/app-style-switcher.js"></script>
-              
+
                 <!--Custom JavaScript -->
                 <script src="admin-front-end/js/custom.js"></script>
                 <script>

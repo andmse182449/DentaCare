@@ -67,8 +67,6 @@ public class ManageStaffServlet extends HttpServlet {
                 request.setAttribute("listAccountRemoved", listStaffUnactive);
                 request.getRequestDispatcher("coWeb-tableListStaff.jsp").forward(request, response);
             }
-
-            System.out.println(action);
         }
     }
 
