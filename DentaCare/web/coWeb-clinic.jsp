@@ -526,7 +526,7 @@
                                       
                         
                                             if (isWorkingDay) {
-                                                if (!checkEvent.equals("07:00 AM - 05:00 PM")) {
+                                                if (!"07:00 AM - 05:00 PM".equals(checkEvent) || checkEvent.equals(null) || checkEvent == null ) { 
                                                 out.println("<td class=\"event-day\">" + checkEvent + "</td>");
                                             } else {
                                                 out.println("<td class=\"working-day\">" + workingDayInfo + "</td>");

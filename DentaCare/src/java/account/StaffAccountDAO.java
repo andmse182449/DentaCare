@@ -30,7 +30,7 @@ public class StaffAccountDAO {
                     staff.setEmail(rs.getString("email"));
                     staff.setFullName(rs.getString("fullname"));
                     staff.setAddress(rs.getString("address"));
-                    staff.setDob(rs.getDate("dob").toLocalDate());
+                    //staff.setDob(rs.getDate("dob").toLocalDate());
                     staff.setPhone(rs.getString("phone"));
                     staff.setUserName(rs.getString("username"));
                     list.add(staff);
@@ -56,7 +56,7 @@ public class StaffAccountDAO {
                     staff.setEmail(rs.getString("email"));
                     staff.setFullName(rs.getString("fullname"));
                     staff.setAddress(rs.getString("address"));
-                    staff.setDob(rs.getDate("dob").toLocalDate());
+                    //staff.setDob(rs.getDate("dob").toLocalDate());
                     staff.setPhone(rs.getString("phone"));
                     list.add(staff);
                 }
