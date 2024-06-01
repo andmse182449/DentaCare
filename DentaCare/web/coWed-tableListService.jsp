@@ -158,9 +158,8 @@
                                                                 <input type="text" name="serviceName" value="${service.serviceName}"  required/>
                                                                 <label>Type:</label>
                                                                 <select class="serviceType" name="serviceType" required>
-                                                                    <c:forEach var="serviceType" items="${listServiceType}">
-                                                                        <option value="${serviceType}" <c:if test="${serviceType == service.serviceType}">selected</c:if>>${serviceType}</option>
-                                                                    </c:forEach>
+                                                                    <option value="Treatment Process" <c:if test="${serviceType == service.serviceType}">selected</c:if>>Treatment Process</option>
+                                                                    <option value="Caring Process" <c:if test="${serviceType == service.serviceType}">selected</c:if>>Caring Process</option>
                                                                 </select>
                                                                 <label>Description:</label>
                                                                 <input type="text" name="serviceDescription" value="${service.serviceDescription}"  required/>
@@ -190,10 +189,8 @@
                                             <input type="text" name="serviceName" required/>
                                             <label>Type:</label>
                                             <select class="serviceType" name="serviceType" required>
-                                                <c:forEach var="serviceType" items="${listServiceType}">
-                                                    <option value="${serviceType}" <c:if test="${serviceType == service.serviceType}">selected</c:if>>${serviceType}</option>
-                                                </c:forEach>
-                                                <option value="Other">Other</option>
+                                                <option value="Treatment Process" <c:if test="${serviceType == service.serviceType}">selected</c:if>>Treatment Process</option>
+                                                <option value="Caring Process" <c:if test="${serviceType == service.serviceType}">selected</c:if>>Caring Process</option>
                                             </select>
                                             <label>Description:</label>
                                             <input type="text" name="serviceDescription" required/>

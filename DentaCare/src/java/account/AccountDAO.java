@@ -310,24 +310,21 @@ public class AccountDAO implements Serializable {
     public AccountDTO createAccountGG(String googleID, String googleName, String accountId) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, null)";
+        String query = "INSERT INTO ACCOUNT (accountID, username, email,googleID, googleName, roleID, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
 
             stm.setString(1, accountId);
             stm.setString(2, googleName);
-            stm.setString(3, null);
-            stm.setString(4, googleName);
-            stm.setString(5, null);
-            stm.setString(6, null);
-            stm.setString(7, null);
-            stm.setDate(8, null);
-            stm.setString(9, null);
-            stm.setString(10, googleID);
-            stm.setString(11, googleName);
-            stm.setInt(12, 0);
-            stm.setInt(13, 0);
+            stm.setString(3, googleName);
+            stm.setString(4, googleID);
+            stm.setString(5, googleName);
+            stm.setInt(6, 0);
+            stm.setInt(7, 0);
+            
+            
+            
             stm.executeUpdate();
 
         } catch (SQLException e) {
@@ -392,7 +389,7 @@ public class AccountDAO implements Serializable {
         return null;
     }
 
-public AccountDTO findAccountByEmail(String email) {
+    public AccountDTO findAccountByEmail(String email) {
         AccountDTO acc = null;
         Connection con = DBUtils.getConnection();
         String sql = "SELECT * FROM ACCOUNT WHERE email = ?";
@@ -416,6 +413,7 @@ public AccountDTO findAccountByEmail(String email) {
 
         return acc;
     }
+
     public AccountDTO searchAccountByID(String accountId) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;

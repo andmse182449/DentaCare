@@ -19,7 +19,7 @@ public class StaffAccountDAO {
 
     public List<AccountDTO> listAccountStaffClinic1(String clinicName) {
         String sql = "SELECT * FROM account a, clinic b "
-                + "WHERE a.roleid = 2 AND a.status = 0 AND a.clinicid = b.clinicid AND b.clinicname = ?";
+                + "WHERE a.roleid = 2 AND (a.status = 0 OR a.status = 2) AND a.clinicid = b.clinicid AND b.clinicname = ?";
 
         List<AccountDTO> list = new ArrayList<>();
         try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {

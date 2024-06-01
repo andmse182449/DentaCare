@@ -37,7 +37,23 @@ public class LoadDataServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        String url = request.getParameter("url");
+        AccountDAO accountDAO = new AccountDAO();
+        ClinicDAO clinicDAO = new ClinicDAO();
+        ServiceDAO serviceDAO = new ServiceDAO();
+        try {
+            request.setAttribute("CLINIC", clinicDAO.getAllClinic());
+        } catch (SQLException ex) {
+            Logger.getLogger(LoadDataServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+        try {
+            request.setAttribute("DENTIST", accountDAO.getAllDentists());
+        } catch (SQLException ex) {
+            Logger.getLogger(LoadDataServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        request.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

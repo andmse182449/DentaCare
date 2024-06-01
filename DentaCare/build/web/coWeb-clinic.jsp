@@ -428,7 +428,7 @@
                                                     if (clinicScheduleDTO.getWorkingDay().equals(currentDate)) {
                                                         int clinicScheduleIDToDen = clinicScheduleDTO.getClinicScheduleID();
                                                  //cho nay dang bi sai (load clinicScheduleID cho nay ban dau la null, sau khi add moi het null nen moi add thi kh hien gi)
-                                                        out.println("<td><a href=\"CreateEventClinicScheduleServlet?clinicScheduleID=" + clinicScheduleIDToDen + "&clinicByID=" + clinicID + "\">" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");  
+                                                        out.println("<td><a href=\"LoadFromClinicScheduleToCreateEventServlet?clinicScheduleID=" + clinicScheduleIDToDen + "&clinicByID=" + clinicID + "\">" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");  
 //                                                            out.println("<td><a>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");  
                                                         calendar.add(Calendar.DAY_OF_MONTH, 1);
                                                     }

@@ -38,19 +38,19 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="index.jsp">Denta<span>Care</span></a>
+                <a class="navbar-brand" href="LoadDataServlet?url=userWeb-page.jsp">Denta<span>Care</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
                 </button>
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a href="index.jsp" class="nav-link">Home</a></li>
-                        <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                        <li class="nav-item active"><a href="LoadDataServlet?url=userWeb-page.jsp" class="nav-link">Home</a></li>
+<!--                        <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>-->
                         <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
                         <li class="nav-item"><a href="doctors.html" class="nav-link">Doctors</a></li>
                         <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-                        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+<!--                        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
                         <li class="nav-item" style="margin-top: 3px;">
                             <c:set var="account" value="${sessionScope.account}"/>
 
@@ -214,11 +214,8 @@
                     <div class="ftco-footer-widget mb-4 ml-md-5">
                         <h2 class="ftco-heading-2" style="color: black">Quick Links</h2>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="py-2 d-block" style="color: black">About</a></li>
                             <li><a href="#" class="py-2 d-block" style="color: black">Features</a></li>
-                            <li><a href="#" class="py-2 d-block" style="color: black">Projects</a></li>
                             <li><a href="#" class="py-2 d-block" style="color: black">Blog</a></li>
-                            <li><a href="#" class="py-2 d-block" style="color: black">Contact</a></li>
                         </ul>
                     </div>
                 </div>
