@@ -31,11 +31,13 @@ public class SignOutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        session.invalidate();
+        String error = (String) request.getAttribute("error");
         String url = "index.jsp";
         try {
-            HttpSession session = request.getSession();
-            session.invalidate();
-            response.sendRedirect(url);
+            request.setAttribute("error", error);
+            request.getRequestDispatcher(url).forward(request, response);
         }catch(IOException e){
             System.out.println(e);
         }
@@ -78,3 +80,4 @@ public class SignOutServlet extends HttpServlet {
     }// </editor-fold>
 
 }
+ 

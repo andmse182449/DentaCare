@@ -64,5 +64,53 @@ body {
 }
 .profile{
     display:flex;
-    gap: 15rem
+    gap: 20rem
+}
+.input-field input{
+    border: 0.1px solid rgba(0, 0, 0, 0.2);
+    width: 240px;
+    padding: 2px;
+    outline: none;
+}
+.resetBtn{
+    border: none;
+    color: white; /* Text color */
+    padding: 7px; /* Padding */
+    text-align: center; /* Center text */
+    display: inline-block; /* Inline block */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    background-color: #2f89fc;
+}
+.resetBtn:hover {
+    background-color: #2a7be2;
+}/* Add this CSS to your existing stylesheet */
+
+.reset {
+    display: flex;
+    flex-direction: column;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.input-field {
+    position: relative; /* Make the container relative */
+    display: flex;
+    align-items: center;
+}
+
+.input-field input {
+    padding-right: 40px; /* Add padding to the right for the icon */
+    padding: 8px; /* Padding for the input */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.input-field i {
+    position: absolute; /* Position the icon absolutely */
+    right: 10px; /* Position the icon 10px from the right */
+    cursor: pointer; /* Pointer cursor on hover */
+    color: #aaa; /* Icon color */
 }

@@ -110,7 +110,9 @@ create  table SERVICE
 	serviceID int IDENTITY(0, 1) not null primary key,
 	serviceName nvarchar(50),
 	serviceType nvarchar(50),
-	price money 
+	price money,
+	serviceStatus bit,
+	serviceDescription nvarchar(150)
 )
 
 create table BOOKING

@@ -38,4 +38,3 @@ public class DBUtils {
     private final static String password = "12345";
 
 }
-

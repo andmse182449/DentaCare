@@ -4,6 +4,7 @@ import Service.ServiceDAO;
 import account.AccountDAO;
 import account.AccountDTO;
 import clinic.ClinicDAO;
+
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
 
 public class LoginActionServlet extends HttpServlet {
 
@@ -19,12 +21,14 @@ public class LoginActionServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String userName = request.getParameter("email");
         String password = request.getParameter("password");
+        String key = request.getParameter("key");
         HttpSession session = request.getSession();
         try {
             AccountDAO dao = new AccountDAO();
             // check email
             AccountDTO checkAccount = dao.checkExistAccount(userName, password);
             String checkPass = dao.checkExistPass(userName);
+            String checkName = dao.checkExistName(userName);
             // check password
             if (checkAccount != null) {
                 ClinicDAO clinicDAO = new ClinicDAO();
@@ -32,30 +36,47 @@ public class LoginActionServlet extends HttpServlet {
                 request.setAttribute("CLINIC", clinicDAO.getAllClinic());
                 request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
                 request.setAttribute("DENTIST", dao.getAllDentists());
-                switch (checkAccount.isRoleID()) {
+                switch (checkAccount.getRoleID()) {
                     // admin
-
                     case 3 -> {
                         session.setAttribute("account", checkAccount);
                         response.sendRedirect("coWeb-dashboard.jsp");
                     }
                     // staff
                     case 2 -> {
-                        session.setAttribute("account", checkAccount);
-                        response.sendRedirect("staffWeb-page.jsp");
+                        if (key.equals("nv")) {
+                            session.setAttribute("account", checkAccount);
+                            request.setAttribute("action", "staffLogin");
+                            request.getRequestDispatcher("StaffServlet").forward(request, response);
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
                     }
                     // dentist
                     case 1 -> {
-                        session.setAttribute("account", checkAccount);
-                        response.sendRedirect("dentistWeb-page.jsp");
+                        if (key.equals("bs")) {
+                            session.setAttribute("account", checkAccount);
+                            request.setAttribute("action", "dentistLogin");
+                            request.getRequestDispatcher("DentistServlet").forward(request, response);
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
                     }
                     default -> {
-                        session.setAttribute("account", checkAccount);
-                        request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
+                        if (key.equals("cus")) {
+                            session.setAttribute("account", checkAccount);
+                            request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
+
                     }
                 }
             } else {
-                if (!checkPass.equals(password)) {
+                if (!checkPass.equals(password) || !checkName.equals(userName)) {
                     request.setAttribute("error", "Password or Username is not correct!");
                 }
                 request.getRequestDispatcher("login.jsp").forward(request, response);

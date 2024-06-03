@@ -1,11 +1,3 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
-*/
-/* 
-    Created on : May 23, 2024, 2:21:22 PM
-    Author     : Admin
-*/
 body {
     margin: 0;
     padding: 0;
@@ -35,8 +27,9 @@ body {
     height: 40px;
     display: flex;
     justify-content: space-between;
-    padding: 20px 30px 0px 30px;
+    padding: 30px 5%;
     box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+    align-items: center;
 }
 
 .header-icon span{
@@ -45,6 +38,96 @@ body {
 }
 .material-symbols-outlined:hover {
     cursor: pointer;
+}
+
+/* dropdown for header */
+.sub-menu-wrap {
+    position: absolute;
+    right: 5%;
+    width: 50%;
+    max-width: 300px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+
+.sub-menu-wrap.open-menu {
+    max-height: 400px;
+}
+
+.sub-menu {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(73, 127, 189, 0.1);
+    border-radius: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info h3 {
+    color: #1a1a1a;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.user-info .material-symbols-outlined {
+    color: #1a1a1a;
+    width: 60px;
+    margin-right: 15px;
+}
+
+.sub-menu hr {
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #ccc;
+    margin: 15px 0 10px 0;
+}
+
+.sub-menu-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #525252;
+    margin: 12px 0;
+}
+
+.sub-menu-link p {
+    font-size: 16px;
+    width: 100%;
+}
+
+.sub-menu-link i {
+    font-size: 16px;
+}
+
+.sub-menu-link .material-symbols-outlined {
+    color: #1a1a1a;
+    background: #e5e5e5;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 15px;
+}
+
+.sub-menu-link .chevron-right {
+    font-weight: 500;
+    transition: transform 0.5s;
+}
+
+.sub-menu-link:hover span {
+    transform: translateX(5px);
+}
+
+.sub-menu-link:hover p {
+    font-weight: 600;
+}
+
+.sub-menu-link:hover i {
+    font-size: 20px;
 }
 
 /*----------- Sideber ------------*/
@@ -102,7 +185,7 @@ body {
 
 /*----------- CREATE DENTIST FORM ------------*/
 .create-button {
-    background-color: #4CAF50; /* Green */
+    background-color: #2f89fc; /* Green */
     color: white;
     padding: 10px 20px;
     margin-top: 10px;
@@ -113,39 +196,140 @@ body {
 }
 
 .create-button:hover {
-    background-color: #45a049;
+    background-color: #1b79ed;
     cursor: pointer;
 }
 
-form {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 10px 20px;
-    max-width: 500px;
-    margin: 0 auto;
+.popup {
+    position: absolute;
+    top: -150%;
+    left: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.25);
+    width: 300px;
+    padding: 10px 60px;
+    background: #fff;
+    box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    transition: top 0ms ease-in-out 200ms,
+                opacity 200ms ease-in-out 0ms,
+                transform 200ms ease-in-out 0ms;
 }
 
-form label {
-    text-align: right;
-    padding-right: 10px;
-    align-self: center;
-}
+.popup.active {
+    top: 50%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    transition: top 0ms ease-in-out 0ms,
+                opacity 200ms ease-in-out 0ms,
+                transform 200ms ease-in-out 0ms;
+} 
 
-form input {
-    padding: 8px;
-    font-size: 14px;
-}
-
-form input[type="text"],
-form input[type="password"] {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-form input[type="submit"] {
-    width: 30%;
+.popup .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 15px;
+    height: 15px;
+    background-color: #888;
+    color: #eee;
     text-align: center;
-    font-size: 16px;
+    line-height: 15px;
+    border-radius: 15px;
     cursor: pointer;
-    margin-top: 10px;
+}
+
+.popup .form h2 {
+    text-align: center;
+    color: #222;
+    margin: 10px 0px 20px;
+    font-size: 25px;
+}
+
+.popup .form .form-element {
+    margin: 15px 0px;
+}
+
+.popup .form .form-element label {
+    font-size: 14px;
+    color: #222;
+}
+
+.popup .form .form-element input[type="text"],
+.popup .form .form-element input[type="password"],
+.popup .form .form-element input[type="email"] {
+    margin-top: 5px;
+    display: block;
+    width: 100%;
+    padding: 8px;
+    outline: none;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+
+.popup .form .form-element input[type="submit"] {
+    width: 50%;
+    height: 40px;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    background: #2f89fc;
+    color: #f4f4f4;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.popup .form .form-element select {
+    margin-top: 5px;
+    display: block;
+    width: 106%;
+    padding: 10px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.popup .form .form-element select option{
+    font-size: 16px ;
+}
+
+/*----------- ALERT ------------*/
+.alert-error {
+    position: fixed;
+    top: 100px; /* Adjust this value to position the alert higher or lower */
+    left: 50%;
+    transform: translateX(-50%); /* Center the alert horizontally */
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    display: none;
+    z-index: 1000; /* Ensure the alert appears above other elements */
+}
+
+.alert-error.show {
+    display: block;
+    opacity: 1;
+}
+
+.alert-message {
+    position: fixed;
+    top: 100px; /* Adjust this value to position the alert higher or lower */
+    left: 50%;
+    transform: translateX(-50%); /* Center the alert horizontally */
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    display: none;
+    z-index: 1000; /* Ensure the alert appears above other elements */
+}
+
+.alert-message.show {
+    display: block;
+    opacity: 1;
 }

@@ -59,6 +59,7 @@ public class AddClinicScheduleServlet extends HttpServlet {
                     List<ClinicScheduleDTO> listGetAll = dao.getAllClinicSchedule();
 
                     boolean workingDayExists = false;
+                    
                     for (ClinicScheduleDTO clinicScheduleDTO : listGetAll) {
                         if (clinicScheduleDTO.getWorkingDay().equals(workingDay)) {
                             workingDayExists = true;
@@ -126,3 +127,4 @@ public class AddClinicScheduleServlet extends HttpServlet {
     }// </editor-fold>
 
 }
+

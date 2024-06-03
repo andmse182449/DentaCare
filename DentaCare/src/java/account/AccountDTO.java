@@ -23,7 +23,7 @@ public class AccountDTO implements Serializable {
     public AccountDTO() {
     }
 
-    public AccountDTO(String accountID, String userName, String password, String email, LocalDate dob, String fullName, String phone, String address, boolean gender, String googleID, String googleName, int roleID, int status, int clinicID) {
+    public AccountDTO(String accountID, String userName, String password, String email, LocalDate dob, String fullName, String phone, String address, boolean gender,String googleID, String googleName, int roleID, int status, int clinicID) {
         this.accountID = accountID;
         this.userName = userName;
         this.password = password;
@@ -128,7 +128,7 @@ public class AccountDTO implements Serializable {
         this.gender = gender;
     }
 
-    public int isRoleID() {
+    public int getRoleID() {
         return roleID;
     }
 
@@ -174,6 +174,5 @@ public class AccountDTO implements Serializable {
         return sb.toString();
     }
 
- 
 
 }

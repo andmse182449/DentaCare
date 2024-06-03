@@ -221,9 +221,10 @@
     <body>
         <h1>Clinic List</h1>
         <div class="col-md-4">
+            
             <div id="sanpham3">
                 <c:forEach items="${requestScope.clinicList}" var="clinicList">
-                    <div class="clinic-card" data-url="LoadFromClinicToScheduleServlet?clinicByID=${clinicList.clinicID}">    
+                    <div class="clinic-card" data-url="LoadFromClinicToScheduleServlet?year=2024&week=8&clinicByID=${clinicList.clinicID}">    
                         <!--sua lai khuc nay-->
                         <img src="images/combo03.PNG" class="img-responsive" />
                         <p class="first-line">${clinicList.clinicID}</p>
