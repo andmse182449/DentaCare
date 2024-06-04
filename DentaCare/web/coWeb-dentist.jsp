@@ -1,3 +1,8 @@
+<%-- 
+    Document   : coWeb-staff
+    Created on : May 23, 2024, 2:24:09 PM
+    Author     : Admin
+--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="clinic.*" %>
@@ -42,26 +47,20 @@
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp">
-                            <li class="sidebar-list-item">Dashboard</li>
-                        </a>
-                        <a href="coWeb-dentist.jsp">
-                            <li class="sidebar-list-item">Manage Dentist</li>
-                        </a>
-                        <a href="coWeb-staff.jsp">
-                            <li class="sidebar-list-item">Manage Staff</li>
-                        </a>
-                        <a href="coWeb-clinic.jsp">
-                            <li class="sidebar-list-item">Manage Clinic</li>
-                        </a>
+                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
+                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
+                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
+                        <a href="ServiceController"><li class="sidebar-list-item">Manage Service</li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
                     </ul>
                 </div>
             </aside>
             <!-- MAIN -->
             <div class="main-container">
-                <div class="alert-error sec">${error}</div>
-                <div class="alert-message sec">${message}</div>
                 <div class="main-content">
+                    <div class="alert-error sec">${error}</div>
+                    <div class="alert-message sec">${message}</div>
                     <button id="create-button" class="create-button">Create Dentist Account</button>
                 </div>
                 <br>
@@ -100,14 +99,12 @@
                                     </c:forEach>
                                 </select>
                             </div>
-
-                            <input type="hidden" name="action" value="create">
+                            <input type="hidden" name="action" value="create"/>
                             <div class="form-element">
                                 <input type="submit" value="Submit">
                             </div>
                         </form>
                     </div>
-
                 </div>
                 <!-- END POPUP -->
                 <div class="main-content">
@@ -115,16 +112,15 @@
                 </div>
             </div>
         </div>
+
         <script>
             document.querySelector("#create-button").addEventListener("click", function () {
                 document.querySelector(".popup").classList.add("active");
             });
 
-            document
-                    .querySelector(".popup .close-btn")
-                    .addEventListener("click", function () {
-                        document.querySelector(".popup").classList.remove("active");
-                    });
+            document.querySelector(".popup .close-btn").addEventListener("click", function () {
+                document.querySelector(".popup").classList.remove("active");
+            });
 
             document.addEventListener("DOMContentLoaded", function () {
                 const alertBox = document.querySelector(".alert-error.sec");
@@ -158,7 +154,6 @@
             function toggleDropdown() {
                 subMenu.classList.toggle("open-menu");
             }
-
         </script>
     </body>
 </html>

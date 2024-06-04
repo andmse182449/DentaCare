@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package controller;
 
+import Service.ServiceDAO;
 import Service.ServiceDTO;
-import Service.ServiceDao;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,7 +18,6 @@ import java.util.List;
 @WebServlet(name = "ServiceController", urlPatterns = {"/ServiceController"})
 public class ServiceController extends HttpServlet {
 
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,36 +32,39 @@ public class ServiceController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String action = request.getParameter("action");
-        ServiceDao dao = new ServiceDao();
+        ServiceDAO dao = new ServiceDAO();
+        List<String> listServiceType = dao.listServiceType();
+        request.setAttribute("listServiceType", listServiceType);
         if (action == null) {
             //Show service
             List<ServiceDTO> listActive = dao.listAllServiceActive();
             List<ServiceDTO> listUnactive = dao.listAllServiceUnactive();
             request.setAttribute("listActive", listActive);
             request.setAttribute("listUnactive", listUnactive);
-            request.getRequestDispatcher("admin-front-end/tableList.jsp").forward(request, response);
+            request.getRequestDispatcher("coWed-tableListService.jsp").forward(request, response);
         } else if (action.equals("update")) {
             //Udpate Service
             int serviceID = Integer.parseInt(request.getParameter("serviceId"));
             String serviceName = request.getParameter("serviceName");
             String serviceType = request.getParameter("serviceType");
             float serviceMoney = Float.parseFloat(request.getParameter("serviceMoney"));
-            if (dao.checkService(serviceName)) {
+            String serviceDescription = request.getParameter("serviceDescription");
+            if (dao.countServiceName(serviceName) == 2) {
                 request.setAttribute("error", "Duplicated service name");
                 List<ServiceDTO> listActive = dao.listAllServiceActive();
                 List<ServiceDTO> listUnactive = dao.listAllServiceUnactive();
                 request.setAttribute("listActive", listActive);
                 request.setAttribute("listUnactive", listUnactive);
-                request.getRequestDispatcher("admin-front-end/tableList.jsp").forward(request, response);
+                request.getRequestDispatcher("coWed-tableListService.jsp").forward(request, response);
                 return;
             }
-            ServiceDTO service = new ServiceDTO(serviceID, serviceName, serviceType, serviceMoney, 0);
+            ServiceDTO service = new ServiceDTO(serviceID, serviceName, serviceType, serviceMoney, 0, serviceDescription);
             dao.updateService(service);
             List<ServiceDTO> list = dao.listAllServiceActive();
             request.setAttribute("listActive", list);
             List<ServiceDTO> listUnactive = dao.listAllServiceUnactive();
             request.setAttribute("listUnactive", listUnactive);
-            request.getRequestDispatcher("admin-front-end/tableList.jsp").forward(request, response);            
+            request.getRequestDispatcher("coWed-tableListService.jsp").forward(request, response);
         } else if (action.equals("delete")) {
             //Delete Service
             int serviceID = Integer.parseInt(request.getParameter("serviceId"));
@@ -74,20 +73,31 @@ public class ServiceController extends HttpServlet {
             List<ServiceDTO> listUnactive = dao.listAllServiceUnactive();
             request.setAttribute("listActive", listActive);
             request.setAttribute("listUnactive", listUnactive);
-            request.getRequestDispatcher("admin-front-end/tableList.jsp").forward(request, response);
+            request.getRequestDispatcher("coWed-tableListService.jsp").forward(request, response);
         } else if (action.equals("add")) {
             //Add service
             String serviceName = request.getParameter("serviceName");
             String serviceType = request.getParameter("serviceType");
-            float serviceMoney = Float.parseFloat(request.getParameter("serviceMoney"));
-            int serviceId = dao.maxId();
-            ServiceDTO service = new ServiceDTO(++serviceId, serviceName, serviceType, serviceMoney, 0);
+            String serviceMoneyStr = request.getParameter("serviceMoney");
+            String serviceDescription = request.getParameter("serviceDescription");
+
+            if (dao.checkService(serviceName)) {
+                request.setAttribute("error", "Duplicated service name");
+                List<ServiceDTO> listActive = dao.listAllServiceActive();
+                List<ServiceDTO> listUnactive = dao.listAllServiceUnactive();
+                request.setAttribute("listActive", listActive);
+                request.setAttribute("listUnactive", listUnactive);
+                request.getRequestDispatcher("coWed-tableListService.jsp").forward(request, response);
+                return;
+            }
+            float serviceMoney = Float.parseFloat(serviceMoneyStr);
+            ServiceDTO service = new ServiceDTO(serviceName, serviceType, serviceMoney, 0, serviceDescription);
             dao.addService(service);
             List<ServiceDTO> list = dao.listAllServiceActive();
             List<ServiceDTO> listUnactive = dao.listAllServiceUnactive();
             request.setAttribute("listActive", list);
             request.setAttribute("listUnactive", listUnactive);
-            request.getRequestDispatcher("admin-front-end/tableList.jsp").forward(request, response);
+            request.getRequestDispatcher("coWed-tableListService.jsp").forward(request, response);
         } else if (action.equals("addAgain")) {
             // Add again service
             int serviceID = Integer.parseInt(request.getParameter("serviceId"));
@@ -96,7 +106,7 @@ public class ServiceController extends HttpServlet {
             List<ServiceDTO> listUnactive = dao.listAllServiceUnactive();
             request.setAttribute("listActive", listActive);
             request.setAttribute("listUnactive", listUnactive);
-            request.getRequestDispatcher("admin-front-end/tableList.jsp").forward(request, response);
+            request.getRequestDispatcher("coWed-tableListService.jsp").forward(request, response);
         }
         System.out.println(action);
     }

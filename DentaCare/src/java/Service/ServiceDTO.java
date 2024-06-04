@@ -14,16 +14,28 @@ public class ServiceDTO {
     private String serviceType;
     private float serviceMoney;
     private int serviceStatus;
+    private String serviceDescription;
 
     public ServiceDTO() {
     }
 
-    public ServiceDTO (int serviceID, String serviceName, String serviceType, float serviceMoney, int serviceStatus) {
+    public ServiceDTO(String serviceName, String serviceType, float serviceMoney, int serviceStatus, String serviceDescription) {
+        this.serviceName = serviceName;
+        this.serviceType = serviceType;
+        this.serviceMoney = serviceMoney;
+        this.serviceStatus = serviceStatus;
+        this.serviceDescription = serviceDescription;
+    }
+    
+    
+    
+    public ServiceDTO (int serviceID, String serviceName, String serviceType, float serviceMoney, int serviceStatus, String serviceDescription) {
         this.serviceID = serviceID;
         this.serviceName = serviceName;
         this.serviceType = serviceType;
         this.serviceMoney = serviceMoney;
         this.serviceStatus = serviceStatus;
+        this.serviceDescription = serviceDescription;
     }
 
     public int getServiceID() {
@@ -64,6 +76,14 @@ public class ServiceDTO {
 
     public void setServiceStatus(int serviceStatus) {
         this.serviceStatus = serviceStatus;
+    }
+
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
     }
     
     

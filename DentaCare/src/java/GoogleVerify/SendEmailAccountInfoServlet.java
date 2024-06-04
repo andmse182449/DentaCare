@@ -38,8 +38,9 @@ public class SendEmailAccountInfoServlet extends HttpServlet {
         String mail_raw = (String) request.getAttribute("mail");
         AccountDAO dao = new AccountDAO();
         AccountDTO account = dao.findAccountByEmail(mail_raw);
+        System.out.println(account.toString());
         String verify_code_page = "";
-        if (account.getRoleID() == 1) {
+        if (account.getRoleID()== 1) {
             verify_code_page = "1234";
         } else if (account.getRoleID() == 2) {
             verify_code_page = "4321";

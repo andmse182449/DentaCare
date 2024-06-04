@@ -1,310 +1,144 @@
-CREATE DATABASE [DentaCare]
-GO
-USE [DentaCare]
-GO
-/****** Object:  Table [dbo].[ACCOUNT]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[ACCOUNT](
-	[accountID] [varchar](10) NOT NULL,
-	[username] [varchar](40) NULL,
-	[password] [varchar](250) NULL,
-	[email] [varchar](30) NULL,
-	[fullName] [nvarchar](50) NULL,
-	[phone] [char](11) NULL,
-	[address] [nvarchar](250) NULL,
-	[dob] [date] NULL,
-	[gender] [bit] NULL,
-	[googleID] [varchar](100) NULL,
-	[googleName] [varchar](100) NULL,
-	[roleID] [int] NULL,
-	[status] [int] NULL,
-	[clinicID] [int] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[accountID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[BOOKING]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[BOOKING](
-	[bookingID] [varchar](10) NOT NULL,
-	[createDay] [date] NULL,
-	[appointmentDay] [date] NULL,
-	[appointmentTime] [time](7) NULL,
-	[status] [int] NULL,
-	[serviceID] [int] NULL,
-	[slotID] [int] NULL,
-	[customerID] [varchar](10) NULL,
-	[dentistID] [varchar](10) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[bookingID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[CLINIC]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[CLINIC](
-	[clinicID] [int] IDENTITY(1,1) NOT NULL,
-	[clinicName] [varchar](50) NULL,
-	[clinicAddress] [nvarchar](100) NULL,
-	[city] [varchar](50) NULL,
-	[hotline] [char](11) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[clinicID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[CLINICSCHEDULE]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[CLINICSCHEDULE](
-	[clinicScheduleID] [int] IDENTITY(0,1) NOT NULL,
-	[startTimeClinic] [time](7) NULL,
-	[endTimeClinic] [time](7) NULL,
-	[workingDay] [date] NULL,
-	[description] [nvarchar](10) NULL,
-	[clinicID] [int] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[clinicScheduleID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[DENTISTSCHEDULE]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[DENTISTSCHEDULE](
-	[accountID] [varchar](10) NOT NULL,
-	[clinicScheduleID] [int] NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[accountID] ASC,
-	[clinicScheduleID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[FEEDBACK]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[FEEDBACK](
-	[feedbackID] [varchar](50) NOT NULL,
-	[feedbackDay] [date] NULL,
-	[feedbackContent] [nvarchar](max) NULL,
-	[accountID] [varchar](10) NULL,
-	[clinicID] [int] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[feedbackID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[MAJOR]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[MAJOR](
-	[majorID] [varchar](3) NOT NULL,
-	[majorName] [nvarchar](30) NULL,
-	[majorDescription] [nvarchar](250) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[majorID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[MAJORDETAIL]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[MAJORDETAIL](
-	[majorID] [varchar](3) NOT NULL,
-	[accountID] [varchar](10) NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[majorID] ASC,
-	[accountID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[MEDIICALRECORDS]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[MEDIICALRECORDS](
-	[medicalRecordID] [varchar](10) NOT NULL,
-	[results] [nvarchar](max) NULL,
-	[bookingID] [varchar](10) NULL,
-	[reExanime] [date] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[medicalRecordID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[ROLE]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[ROLE](
-	[roleID] [int] IDENTITY(0,1) NOT NULL,
-	[roleName] [varchar](50) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[roleID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[SERVICE]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[SERVICE](
-	[serviceID] [int] IDENTITY(0,1) NOT NULL,
-	[serviceName] [nvarchar](50) NULL,
-	[serviceType] [nvarchar](50) NULL,
-	[description] [nvarchar](200) NULL,
-	[price] [money] NULL,
-	[status] [bit] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[serviceID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[SlotDetail]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[SlotDetail](
-	[clinicScheduleID] [int] IDENTITY(0,1) NOT NULL,
-	[slotID] [int] NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[clinicScheduleID] ASC,
-	[slotID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[TimeSlot]    Script Date: 5/27/2024 12:48:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[TimeSlot](
-	[slotID] [int] IDENTITY(0,1) NOT NULL,
-	[timePeriod] [varchar](20) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[slotID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/* PRIMARY KEY */
-ALTER TABLE [dbo].[ACCOUNT]  WITH CHECK ADD  CONSTRAINT [FK_roleID1] FOREIGN KEY([roleID])
-REFERENCES [dbo].[ROLE] ([roleID])
-GO
-ALTER TABLE [dbo].[ACCOUNT] CHECK CONSTRAINT [FK_roleID1]
-GO
-ALTER TABLE [dbo].[ACCOUNT]  WITH CHECK ADD  CONSTRAINT [FK_clinicID1] FOREIGN KEY([clinicID])
-REFERENCES [dbo].[CLINIC] ([clinicID])
-GO
-ALTER TABLE [dbo].[ACCOUNT] CHECK CONSTRAINT [FK_clinicID1]
-GO
-ALTER TABLE [dbo].[BOOKING]  WITH CHECK ADD  CONSTRAINT [FK_accountID4] FOREIGN KEY([customerID])
-REFERENCES [dbo].[ACCOUNT] ([accountID])
-GO
-ALTER TABLE [dbo].[BOOKING] CHECK CONSTRAINT [FK_accountID4]
-GO
-ALTER TABLE [dbo].[BOOKING]  WITH CHECK ADD  CONSTRAINT [FK_accountID5] FOREIGN KEY([dentistID])
-REFERENCES [dbo].[ACCOUNT] ([accountID])
-GO
-ALTER TABLE [dbo].[BOOKING] CHECK CONSTRAINT [FK_accountID5]
-GO
-ALTER TABLE [dbo].[BOOKING]  WITH CHECK ADD  CONSTRAINT [FK_serviceID1] FOREIGN KEY([serviceID])
-REFERENCES [dbo].[SERVICE] ([serviceID])
-GO
-ALTER TABLE [dbo].[BOOKING] CHECK CONSTRAINT [FK_serviceID1]
-GO
-ALTER TABLE [dbo].[BOOKING]  WITH CHECK ADD  CONSTRAINT [FK_slotID2] FOREIGN KEY([slotID])
-REFERENCES [dbo].[TimeSlot] ([slotID])
-GO
-ALTER TABLE [dbo].[BOOKING] CHECK CONSTRAINT [FK_slotID2]
-GO
-ALTER TABLE [dbo].[CLINICSCHEDULE]  WITH CHECK ADD  CONSTRAINT [FK_clinicID2] FOREIGN KEY([clinicID])
-REFERENCES [dbo].[CLINIC] ([clinicID])
-GO
-ALTER TABLE [dbo].[CLINICSCHEDULE] CHECK CONSTRAINT [FK_clinicID2]
-GO
-ALTER TABLE [dbo].[DENTISTSCHEDULE]  WITH CHECK ADD  CONSTRAINT [FK_accountID1] FOREIGN KEY([accountID])
-REFERENCES [dbo].[ACCOUNT] ([accountID])
-GO
-ALTER TABLE [dbo].[DENTISTSCHEDULE] CHECK CONSTRAINT [FK_accountID1]
-GO
-ALTER TABLE [dbo].[DENTISTSCHEDULE]  WITH CHECK ADD  CONSTRAINT [FK_clinicScheduleID2] FOREIGN KEY([clinicScheduleID])
-REFERENCES [dbo].[CLINICSCHEDULE] ([clinicScheduleID])
-GO
-ALTER TABLE [dbo].[DENTISTSCHEDULE] CHECK CONSTRAINT [FK_clinicScheduleID2]
-GO
-ALTER TABLE [dbo].[FEEDBACK]  WITH CHECK ADD  CONSTRAINT [FK_accountID3] FOREIGN KEY([accountID])
-REFERENCES [dbo].[ACCOUNT] ([accountID])
-GO
-ALTER TABLE [dbo].[FEEDBACK] CHECK CONSTRAINT [FK_accountID3]
-GO
-ALTER TABLE [dbo].[FEEDBACK]  WITH CHECK ADD  CONSTRAINT [FK_clinicID3] FOREIGN KEY([clinicID])
-REFERENCES [dbo].[CLINIC] ([clinicID])
-GO
-ALTER TABLE [dbo].[FEEDBACK] CHECK CONSTRAINT [FK_clinicID3]
-GO
-ALTER TABLE [dbo].[MAJORDETAIL]  WITH CHECK ADD  CONSTRAINT [FK_accountID2] FOREIGN KEY([accountID])
-REFERENCES [dbo].[ACCOUNT] ([accountID])
-GO
-ALTER TABLE [dbo].[MAJORDETAIL] CHECK CONSTRAINT [FK_accountID2]
-GO
-ALTER TABLE [dbo].[MAJORDETAIL]  WITH CHECK ADD  CONSTRAINT [FK_majorID1] FOREIGN KEY([majorID])
-REFERENCES [dbo].[MAJOR] ([majorID])
-GO
-ALTER TABLE [dbo].[MAJORDETAIL] CHECK CONSTRAINT [FK_majorID1]
-GO
-ALTER TABLE [dbo].[MEDIICALRECORDS]  WITH CHECK ADD  CONSTRAINT [FK_bookingID1] FOREIGN KEY([bookingID])
-REFERENCES [dbo].[BOOKING] ([bookingID])
-GO
-ALTER TABLE [dbo].[MEDIICALRECORDS] CHECK CONSTRAINT [FK_bookingID1]
-GO
-ALTER TABLE [dbo].[SlotDetail]  WITH CHECK ADD  CONSTRAINT [FK_clinicScheduleID1] FOREIGN KEY([clinicScheduleID])
-REFERENCES [dbo].[CLINICSCHEDULE] ([clinicScheduleID])
-GO
-ALTER TABLE [dbo].[SlotDetail] CHECK CONSTRAINT [FK_clinicScheduleID1]
-GO
-ALTER TABLE [dbo].[SlotDetail]  WITH CHECK ADD  CONSTRAINT [FK_slotID1] FOREIGN KEY([slotID])
-REFERENCES [dbo].[TimeSlot] ([slotID])
-GO
-ALTER TABLE [dbo].[SlotDetail] CHECK CONSTRAINT [FK_slotID1]
-GO
+create database DentaCare
+go
+use DentaCare
+go
 
-INSERT INTO ROLE VALUES ('Customer'), ('Dentist'), ('Staff'), ('Clinic Owner');
-insert into CLINIC values ('DentaCare1', 'clinicAddress1', 'city', '0123456789');
-insert into CLINIC values ('DentaCare2', 'clinicAddress2', 'city', '0123456789');
+create table CLINIC
+(
+	clinicID int IDENTITY(0, 1) not null primary key,
+	clinicName varchar(50),
+	clinicAddress nvarchar(100),
+	city varchar(50),
+	hotline char(11)
+)
+
+create table CLINICSCHEDULE
+(
+	clinicScheduleID int IDENTITY(0, 1) not null primary key,
+	startTimeClinic time,
+	endTimeClinic time,
+	workingDay date,
+	clinicID int,
+
+	CONSTRAINT FK_clinicID1 foreign key(clinicID) references CLINIC(clinicID)
+)
+
+create table TimeSlot
+(
+	slotID int IDENTITY(0, 1) not null primary key,
+	timePeriod varchar(20)
+)
+
+create table SlotDetail
+(
+	clinicScheduleID int IDENTITY(0, 1) not null,
+	slotID int not null,
+
+	PRIMARY KEY (clinicScheduleID, slotID), 
+
+	CONSTRAINT FK_clinicScheduleID1 foreign key(clinicScheduleID) references CLINICSCHEDULE(clinicScheduleID),
+	CONSTRAINT FK_slotID1 foreign key(slotID) references TimeSlot(slotID)
+)
+
+create table ROLE
+(
+	roleID int IDENTITY(0, 1) not null primary key,
+	roleName varchar(50)
+)
+
+create table ACCOUNT
+(
+	accountID varchar(10) not null primary key,
+	username varchar(40),
+	password varchar(250),
+	email varchar(30),
+	fullName nvarchar(50),
+	phone char(11),
+	address nvarchar(250),
+	dob date,
+	gender bit,
+	googleID varchar(100),
+	googleName varchar(100),
+	roleID int,
+
+	CONSTRAINT FK_roleID1 foreign key(roleID) references ROLE(roleID)
+)
+
+create table DENTISTSCHEDULE
+(
+	accountID varchar(10) not null,
+	clinicScheduleID int not null,
+
+	PRIMARY KEY (accountID, clinicScheduleID), 
+
+	CONSTRAINT FK_clinicScheduleID2 foreign key(clinicScheduleID) references CLINICSCHEDULE(clinicScheduleID),
+	CONSTRAINT FK_accountID1 foreign key(accountID) references ACCOUNT(accountID)
+)
+
+create table MAJOR
+(
+	majorID varchar(3) not null primary key,
+	majorName nvarchar(30),
+	majorDescription nvarchar(250),
+)
+
+create table MAJORDETAIL
+(
+	majorID varchar(3) not null,
+	accountID varchar(10) not null,
+
+	PRIMARY KEY (majorID, accountID),
+
+	CONSTRAINT FK_majorID1 foreign key(majorID) references MAJOR(majorID),
+	CONSTRAINT FK_accountID2 foreign key(accountID) references ACCOUNT(accountID)
+)
+
+create table FEEDBACK
+(
+	feedbackID varchar(50) not null primary key,
+	feedbackDay date,
+	feedbackContent nvarchar(max),
+	accountID varchar(10),
+	clinicID int,
+
+	CONSTRAINT FK_accountID3 foreign key(accountID) references ACCOUNT(accountID),
+	CONSTRAINT FK_clinicID2 foreign key(clinicID) references CLINIC(clinicID)
+)
+
+create  table SERVICE
+(
+	serviceID int IDENTITY(0, 1) not null primary key,
+	serviceName nvarchar(50),
+	serviceType nvarchar(50),
+	price money,
+	serviceStatus bit,
+	serviceDescription nvarchar(150)
+)
+
+create table BOOKING
+(
+	bookingID varchar(10) not null primary key,
+	createDay date,
+	appointmentDay date,
+	appointmentTime time,
+	status int,
+	serviceID int,
+	slotID int,
+	customerID varchar(10),
+	dentistID varchar(10),
+	
+	CONSTRAINT FK_accountID4 foreign key(customerID) references ACCOUNT(accountID),
+	CONSTRAINT FK_accountID5 foreign key(dentistID) references ACCOUNT(accountID),
+	CONSTRAINT FK_serviceID1 foreign key(serviceID) references SERVICE(serviceID),
+	CONSTRAINT FK_slotID2 foreign key(slotID) references TimeSlot(slotID)
+)
+
+create table MEDIICALRECORDS
+(
+	medicalRecordID varchar(10) not null primary key,
+	results nvarchar(max),
+	bookingID varchar(10),
+	reExanime date,
+
+	CONSTRAINT FK_bookingID1 foreign key(bookingID) references BOOKING(bookingID)
+)
