@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +41,7 @@ public class LoadDataServlet extends HttpServlet {
                 request.setAttribute("CLINIC", clinicDAO.getAllClinic());
                 request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
                 request.setAttribute("DENTIST", accountDAO.getAllDentists());
+    
         } catch (SQLException ex) {
             Logger.getLogger(LoadDataServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

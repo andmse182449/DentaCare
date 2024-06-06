@@ -1,28 +1,64 @@
 package controller;
 
+import Service.ServiceDAO;
+import account.AccountDAO;
+import clinic.ClinicDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginChangePage extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-        try (PrintWriter out = response.getWriter()) {
-            if (action.equals("login")) {
-                response.sendRedirect("login.jsp");
-            } else {
-                request.setAttribute("ac", " active");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+        String url = "";
+        try {
+            switch (action) {
+                case "login" ->
+                    response.sendRedirect("login.jsp");
+                case "home" -> {
+                    AccountDAO accountDAO = new AccountDAO();
+                    ClinicDAO clinicDAO = new ClinicDAO();
+                    ServiceDAO serviceDAO = new ServiceDAO();
+                    request.setAttribute("CLINIC", clinicDAO.getAllClinic());
+                    request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+                    request.setAttribute("DENTIST", accountDAO.getAllDentists());
+                    HttpSession session = request.getSession();
+                    url = "userWeb-page.jsp";
+                    session.setAttribute("account", session.getAttribute("account"));
+                }
+                case "doctor" -> {
+                    AccountDAO accountDAO = new AccountDAO();
+                    ClinicDAO clinicDAO = new ClinicDAO();
+                    ServiceDAO serviceDAO = new ServiceDAO();
+                    request.setAttribute("CLINIC", clinicDAO.getAllClinic());
+                    request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+                    request.setAttribute("DENTIST", accountDAO.getAllDentists());
+                    HttpSession session = request.getSession();
+                    url = "doctor.jsp";
+                    session.setAttribute("account", session.getAttribute("account"));
+                }
+                default -> {
+                    request.setAttribute("ac", " active");
+                    url = "login.jsp";
+                }
             }
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginChangePage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

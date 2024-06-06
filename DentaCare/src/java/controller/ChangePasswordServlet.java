@@ -5,12 +5,15 @@
 package controller;
 
 import account.AccountDAO;
+import account.AccountDTO;
+import account.Encoder;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +36,7 @@ public class ChangePasswordServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action"); 
+        String action = request.getParameter("action");
         if (action.equals("changePasswordFirst")) {
             String accountId = request.getParameter("accountID");
             String password = request.getParameter("new-password");
@@ -48,6 +51,27 @@ public class ChangePasswordServlet extends HttpServlet {
                 request.setAttribute("error", "An error occurred while processing your request.");
                 request.getRequestDispatcher(url).forward(request, response);
             }
+        } else  if (action.equals("change")) {
+            Encoder encode = new Encoder();
+            try {
+                HttpSession session = request.getSession();
+                AccountDTO account = (AccountDTO) session.getAttribute("account");
+                String oldPass = request.getParameter("register-pass");
+
+                AccountDAO accountDAO = new AccountDAO();
+                if (account.getPassword().equals(encode.encode(oldPass))) {
+                    String newPass = request.getParameter("newPass");
+                    accountDAO.resetPassword(account.getEmail(), newPass);
+//                    request.setAttribute("match", "Password changed successfully!");
+                    response.sendRedirect("SignOutServlet");
+                } else {
+                    request.setAttribute("unmatch", "Old Password does not match !");
+                    request.getRequestDispatcher("user-information.jsp").forward(request, response);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ChangePasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }
 

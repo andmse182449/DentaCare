@@ -20,11 +20,11 @@ pwShowHide.forEach(eyeIcon =>{
 
                 pwShowHide.forEach(icon =>{
                     icon.classList.replace("uil-eye", "uil-eye-slash");
-                })
+                });
             }
-        })
-    })
-})
+        });
+    });
+});
 
 // js code to appear signup and login form
 signUp.addEventListener("click", ( )=>{

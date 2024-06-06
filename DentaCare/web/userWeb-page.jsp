@@ -47,9 +47,8 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
                         <!--                        <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>-->
-                        <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-                        <li class="nav-item"><a href="doctors.html" class="nav-link">Doctors</a></li>
-                        <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+                        <li class="nav-item"><a href="feedback.jsp" class="nav-link">Services</a></li>
+                        <li class="nav-item"><a href="doctors.jsp" class="nav-link">Doctors</a></li>
                         <!--                        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
                         <li class="nav-item" style="margin-top: 3px;">
                             <c:set var="account" value="${sessionScope.account}"/>
