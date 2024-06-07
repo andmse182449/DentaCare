@@ -65,11 +65,11 @@ public class AccountDAO implements Serializable {
         return result;
     }
 
-    public AccountDTO updateProfileAccount(String fullName, String phone, boolean gender, String userName)
+    public AccountDTO updateProfileAccount(String fullName, String phone, boolean gender, String userName, String dob)
             throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET fullName = ?, phone = ?, gender = ?"
+        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET fullName = ?, phone = ?, gender = ?, dob = ?"
                 + " WHERE USERNAME = ?");
         try {
             String sql = String.valueOf(query);
@@ -79,7 +79,8 @@ public class AccountDAO implements Serializable {
             stm.setString(1, fullName);
             stm.setString(2, phone);
             stm.setBoolean(3, gender);
-            stm.setString(4, userName);
+            stm.setString(4, dob);
+            stm.setString(5, userName);
 
             stm.executeUpdate();
 
@@ -87,20 +88,26 @@ public class AccountDAO implements Serializable {
             stm.setString(1, userName);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                String accountID = rs.getString("accountID");
+             String accountID = rs.getString("accountID");
+                String userName2 = rs.getString("username");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
-
+                String fullName2 = rs.getString("fullName");
+                String phone2 = rs.getString("phone");
                 String address = rs.getString("address");
-                LocalDate dob = rs.getDate("dob").toLocalDate();
+                LocalDate dob2 = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob2 = dobSql.toLocalDate();
+                }
+                boolean gender2 = rs.getBoolean("gender");
                 String googleID = rs.getString("googleID");
                 String googleName = rs.getString("googleName");
-                int role = rs.getInt("role");
+                int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
-
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone + "",
-                        address, gender, googleID, googleName, role, status, clinicID);
+                AccountDTO accountDTO = new AccountDTO(accountID, userName2, password, email, dob2, fullName2, phone2 + "",
+                        address, gender2, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -507,7 +514,7 @@ public class AccountDAO implements Serializable {
         }
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -523,16 +530,17 @@ public class AccountDAO implements Serializable {
             stm.setString(9, null);
             stm.setString(10, null);
             stm.setString(11, null);
-            stm.setInt(12, 1);
-            stm.setInt(13, 2);
-            stm.setInt(14, clinicID);
+            stm.setString(12, null);
+            stm.setInt(13, 1);
+            stm.setInt(14, 2);
+            stm.setInt(15, clinicID);
 
             if (stm.executeUpdate() != 0) {
                 flag = true;
             }
 
         } catch (SQLException e) {
-            System.out.println("An SQL error occurred: ");
+            System.out.println(e.getMessage());;
 
         } finally {
             if (stm != null) {
