@@ -143,7 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('serviceID-input').value = this.getAttribute('data-address');
             document.getElementById('price-input').value = this.getAttribute('data-price');
             selectedFields[2] = true;
-            resetFields(3);
+            selectedFields[3] = true;
+            resetFields(4);
             closeCollapsible(2);
         });
     });
@@ -151,8 +152,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.future').forEach(option => {
         option.addEventListener('click', function() {
-            selectedFields[3] = true;
-            resetFields(4);
+            selectedFields[4] = true;
+            resetFields(5);
             closeCollapsible(3);
         });
     });
@@ -161,8 +162,8 @@ document.addEventListener('DOMContentLoaded', function() {
         option.addEventListener('click', function() {
             document.getElementById('timeslot-input').value = this.innerText;
             document.getElementById('slotID-input').value = this.getAttribute('data-address');   
-            selectedFields[4] = true;
-            resetFields(5);
+            selectedFields[5] = true;
+            resetFields(6);
             closeCollapsible(4);
         });
     });
@@ -171,8 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
         option.addEventListener('click', function() {
             document.getElementById('doctor-input').value = this.innerText;
             document.getElementById('doctorID-input').value = this.getAttribute('data-address');
-            selectedFields[5] = true;
-            resetFields(6);
+            selectedFields[6] = true;
             closeCollapsible(5);
         });
     });
@@ -215,15 +215,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (confirmButton) {
         confirmButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default form submission
-            
-            // Validate form fields
+            event.preventDefault(); 
             const missingField = validateForm();
             if (missingField == null) {
-                // If validation passes, show confirmation dialog
                 showConfirm('Are you sure to confirm the booking information?');
             } else {
-                // If validation fails, show an alert with the missing field label
                 showCustomAlert(`Please choose ${missingField}.`);
             }
         });
@@ -261,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return label;
             }
         }
-        return null; // If all required fields are filled, return null
+        return null;
     }
 
     function showCustomAlert(message) {

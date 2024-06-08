@@ -107,7 +107,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="bookingfield" data-number="">
+                <div class="bookingfield">
                     <div class="bookingfield-header" >
                         <h3 data-number="3">Appointment Date<span class="text-red-500">*</span></h3>
                         <span class="material-symbols-outlined">arrow_drop_down</span>
@@ -195,18 +195,18 @@
 
                     <div class="booking-form">
                         <label for="date">Date</label>
-                        <input type="text" name="date" id="date-input" class="input-field-3" required readonly>
+                        <input type="text" name="date" id="date-input" class="input-field-4" required readonly>
                     </div>
                     
                     <div class="booking-form">
                         <label for="time">Time</label>
-                        <input type="text" name="timeslot" id="timeslot-input" class="input-field-4" required readonly>
+                        <input type="text" name="timeslot" id="timeslot-input" class="input-field-5" required readonly>
                     </div>
                     
                     
                     <div class="booking-form">
                         <label for="doctor">Doctor</label>
-                        <input type="text" name="doctor" id="doctor-input" class="input-field-5" readonly>
+                        <input type="text" name="doctor" id="doctor-input" class="input-field-6" readonly>
                     </div>
                     
                     <input type="hidden" name="action" value="create">
@@ -219,7 +219,7 @@
                     <hr>
                     <div class="booking-form">
                         <label for="price">Price</label>
-                        <input type="text" name="price" id="price-input" readonly style="font-style: italic;">
+                        <input type="text" name="price" id="price-input" class="input-field-3" style="font-style: italic;" required readonly>
                     </div>
                     <div class="booking-form">
                         <input type="submit" value="Confirm Booking" class="confirm-booking-button">

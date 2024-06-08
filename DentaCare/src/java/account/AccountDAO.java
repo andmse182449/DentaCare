@@ -36,6 +36,7 @@ public class AccountDAO implements Serializable {
                 String fullName = rs.getString("fullName");
                 String phone = rs.getString("phone");
                 String address = rs.getString("address");
+                String image = rs.getString("image");
                 LocalDate dob = null;
                 java.sql.Date dobSql = rs.getDate("dob");
                 if (dobSql != null) {
@@ -48,7 +49,7 @@ public class AccountDAO implements Serializable {
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
                 AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone + "",
-                        address, gender, googleID, googleName, role, status, clinicID);
+                        address, image, gender, googleID, googleName, role, status, clinicID);
                 result.add(accountDTO);
             }
         } catch (SQLException e) {
@@ -95,6 +96,7 @@ public class AccountDAO implements Serializable {
                 String fullName2 = rs.getString("fullName");
                 String phone2 = rs.getString("phone");
                 String address = rs.getString("address");
+                String image = rs.getString("image");
                 LocalDate dob2 = null;
                 java.sql.Date dobSql = rs.getDate("dob");
                 if (dobSql != null) {
@@ -107,7 +109,7 @@ public class AccountDAO implements Serializable {
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
                 AccountDTO accountDTO = new AccountDTO(accountID, userName2, password, email, dob2, fullName2, phone2 + "",
-                        address, gender2, googleID, googleName, role, status, clinicID);
+                        address, image, gender2, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -187,6 +189,7 @@ public class AccountDAO implements Serializable {
                 String fullName = rs.getString("fullName");
                 String phone = rs.getString("phone");
                 String address = rs.getString("address");
+                String image = rs.getString("image");
                 LocalDate dob = null;
                 java.sql.Date dobSql = rs.getDate("dob");
                 if (dobSql != null) {
@@ -198,7 +201,7 @@ public class AccountDAO implements Serializable {
                 int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, gender, googleID, googleName, role, status, clinicID);
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, image, gender, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -377,7 +380,8 @@ public class AccountDAO implements Serializable {
                 int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
-                AccountDTO accountDTO = new AccountDTO(accountID, username, password, email, dob, fullname, phone, address, gender, googleID, googleName, role, status, clinicID);
+                String image = rs.getString("image");
+                AccountDTO accountDTO = new AccountDTO(accountID, username, password, email, dob, fullname, phone, address,image, gender, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -412,7 +416,7 @@ public class AccountDAO implements Serializable {
                     dob = dobSql.toLocalDate();
                 }
                 acc = new AccountDTO(rs.getString("accountID"), rs.getString("userName"), rs.getString("password"), rs.getString("email"), dob, rs.getString("fullName"), rs.getString("phone"),
-                        rs.getString("address"), rs.getBoolean("gender"), rs.getString("googleID"), rs.getString("googleName"), rs.getInt("roleID"), rs.getInt("status"), rs.getInt("clinicID"));
+                        rs.getString("address"), rs.getString("image"), rs.getBoolean("gender"), rs.getString("googleID"), rs.getString("googleName"), rs.getInt("roleID"), rs.getInt("status"), rs.getInt("clinicID"));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -451,9 +455,10 @@ public class AccountDAO implements Serializable {
                 int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
+                String image = rs.getString("image");
 
                 AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone,
-                        address, gender, googleID, googleName, role, status, clinicID);
+                        address, image, gender, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -781,8 +786,9 @@ public class AccountDAO implements Serializable {
                 int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
+                String image = rs.getString("image");
 
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, gender, googleID, googleName, role, status, clinicID);
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, image, gender, googleID, googleName, role, status, clinicID);
                 list.add(accountDTO);
             }
         } catch (SQLException e) {
@@ -833,8 +839,8 @@ public class AccountDAO implements Serializable {
                 int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
-
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, gender, googleID, googleName, role, status, clinicID);
+                String image = rs.getString("image");
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, image, gender, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
