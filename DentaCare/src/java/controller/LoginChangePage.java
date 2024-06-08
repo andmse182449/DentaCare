@@ -2,15 +2,17 @@ package controller;
 
 import Service.ServiceDAO;
 import account.AccountDAO;
+import account.AccountDTO;
 import clinic.ClinicDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,7 +36,18 @@ public class LoginChangePage extends HttpServlet {
                     request.setAttribute("DENTIST", accountDAO.getAllDentists());
                     HttpSession session = request.getSession();
                     url = "userWeb-page.jsp";
-                    session.setAttribute("account", session.getAttribute("account"));
+//                    session.setAttribute("account", session.getAttribute("account"));
+                }
+                case "service" -> {
+                    HttpSession session = request.getSession();
+                    ClinicDAO clinicDAO = new ClinicDAO();
+                    ServiceDAO serviceDAO = new ServiceDAO();
+
+                    request.setAttribute("CLINIC", clinicDAO.getAllClinic());
+                    request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+
+                    url = "service.jsp";
+
                 }
                 case "doctor" -> {
                     AccountDAO accountDAO = new AccountDAO();
@@ -42,10 +55,30 @@ public class LoginChangePage extends HttpServlet {
                     ServiceDAO serviceDAO = new ServiceDAO();
                     request.setAttribute("CLINIC", clinicDAO.getAllClinic());
                     request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
-                    request.setAttribute("DENTIST", accountDAO.getAllDentists());
-                    HttpSession session = request.getSession();
-                    url = "doctor.jsp";
-                    session.setAttribute("account", session.getAttribute("account"));
+                    List<AccountDTO> list = accountDAO.getAllDentists();
+                    int numPs = list.size();
+                    int numperPage = 4;
+                    int numpage = numPs / numperPage + (numPs % numperPage == 0 ? 0 : 1);
+                    int start, end;
+                    String tpage = request.getParameter("page");
+                    int page;
+                    try {
+                        page = Integer.parseInt(tpage);
+                    } catch (NumberFormatException e) {
+                        page = 1;
+                    }
+                    start = (page - 1) * numperPage;
+                    if (page * numperPage > numPs) {
+                        end = numPs;
+                    } else {
+                        end = page * numperPage;
+                    }
+                    List<AccountDTO> arr = accountDAO.getListByPage((ArrayList<AccountDTO>) list, start, end);
+                   
+                    request.setAttribute("num", numpage);
+                    request.setAttribute("page", page);
+                    request.setAttribute("dentistList", arr);
+                    url = "doctors.jsp";
                 }
                 default -> {
                     request.setAttribute("ac", " active");

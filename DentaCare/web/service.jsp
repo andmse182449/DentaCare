@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>FeedBack</title>
+        <title>Services</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="images/logo_dentist.jpg" type="image/png">
@@ -84,68 +84,90 @@
         </nav>
         <!-- END nav -->
 
+
         <section class="home-slider owl-carousel">
             <div class="slider-item bread-item" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
                 <div class="overlay"></div>
                 <div class="container" data-scrollax-parent="true">
                     <div class="row slider-text align-items-end">
                         <div class="col-md-7 col-sm-12 ftco-animate mb-5">
+                            <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span class="mr-2"><a href="index.jsp">Home</a></span> <span>Services</span></p>
                             <h1 class="mb-3" data-scrollax=" properties: { translateY: '70%', opacity: .9}">See Our Services</h1>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        
+        <c:set var="services"  value="${requestScope.SERVICE}"/>
 
         <section class="">
             <div class="find-section">
+
                 <div class="left-container">
                     <div class="search-container">
                         <input type="text" id="searchBar" placeholder="Search a speciality">
+
                     </div>
                     <div class="scroll-section" id="scrollSection">
-                        <div class="scroll-item" data-content="Content 1">
-                            <div class="circle"></div>
-                            Item 1
-                        </div>
-                        <div class="scroll-item" data-content="Content 2">
-                            <div class="circle"></div>
-                            Item 2
-                        </div>
-                        <div class="scroll-item" data-content="Content 3">
-                            <div class="circle"></div>
-                            Item 3
-                        </div>
-                        <div class="scroll-item" data-content="Content 4">
-                            <div class="circle"></div>
-                            Item 4
-                        </div>
-                        <div class="scroll-item" data-content="Content 5">
-                            <div class="circle"></div>
-                            Item 5
-                        </div>
+                        <c:forEach var="service" items="${services}">
+                            <div class="scroll-item" data-content="" data-serviceid="${service.getServiceID()}" data-servicename="${service.getServiceDescription()}" data-servicemoney="${service.getServiceMoney()}">
+                                <div class="circle"></div>
+                                ${service.getServiceName()}
+
+
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
 
                 <div class="right-container">
-                    <div class="results-header">Find  <span id="resultsCount" style="color:black">0</span> results</div>
-
-                    <div class="results-header">Results:</div>
+                    <style>
+                        #serviceID, #serviceName, #serviceMoney {
+                            border: none;
+                            background: transparent;
+                            outline: none;
+                            padding: 0;
+                            font-size: 16px;
+                            color: #333;
+                        }
+                    </style>
                     <ul id="resultsList" class="results"></ul>
+                    <div class="booking-section" id="serviceDetails">
+                        <form action="#">
+                            Description: <input type="text" id="serviceName" placeholder="Service Name" readonly>
+                            Price: <input type="text" id="serviceMoney" placeholder="Service Money" readonly>
+                            <input class="serviceBtn" type="submit" id="bookButton" value="Book Now">
+                        </form>
+                    </div>
                 </div>
                 <script>
-                    document.getElementById('searchBar').addEventListener('input', function () {
+                    const searchBar = document.getElementById('searchBar');
+                    const resultsCount = document.getElementById('resultsCount');
+                    const resultsList = document.getElementById('resultsList');
+
+                    searchBar.addEventListener('input', function () {
                         const filter = this.value.toLowerCase();
                         const items = document.querySelectorAll('.scroll-item');
+                        let visibleCount = 0;
+                        resultsList.innerHTML = '';
+
                         items.forEach(item => {
                             const text = item.textContent.toLowerCase();
                             if (text.includes(filter)) {
                                 item.style.display = '';
+                                visibleCount++;
+                                const listItem = document.createElement('li');
+                                listItem.textContent = item.textContent;
+                                listItem.className = 'result-item';
                             } else {
                                 item.style.display = 'none';
                             }
                         });
+
+                        resultsCount.textContent = visibleCount;
                     });
+
 
                     document.querySelectorAll('.scroll-item').forEach(item => {
                         item.addEventListener('click', function () {
@@ -154,8 +176,33 @@
                             });
                             this.querySelector('.circle').classList.add('active');
 
-                            // Optionally, you can redirect to a different page or content
-                            // window.location.href = this.dataset.content;
+                            // Get service details from data attribute
+                            const serviceName = this.getAttribute('data-servicename');
+                            const serviceMoney = this.getAttribute('data-servicemoney');
+
+                            // Set service details in the right container
+                            document.getElementById('serviceName').value = serviceName;
+                            document.getElementById('serviceMoney').value = serviceMoney;
+
+                            // Optionally, you can handle booking functionality here
+                            // For example, by showing a modal or redirecting to a booking page
+
+                            const selectedItemText = this.textContent.trim();
+                            const currentUrl = new URL(window.location.href);
+                            const selectedParam = currentUrl.searchParams.get('selected');
+
+                            if (selectedParam) {
+                                // Remove the previous selection from the URL
+                                currentUrl.searchParams.delete('selected');
+                            }
+
+                            if (selectedItemText) {
+                                // Append the new selection to the URL without encoding spaces
+                                currentUrl.searchParams.append('selected', decodeURIComponent(selectedItemText));
+                            }
+
+                            const newUrl = currentUrl.toString();
+                            window.history.pushState({}, '', newUrl);
                         });
                     });
                 </script>

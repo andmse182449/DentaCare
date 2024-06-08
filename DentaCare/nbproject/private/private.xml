@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/user-information.jsp</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/ChangePasswordServlet.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/LoginChangePage.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/service.jsp</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/css/style.css</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/doctors.jsp</file>
         </group>
     </open-files>
 </project-private>

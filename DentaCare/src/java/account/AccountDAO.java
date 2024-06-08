@@ -17,6 +17,15 @@ public class AccountDAO implements Serializable {
 
     Encoder strE = new Encoder();
 
+    public List<AccountDTO> getListByPage(ArrayList<AccountDTO> list,
+            int start, int end) {
+        ArrayList<AccountDTO> arr = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            arr.add(list.get(i));
+        }
+        return arr;
+    }
+
     public List<AccountDTO> getAllDentists() throws SQLException {
         List<AccountDTO> result = new ArrayList<>();
         Connection con = null;
@@ -88,7 +97,7 @@ public class AccountDAO implements Serializable {
             stm.setString(1, userName);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-             String accountID = rs.getString("accountID");
+                String accountID = rs.getString("accountID");
                 String userName2 = rs.getString("username");
                 String password = rs.getString("password");
                 String email = rs.getString("email");

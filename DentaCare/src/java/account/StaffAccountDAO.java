@@ -7,6 +7,7 @@ package account;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,6 @@ public class StaffAccountDAO {
         return list;
     }
 
-
     public List<AccountDTO> listAccountStaffRemovedClinic(String clinicName) {
         String sql = "SELECT * FROM account a, clinic b "
                 + "WHERE a.roleid = 2 AND a.status = 1 AND a.clinicid = b.clinicid AND b.clinicname = ?";
@@ -66,7 +66,6 @@ public class StaffAccountDAO {
         }
         return list;
     }
-
 
     public boolean updateStaffAccountUnactive(String staffUserName) {
         String sql = "update account set status = 1 where username = ?";

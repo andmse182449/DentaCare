@@ -3,7 +3,7 @@
     flex-direction: row;
     justify-content: center;
     margin: 0;
-    padding: 20px 40px;
+    padding: 20px 10px;
 
 }
 
@@ -100,7 +100,33 @@
 .result-item {
     padding: 5px 0;
 }
-#resultsCount {
-    text-decoration: underline;
-    text-decoration-color: #2f89fc;
+
+.booking-section {
+    margin-top: 20px;
+}
+
+.booking-section input[type="text"]{
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.serviceBtn {
+    background-color: #2f89fc;
+    color: white;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.serviceBtn:hover {
+    background-color: #1e77e0;
 }
