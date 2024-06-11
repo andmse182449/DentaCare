@@ -71,11 +71,11 @@ public class AddDentistToScheduleServlet extends HttpServlet {
                 ClinicScheduleDTO getByCliScheID = cliDao.getInfoByClinicScheduleID(clincScheduleID); // nay de lay all Info cua clinicSchedule
 
                 DentistScheduleDAO dao = new DentistScheduleDAO();
-                DentistScheduleDTO checkAlreadyDentistInDenSche = dao.checkAlreadyDentistInDenSche(accountID, clincScheduleID);
+                DentistScheduleDTO checkAlreadyDentistInDenSche = dao.checkAlreadyDentistInDenSche(accountID, "1");
                 if (checkAlreadyDentistInDenSche != null) {
                     request.setAttribute("alreadyHave", "This dentist is already in this day, please add another dentist !!");
                 } else {
-                    boolean addDenToSche = dao.addDenToSche(accountID, clincScheduleID);
+                    boolean addDenToSche = dao.addDenToSche(accountID, "1");
                     request.setAttribute("successfully", "Add dentist to the schedule successfully !");
                     request.setAttribute("addDenToSche", addDenToSche);
                 }

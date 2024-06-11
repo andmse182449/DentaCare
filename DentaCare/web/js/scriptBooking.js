@@ -7,7 +7,7 @@ function generateCalendar(year, month) {
     var lastDay = new Date(year, month + 1, 0);
     var daysInMonth = lastDay.getDate();
 
-    var calendarHTML = '<div class="month"><h4>' + firstDay.toLocaleString('default', { month: 'long' }) + ' ' + year + '</h4><div class="navigation"><button id="prevMonth"><i class="fa fa-chevron-left"></i></button><button id="nextMonth"><i class="fa fa-chevron-right"></i></button></div></div><div class="days">';
+    var calendarHTML = '<div class="month"><h4>' + firstDay.toLocaleString('default', {month: 'long'}) + ' ' + year + '</h4><div class="navigation"><button id="prevMonth"><i class="fa fa-chevron-left"></i></button><button id="nextMonth"><i class="fa fa-chevron-right"></i></button></div></div><div class="days">';
 
     calendarHTML += '<div class="day" style="font-weight: 700;">Sun</div>';
     calendarHTML += '<div class="day" style="font-weight: 700;">Mon</div>';
@@ -27,7 +27,7 @@ function generateCalendar(year, month) {
         var dayClass = 'day';
         if (currentDate.toDateString() === today.toDateString()) {
             dayClass += ' current';
-            
+
         } else if (currentDate < today || currentDate > lastSelectableDate) {
             dayClass += ' past';
         } else {
@@ -40,18 +40,26 @@ function generateCalendar(year, month) {
     document.getElementById('calendar').innerHTML = calendarHTML;
 
     var futureDays = document.querySelectorAll('.future');
-    futureDays.forEach(function(day) {
-        day.addEventListener('click', function() {
+    futureDays.forEach(function (day) {
+        day.addEventListener('click', function () {
             var selectedDay = document.querySelector('.selected-calendar');
             if (selectedDay) {
                 selectedDay.classList.remove('selected-calendar');
             }
             day.classList.add('selected-calendar');
-            document.getElementById('date-input').value = new Date(year, month, day.innerHTML).toLocaleDateString( 'en-CA',{ year: 'numeric', month: '2-digit', day: '2-digit' });
+            document.getElementById('date-input').value = new Date(year, month, day.innerHTML).toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'});
+            document.querySelectorAll('.timeslot-option').forEach(timeslot => {
+                timeslot.setAttribute('data-date', document.getElementById('date-input').value);
+            });
+            
+            document.querySelectorAll('.doctor-option').forEach(doctor => {
+                doctor.setAttribute('data-date', document.getElementById('date-input').value);
+            });
+            
         });
     });
 
-    document.getElementById('nextMonth').addEventListener('click', function() {
+    document.getElementById('nextMonth').addEventListener('click', function () {
         if (month === 11) {
             year++;
             month = 0;
@@ -62,7 +70,7 @@ function generateCalendar(year, month) {
     });
 
     var prevButton = document.getElementById('prevMonth');
-    prevButton.addEventListener('click', function() {
+    prevButton.addEventListener('click', function () {
         if (year === today.getFullYear() && month === today.getMonth()) {
             return;
         }
@@ -86,12 +94,12 @@ generateCalendar(new Date().getFullYear(), new Date().getMonth());
 
 
 /* FUNCTION FOR BOOKING BUSINESS */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let selectedFields = {};
     const bookingFields = document.querySelectorAll('.bookingfield-header');
 
     bookingFields.forEach(header => {
-        header.addEventListener('click', function() {
+        header.addEventListener('click', function () {
             let fieldNumber = parseInt(this.querySelector('h3').getAttribute('data-number'));
 
             if (isFieldSelectionAllowed(fieldNumber)) {
@@ -125,12 +133,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
-    
+
     document.querySelectorAll('.clinic-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             document.getElementById('clinic-input').value = this.innerText;
             document.getElementById('clinicAddress-input').value = this.getAttribute('data-address');
             document.getElementById('clinicID-input').value = this.getAttribute('data-id');
+            
+            document.querySelectorAll('.timeslot-option').forEach(timeslot => {
+                timeslot.setAttribute('data-clinic', document.getElementById('clinicID-input').value);
+            });
+            
+            document.querySelectorAll('.doctor-option').forEach(timeslot => {
+                timeslot.setAttribute('data-clinic', document.getElementById('clinicID-input').value);
+            });
+            
             selectedFields[1] = true;
             resetFields(2);
             closeCollapsible(1);
@@ -138,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.querySelectorAll('.service-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             document.getElementById('service-input').value = this.innerText;
             document.getElementById('serviceID-input').value = this.getAttribute('data-address');
             document.getElementById('price-input').value = this.getAttribute('data-price');
@@ -151,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     document.querySelectorAll('.future').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             selectedFields[4] = true;
             resetFields(5);
             closeCollapsible(3);
@@ -159,9 +176,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.querySelectorAll('.timeslot-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             document.getElementById('timeslot-input').value = this.innerText;
-            document.getElementById('slotID-input').value = this.getAttribute('data-address');   
+            document.getElementById('slotID-input').value = this.getAttribute('data-address');
             selectedFields[5] = true;
             resetFields(6);
             closeCollapsible(4);
@@ -169,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.querySelectorAll('.doctor-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             document.getElementById('doctor-input').value = this.innerText;
             document.getElementById('doctorID-input').value = this.getAttribute('data-address');
             selectedFields[6] = true;
@@ -199,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.querySelector('.custom-alert-close').onclick = closeModal;
         modal.querySelector('.custom-alert-button').onclick = closeModal;
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = 'none';
             }
@@ -210,12 +227,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /* FUNCTION FOR CHECKING INPUT FIELD */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const confirmButton = document.querySelector('.confirm-booking-button');
 
     if (confirmButton) {
-        confirmButton.addEventListener('click', function(event) {
-            event.preventDefault(); 
+        confirmButton.addEventListener('click', function (event) {
+            event.preventDefault();
             const missingField = validateForm();
             if (missingField == null) {
                 showConfirm('Are you sure to confirm the booking information?');
@@ -235,13 +252,13 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.style.display = 'none';
         };
 
-        modal.querySelector('.button-confirm').addEventListener('click', function() {
+        modal.querySelector('.button-confirm').addEventListener('click', function () {
             document.querySelector('form').submit();
         });
 
         modal.querySelector('.button-cancel').onclick = closeModal;
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = 'none';
             }
@@ -273,11 +290,13 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.querySelector('.custom-alert-close').onclick = closeModal;
         modal.querySelector('.custom-alert-button').onclick = closeModal;
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = 'none';
             }
         };
     }
 });
+
+
 

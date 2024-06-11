@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
-        <file>
-            <url>src/java/controller/BookingServlet.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>0</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/Service/ServiceDTO.java</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/DentistServlet.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/account/AccountDTO.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-booking.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-page.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/BookingServlet.java</file>
             <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/timeSlot/TimeSlotDTO.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/scriptBooking.js</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-staff.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/account-information.css</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/booking.css</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/coWeb-dentist.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/booking/BookingDTO.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-bookingHistory.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-booking.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/booking/BookingDAO.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/BookingServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/dentistSchedule/DentistScheduleDAO.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-page.jsp</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/css/styleDen.css</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/AddDentistToScheduleServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/HistoryServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/GoogleVerify/SendEmailAccountInfoServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/GoogleVerify/SendEmailBookingServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/controller/ModifyDentistScheduleServlet.java</file>
+            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/dentistSchedule/DentistScheduleDTO.java</file>
         </group>
     </open-files>
 </project-private>

@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +25,10 @@
     </head>
     <body>
         <c:set var="account" value="${sessionScope.account}"/>
+        <c:set var="clinicLimit" value="${requestScope.clinicLimit}"/>
+        <c:set var="slotLimit" value="${requestScope.slotLimit}"/>
+        <c:set var="dayLimit" value="${requestScope.dayLimit}"/>
+        
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light scrolled sleep awake">
             <div class="container">
                 <a class="navbar-brand" href="#">
@@ -78,6 +83,7 @@
         <!-- MAIN BOOKING -->
         <div class="main-booking">
             <!-- FIELD FOR CHOOSING OPTIONs -->
+            <div class="alert-error sec">${error}</div>
             <div class="container">
                 <h1>Book Service</h1>
                 <hr>
@@ -90,7 +96,7 @@
                         <ul>
                             <c:forEach items="${requestScope.clinics}" var="clinic">
                                 <li class="clinic-option" data-address="${clinic.clinicAddress}" data-id="${clinic.clinicID}">${clinic.clinicName}</li>
-                            </c:forEach>
+                                </c:forEach>
                         </ul>
                     </div>
                 </div>
@@ -102,8 +108,8 @@
                     <div class="bookingfield-content">
                         <ul>
                             <c:forEach items="${requestScope.services}" var="service">
-                            <li class="service-option" data-address="${service.serviceID}" data-price="${service.serviceMoney}">${service.serviceName}</li>
-                            </c:forEach>
+                                <li class="service-option" data-address="${service.serviceID}" data-price="${service.serviceMoney}">${service.serviceName}</li>
+                                </c:forEach>
                         </ul>
                     </div>
                 </div>
@@ -122,26 +128,23 @@
                         <span class="material-symbols-outlined">arrow_drop_down</span>
                     </div>
                     <div class="bookingfield-content">
-                        <ul>
+                        <ul id="timeslot-list">
                             <c:forEach items="${requestScope.timeslots}" var="timeslot">
-                            <li class="timeslot-option" data-address="${timeslot.slotID}" >${timeslot.timePeriod}</li>
-                            </c:forEach>
+                                <li class="timeslot-option" id='timeslotCheck' data-address="${timeslot.slotID}" >${timeslot.timePeriod}</li>
+                                </c:forEach>
                         </ul>
                     </div>
                 </div>
                 <div class="bookingfield">
                     <div class="bookingfield-header" >
-                        <div style="display: flex; justify-content: space-between;">
-                            <h3 data-number="5">Doctor</h3>
-                            <p>(optional)</p>
-                        </div>
+                        <h3 data-number="5">Doctor <p>(optional)</p></h3>
                         <span class="material-symbols-outlined">arrow_drop_down</span>
                     </div>
                     <div class="bookingfield-content">
-                        <ul>
+                        <ul id="doctor-list">
                             <c:forEach items="${requestScope.doctors}" var="doctor">
-                                <li class="doctor-option" data-address="${doctor.accountID}">${doctor.fullName}</li>
-                            </c:forEach>
+                                <li class="doctor-option " data-address="${doctor.accountID}">${doctor.fullName}</li>
+                                </c:forEach>
                         </ul>
                     </div>
                 </div>
@@ -151,7 +154,7 @@
                 <h1 style="font-size: 24px;">Booking Information</h1>
                 <p style="font-size: 11px; font-style: italic; margin: 0;"> <span class="text-red-500">*</span>Please make sure you have completely updated your personal information. </p>
                 <hr>
-                <form action="">
+                <form action="BookingServlet" method="post">
 
                     <div class="booking-form">
                         <label for="fullName">Full Name</label>
@@ -165,29 +168,29 @@
                         <label for="dob">Date of Birth</label>
                         <input type="text" name="dob" value="${account.dob}" required readonly>
                     </div>
-                    
+
                     <div class="booking-form">
                         <label for="email">Email</label>
                         <input type="text" name="email" value="${account.email}" required readonly>
                     </div>
-                    
+
                     <div class="booking-form">
                         <label for="address">Address</label>
                         <input type="text" name="address" value="${account.address}" required readonly>
                     </div>
-                    
+
                     <hr>
-                    
+
                     <div class="booking-form">
                         <label for="clinic">Clinic</label>
                         <input type="text" name="clinic" id="clinic-input" class="input-field-1" required readonly>
                     </div>
-                    
+
                     <div class="booking-form">
                         <label for="clinic-address">Clinic Address</label>
                         <input type="text" name="clinic-address" id="clinicAddress-input" required readonly>
                     </div>
-                    
+
                     <div class="booking-form">
                         <label for="service">Service</label>
                         <input type="text" name="service" id="service-input" class="input-field-2" required readonly>
@@ -197,25 +200,25 @@
                         <label for="date">Date</label>
                         <input type="text" name="date" id="date-input" class="input-field-4" required readonly>
                     </div>
-                    
+
                     <div class="booking-form">
                         <label for="time">Time</label>
                         <input type="text" name="timeslot" id="timeslot-input" class="input-field-5" required readonly>
                     </div>
-                    
-                    
+
+
                     <div class="booking-form">
                         <label for="doctor">Doctor</label>
                         <input type="text" name="doctor" id="doctor-input" class="input-field-6" readonly>
                     </div>
-                    
+
                     <input type="hidden" name="action" value="create">
                     <input type="hidden" name="accountID" value="${account.accountID}">
                     <input type="hidden" name="slotID" id="slotID-input">
                     <input type="hidden" name="dentistID" id="doctorID-input">
                     <input type="hidden" name="serviceID" id="serviceID-input">
                     <input type="hidden" name="clinicID" id="clinicID-input">
-                    
+
                     <hr>
                     <div class="booking-form">
                         <label for="price">Price</label>
@@ -224,7 +227,7 @@
                     <div class="booking-form">
                         <input type="submit" value="Confirm Booking" class="confirm-booking-button">
                     </div>
-                    
+
                 </form>
             </div>
         </div>
@@ -291,6 +294,90 @@
                 const toggleMenu = document.querySelector(".menu");
                 toggleMenu.classList.toggle("active");
             }
+            
+            
+            //Limit attempt of booking
+            document.addEventListener('DOMContentLoaded', function () {
+                const timeslotList = document.getElementById('timeslot-list');
+                
+                const clinicLimit = "${requestScope.clinicLimit}";
+                const slotLimit = "${requestScope.slotLimit}";
+                const dayLimit = "${requestScope.dayLimit}";
+                
+                function updateTimeslotAttributes() {
+
+                    timeslotList.querySelectorAll('.timeslot-option').forEach(function (option) {
+                        const timeslotDate = option.getAttribute('data-date');
+                        const timeslotClinic = option.getAttribute('data-clinic');
+                        const timeslotID = option.getAttribute('data-address');
+
+                        option.classList.remove('disabled');
+
+                        if (dayLimit.includes(timeslotDate) && clinicLimit.includes(timeslotClinic) && slotLimit.includes(timeslotID)) {
+                            option.classList.add('disabled');
+                        }
+
+                    });
+                }
+                
+                document.querySelectorAll('.future').forEach(function (option) {
+                    option.addEventListener('click', updateTimeslotAttributes);
+                });
+                
+
+                document.querySelectorAll('.clinic-option').forEach(function (option) {
+                    option.addEventListener('click', updateTimeslotAttributes);
+                });
+                // Initial check
+                updateTimeslotAttributes();
+            });
+               
+            document.addEventListener('DOMContentLoaded', function () {
+                const workingList = "${requestScope.listDenSchedule}";
+                const doctorList = document.getElementById('doctor-list');
+                
+                function updateDentistOption() {
+
+                    doctorList.querySelectorAll('.doctor-option').forEach(function (option) {
+                        const doctorDate = option.getAttribute('data-date');
+                        const doctorClinic = option.getAttribute('data-clinic');
+                        const doctorID = option.getAttribute('data-address');
+
+                        
+                        option.classList.add('nothing');
+                        
+                        if (workingList.includes(doctorDate) && workingList.includes(doctorClinic) && workingList.includes(doctorID)) {
+                            option.classList.remove('nothing');
+                        }
+
+                    });
+                }
+                
+                document.querySelectorAll('.future').forEach(function (option) {
+                    option.addEventListener('click', updateDentistOption);
+                });
+                
+
+                document.querySelectorAll('.clinic-option').forEach(function (option) {
+                    option.addEventListener('click', updateDentistOption);
+                });
+                // Initial check
+                updateDentistOption();
+            });
+            
+            document.addEventListener("DOMContentLoaded", function () {
+                const alertBox = document.querySelector(".alert-error.sec");
+                if (alertBox && alertBox.textContent.trim()) {
+                    alertBox.style.display = "block"; // Show the alert if there's an error message
+                    alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                    setTimeout(function () {
+                        alertBox.classList.remove("show");
+                        setTimeout(function () {
+                            alertBox.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                }
+            });
         </script>
         <script src="js/scriptBooking.js"></script>
     </body>

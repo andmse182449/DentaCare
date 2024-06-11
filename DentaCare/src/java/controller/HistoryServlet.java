@@ -28,7 +28,7 @@ public class HistoryServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-            String url = "history.jsp";
+            String url = "userWeb-bookingHistory.jsp";
         try {
             request.getRequestDispatcher(url).forward(request, response);
         }catch(IOException e){

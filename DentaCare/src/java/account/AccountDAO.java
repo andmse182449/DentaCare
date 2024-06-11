@@ -419,7 +419,7 @@ public class AccountDAO implements Serializable {
                         rs.getString("address"), rs.getString("image"), rs.getBoolean("gender"), rs.getString("googleID"), rs.getString("googleName"), rs.getInt("roleID"), rs.getInt("status"), rs.getInt("clinicID"));
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return acc;
@@ -584,7 +584,7 @@ public class AccountDAO implements Serializable {
         }
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -600,16 +600,17 @@ public class AccountDAO implements Serializable {
             stm.setString(9, null);
             stm.setString(10, null);
             stm.setString(11, null);
-            stm.setInt(12, 2);
+            stm.setString(12, null);
             stm.setInt(13, 2);
-            stm.setInt(14, clinicID);
+            stm.setInt(14, 2);
+            stm.setInt(15, clinicID);
 
             if (stm.executeUpdate() != 0) {
                 flag = true;
             }
 
         } catch (SQLException e) {
-            System.out.println("An SQL error occurred: ");
+            System.out.println(e.getMessage());
 
         } finally {
             if (stm != null) {
