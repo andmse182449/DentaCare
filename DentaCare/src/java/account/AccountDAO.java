@@ -875,4 +875,56 @@ public class AccountDAO implements Serializable {
         }
         return 0;
     }
+    
+    public AccountDTO getDentistByID (String dentistID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("select accountID from ACCOUNT WHERE accountID = ?");
+        try {
+            String sql = null;
+            sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, dentistID);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String accountID = rs.getString("accountID");
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                boolean gender = rs.getBoolean("gender");
+                String googleID = rs.getString("googleID");
+                String googleName = rs.getString("googleName");
+                int role = rs.getInt("roleID");
+                int status = rs.getInt("status");
+                int clinicID = rs.getInt("clinicID");
+                String image = rs.getString("image");
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, image, gender, googleID, googleName, role, status, clinicID);
+                return accountDTO;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
 }

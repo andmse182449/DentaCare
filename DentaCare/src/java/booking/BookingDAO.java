@@ -102,10 +102,8 @@ public class BookingDAO {
     public BookingDTO getBookingByID (String bookingID) {
         String sql = "SELECT * FROM BOOKING WHERE bookingID = ?";
         Connection con = DBUtils.getConnection();
-        List<BookingDTO> list = new ArrayList<>();
         try {
-            PreparedStatement stm = con.prepareStatement(sql);
-            stm = con.prepareStatement(sql);
+            PreparedStatement stm =  con.prepareStatement(sql);
             stm.setString(1, bookingID);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
@@ -138,7 +136,45 @@ public class BookingDAO {
         }
         return null;
     }
-
+    
+    public List<BookingDTO> getBookingListByCustomerID (String customerID) {
+        String sql = "SELECT * FROM BOOKING WHERE customerID = ?";
+        Connection con = DBUtils.getConnection();
+        List<BookingDTO> list = new ArrayList<>();
+        try {
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setString(1, customerID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                
+                String bookingID = rs.getString("bookingID");
+                LocalDate createDay = null;
+                java.sql.Date cdSql = rs.getDate("createDay");
+                if (cdSql != null) {
+                    createDay = cdSql.toLocalDate();
+                }
+                
+                LocalDate appointmentDay = null;
+                java.sql.Date apSql = rs.getDate("appointmentDay");
+                if (apSql != null) {
+                    appointmentDay = apSql.toLocalDate();
+                }
+                
+                int status = rs.getInt("status");
+                float price = rs.getFloat("price");
+                int serviceID = rs.getInt("serviceID");
+                int slotID =rs.getInt("slotID");
+                String dentistID = rs.getString("dentistID");
+                int clinicID = rs.getInt("clinicID");
+                BookingDTO booking = new BookingDTO(bookingID, createDay, appointmentDay, status, price, serviceID, slotID, customerID, dentistID, clinicID);
+                list.add(booking);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return list;
+    }
+    
     public int countBooking() {
         String sql = "SELECT COUNT(*) AS Numb FROM BOOKING";
         Connection con = DBUtils.getConnection();
