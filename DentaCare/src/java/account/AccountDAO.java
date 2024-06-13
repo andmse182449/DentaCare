@@ -880,7 +880,7 @@ public class AccountDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        StringBuilder query = new StringBuilder("select accountID from ACCOUNT WHERE accountID = ?");
+        StringBuilder query = new StringBuilder("select * from ACCOUNT WHERE accountID = ?");
         try {
             String sql = null;
             sql = String.valueOf(query);

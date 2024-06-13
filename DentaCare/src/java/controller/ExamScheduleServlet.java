@@ -79,11 +79,6 @@ public class ExamScheduleServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(BookingServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            request.getRequestDispatcher(url).forward(request, response);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
