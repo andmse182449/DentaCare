@@ -12,6 +12,8 @@ import booking.BookingDAO;
 import booking.BookingDTO;
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
+import dayOffSchedule.DayOffScheduleDAO;
+import dayOffSchedule.DayOffScheduleDTO;
 import dentistSchedule.DentistScheduleDAO;
 import dentistSchedule.DentistScheduleDTO;
 import java.io.IOException;
@@ -59,30 +61,32 @@ public class BookingServlet extends HttpServlet {
         AccountDAO accountDAO = new AccountDAO();
         BookingDAO bookingDAO = new BookingDAO();
         DentistScheduleDAO dentistScheduleDAO = new DentistScheduleDAO();
-        
+        DayOffScheduleDAO dayOffDAO = new DayOffScheduleDAO();
+
         if (action == null || action == "" || action.equals("book")) {
             try {
                 List<ClinicDTO> listClinic = clinicDAO.getAllClinic();
                 List<ServiceDTO> listService = serviceDAO.listAllServiceActive();
                 List<TimeSlotDTO> listTimeSlot = timeslotDAO.getAllTimeSLot();
                 List<AccountDTO> listDoctor = accountDAO.getAllDentists();
-                List<DentistScheduleDTO> listDenSchedule =  dentistScheduleDAO.getAccountDentistByRoleID1();
-                
+                List<DentistScheduleDTO> listDenSchedule = dentistScheduleDAO.getAccountDentistByRoleID1();
+                List<DayOffScheduleDTO> listDayOff = dayOffDAO.getAllOffDate2();
+
                 List<Integer> listClinicLimit = bookingDAO.getClinicIDLimitBooking();
                 List<Integer> listSlotLimit = bookingDAO.getSlotIDLimitBooking();
                 List<Date> listDayLimit = bookingDAO.getDayLimitBooking();
-                
+
                 request.setAttribute("clinics", listClinic);
                 request.setAttribute("services", listService);
                 request.setAttribute("timeslots", listTimeSlot);
                 request.setAttribute("doctors", listDoctor);
                 request.setAttribute("listDenSchedule", listDenSchedule);
-                
+                request.setAttribute("listDayOff", listDayOff);
+
                 request.setAttribute("clinicLimit", listClinicLimit);
                 request.setAttribute("slotLimit", listSlotLimit);
                 request.setAttribute("dayLimit", listDayLimit);
-                
-                
+
                 request.getRequestDispatcher("userWeb-booking.jsp").forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(BookingServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,7 +115,7 @@ public class BookingServlet extends HttpServlet {
             String timeslot = request.getParameter("timeslot");
             String doctor = request.getParameter("doctor");
             String url = "";
-            
+
             try {
                 List<Integer> listClinicLimit = bookingDAO.getClinicIDLimitBooking();
                 List<Integer> listSlotLimit = bookingDAO.getSlotIDLimitBooking();
@@ -124,25 +128,30 @@ public class BookingServlet extends HttpServlet {
                         request.setAttribute("action", "book");
                         request.getRequestDispatcher("BookingServlet").forward(request, response);
                         return;
+                    } else if (booking.getCustomerID().equals(customerID) && booking.getSlotID() == slotID && booking.getAppointmentDay().equals(appointmentDay) && booking.getStatus() != 3) {
+                        request.setAttribute("error", "You cannot book serveral services in one slot");
+                        request.setAttribute("action", "book");
+                        request.getRequestDispatcher("BookingServlet").forward(request, response);
+                        return;
                     }
                 }
-                
+
                 if (listClinicLimit.contains(clinicID) && listSlotLimit.contains(slotID) && listDayLimit.contains(sqlDate)) {
                     request.setAttribute("error", "Something Wrong");
                     request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
                 } else {
-                   if (bookingDAO.createBooking(bookingID, createDay, appointmentDay, price, serviceID, slotID, customerID, dentistID, clinicID)) {
-                       String now_raw = createTime.format(formatter2);
-                       request.setAttribute("createTime", now_raw);
-                       request.setAttribute("bookingID", bookingID);
-                       request.setAttribute("mail", email);
-                       request.setAttribute("clinicAddress", clinic_address);
-                       request.setAttribute("clinic", clinic);
-                       request.setAttribute("timeslot", timeslot);
-                       request.setAttribute("service", service);
-                       request.setAttribute("doctor", doctor);
-                       url = "SendEmailBookingServlet";
-                   }
+                    if (bookingDAO.createBooking(bookingID, createDay, appointmentDay, price, serviceID, slotID, customerID, dentistID, clinicID)) {
+                        String now_raw = createTime.format(formatter2);
+                        request.setAttribute("createTime", now_raw);
+                        request.setAttribute("bookingID", bookingID);
+                        request.setAttribute("mail", email);
+                        request.setAttribute("clinicAddress", clinic_address);
+                        request.setAttribute("clinic", clinic);
+                        request.setAttribute("timeslot", timeslot);
+                        request.setAttribute("service", service);
+                        request.setAttribute("doctor", doctor);
+                        url = "SendEmailBookingServlet";
+                    }
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BookingServlet.class.getName()).log(Level.SEVERE, null, ex);

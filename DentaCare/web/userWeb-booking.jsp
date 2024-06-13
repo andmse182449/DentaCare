@@ -28,7 +28,7 @@
         <c:set var="clinicLimit" value="${requestScope.clinicLimit}"/>
         <c:set var="slotLimit" value="${requestScope.slotLimit}"/>
         <c:set var="dayLimit" value="${requestScope.dayLimit}"/>
-        
+
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light scrolled sleep awake">
             <div class="container">
                 <a class="navbar-brand" href="#">
@@ -45,9 +45,6 @@
                         </li>
                         <li class="nav-item">
                             <a href="doctors.html" class="nav-link">Doctors</a>
-                        </li>
-                        <li class="nav-item" style="padding: 0.45rem;">
-                            <button class="show-popup">Book service</button>
                         </li>
                         <li class="nav-item" style="margin-top: 3px;">
                             <div class="action">
@@ -84,6 +81,7 @@
         <div class="main-booking">
             <!-- FIELD FOR CHOOSING OPTIONs -->
             <div class="alert-error sec">${error}</div>
+            <input type="hidden" name="listDayoff" id="listDayoff" value="${requestScope.listDayOff}"/>
             <div class="container">
                 <h1>Book Service</h1>
                 <hr>
@@ -289,21 +287,22 @@
         </footer>
         <!-- loader -->
         <div id="ftco-loader" class="show fullscreen"></div>
+        <script src="js/scriptBooking.js"></script>
         <script>
             function menuToggle() {
                 const toggleMenu = document.querySelector(".menu");
                 toggleMenu.classList.toggle("active");
             }
-            
-            
+
+
             //Limit attempt of booking
             document.addEventListener('DOMContentLoaded', function () {
                 const timeslotList = document.getElementById('timeslot-list');
-                
+
                 const clinicLimit = "${requestScope.clinicLimit}";
                 const slotLimit = "${requestScope.slotLimit}";
                 const dayLimit = "${requestScope.dayLimit}";
-                
+
                 function updateTimeslotAttributes() {
 
                     timeslotList.querySelectorAll('.timeslot-option').forEach(function (option) {
@@ -319,11 +318,11 @@
 
                     });
                 }
-                
+
                 document.querySelectorAll('.future').forEach(function (option) {
                     option.addEventListener('click', updateTimeslotAttributes);
                 });
-                
+
 
                 document.querySelectorAll('.clinic-option').forEach(function (option) {
                     option.addEventListener('click', updateTimeslotAttributes);
@@ -331,32 +330,31 @@
                 // Initial check
                 updateTimeslotAttributes();
             });
-               
+
             document.addEventListener('DOMContentLoaded', function () {
                 const workingList = "${requestScope.listDenSchedule}";
                 const doctorList = document.getElementById('doctor-list');
-                
-                function updateDentistOption() {
 
+                function updateDentistOption() {
                     doctorList.querySelectorAll('.doctor-option').forEach(function (option) {
                         const doctorDate = option.getAttribute('data-date');
                         const doctorClinic = option.getAttribute('data-clinic');
                         const doctorID = option.getAttribute('data-address');
 
-                        
+
                         option.classList.add('nothing');
-                        
+
                         if (workingList.includes(doctorDate) && workingList.includes(doctorClinic) && workingList.includes(doctorID)) {
                             option.classList.remove('nothing');
                         }
 
                     });
                 }
-                
+
                 document.querySelectorAll('.future').forEach(function (option) {
                     option.addEventListener('click', updateDentistOption);
                 });
-                
+
 
                 document.querySelectorAll('.clinic-option').forEach(function (option) {
                     option.addEventListener('click', updateDentistOption);
@@ -364,7 +362,7 @@
                 // Initial check
                 updateDentistOption();
             });
-            
+
             document.addEventListener("DOMContentLoaded", function () {
                 const alertBox = document.querySelector(".alert-error.sec");
                 if (alertBox && alertBox.textContent.trim()) {
@@ -377,9 +375,11 @@
                         }, 600); // Adjust the delay (in milliseconds) to match the transition duration
                     }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
                 }
+
             });
+
         </script>
-        <script src="js/scriptBooking.js"></script>
+        
     </body>
 </html>
 

@@ -14,7 +14,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,16 +37,34 @@ public class HistoryServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String action = (String) request.getAttribute("action");
+        if (action == null) {
+            action = request.getParameter("action");
+        }
         String url = "userWeb-bookingHistory.jsp";
+
         HttpSession session = request.getSession();
         AccountDTO account = (AccountDTO) session.getAttribute("account");
         BookingDAO bookingDAO = new BookingDAO();
-        List<BookingDTO> bookingList = bookingDAO.getBookingListByCustomerID(account.getAccountID());
-        try {
-            request.setAttribute("bookingList", bookingList);
-            request.getRequestDispatcher(url).forward(request, response);
-        } catch (IOException e) {
-            System.out.println(e);
+        if (action == null || action == "" || action.equals("load")) {
+            List<BookingDTO> bookingList = bookingDAO.getBookingListByCustomerID(account.getAccountID());
+            try {
+                request.setAttribute("bookingList", bookingList);
+                request.getRequestDispatcher(url).forward(request, response);
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        } else if (action.equals("cancel")) {
+            String bookingID = request.getParameter("bookingID");
+            try {
+                if (bookingDAO.cancelBooking(bookingID)) {
+                    request.setAttribute("message", "Cancel Completed");
+                    request.setAttribute("action", "load");
+                    request.getRequestDispatcher("HistoryServlet").forward(request, response);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(HistoryServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

@@ -21,14 +21,17 @@ function generateCalendar(year, month) {
         calendarHTML += '<div class="day"></div>';
     }
 
+    var listDayOffValue = document.getElementById('listDayoff').value;
+    var clinic = document.getElementById('clinicID-input').value;
     // Add days of the month
     for (var i = 1; i <= daysInMonth; i++) {
         var currentDate = new Date(year, month, i);
         var dayClass = 'day';
+        var check = new Date(year, month, i).toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'});
         if (currentDate.toDateString() === today.toDateString()) {
             dayClass += ' current';
 
-        } else if (currentDate < today || currentDate > lastSelectableDate) {
+        } else if (currentDate < today || currentDate > lastSelectableDate || (listDayOffValue.includes(check) && listDayOffValue.includes('clinicID=' + clinic))) {
             dayClass += ' past';
         } else {
             dayClass += ' future';
@@ -151,6 +154,11 @@ document.addEventListener('DOMContentLoaded', function () {
             selectedFields[1] = true;
             resetFields(2);
             closeCollapsible(1);
+            closeCollapsible(2);
+            closeCollapsible(3);
+            closeCollapsible(4);
+            closeCollapsible(5);
+            
         });
     });
 
@@ -160,18 +168,22 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('serviceID-input').value = this.getAttribute('data-address');
             document.getElementById('price-input').value = this.getAttribute('data-price');
             selectedFields[2] = true;
-            selectedFields[3] = true;
             resetFields(4);
             closeCollapsible(2);
+            closeCollapsible(3);
+            closeCollapsible(4);
+            closeCollapsible(5);
         });
     });
 
 
     document.querySelectorAll('.future').forEach(option => {
         option.addEventListener('click', function () {
-            selectedFields[4] = true;
+            selectedFields[3] = true;
             resetFields(5);
             closeCollapsible(3);
+            closeCollapsible(4);
+            closeCollapsible(5);
         });
     });
 
@@ -179,9 +191,10 @@ document.addEventListener('DOMContentLoaded', function () {
         option.addEventListener('click', function () {
             document.getElementById('timeslot-input').value = this.innerText;
             document.getElementById('slotID-input').value = this.getAttribute('data-address');
-            selectedFields[5] = true;
+            selectedFields[4] = true;
             resetFields(6);
             closeCollapsible(4);
+            closeCollapsible(5);
         });
     });
 
@@ -189,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
         option.addEventListener('click', function () {
             document.getElementById('doctor-input').value = this.innerText;
             document.getElementById('doctorID-input').value = this.getAttribute('data-address');
-            selectedFields[6] = true;
+            selectedFields[5] = true;
             closeCollapsible(5);
         });
     });
@@ -297,6 +310,3 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 });
-
-
-

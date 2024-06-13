@@ -61,8 +61,8 @@ public class BookingDAO {
         }
         return false;
     }
-    
-    public List<BookingDTO> getAllBookingList () {
+
+    public List<BookingDTO> getAllBookingList() {
         String sql = "SELECT * FROM BOOKING";
         Connection con = DBUtils.getConnection();
         List<BookingDTO> list = new ArrayList<>();
@@ -71,23 +71,23 @@ public class BookingDAO {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 String bookingID = rs.getString("bookingID");
-                
+
                 LocalDate createDay = null;
                 java.sql.Date cdSql = rs.getDate("createDay");
                 if (cdSql != null) {
                     createDay = cdSql.toLocalDate();
                 }
-                
+
                 LocalDate appointmentDay = null;
                 java.sql.Date apSql = rs.getDate("appointmentDay");
                 if (apSql != null) {
                     appointmentDay = apSql.toLocalDate();
                 }
-                
+
                 int status = rs.getInt("status");
                 float price = rs.getFloat("price");
                 int serviceID = rs.getInt("serviceID");
-                int slotID =rs.getInt("slotID");
+                int slotID = rs.getInt("slotID");
                 String customerID = rs.getString("customerID");
                 String dentistID = rs.getString("dentistID");
                 int clinicID = rs.getInt("clinicID");
@@ -98,33 +98,32 @@ public class BookingDAO {
         }
         return list;
     }
-    
-    public BookingDTO getBookingByID (String bookingID) {
+
+    public BookingDTO getBookingByID(String bookingID) {
         String sql = "SELECT * FROM BOOKING WHERE bookingID = ?";
         Connection con = DBUtils.getConnection();
         try {
-            PreparedStatement stm =  con.prepareStatement(sql);
+            PreparedStatement stm = con.prepareStatement(sql);
             stm.setString(1, bookingID);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
-                
-                
+
                 LocalDate createDay = null;
                 java.sql.Date cdSql = rs.getDate("createDay");
                 if (cdSql != null) {
                     createDay = cdSql.toLocalDate();
                 }
-                
+
                 LocalDate appointmentDay = null;
                 java.sql.Date apSql = rs.getDate("appointmentDay");
                 if (apSql != null) {
                     appointmentDay = apSql.toLocalDate();
                 }
-                
+
                 int status = rs.getInt("status");
                 float price = rs.getFloat("price");
                 int serviceID = rs.getInt("serviceID");
-                int slotID =rs.getInt("slotID");
+                int slotID = rs.getInt("slotID");
                 String customerID = rs.getString("customerID");
                 String dentistID = rs.getString("dentistID");
                 int clinicID = rs.getInt("clinicID");
@@ -136,8 +135,8 @@ public class BookingDAO {
         }
         return null;
     }
-    
-    public List<BookingDTO> getBookingListByCustomerID (String customerID) {
+
+    public List<BookingDTO> getBookingListByCustomerID(String customerID) {
         String sql = "SELECT * FROM BOOKING WHERE customerID = ?";
         Connection con = DBUtils.getConnection();
         List<BookingDTO> list = new ArrayList<>();
@@ -146,24 +145,24 @@ public class BookingDAO {
             stm.setString(1, customerID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                
+
                 String bookingID = rs.getString("bookingID");
                 LocalDate createDay = null;
                 java.sql.Date cdSql = rs.getDate("createDay");
                 if (cdSql != null) {
                     createDay = cdSql.toLocalDate();
                 }
-                
+
                 LocalDate appointmentDay = null;
                 java.sql.Date apSql = rs.getDate("appointmentDay");
                 if (apSql != null) {
                     appointmentDay = apSql.toLocalDate();
                 }
-                
+
                 int status = rs.getInt("status");
                 float price = rs.getFloat("price");
                 int serviceID = rs.getInt("serviceID");
-                int slotID =rs.getInt("slotID");
+                int slotID = rs.getInt("slotID");
                 String dentistID = rs.getString("dentistID");
                 int clinicID = rs.getInt("clinicID");
                 BookingDTO booking = new BookingDTO(bookingID, createDay, appointmentDay, status, price, serviceID, slotID, customerID, dentistID, clinicID);
@@ -174,7 +173,7 @@ public class BookingDAO {
         }
         return list;
     }
-    
+
     public int countBooking() {
         String sql = "SELECT COUNT(*) AS Numb FROM BOOKING";
         Connection con = DBUtils.getConnection();
@@ -285,6 +284,67 @@ public class BookingDAO {
         }
         return slotIDs;
     }
-    
-    
+
+    public boolean cancelBooking(String bookingID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+
+        String query = "UPDATE BOOKING SET status = 3 WHERE bookingID = ?";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setString(1, bookingID); 
+            int rowsUpdated = stm.executeUpdate(); 
+
+            return rowsUpdated > 0; 
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+    public List<BookingDTO> getBookingListByCustomerIDAndStatus(String customerID) {
+        String sql = "SELECT * FROM BOOKING WHERE customerID = ? AND ((NOT status = 3) AND (NOT status = 2))";
+        Connection con = DBUtils.getConnection();
+        List<BookingDTO> list = new ArrayList<>();
+        try {
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setString(1, customerID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+
+                String bookingID = rs.getString("bookingID");
+                LocalDate createDay = null;
+                java.sql.Date cdSql = rs.getDate("createDay");
+                if (cdSql != null) {
+                    createDay = cdSql.toLocalDate();
+                }
+
+                LocalDate appointmentDay = null;
+                java.sql.Date apSql = rs.getDate("appointmentDay");
+                if (apSql != null) {
+                    appointmentDay = apSql.toLocalDate();
+                }
+
+                int status = rs.getInt("status");
+                float price = rs.getFloat("price");
+                int serviceID = rs.getInt("serviceID");
+                int slotID = rs.getInt("slotID");
+                String dentistID = rs.getString("dentistID");
+                int clinicID = rs.getInt("clinicID");
+                BookingDTO booking = new BookingDTO(bookingID, createDay, appointmentDay, status, price, serviceID, slotID, customerID, dentistID, clinicID);
+                list.add(booking);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return list;
+    }
+            
 }
