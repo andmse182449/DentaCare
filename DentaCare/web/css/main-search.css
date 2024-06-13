@@ -1,5 +1,4 @@
 .find-section {
-    display: flex;
     flex-direction: row;
     justify-content: center;
     margin: 0;
@@ -8,8 +7,8 @@
 }
 
 .left-container {
-    width: 20%;
-    margin-right: 20px;
+    margin: 0 auto; /* Centers the elements horizontally */
+    text-align: center; /* Centers the content within the elements */
 }
 
 .search-container {
@@ -17,10 +16,10 @@
 }
 
 #searchBar {
-    width: 100%;
+    width: 500px;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px 4px 0 0;
+    border-radius: 25px;
     transition: border-color 0.3s;
 }
 
@@ -81,10 +80,10 @@
 }
 
 .right-container {
-    width: 50%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
+    /*    width: 80%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;*/
 }
 
 .results-header {
@@ -129,4 +128,27 @@
 
 .serviceBtn:hover {
     background-color: #1e77e0;
+}
+.founded {
+    margin-top: 150px;
+    margin-bottom: 150px;
+    display: flex;
+    background: rgba(255, 255, 255, 0.8);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.founded img{
+    opacity: 0.6; /* Option 1: Lower opacity to lighten */
+    filter: brightness(1.3) contrast(0.8); /* Option 2: Increase brightness and reduce contrast */
+    position: relative;
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Maintain aspect ratio */
+}
+
+.founded p {
+    margin-top: 10px; /* Space between image and text */
 }

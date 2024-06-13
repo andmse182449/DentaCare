@@ -4,12 +4,12 @@ import Service.ServiceDAO;
 import account.AccountDAO;
 import account.AccountDTO;
 import clinic.ClinicDAO;
+import feedback.FeedbackDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +34,14 @@ public class LoginChangePage extends HttpServlet {
                     request.setAttribute("CLINIC", clinicDAO.getAllClinic());
                     request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
                     request.setAttribute("DENTIST", accountDAO.getAllDentists());
-                    HttpSession session = request.getSession();
                     url = "userWeb-page.jsp";
-//                    session.setAttribute("account", session.getAttribute("account"));
                 }
                 case "service" -> {
-                    HttpSession session = request.getSession();
                     ClinicDAO clinicDAO = new ClinicDAO();
                     ServiceDAO serviceDAO = new ServiceDAO();
-
+                    FeedbackDAO feedbackDAO = new FeedbackDAO();
+                
+                    request.setAttribute("FEEDBACK", feedbackDAO.getAllFeedbacks());
                     request.setAttribute("CLINIC", clinicDAO.getAllClinic());
                     request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
 
@@ -55,6 +54,8 @@ public class LoginChangePage extends HttpServlet {
                     ServiceDAO serviceDAO = new ServiceDAO();
                     request.setAttribute("CLINIC", clinicDAO.getAllClinic());
                     request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+                    request.setAttribute("show", "none");
+                    request.setAttribute("founded", "none");
                     List<AccountDTO> list = accountDAO.getAllDentists();
                     int numPs = list.size();
                     int numperPage = 4;
@@ -74,9 +75,10 @@ public class LoginChangePage extends HttpServlet {
                         end = page * numperPage;
                     }
                     List<AccountDTO> arr = accountDAO.getListByPage((ArrayList<AccountDTO>) list, start, end);
-                   
+
                     request.setAttribute("num", numpage);
                     request.setAttribute("page", page);
+                    request.setAttribute("numberOfResults", list.size());
                     request.setAttribute("dentistList", arr);
                     url = "doctors.jsp";
                 }

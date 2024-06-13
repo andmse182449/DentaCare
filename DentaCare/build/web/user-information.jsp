@@ -32,6 +32,11 @@
             display: block;
             opacity: 1;
         }
+        input[type="tel"] {
+            padding: 0;
+            margin: 0;
+        }
+
     </style>
     <body>
         <div class="container user">
@@ -181,7 +186,7 @@
             const pattern = /^0\d{9}$/;
 
             function validatePhone() {
-                const phoneNumber = phoneInput.value;
+                const phoneNumber = phoneInput.value.trim(); // Trim spaces
                 if (pattern.test(phoneNumber)) {
                     errorMessage.textContent = '';
                 } else if (phoneNumber === '') {
@@ -191,6 +196,7 @@
                 }
                 saveBtn.disabled = errorMessage.textContent !== '';
             }
+
 
             phoneInput.addEventListener('input', validatePhone);
 

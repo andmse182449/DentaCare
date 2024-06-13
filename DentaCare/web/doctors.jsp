@@ -30,30 +30,141 @@
 
         <link rel="stylesheet" href="css/drop-down.css">
         <link rel="stylesheet" href="css/main-search.css">
+        <link rel="stylesheet" href="css/forDoc.css">
     </head>
     <style>
+        /* Container for flexbox layout */
         .contentDen {
-            width: 100%; /* Adjust the width as needed */
-            margin: 0 auto; /* Centers the div horizontally */
-            text-align: center; /* Centers the content within the div */
+            display: flex;              /* Enable flexbox */
+            flex-wrap: wrap;            /* Allow items to wrap to the next line */
+            gap: 2rem;                  /* Space between columns and rows */
+            justify-content: center;    /* Center the columns horizontally */
+            margin: 0 auto;             /* Center the container itself */
+            width: 100%;                /* Adjust the width as needed */
         }
+
+        /* Pagination styling */
         .pagination {
+            margin-top: 10px;
             display: inline-block;
+            justify-content: center;
         }
+
         .pagination a {
             color: black;
             font-size: 22px;
             float: left;
-            padding: 8px 16px;
+            padding: 0px 12px;
             text-decoration: none;
         }
+
         .pagination a.active {
-            background-color: #4CAF50 !important;
+            border-radius: 20px;
+            background-color: #2f89fc !important;
             color: white !important;
         }
-        .pagination a:hover:not(.active) {
-            background-color: chocolate;
+
+        /* Doctor card styling */
+        .doctor-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            max-width: 800px;
+            margin: auto;
+            align-items: center;
         }
+
+        /* Doctor info section */
+        .doctor-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .doctor-info h3 {
+            margin: 0;
+            color: #6c757d;
+            font-size: 18px;
+        }
+
+        .doctor-info h2 {
+            margin: 5px 0;
+            color: #343a40;
+            font-size: 24px;
+        }
+
+        /* List of doctor details */
+        .doctor-details {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            color: #6c757d;
+        }
+
+        .doctor-details li {
+            margin-bottom: 10px;
+        }
+
+        /* Button container */
+        .doctor-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* General button styling */
+        .btn-detail, .btn-appointment {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            /* font-size: 16px; */
+        }
+
+        /* Specific styles for btn-detail */
+        .btn-detail {
+            font-size: 16px;
+            background: linear-gradient(90deg, #e7f1ff 50%, #1855b8 50%); /* Initial gradient background */
+            color: #007bff; /* Initial text color */
+            background-size: 200% 100%; /* Background size larger than button */
+            background-position: 0%; /* Initial background position, starting from the left */
+            transition: background-position 0.4s ease, color 0.3s ease; /* Smooth transition */
+        }
+
+        .btn-detail:hover {
+            background-position: 100% 0%; /* Move background to show the hover color */
+            color: white; /* Change text color to white on hover */
+        }
+
+        /* Specific styles for btn-appointment */
+        .btn-appointment {
+            font-size: 16px;
+            background-color: #007bff; /* Initial background color */
+            color: white; /* Text color */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        /* Styling for doctor image */
+        .doctor-image {
+            background-size: cover;
+            background-position: center;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin-left: auto;
+        }
+
+        /* Container for doctor cards */
+        .doctor-cards-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two columns */
+            gap: 20px; /* Space between the cards */
+            padding: 20px;
+        }
+
     </style>
     <body>
 
@@ -127,29 +238,27 @@
                 <div class="row justify-content-center mb-5 pb-5">
                     <div class="col-md-7 text-center heading-section ftco-animate">
                         <h2 class="mb-3">Meet Our Experience Dentist</h2>
-                        <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences</p>
+                        <p>DentaCare's team places a strong emphasis on adhering to procedures, conducting professional consultations, and listening to the needs of their patients.</p>
                     </div>
                 </div>
                 <div class="find-section">
                     <c:set var="services"  value="${requestScope.SERVICE}"/>
+                    <c:set var="show"  value="${requestScope.show}"/>
+
                     <div class="left-container">
-                        <div class="search-container">
-                            <input type="text" id="searchBar" placeholder="Search a speciality">
-
-                        </div>
-                        <div class="scroll-section" id="scrollSection">
-                            <c:forEach var="service" items="${services}">
-                                <div class="scroll-item" data-content="" data-serviceid="${service.getServiceID()}" data-servicename="${service.getServiceDescription()}" data-servicemoney="${service.getServiceMoney()}">
-                                    <div class="circle"></div>
-                                    ${service.getServiceName()}
-
-
-                                </div>
-                            </c:forEach>
-                        </div>
+                        <form action="SearchServlet">
+                            <div class="search-container">
+                                <input type="text" name="searchValue" id="searchBar" placeholder="Type in doctor's name" value="${requestScope.searchValue}">
+                            </div>
+                            <div class="btn-box" style="margin-top: 20px">
+                                <button class="btn btn-three" type="submit">Find doctors</button>
+                            </div>
+                        </form>
                     </div>
 
+                    <c:set var="results" value="${requestScope.numberOfResults}"/>
                     <div class="right-container">
+
                         <style>
                             #serviceID, #serviceName, #serviceMoney {
                                 border: none;
@@ -161,35 +270,46 @@
                             }
                         </style>
                         <ul id="resultsList" class="results"></ul>
-                        <div class="booking-section" id="serviceDetails">
-                            <form action="#">
-                                <!--                                Description: <input type="text" id="serviceName" placeholder="Service Name" readonly>
-                                                                Price: <input type="text" id="serviceMoney" placeholder="Service Money" readonly>
-                                                                <input class="serviceBtn" type="submit" id="bookButton" value="Book Now">-->
-                                <div class="contentDen">
 
-                                    <c:forEach items="${requestScope.dentistList}" var="p">
-                                        <div class="col-lg-3 col-md-6 d-flex mb-sm-4 ftco-animate">
-                                            <div class="staff" style="display: flex">
-                                                <div class="img mb-4" style="background-image: url(images/person_5.jpg);"></div>
-                                                <div class="info text-center">
-                                                    <h3><a href="teacher-single.html">${p.getFullName()}</a></h3>
-                                                    <span class="position">Dentist</span>
-                                                    <div class="text">
-                                                        <p>157/6 Đ. An Dương Vương, Hồ Chí Minh</p>
-                                                    </div>
-                                                </div>
+                        <div class="founded" style="display: ${requestScope.founded}">
+                            <img src="images/no-results.jpg" />
+                            <p>${requestScope.noRes}</p>
+                        </div>
+                        <div class="booking-section" id="serviceDetails" style="display: ${show};">
+                            <p style="
+                               font-size: 20px;
+                               ">Find <span><b>${results}</b></span> results</p>
+
+
+                            <div class="doctor-cards-container">
+                                <c:forEach items="${requestScope.dentistList}" var="p">
+                                    <div class="doctor-card">
+                                        <div class="doctor-info">
+                                            <h3>Doctor</h3>
+                                            <h2>${p.getFullName()}</h2>
+                                            <ul class="doctor-details">
+                                                <li>Tốt nghiệp Bác sĩ Răng Hàm Mặt – Đại học y dược Huế</li>
+                                                <li>Chứng chỉ hành nghề 54 tháng</li>
+                                                <li>Chứng chỉ phẫu thuật nhổ răng khôn lệch – Chứng chỉ đào tạo liên tục Đại học Y dược HCM</li>
+                                                <li>Chứng chỉ Kiểm soát nhiễm khuẩn trong nha khoa – Bệnh viện răng hàm mặt Trung Ương</li>
+                                                <li>Chứng chỉ cấy ghép nha khoa – Bệnh viện răng hàm mặt Trung Ương</li>
+                                            </ul>
+                                            <div class="doctor-buttons">
+                                                <button class="btn-detail">Watch in details</button>
+                                                <button class="btn-appointment">Book</button>
                                             </div>
                                         </div>
-                                    </c:forEach>
-
-                                    <c:set var="page" value="${requestScope.page}"/>
-                                    <div class="pagination">
-                                        <c:forEach begin="${1}" end="${requestScope.num}" var="i">
-                                            <a class="${i==page ? "active" : ""}" href="LoginChangePage?action=doctor&page=${i}">${i}</a>
-                                        </c:forEach>
+                                        <div class="doctor-image" style="background-image: url('images/person_5.jpg');"></div>
                                     </div>
+                                </c:forEach>
+                            </div>
 
+                            <form action="#">
+                                <c:set var="page" value="${requestScope.page}"/>
+                                <div class="pagination">
+                                    <c:forEach begin="${1}" end="${requestScope.num}" var="i">
+                                        <a class="${i==page ? "active" : ""}" href="SearchServlet?searchValue=${requestScope.searchValue}&page=${i}">${i}</a>
+                                    </c:forEach>
                                 </div>
                             </form>
                         </div>
