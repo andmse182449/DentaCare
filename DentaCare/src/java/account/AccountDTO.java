@@ -13,6 +13,7 @@ public class AccountDTO implements Serializable {
     private String fullName;
     private String phone;
     private String address;
+    private String image;
     private String googleID;
     private String googleName;
     private boolean gender;
@@ -23,7 +24,7 @@ public class AccountDTO implements Serializable {
     public AccountDTO() {
     }
 
-    public AccountDTO(String accountID, String userName, String password, String email, LocalDate dob, String fullName, String phone, String address, boolean gender,String googleID, String googleName, int roleID, int status, int clinicID) {
+    public AccountDTO(String accountID, String userName, String password, String email, LocalDate dob, String fullName, String phone, String address, String image, boolean gender, String googleID, String googleName, int roleID, int status, int clinicID) {
         this.accountID = accountID;
         this.userName = userName;
         this.password = password;
@@ -38,8 +39,17 @@ public class AccountDTO implements Serializable {
         this.roleID = roleID;
         this.status = status;
         this.clinicID = clinicID;
+        this.image = image;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+    
     public String getAccountID() {
         return accountID;
     }
@@ -122,7 +132,7 @@ public class AccountDTO implements Serializable {
 
     public boolean isGender() {
         return gender;
-    }
+}
 
     public void setGender(boolean gender) {
         this.gender = gender;
@@ -164,6 +174,7 @@ public class AccountDTO implements Serializable {
         sb.append(", fullName=").append(fullName);
         sb.append(", phone=").append(phone);
         sb.append(", address=").append(address);
+        sb.append(", image=").append(image);
         sb.append(", googleID=").append(googleID);
         sb.append(", googleName=").append(googleName);
         sb.append(", gender=").append(gender);
@@ -173,6 +184,8 @@ public class AccountDTO implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    
 
 
 }

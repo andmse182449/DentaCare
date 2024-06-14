@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,7 +43,6 @@ public class StaffAccountDAO {
         return list;
     }
 
-
     public List<AccountDTO> listAccountStaffRemovedClinic(String clinicName) {
         String sql = "SELECT * FROM account a, clinic b "
                 + "WHERE a.roleid = 2 AND a.status = 1 AND a.clinicid = b.clinicid AND b.clinicname = ?";
@@ -66,7 +66,6 @@ public class StaffAccountDAO {
         }
         return list;
     }
-
 
     public boolean updateStaffAccountUnactive(String staffUserName) {
         String sql = "update account set status = 1 where username = ?";
@@ -108,6 +107,81 @@ public class StaffAccountDAO {
             System.out.println("listClinicName: " + ex.getMessage());
         }
         return list;
+    }
+
+    public boolean UpdateProfileStaff(AccountDTO staff) {
+        String sql = "UPDATE account SET username = ?, fullname = ?, phone = ?, address = ?, dob = ?, gender = ? WHERE accountId = ?";
+        try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, staff.getUserName());
+            ps.setString(2, staff.getFullName());
+            ps.setString(3, staff.getPhone());
+            ps.setString(4, staff.getAddress());
+            ps.setDate(5, java.sql.Date.valueOf(staff.getDob()));
+            ps.setBoolean(6, staff.isGender());
+            ps.setString(7, staff.getAccountID());
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.getMessage();
+            return false;
+        }
+    }
+
+    public List<AccountDTO> listNameDentist1(Date today) {
+        String sql = """
+                     SELECT 
+                         a.accountID AS dentistID, 
+                         a.fullname, 
+                         COUNT(b.bookingID) AS bookingCount
+                     FROM 
+                         account a
+                         LEFT JOIN booking b ON a.accountID = b.dentistID AND b.appointmentDay = ?
+                     WHERE 
+                         a.roleid = 1 
+                         AND a.status = 0 
+                         AND a.clinicid = 1
+                     GROUP BY 
+                         a.accountID, a.fullname
+                     ORDER BY 
+                         bookingCount;""";
+
+        List<AccountDTO> list = new ArrayList<>();
+        try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            java.sql.Date sqlDate = new java.sql.Date(today.getTime());
+            ps.setDate(1, sqlDate);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    AccountDTO dentist = new AccountDTO();
+                    dentist.setAccountID(rs.getString("dentistID"));
+                    dentist.setFullName(rs.getString("fullname"));
+                    list.add(dentist);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+    
+    public AccountDTO checkDentist(String id){
+        String sql = "select fullname from account where accountid = ?";
+        try {
+            Connection con = utils.DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                AccountDTO dentist = new AccountDTO();
+                dentist.setFullName(rs.getString("fullname"));
+                return dentist;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
 }
