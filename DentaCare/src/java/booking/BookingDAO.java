@@ -15,6 +15,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import timeSlot.TimeSlotDTO;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import utils.DBUtils;
 
 /**
@@ -347,11 +350,43 @@ public class BookingDAO {
                 int clinicID = rs.getInt("clinicID");
                 BookingDTO booking = new BookingDTO(bookingID, createDay, appointmentDay, status, price, serviceID, slotID, customerID, dentistID, clinicID);
                 list.add(booking);
+                }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+         return list;
+    }
+    public List<Map<String, Object>> getTotalPriceByYearMonth(int year) {
+        String sql = "SELECT\n"
+                + "    YEAR(createDay) AS Year,\n"
+                + "    MONTH(createDay) AS Month,\n"
+                + "    SUM(price) AS TotalPrice\n"
+                + "FROM\n"
+                + "    dbo.BOOKING\n"
+                + "where YEAR(createDay) = ? \n"
+                + "GROUP BY\n"
+                + "    YEAR(createDay),\n"
+                + "    MONTH(createDay)\n"
+                + "ORDER BY\n"
+                + "    Year ASC,\n"
+                + "    Month ASC;";
+        Connection con = DBUtils.getConnection();
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, year);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("Year", rs.getInt("Year"));
+                row.put("Month", rs.getInt("Month"));
+                row.put("TotalPrice", rs.getFloat("TotalPrice"));
+                resultList.add(row);
             }
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-        return list;
+        return resultList;
     }
     
     public boolean updateExpiredDate(String bookingID) throws SQLException {
@@ -428,7 +463,7 @@ public class BookingDAO {
         System.out.println("getAllBookingClinic1: " + e.getMessage());
     }
     return null;
-}
+    }
 
 
     public boolean assignDentist(int bookingID, String dentistID) {
@@ -446,4 +481,47 @@ public class BookingDAO {
         }
     }
 
+
+    public List<Map<String, Object>> getTotalTimeSlotsByYearMonth(int year, int month) throws SQLException {
+        List<Map<String, Object>> timeResults = new ArrayList<>();
+        String query = "WITH AllTimePeriods AS ( " +
+                       "    SELECT DISTINCT timePeriod " +
+                       "    FROM TIMESLOT " +
+                       ") " +
+                       "SELECT " +
+                       "    ? AS Year, " +
+                       "    ? AS Month, " +
+                       "    COALESCE(SUM(b.slotID), 0) AS TotalTimeSlot, " +
+                       "    a.timePeriod AS TimePeriod " +
+                       "FROM " +
+                       "    AllTimePeriods a " +
+                       "    LEFT JOIN BOOKING b ON a.timePeriod = (SELECT timePeriod FROM TIMESLOT WHERE TIMESLOT.slotID = b.slotID) " +
+                       "    AND YEAR(b.createDay) = ? " +
+                       "    AND MONTH(b.createDay) = ? " +
+                       "GROUP BY " +
+                       "    a.timePeriod " +
+                       "ORDER BY " +
+                       "    a.timePeriod;";
+        Connection con = DBUtils.getConnection();
+
+        try {
+            PreparedStatement st = con.prepareStatement(query);
+            st.setInt(1, year);
+            st.setInt(2, month);
+            st.setInt(3, year);
+            st.setInt(4, month);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                    row.put("Year", rs.getInt("Year"));
+                    row.put("Month", rs.getInt("Month"));
+                    row.put("TotalTimeSlot", rs.getInt("TotalTimeSlot"));
+                    row.put("TimePeriod", rs.getString("TimePeriod"));
+                    timeResults.add(row);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return timeResults;
+    }
 }

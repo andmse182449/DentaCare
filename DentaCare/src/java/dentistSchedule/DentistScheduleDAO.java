@@ -18,7 +18,7 @@ import utils.DBUtils;
  */
 public class DentistScheduleDAO {
 
-    public List<DentistScheduleDTO> getAccountDentistByRoleID1() throws SQLException {
+    public List<DentistScheduleDTO> getAccountDentistByRoleID1(int clinicID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -26,13 +26,14 @@ public class DentistScheduleDAO {
         StringBuilder query = new StringBuilder("""
                                                     select DENTISTSCHEDULE.*, ACCOUNT.fullName from DENTISTSCHEDULE 
                                                     join ACCOUNT on ACCOUNT.accountID = DENTISTSCHEDULE.accountID 
-                                                    WHERE roleID = 1
+                                                    WHERE roleID = 1 and clinicID = ? 
                                                 """);
         try {
             String sql = null;
             sql = String.valueOf(query);
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
+            stm.setInt(1, clinicID);
             rs = stm.executeQuery();
             while (rs.next()) {
                 int dentistScheduleID = rs.getInt("dentistScheduleID");
@@ -160,7 +161,7 @@ public class DentistScheduleDAO {
         return dto;
     }
 
-    public List<DentistScheduleDTO> getDenFromDate(String workingDate) throws SQLException {
+    public List<DentistScheduleDTO> getDenFromDate(String workingDate, int clinicID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -171,6 +172,7 @@ public class DentistScheduleDAO {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
             stm.setString(1, workingDate);
+            stm.setInt(2, clinicID);
             rs = stm.executeQuery();
             while (rs.next()) {
                 int dentistScheduleID = rs.getInt("dentistScheduleID");

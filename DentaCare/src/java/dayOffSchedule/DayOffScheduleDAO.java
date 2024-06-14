@@ -24,7 +24,7 @@ public class DayOffScheduleDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         List<DayOffScheduleDTO> list = new ArrayList<>();
-        String sql = "select * from DAYOFFSCHEDULE where clinicID = ?";
+        String sql = "select * from DAYOFFSCHEDULE WHERE cliniciD = ?";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
@@ -167,7 +167,7 @@ public boolean addNewOffDate(String dayOff, String description, int clinicID) th
         } finally {
             try {
                 if (stm != null) {
-stm.close();
+                    stm.close();
                 }
                 if (con != null) {
                     con.close();

@@ -18,6 +18,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,15 +50,22 @@ public class DentistServlet extends HttpServlet {
         if (action == null || action.equals("dentistLogin") || action == "") {
             HttpSession session = request.getSession();
             AccountDTO account = (AccountDTO) session.getAttribute("account");
-            String url = "denWeb-dentitstSchedule.jsp";
+            //            String url = "denWeb-dentitstSchedule.jsp";
+            int id = account.getClinicID();
+            
+            LocalDate now2 = LocalDate.now();
+            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+            int currentYear2 = now2.getYear();
+            int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+            
+            String url = "LoadScheduleForEachDentistServlet?action=loadDenSchedule&clinicByID=" + id + "&year=" + currentYear2 + "&week=" + currentWeek2;
             if (account.getStatus() == 2) {
                 url = "changePasswordFirstTime.jsp";
                 request.getRequestDispatcher(url).forward(request, response);
             } else {
                 response.sendRedirect(url);
             }
-        } /*CREATE DENTIST ACCOUNT */ 
-            else if (action.equals("create")) {
+        } /*CREATE DENTIST ACCOUNT */ else if (action.equals("create")) {
             int numOfDens = accountDAO.countDentist();
             String username = "bs-" + request.getParameter("den-email").trim().split("@")[0] + String.format("%03d", numOfDens + 1);
             String mail = request.getParameter("den-email").trim();
@@ -127,8 +136,7 @@ public class DentistServlet extends HttpServlet {
                 request.setAttribute("error", "An error occurred while processing your request.");
                 request.getRequestDispatcher(url).forward(request, response);
             }
-        } /* LOAD DENTIST PROFILE */ 
-            else if (action.equals("profile")) {
+        } /* LOAD DENTIST PROFILE */ else if (action.equals("profile")) {
             String accountId = (String) request.getAttribute("accountID");
             if (accountId == null) {
                 accountId = request.getParameter("accountID");
@@ -137,10 +145,10 @@ public class DentistServlet extends HttpServlet {
             try {
                 AccountDTO account = accountDAO.searchAccountByID(accountId);
                 request.setAttribute("account", account);
-                
+
                 ClinicDAO clinicDao = new ClinicDAO();
                 String clinicName = clinicDao.getClinicByID(account.getClinicID()).getClinicName();
-                
+
                 request.setAttribute("clinic", clinicName);
                 request.getRequestDispatcher(url).forward(request, response);
             } catch (SQLException ex) {

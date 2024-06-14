@@ -72,9 +72,7 @@ public class ModifyDentistScheduleServlet extends HttpServlet {
                 ClinicScheduleDTO getByCliScheID = cliDao.getInfoByClinicScheduleID(clincScheduleID); // nay de lay all Info cua clinicSchedule
 
                 DentistScheduleDAO dao = new DentistScheduleDAO();
-                DentistScheduleDTO checkAlreadyDentistInDenSche = dao.checkAlreadyDentistInDenSche(accountID, "0");
-                System.out.println(checkAlreadyDentistInDenSche);
-                System.out.println(accountID2);
+                DentistScheduleDTO checkAlreadyDentistInDenSche = dao.checkAlreadyDentistInDenSche(accountID, clincScheduleID);
                 if (checkAlreadyDentistInDenSche != null) {
                     boolean modifyDentistSchedule = dao.modifyDentistSchedule(accountID2, "0", accountID);
                     request.setAttribute("successfully", "Add dentist to the schedule successfully !");

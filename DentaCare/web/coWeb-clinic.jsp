@@ -9,6 +9,12 @@
 <%@ page import="timeSlot.TimeSlotDTO" %>
 <%@ page import="slotDetail.SlotDetailDAO" %>
 <%@ page import="slotDetail.SlotDetailDTO" %>
+<%@ page import="dayOffSchedule.DayOffScheduleDTO" %>
+<%@ page import="dayOffSchedule.DayOffScheduleDAO" %>
+
+
+<%@ page import="java.time.LocalDate, java.time.temporal.WeekFields, java.util.Locale" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,658 +24,600 @@
         <!--<link rel="stylesheet" href="css/stylesheet.css">-->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="css/clinicSchedule.css">
+
     </head>
-    <style>
-        /* Styles for the entire document */
 
-        .main-container {
-            grid-area: main;
-            overflow-y: auto;
-            padding: 20px 20px;
-            color: #333;
-        }
+    <body>
+        <%
+                        LocalDate now2 = LocalDate.now();
+                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                        int currentYear2 = now2.getYear();
+                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+        %>
+        <div class="grid-container">
+            <!-- HEADER -->
+            <header class="header"> 
+                <div></div>
+                <div class="header-icon">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="material-symbols-outlined">mail</span>
+                    <span class="material-symbols-outlined">account_circle</span>
+                </div>
+            </header>
 
-        .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 0 50px 0 50px;
-        }
-        #sidebar {
-            grid-area: sidebar;
-            height: 100%;
-            background-color: #2f89fc;
-            overflow-y: auto;
-            transition: all 0.5s;
-            -webkit-transition: all 0.5s;
-        }
+            <!-- SIDEBAR -->
+            <aside id="sidebar">
+                <div>
+                    <ul class="sidebar-list">
+                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
+                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
+                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
+                        <a href="ServiceController"><li class="sidebar-list-item">Manage Service</li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
+                    </ul>
+                </div>
+            </aside>
 
-        .sidebar-list {
-            padding: 0;
-            margin-top: 7rem;
-            list-style-type: none;
-        }
+            <!-- MAIN -->
+            <div class="main-container">
+                <h2>CLINIC</h2>
+                <% ClinicScheduleDAO clinicScheduleDAO = new ClinicScheduleDAO(); %>
+                <% TimeSlotDAO timeDao = new TimeSlotDAO(); %>
 
-        .sidebar-list-item {
-            padding: 20px 20px 20px 20px;
-            font-size: 18px;
-            font-weight: 500;
-        }
-        .sidebar-list a {
-            text-decoration: none;
-            color: #f4f4f4;
-        }
+                <c:set value="${clinicByID.clinicID}" var="clinicID" />
 
-        .sidebar-list-item:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-        }
-
-        .sidebar-responsive {
-            display: inline !important;
-            position: absolute;
-            z-index: 12 !important;
-        }
-        .header {
-            grid-area: header;
-            height: 40px;
-            display: flex;
-            justify-content: space-between;
-            padding: 20px 30px 0px 30px;
-            box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
-        }
-
-        .header-icon span{
-            padding: 0;
-            margin-left: 20px;
-        }
-        .material-symbols-outlined:hover {
-            cursor: pointer;
-        }
-        .material-icons-outlined {
-            vertical-align: middle;
-            line-height: 1px;
-            font-size: 35px;
-        }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f0f8ff;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Container for form elements */
-        .form-container, .time-slot-container {
-            margin: 20px auto;
-            padding: 20px;
-            max-width: 1200px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Header styling */
-        header.header {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            background-color: white;
-            color: #black;
-        }
-
-        .header-icon span {
-            margin-left: 15px;
-            cursor: pointer;
-        }
-
-        /* Sidebar styling */
-        #sidebar {
-            background-color: #2f89fc;
-            padding: 20px;
-            color: white;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 200px;
-        }
-
-        .sidebar-list {
-            padding: 0;
-            margin-top: 7rem;
-            list-style-type: none;
-        }
-
-        .sidebar-list a {
-            text-decoration: none;
-            color: #f4f4f4;
-        }
-
-        .sidebar-list-item {
-            padding: 20px 20px 20px 20px;
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .sidebar-list-item:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-        }
-
-        .sidebar-responsive {
-            display: inline !important;
-            position: absolute;
-            z-index: 12 !important;
-        }
-
-        /* Main container styling */
-        .main-container, .main-container2 {
-            padding: 20px;
-            margin-left: 220px;
-        }
-
-        h1, h2 {
-            text-align: center;
-            color: #2f89fc;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        /* Table styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            text-align: center;
-            padding: 15px;
-            font-size: 16px;
-        }
-
-        th {
-            background-color: #2f89fc;
-            color: white;
-        }
-
-        .working-day {
-            background-color: #99ffff;
-            color: #3c763d;
-            font-weight: bold;
-        }
-
-        .event-day {
-            background-color: #ff66ff;
-            color: #ffff00;
-            font-weight: bold;
-        }
-
-        /* Form elements */
-        select, input[type="button"], input[type="submit"], input[type="date"], input[type="text"] {
-            padding: 10px;
-            margin: 5px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-        }
-
-        select:hover, input[type="button"]:hover, input[type="submit"]:hover {
-            background-color: #e0e0e0;
-        }
-
-        input[type="button"] {
-            background-color: #2f89fc;
-            color: white;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-
-        input[type="button"]:hover {
-            background-color: #1d6fdc;
-        }
-
-        .create-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .create-button:hover {
-            background-color: #45a049;
-        }
-
-        /* Popup styling */
-        .popup {
-            position: fixed;
-            top: -150%;
-            left: 50%;
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(1.25);
-            width: 300px;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 0ms, transform 200ms ease-in-out 0ms;
-        }
-
-        .popup.active {
-            top: 50%;
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-            transition: top 0ms ease-in-out 0ms, opacity 200ms ease-in-out 0ms, transform 200ms ease-in-out 0ms;
-        }
-
-        .popup .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 20px;
-            height: 20px;
-            background-color: #888;
-            color: #eee;
-            text-align: center;
-            line-height: 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .popup .form h2 {
-            text-align: center;
-            color: #222;
-            margin-bottom: 20px;
-            font-size: 25px;
-        }
-
-        .popup .form .form-element {
-            margin-bottom: 15px;
-        }
-
-        .popup .form .form-element label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-            color: #222;
-        }
-
-        .popup .form .form-element input[type="submit"] {
-            width: 100%;
-            height: 40px;
-            border: none;
-            outline: none;
-            font-size: 18px;
-            background: #4CAF50;
-            color: #f4f4f4;
-            border-radius:
-            </style>
-            <body>
-                <div class="grid-container">
-                    <!-- HEADER -->
-                    <header class="header"> 
-                        <div></div>
-                        <div class="header-icon">
-                            <span class="material-symbols-outlined">notifications</span>
-                            <span class="material-symbols-outlined">mail</span>
-                            <span class="material-symbols-outlined">account_circle</span>
-                        </div>
-                    </header>
-
-                    <!-- SIDEBAR -->
-                    <aside id="sidebar">
-                        <div>
-                            <ul class="sidebar-list">
-                                <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
-                                <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
-                                <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
-                                <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
-                                <a href="ServiceController"><li class="sidebar-list-item">Manage Service</li></a>
-                                <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
-                            </ul>
-                        </div>
-                    </aside>
-
-                    <!-- MAIN -->
-                    <div class="main-container">
-                        <h2>CLINIC</h2>
-                        <% ClinicScheduleDAO clinicScheduleDAO = new ClinicScheduleDAO(); %>
-                        <% TimeSlotDAO timeDao = new TimeSlotDAO(); %>
-
-                        <c:set value="${clinicByID.clinicID}" var="clinicID" />
-                        <div class="form-container">
-                            <h1>Clinic Schedule</h1>
-                            <form method="post" action="LoadFromClinicToScheduleServlet?clinicByID=${clinicByID.clinicID}">
-                                <table>
-                                    <tr>
-                                        <th>
-                                            YEAR 
-                                            <select name="year" onchange="this.form.submit()">
-                                                <option value="">Select Year</option>
-                                                <% 
-                                                    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-                                                    String selectedYear = request.getParameter("year");
-                                                    for (int i = currentYear - 5; i <= currentYear + 5; i++) {
-                                                        String selected = (selectedYear != null && Integer.toString(i).equals(selectedYear)) ? " selected" : "";
-                                                        out.println("<option value=\"" + i + "\"" + selected + ">" + i + "</option>");
-                                                    }
-                                                %>
-                                            </select> 
-                                            <br>
-                                            WEEK
-                                            <select name="week" onchange="this.form.submit()" id="weekSelect">
-                                                <option value="">Select Week</option>
-                                                <% 
-                                                    String selectedWeek = request.getParameter("week");
-                                                    if (selectedYear != null && !selectedYear.isEmpty()) {
-                                                        int year = Integer.parseInt(selectedYear);
-                                                        Calendar calendar = new GregorianCalendar();
-                                                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
-                                
-                                                        for (int i = 1; i <= 52; i++) {
-                                                            calendar.set(Calendar.YEAR, year);
-                                                            calendar.set(Calendar.WEEK_OF_YEAR, i);
-                                                            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                                    
-                                                            String startDate = sdf.format(calendar.getTime());
-                                                            calendar.add(Calendar.DAY_OF_MONTH, 6);  // Move to the end of the week
-                                                            String endDate = sdf.format(calendar.getTime());
-                                    
-                                                            String weekLabel = i + " (" + startDate + " - " + endDate + ")";
-                                                            String selected = (selectedWeek != null && Integer.toString(i).equals(selectedWeek)) ? " selected" : "";
-                                                            out.println("<option value=\"" + i + "\"" + selected + ">" + weekLabel + "</option>");
-                                                        }
-                                                    }
-                                                %>
-                                            </select>
-                                        </th>
-                                        <th>MON</th>
-                                        <th>TUE</th>
-                                        <th>WED</th>
-                                        <th>THU</th>
-                                        <th>FRI</th>
-                                        <th>SAT</th>
-                                        <th>SUN</th>
-                                    </tr>    
-                                    <tr>
-                                        <%--<c:forEach items="${requestScope.clinicScheduleByClinicIDToDen}" var="clinicScheduleByClinicIDToDen">--%>
-                                    <div class="clinic-card" data-url="LoadFromClinicToScheduleServlet?clinicScheduleID=${clinicScheduleByClinicIDToDen.getClinicScheduleID()}&clinicByID=${clinicList.clinicID}">   
+                <div class="form-container">
+                    <h1>Clinic Schedule</h1>
+                    <form method="post" action="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicByID.clinicID}">
+                        <!--                        <input type="hidden" name="action" value="load">-->
+                        <table>
+                            <tr>
+                                <th>
+                                    YEAR 
+                                    <select name="year" onchange="this.form.submit()">
+                                        <option value="">Select Year</option>
                                         <% 
-                                            out.println("<th></th>");
-                                        String yearStr = (String) request.getAttribute("yearStr");
-                                        String weekStr = (String) request.getAttribute("weekStr");
-                                        int clinicID = (int) request.getAttribute("clinicID");
-                        
-                                        List<ClinicScheduleDTO> workingDayByID = (List<ClinicScheduleDTO>) request.getAttribute("getAllClinicSchedule");
-                                        List<ClinicScheduleDTO> clinicScheduleByClinicIDToDen = (List<ClinicScheduleDTO>) request.getAttribute("clinicScheduleByClinicID");
-
-                                        if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
-                                            int year = Integer.parseInt(yearStr);
-                                            int week = Integer.parseInt(weekStr);
-
-                                            Calendar calendar = new GregorianCalendar();
-                                            calendar.set(Calendar.YEAR, year);
-                                            calendar.set(Calendar.WEEK_OF_YEAR, week);
-                                            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-
-                                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-                                            for (int i = 0; i < 7; i++) {
-                                                String currentDate = sdf.format(calendar.getTime());
-                                                for (ClinicScheduleDTO clinicScheduleDTO : clinicScheduleByClinicIDToDen) {
-                                                    if (clinicScheduleDTO.getWorkingDay().equals(currentDate)) {
-                                                        int clinicScheduleIDToDen = clinicScheduleDTO.getClinicScheduleID();
-                                                 //cho nay dang bi sai (load clinicScheduleID cho nay ban dau la null, sau khi add moi het null nen moi add thi kh hien gi)
-                                                        out.println("<td><a href=\"LoadFromClinicScheduleToCreateEventServlet?clinicScheduleID=" + clinicScheduleIDToDen + "&clinicByID=" + clinicID + "\">" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");  
-//                                                            out.println("<td><a>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</a></td>");  
-                                                        calendar.add(Calendar.DAY_OF_MONTH, 1);
-                                                    }
+                                            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+                                            String selectedYear = request.getParameter("year");
+                                            for (int i = currentYear - 5; i <= currentYear + 5; i++) {
+                                                String selected = (selectedYear != null && Integer.toString(i).equals(selectedYear)) ? " selected" : "";
+                                                out.println("<option value=\"" + i + "\"" + selected + ">" + i + "</option>");
+                                            }
+                                        %>
+                                    </select> 
+                                    <br>
+                                    WEEK
+                                    <select name="week" onchange="this.form.submit()" id="weekSelect">
+                                        <option value="">Select Week</option>
+                                        <% 
+                                            String selectedWeek = request.getParameter("week");
+                                            if (selectedYear != null && !selectedYear.isEmpty()) {
+                                                int year = Integer.parseInt(selectedYear);
+                                                Calendar calendar = new GregorianCalendar();
+                                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
+                                
+                                                for (int i = 1; i <= 52; i++) {
+                                                    calendar.set(Calendar.YEAR, year);
+                                                    calendar.set(Calendar.WEEK_OF_YEAR, i);
+                                                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                                    
+                                                    String startDate = sdf.format(calendar.getTime());
+                                                    calendar.add(Calendar.DAY_OF_MONTH, 6);  // Move to the end of the week
+                                                    String endDate = sdf.format(calendar.getTime());
+                                    
+                                                    String weekLabel = i + " (" + startDate + " - " + endDate + ")";
+                                                    String selected = (selectedWeek != null && Integer.toString(i).equals(selectedWeek)) ? " selected" : "";
+                                                    out.println("<option value=\"" + i + "\"" + selected + ">" + weekLabel + "</option>");
                                                 }
                                             }
-                                           
-                                        } else {
-                                            for (int i = 0; i < 8; i++) {
-                                                out.println("<td></td>");
-                                            }
-                                        }
                                         %>
-                                    </div> 
-                                    </tr>     
-                                    <tr>
-                                    <div class="clickDay">
-                                        <% 
-                                            out.println("<th></th>");
-                                            if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
-                                                int year = Integer.parseInt(yearStr);
-                                                int week = Integer.parseInt(weekStr);
+                                    </select>
+                                </th>
+                                <th>MON</th>
+                                <th>TUE</th>
+                                <th>WED</th>
+                                <th>THU</th>
+                                <th>FRI</th>
+                                <th>SAT</th>
+                                <th>SUN</th>
+                            </tr>    
+                            <tr>
+                                <%--<c:forEach items="${requestScope.clinicScheduleByClinicIDToDen}" var="clinicScheduleByClinicIDToDen">--%>
+                                <% 
+                                    out.println("<th></th>");
+                                String yearStr = (String) request.getAttribute("yearStr");
+                                String weekStr = (String) request.getAttribute("weekStr");
+                                int clinicID = (int) request.getAttribute("clinicID");
+                        
+                                List<DayOffScheduleDTO> off = (List<DayOffScheduleDTO>) request.getAttribute("off");
 
-                                                Calendar calendar = new GregorianCalendar();
-                                                calendar.set(Calendar.YEAR, year);
-                                                calendar.set(Calendar.WEEK_OF_YEAR, week);
-                                                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-                                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
+                                    int year = Integer.parseInt(yearStr);
+                                    int week = Integer.parseInt(weekStr);
 
-                                               for (int i = 0; i < 7; i++) {
+                                    Calendar calendar = new GregorianCalendar();
+                                    calendar.set(Calendar.YEAR, year);
+                                    calendar.set(Calendar.WEEK_OF_YEAR, week);
+                                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                                    for (int i = 0; i < 7; i++) {
+                                        boolean isWorkingDay = false;
+                                        String workingDayInfo = "";
+                                        String checkEvent = "";
+                                        String currentDate = sdf.format(calendar.getTime());
+                                          for (DayOffScheduleDTO offDateDTO : off) {
+                                                    if (offDateDTO.getDayOff().equals(currentDate)) {
+                                                        isWorkingDay = true;
+                                                        checkEvent = offDateDTO.getDescription();
+                                                    }
+                                                }
+                                                if (!isWorkingDay) {
+                                        out.println("<td class='table-cell' data-date='" + currentDate + "'>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
+                                            } else {
+                                        out.println("<td class='table-cell2' data-date='" + currentDate + "'>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
+                                            }
+//                                                out.println("<td class='table-cell' data-date='" + currentDate + "'>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
+                                                calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                    }
+                                } else {
+                                    for (int i = 0; i < 8; i++) {
+                                        out.println("<td></td>");
+                                    }
+                                }
+                                %>
+                                </div> 
+                            </tr>     
+                            <tr>
+                            <div class="clickDay">
+                                <% 
+                                    out.println("<th></th>");
+                                    if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
+                                        int year = Integer.parseInt(yearStr);
+                                        int week = Integer.parseInt(weekStr);
+
+                                        Calendar calendar = new GregorianCalendar();
+                                        calendar.set(Calendar.YEAR, year);
+                                        calendar.set(Calendar.WEEK_OF_YEAR, week);
+                                        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                                    for (int i = 0; i < 7; i++) {
                                         String currentDate = sdf.format(calendar.getTime());
                                         boolean isWorkingDay = false;
                                         String workingDayInfo = "";
                                         String checkEvent = "";
-                        
-                                        // add
-                                        //List<ClinicScheduleDTO> clinicScheduleByClinicID = clinicScheduleDao.getWorkingDaysByClinicId(id);
-                                        List<ClinicScheduleDTO> clinicScheduleByClinicID = (List<ClinicScheduleDTO>) request.getAttribute("clinicScheduleByClinicID");
-                                        List<TimeSlotDTO> getAllTimeSlot = (List<TimeSlotDTO>) request.getAttribute("getAllTimeSlot");
-                                        List<TimeSlotDTO> getAllTimeSl = (List<TimeSlotDTO>) timeDao.getAllTimeSLot();
-                                        // líst này thì được nha
-                //                        for (TimeSlotDTO timeSlotDTOCheck : getAllTimeSl) {
-                //                                    System.out.println("Time slot " + timeSlotDTOCheck.getSlotID());
-                //                            }
-                                        SlotDetailDAO slotDao = new SlotDetailDAO();
-                        
                                         boolean workingDayExists = false;
-                                        // new test
-                                        boolean scheduleExists = clinicScheduleByClinicID.stream().anyMatch(schedule -> schedule.getWorkingDay().equals(currentDate));
 
-                                    if (!scheduleExists && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                //                        System.out.println("Adding new clinic schedule for date: " + currentDate);
-                                        boolean addClinicSchedule = clinicScheduleDAO.addNewClinicSchedule(currentDate, clinicID, "07:00 AM - 05:00 PM");
-    
-                                    if (addClinicSchedule) {
-                //                        System.out.println("New clinic schedule added successfully for date: " + currentDate);
-                                        workingDayByID = clinicScheduleDAO.getWorkingDaysByClinicId(clinicID);              
-                                        for (ClinicScheduleDTO schedule : workingDayByID) {
-                                            if (schedule.getWorkingDay().equals(currentDate)) {
-                //                                System.out.println("Processing time slots for schedule ID: " + schedule.getClinicScheduleID());
-                                                for (TimeSlotDTO timeSlotDTO : getAllTimeSl) {
-                //                                    System.out.println("Time slot " + timeSlotDTO.getSlotID());
-                                                    boolean addSlotToSchedule = slotDao.addSlotToSchedule(timeSlotDTO.getSlotID(), schedule.getClinicScheduleID());
-                                                    if (addSlotToSchedule) {
-                                                        System.out.println("Time slot " + timeSlotDTO.getSlotID() + " added to schedule ID: " + schedule.getClinicScheduleID());
-                                                    } else {
-                                                        System.err.println("Failed to add time slot " + timeSlotDTO.getSlotID() + " to schedule ID: " + schedule.getClinicScheduleID());
+                                    if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                                                for (DayOffScheduleDTO offDateDTO : off) {
+                                                    if (offDateDTO.getDayOff().equals(currentDate)) {
+                                                        isWorkingDay = true;
+                                                        workingDayInfo = "Working Time " + "<br><br>" + "toi day";
+                                                        checkEvent = offDateDTO.getDescription();
                                                     }
                                                 }
+                                            if (!isWorkingDay) {
+                                                out.println("<td class=\"event-day\">" + "di lam ne`" + "</td>");
+                                            } else {
+                                                out.println("<td class=\"working-day\">" + checkEvent + "</td>");
                                             }
                                         }
-                                    } else {
-                                        System.err.println("Failed to add new clinic schedule for date: " + currentDate);
-                                    }
-                                } else {
-                                    if (scheduleExists) {
-                                        System.out.println("Schedule already exists for date: " + currentDate);
-                                    }
-                                    if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                                        System.out.println("Today is Sunday, no schedule to add.");
-                                    }
-                                }
-
-
-                                                 workingDayByID = clinicScheduleDAO.getWorkingDaysByClinicId(clinicID);              
-                                        for (ClinicScheduleDTO schedule : workingDayByID) {
-                                            //can get schedule.getClinicID()
-                                            if (schedule.getWorkingDay().equals(currentDate) && clinicID == schedule.getClinicID()) {     
-                                                isWorkingDay = true;
-                                                workingDayInfo = "Working Time " + "<br><br>" + schedule.getDescription();
-                                                checkEvent = schedule.getDescription();
-                                                break;
-                                            }
-                                        }
-                                      
-                        
-                                            if (isWorkingDay) {
-                                                if (!"07:00 AM - 05:00 PM".equals(checkEvent) || checkEvent.equals(null) || checkEvent == null ) { 
-                                                out.println("<td class=\"event-day\">" + checkEvent + "</td>");
-                                            } else {
-                                                out.println("<td class=\"working-day\">" + workingDayInfo + "</td>");
-                                            }
-                                            } else {
-                                                out.println("<td></td>");
-                                            }
                                                 calendar.add(Calendar.DAY_OF_MONTH, 1);
                                                 }
+                                                        // neu ma muon sua thi tu day !!
                                             } else {
                                                 for (int i = 0; i < 7; i++) {
                                                     out.println("<td></td>");
                                                 }
                                             }
-                //                                      response.setHeader("Refresh", "10; URL=http://localhost:9090/J2EE_Exercise/index.html");
-                                        %>
-                                    </div>
-                                    </tr>
-                                </table>
-                                <!--TIME SLOT-->
-                                <div style="margin-top: 100px" class="time-slot-container">
-                                    <h1>Time Slot</h1>
-                                    <table class="time-slot-table">
-                                        <tr>
-                                            <!-- <th>Time Periods</th> --> 
-                                        </tr>
-                                        <tr>
-                                            <c:forEach items="${requestScope.getAllTimeSlot}" var="getAllTimeSlot">
-                                                <td>${getAllTimeSlot.getTimePeriod()}</td>
-                                            </c:forEach>
-                                        </tr>
-                                    </table>
-                                </div>                <!-- END POPUP -->
+                                %>
+                            </div>
+                            </tr>
+                        </table>
+                        <!--TIME SLOT-->
+                        <div style="margin-top: 100px" class="time-slot-container">
+                            <h1>Time Slot</h1>
+                            <table class="time-slot-table">
+                                <tr>
+                                    <!-- <th>Time Periods</th> --> 
+                                </tr>
+                                <tr>
+                                    <c:forEach items="${requestScope.getAllTimeSlot}" var="getAllTimeSlot">
+                                        <td>${getAllTimeSlot.getTimePeriod()}</td>
+                                    </c:forEach>
+                                </tr>
+                            </table>
+                        </div>                <!-- END POPUP -->
 
-                                <a href="LoadFromClinicScheduleToCreateEventServlet2?clinicByID=${clinicByID.clinicID}"><input type="button" name="" value="Add new event for clinic schedule"></a>
-                                <div class="center-button">
-                                    <a href="LoadFromClinicScheduleToDentistScheduleServlet?clinicByID=${clinicByID.clinicID}">
-                                        <input type="button" name="" value="View Dentist Schedule">
-                                    </a>
-                                </div>
-                            </form>  
-                            <a href="LoadAllDentaListServlet" style="background-color: red;
-                            color: white;
-                            padding: 10px 20px;
-                            text-decoration: none;
-                            border-radius: 4px;
-                            font-size: 16px;
-                            display: inline-block;
-                            text-align: center;">
-                            Return
-                        </a>
-
-                        <!--                         MAIN 
-                                                <div class="main-container2">
-                                                    <div class="main-header">
-                                                        <button id="create-button" class="create-button">CREATE CLINIC SCHEDULE</button>
-                                                                        <a href="LoadFromClinicScheduleToCreateEventServlet?clinicByID=${clinicByID.clinicID}"><input type="button" name="" value="Add new event for clinic schedule"></a>
-                        
-                                                    </div>
-                                                     FORM POPUP
-                                                    <div class="popup">
-                                                        <div class="close-btn">&times;</div>
-                                                        <div class="form">
-                                                            <h2>CREATE CLINIC SCHEDULE</h2>
-                                                            <form action="AddClinicScheduleServlet?clinicID=${clinicByID.clinicID}" method="get">
-                                                                <div class="form-element">
-                                                                    <label for="username">workingDay</label>
-                                                                    <input type="date" name="workingDay" required>
-                                                                </div> 
-                                                                <div class="form-element">
-                                                                    <label for="email">clinicID</label>
-                                                                    <input readonly type="text" name="clinicID" value="${clinicByID.clinicID} ">
-                                                                </div>
-                        
-                                                                <div class="form-element">
-                                                                    <label for="fullname">description</label>
-                                                                    <select name="description">
-                                                                        <option value="di lam">đi làm</option>
-                                                                        <option value="nghi le">nghỉ lễ</option>
-                                                                    </select>                              
-                                                                </div>
-                                                                <div class="form-element">
-                                                                    <input type="submit" value="Submit">
-                                                                </div>
-                        <c:set value="${requestScope.alreadyHave}" var="existingSchedule"/>
-                        <% String existingSchedule = (String) request.getAttribute("alreadyHave");
-                            if (existingSchedule != null) {
-                        %>
-                        <p style="font-weight: bold;
-                           color: red" class="error-message">${existingSchedule}</p>
-                        <%
-                            }
-                        %>
-
-                        <%
-                            Boolean createEventClinicSchedule = (Boolean) request.getAttribute("createEventClinicSchedule");
-                            if (Boolean.TRUE.equals(createEventClinicSchedule)) {
-                        %>
-                        <p style="font-weight: bold;
-                        color: green">Create New Schedule Successfully!</p>
-                        <%
-                            }
-                        %>
-                    </form>
+                        <div class="center-button">
+                            <a href="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>">
+                                <input type="button" name="" value="View Dentist Schedule">
+                            </a>
+                        </div>
+                    </form>  
+                    <c:set value="${requestScope.weekStr}" var="year"/>
+                    <c:set value="${requestScope.weekStr}" var="week"/>
+                    <a href="LoadAllDentaListServlet" style="background-color: red;
+                       color: white;
+                       padding: 10px 20px;
+                       text-decoration: none;
+                       border-radius: 4px;
+                       font-size: 16px;
+                       display: inline-block;
+                       text-align: center;">
+                        Return
+                    </a>
                 </div>
-            </div>-->
-                        <script>
-                            document.querySelector("#create-button").addEventListener("click", function () {
-                                document.querySelector(".popup").classList.add("active");
-                            });
-
-                            document.querySelector(".popup .close-btn").addEventListener("click", function () {
-                                document.querySelector(".popup").classList.remove("active");
-                            });
-
-                            document.addEventListener('DOMContentLoaded', (event) => {
-                                const clinicCards = document.querySelectorAll('.clinic-card');
-
-                                clinicCards.forEach(card => {
-                                    card.addEventListener('click', () => {
-                                        const url = card.getAttribute('data-url');
-                                        window.location.href = url;
-                                    });
-                                });
-                            });
-                        </script>
-
-                        <!-- JavaScript code for handling calendar cell clicks -->
-                        <script>
-                            // Function to handle click event on calendar cell
-                            function handleDayClick(date) {
-                                // You can perform actions based on the clicked date
-                                alert("Clicked on date: " + date);
-                                // For example, you can redirect to another page passing the date as a parameter
-                                window.location.href = "handleDayClickServlet?date=" + date;
-                            }
-                        </script>
-
-
+                <!-- First Popup for confirmation -->
+                <div id="confirmationPopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close-btn" onclick="closePopup('confirmationPopup')">&times;</span>
+                        <p>Do you want to set an event for this day?</p>
+                        <button id="confirmButton">OK</button>
                     </div>
                 </div>
+
+                <!-- Second Popup for setting the event -->
+                <div id="eventPopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close-btn" onclick="closePopup('eventPopup')">&times;</span>
+                        <h2>Set Event</h2>
+                        <form id="eventForm" method="post" action="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
+                            <input type="hidden" name="offDate" id="eventDate">
+                            <label for="eventName">Event Name:</label>
+                            <input type="text" id="eventName" name="description" required>
+                            <input type="hidden" name="key" value="setEvent" required>
+                            <button type="submit">Set Event</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- First Popup for confirmation -->
+                <div id="confirmationPopup2" class="popup">
+                    <div class="popup-content">
+                        <span class="close-btn" onclick="closePopup('confirmationPopup2')">&times;</span>
+                        <p>Do you want to modify this event ?</p>
+                        <button id="confirmButton2">OK</button>
+                    </div>
+                </div>
+
+                <!-- Second Popup for setting the event -->
+                <div id="eventPopup2" class="popup">
+                    <div class="popup-content">
+                        <span class="close-btn" onclick="closePopup('eventPopup2')">&times;</span>
+                        <h2>Modify Event</h2>
+                        <form id="eventForm2" method="post" action="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
+                            <input readonly type="hidden" name="offDate" id="eventDate2">
+                            <label for="eventName">Event Name:</label>
+                            <input type="text" id="eventName" name="description" required>
+                            <input type="hidden" name="key" value="modifyEvent" required>
+                            <button type="submit">Set Event</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Error Popup -->
+                <div id="errorPopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close-btn" onclick="closePopup('errorPopup')">&times;</span>
+                        <p id="errorMessage"></p>
+                    </div>
+                </div>
+
+                <div id="successPopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close-btn" onclick="closePopup('successPopup')">&times;</span>
+                        <p id="successMessage"></p>
+                    </div>
+                </div>
+
+                <script>
+                    document.querySelector("#create-button").addEventListener("click", function () {
+                        document.querySelector(".popup").classList.add("active");
+                    });
+                    document.querySelector(".popup .close-btn").addEventListener("click", function () {
+                        document.querySelector(".popup").classList.remove("active");
+                    });
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        const clinicCards = document.querySelectorAll('.clinic-card');
+                        clinicCards.forEach(card => {
+                            card.addEventListener('click', () => {
+                                const url = card.getAttribute('data-url');
+                                window.location.href = url;
+                            });
+                        });
+                    });
+                </script>
+
+                <!-- JavaScript code for handling calendar cell clicks -->
+                <script>
+                    // Function to handle click event on calendar cell
+                    function handleDayClick(date) {
+                        // You can perform actions based on the clicked date
+                        alert("Clicked on date: " + date);
+                        // For example, you can redirect to another page passing the date as a parameter
+                        window.location.href = "handleDayClickServlet?date=" + date;
+                    }
+
+                </script>
+
+                <script>
+                    // JavaScript code for handling calendar cell clicks
+                    let selectedDate = '';
+
+                    function handleDayClick(date, cell) {
+                        selectedDate = date;
+                        // Remove 'selected' class from all cells
+                        document.querySelectorAll('.table-cell, .table-cell2').forEach(c => c.classList.remove('selected'));
+                        // Add 'selected' class to the clicked cell
+                        cell.classList.add('selected');
+                        // Show the correct confirmation popup based on the cell's class
+                        if (cell.classList.contains('table-cell')) {
+                            document.getElementById('confirmationPopup').style.display = 'flex';
+                        } else if (cell.classList.contains('table-cell2')) {
+                            document.getElementById('confirmationPopup2').style.display = 'flex';
+                        }
+                    }
+
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Add click event listener to each calendar cell
+                        document.querySelectorAll('.table-cell, .table-cell2').forEach(cell => {
+                            const date = cell.getAttribute('data-date');
+                            cell.addEventListener('click', () => handleDayClick(date, cell));
+                        });
+
+                        // Add click event listener to the confirm button in the confirmation popup
+                        document.getElementById('confirmButton').addEventListener('click', () => {
+                            document.getElementById('confirmationPopup').style.display = 'none';
+                            document.getElementById('eventPopup').style.display = 'flex';
+                            document.getElementById('eventDate').value = selectedDate;
+                        });
+
+                        // Add click event listener to the confirm button in the confirmation popup2
+                        document.getElementById('confirmButton2').addEventListener('click', () => {
+                            document.getElementById('confirmationPopup2').style.display = 'none';
+                            document.getElementById('eventPopup2').style.display = 'flex';
+                            document.getElementById('eventDate2').value = selectedDate;
+                        });
+
+                        // Add click event listener to the close button in the confirmation popup
+                        document.querySelector('#confirmationPopup .close-btn').addEventListener('click', () => {
+                            closePopup('confirmationPopup');
+                        });
+
+                        // Add click event listener to the close button in the confirmation popup2
+                        document.querySelector('#confirmationPopup2 .close-btn').addEventListener('click', () => {
+                            closePopup('confirmationPopup2');
+                        });
+
+                        // Add click event listener to the close button in the event popup
+                        document.querySelector('#eventPopup .close-btn').addEventListener('click', () => {
+                            closePopup('eventPopup');
+                        });
+
+                        // Add click event listener to the close button in the event popup2
+                        document.querySelector('#eventPopup2 .close-btn').addEventListener('click', () => {
+                            closePopup('eventPopup2');
+                        });
+
+                        // Handle the event form submission via AJAX
+                        $('#eventForm').on('submit', function (e) {
+                            e.preventDefault();
+                            const formData = $(this).serialize();
+                            $.ajax({
+                                type: 'POST',
+                                url: $(this).attr('action'),
+                                data: formData,
+                                success: function (response) {
+                                    if (response.success) {
+                                        const successMessage = response.message;
+                                        document.getElementById('successMessage').textContent = successMessage;
+                                        closePopup('eventPopup'); // Close eventPopup
+                                        showPopup('successPopup');
+                                    } else {
+                                        document.getElementById('errorMessage').textContent = response.message;
+                                        showPopup('errorPopup');
+                                    }
+                                },
+                                error: function (jqXHR) {
+                                    const response = jqXHR.responseJSON;
+                                    if (response && !response.success) {
+                                        document.getElementById('errorMessage').textContent = response.message;
+                                        closePopup('eventPopup'); // Close eventPopup
+                                        showPopup('errorPopup');
+                                    } else {
+                                        alert('An error occurred. Please try again.');
+                                    }
+                                }
+                            });
+                        });
+
+                        // Handle the event form2 submission via AJAX
+                        $('#eventForm2').on('submit', function (e) {
+                            e.preventDefault();
+                            const formData = $(this).serialize();
+                            $.ajax({
+                                type: 'POST',
+                                url: $(this).attr('action'),
+                                data: formData,
+                                success: function (response) {
+                                    if (response.success) {
+                                        const successMessage = response.message;
+                                        document.getElementById('successMessage').textContent = successMessage;
+                                        closePopup('eventPopup2'); // Close eventPopup2
+                                        showPopup('successPopup');
+                                        location.reload(); // Reload the page to show updated data
+                                    } else {
+                                        document.getElementById('errorMessage').textContent = response.message;
+                                        showPopup('errorPopup');
+                                    }
+                                },
+                                error: function (jqXHR) {
+                                    const response = jqXHR.responseJSON;
+                                    if (response && !response.success) {
+                                        document.getElementById('errorMessage').textContent = response.message;
+                                        closePopup('eventPopup2'); // Close eventPopup2
+                                        showPopup('errorPopup');
+                                    } else {
+                                        alert('An error occurred. Please try again.');
+                                    }
+                                }
+                            });
+                        });
+
+                        // Add click event listener to the close button in the success popup to reload the page
+                        document.querySelector('#successPopup .close-btn').addEventListener('click', () => {
+                            closePopup('successPopup');
+                            location.reload();
+                        });
+                        document.querySelector('#errorPopup .close-btn').addEventListener('click', () => {
+                            closePopup('errorPopup');
+                            location.reload();
+                        });
+                    });
+
+                    function closePopup(popupId) {
+                        document.getElementById(popupId).style.display = 'none';
+                    }
+
+                    function showPopup(popupId) {
+                        document.getElementById(popupId).style.display = 'flex';
+                    }
+
+                    function someConditionForPopup1(date) {
+                        // Replace this function with your actual condition to determine which popup to show
+                        // For example, you could check if the date has an event or some other condition
+                        return true; // or false depending on the condition
+                    }
+
+                </script>
+                <style>
+                    /* General popup styling */
+                    .popup {
+                        display: none;
+                        position: fixed;
+                        z-index: 1000;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.6);
+                        justify-content: center;
+                        align-items: center;
+                        transition: all 0.3s ease-in-out;
+                    }
+
+                    .popup-content {
+                        position: relative;
+                        background-color: #fff;
+                        padding: 30px;
+                        border-radius: 10px;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                        text-align: center;
+                        max-width: 500px;
+                        width: 90%;
+                        animation: popupAnimation 0.3s ease-out;
+                    }
+
+                    @keyframes popupAnimation {
+                        from {
+                            transform: scale(0.8);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: scale(1);
+                            opacity: 1;
+                        }
+                    }
+
+                    .close-btn {
+                        position: absolute;
+                        right: 15px;
+                        top: 15px;
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: #999;
+                        cursor: pointer;
+                        transition: color 0.3s ease;
+                    }
+
+                    .close-btn:hover {
+                        color: #333;
+                    }
+
+                    .popup p {
+                        margin: 20px 0;
+                        font-size: 16px;
+                        color: #555;
+                    }
+
+                    button {
+                        text-align: center;
+                        background-color: #007bff;
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        transition: background-color 0.3s ease;
+                    }
+
+                    button:hover {
+                        background-color: #0056b3;
+                    }
+
+                    .button-container {
+                        display: flex;
+                        justify-content: center;
+                    }
+
+                    /* Specific styles for each popup */
+                    #confirmationPopup .popup-content {
+                        background-color: #f9f9f9;
+                    }
+
+                    #errorPopup .popup-content {
+                        background-color: #e6ffe6;
+                    }
+
+                    #successPopup .popup-content {
+                        background-color: #e6ffe6;
+                    }
+
+                    #eventPopup .popup-content {
+                        background-color: #f9f9f9;
+                        text-align: left;
+                    }
+
+                    #eventPopup label {
+                        display: block;
+                        margin-bottom: 10px;
+                        font-weight: bold;
+                        color: #333;
+                    }
+
+                    #eventPopup select, #eventPopup input[type="hidden"] {
+                        width: 100%;
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        box-sizing: border-box;
+                    }
+
+                </style>
+
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>
 

@@ -1,5 +1,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.time.LocalDate, java.time.temporal.WeekFields, java.util.Locale" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -220,11 +221,17 @@
     </head>
     <body>
         <h1>Clinic List</h1>
+        <%
+    LocalDate now = LocalDate.now();
+    WeekFields weekFields = WeekFields.of(Locale.getDefault());
+    int currentYear = now.getYear();
+    int currentWeek = now.get(weekFields.weekOfWeekBasedYear());
+        %>
         <div class="col-md-4">
-            
+
             <div id="sanpham3">
                 <c:forEach items="${requestScope.clinicList}" var="clinicList">
-                    <div class="clinic-card" data-url="LoadFromClinicToScheduleServlet?year=2024&week=8&clinicByID=${clinicList.clinicID}">    
+                    <div class="clinic-card" data-url="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicList.clinicID}&year=<%=currentYear%>&week=<%=currentWeek%>">    
                         <!--sua lai khuc nay-->
                         <img src="images/combo03.PNG" class="img-responsive" />
                         <p class="first-line">${clinicList.clinicID}</p>
