@@ -11,11 +11,35 @@
     <body>
         <div class="container">
             <div class="fixed-element">
+                <div class="header-icon">
+                    <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()"><i style="font-size: 29px; margin-right: 24px;" class="fa-solid fa-user"></i></span>
+                    <!-- Dropdown Content -->
+                    <div class="sub-menu-wrap" id="sub-menu-wrap">
+                        <div class="sub-menu">
+                            <div class="user-info">
+                                <h3>${sessionScope.account.userName}</h3>
+                            </div>
+                            <hr>
+                            <a href="ProfileStaffServlet" class="sub-menu-link">
+                                <span class="material-symbols-outlined"></span>
+                                <p>Profile</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                            <hr>
+                            <a href="SignOutServlet" class="sub-menu-link">
+                                <span class="material-symbols-outlined"></span>
+                                <p>Logout</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
                 <h1>Booking View for Staff</h1>
-                <a href="ProfileStaffServlet"><i class="fa-solid fa-user"></i></a>
+
                 <div class="date-picker">
                     <label for="bookingDate">Select Date:</label>
-                    <input type="date" id="bookingDate" name="bookingDate" value="">
+                    <input type="date" id="bookingDate" name="bookingDate" value="${selectedDate}">
                 </div>
                 <div>
                     <form action="./StaffViewBooking" method="post">
@@ -32,13 +56,36 @@
             <div id="bookingList" class="hidden">
                 <c:forEach items="${listBookingStaff}" var="booking" varStatus="status">
                     <div class="booking-item" data-date="${booking.appointmentDay}" data-name="${booking.account.fullName}" onclick="showDetail('${status.index}')">
-                        Booking ID: ${booking.bookingID} | Name: ${booking.account.fullName} | Time: ${booking.timeSlot.timePeriod} | Status: Confirmed
+                        Booking ID: ${booking.bookingID} | Name: ${booking.account.fullName} | Time: ${booking.timeSlot.timePeriod} |
+                        <c:choose>
+                            <c:when test="${booking.status == 1}">
+                                Status: Check-in
+                            </c:when>
+                            <c:when test="${booking.status == 0}">
+                                Status: Placed
+                            </c:when>
+                            <c:otherwise>
+                                Status: Unknown
+                            </c:otherwise>
+                        </c:choose>
                         <div id="detail-${status.index}" class="booking-detail hidden">
                             <p><strong>Booking ID:</strong> ${booking.bookingID}</p>
                             <p><strong>Create Day:</strong> ${booking.createDay}</p>
                             <p><strong>Appointment Day:</strong> ${booking.appointmentDay}</p>
                             <p><strong>Appointment Time:</strong> ${booking.timeSlot.timePeriod}</p>
-                            <p><strong>Status:</strong> ${booking.status}</p>
+                            <p><strong>Status:</strong> 
+                                <c:choose>
+                                    <c:when test="${booking.status == 1}">
+                                        Check-in
+                                    </c:when>
+                                    <c:when test="${booking.status == 0}">
+                                        Placed
+                                    </c:when>
+                                    <c:otherwise>
+                                        Unknown
+                                    </c:otherwise>
+                                </c:choose>
+                            </p>
                             <p><strong>Service Name:</strong> ${booking.service.serviceName}</p>
                             <p><strong>Customer Name:</strong> ${booking.account.fullName}</p>
                             <p><strong>Customer Phone:</strong> ${booking.account.phone}</p>
@@ -54,6 +101,7 @@
                                     </select>
                                     <input name="bookingID" value="${booking.bookingID}" type="hidden" />
                                     <input type="hidden" name="openBookingDetail" value="${status.index}" />
+                                    <input type="hidden" name="bookingDate" value="${selectedDate}" />
                                     <input type="submit" value="Assign" />
                                 </form>
                             </div>
@@ -67,27 +115,23 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                // Retrieve the date from local storage
                 const savedDate = localStorage.getItem('selectedDate');
                 const bookingDateInput = document.getElementById('bookingDate');
                 if (savedDate) {
                     bookingDateInput.value = savedDate;
-                    loadBookings(savedDate); // Load bookings for the saved date
+                    loadBookings(savedDate);
                 } else {
-                    // Set today's date if no date is selected
                     const today = new Date().toISOString().split('T')[0];
                     bookingDateInput.value = today;
                     loadBookings(today);
                 }
 
-                // Add event listener to date picker
                 bookingDateInput.addEventListener('change', function () {
                     const selectedDate = this.value;
                     localStorage.setItem('selectedDate', selectedDate);
                     loadBookings(selectedDate);
                 });
 
-                // Open the detail view if specified
                 const openBookingDetail = document.getElementById('openBookingDetail').value;
                 if (openBookingDetail) {
                     showDetail(openBookingDetail);
@@ -105,19 +149,20 @@
             });
 
             function showDetail(id) {
-                // Hide all other details
                 var details = document.getElementsByClassName('booking-detail');
                 for (var i = 0; i < details.length; i++) {
                     details[i].classList.add('hidden');
                 }
-
-                // Show the selected detail
                 document.getElementById('detail-' + id).classList.remove('hidden');
             }
 
             function closeDetail(id, event) {
-                event.stopPropagation(); // Prevent the click event from bubbling up to the parent div
+                event.stopPropagation();
                 document.getElementById('detail-' + id).classList.add('hidden');
+            }
+            function toggleDropdown() {
+                let subMenu = document.getElementById("sub-menu-wrap");
+                subMenu.classList.toggle("open-menu");
             }
         </script>
         <script src="admin-front-end/js/staffViewBooking.js"></script>

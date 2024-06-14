@@ -149,55 +149,13 @@ button:hover, input[type="button"]:hover {
     background-color: #0056b3;
 }
 
-/* Pop-up Table CSS */
-.pop-up-table-dentist-assign {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 600px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    z-index: 2000;
-    padding: 20px;
-    box-sizing: border-box;
-}
 
-.pop-up-table-dentist-assign table {
-    width: 100%;
-    border-collapse: collapse;
-}
 
-.pop-up-table-dentist-assign th,
-.pop-up-table-dentist-assign td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
 
-.pop-up-table-dentist-assign th {
-    background-color: #007bff;
-    color: #fff;
-}
 
-.pop-up-table-dentist-assign td {
-    background-color: #f9f9f9;
-}
 
-/* Overlay */
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
+
+
 .booking-detail .dentist-info {
     display: flex;
     align-items: center;
@@ -216,4 +174,89 @@ button:hover, input[type="button"]:hover {
 .booking-detail .dentist-info form input[type="submit"] {
     padding: 4px;
     font-size: 12px;
+}
+.header-icon {
+    position: fixed; /* Change to fixed position */
+    top: 10px; /* Adjust the top position as needed */
+    right: 10px; /* Adjust the right position as needed */
+}
+
+.header-icon .fa-user {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.header-icon .fa-user:hover {
+    color: #007bff; /* Change the color on hover */
+}
+
+.sub-menu-wrap {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    z-index: 1;
+    border-radius: 5px;
+    width: 200px;
+}
+
+.sub-menu-wrap.open-menu {
+    display: block;
+}
+
+.sub-menu {
+    padding: 5px;
+}
+
+.user-info {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.user-info h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.sub-menu-link {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px; /* Adjust padding for links */
+    margin: 5px 0;
+    color: #333;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.sub-menu-link:hover {
+    background-color: #f1f1f1;
+}
+
+.sub-menu-link i {
+    margin-left: auto;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.sub-menu-link:hover i {
+    transform: translateX(5px);
+}
+
+.material-symbols-outlined {
+    font-size: 32px;
+
+}
+
+.sub-menu-link p {
+    margin: 0;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #e1e1e1;
+    margin: 10px 0;
 }

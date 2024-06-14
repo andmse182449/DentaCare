@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,10 +29,13 @@ public class StaffViewBooking extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             BookingDAO daoBooking = new BookingDAO();
+            HttpSession session = request.getSession();
+            AccountDTO staff = (AccountDTO) session.getAttribute("account");
             StaffAccountDAO daoStaffAccount = new StaffAccountDAO();
             String dentistID = null;
             String openBookingDetail = null;
-
+            String selectedDate = request.getParameter("bookingDate");
+            String customerName = request.getParameter("nameBooking");
             if ("assignDentist".equals(action)) {
                 String bookingIDStr = request.getParameter("bookingID");
                 dentistID = request.getParameter("dentistID");
@@ -40,17 +44,15 @@ public class StaffViewBooking extends HttpServlet {
                 if (bookingIDStr != null && !bookingIDStr.isEmpty()) {
                     bookingID = Integer.parseInt(bookingIDStr);
                 }
-                daoBooking.assignDentist(bookingID, dentistID);
+                daoBooking.assignDentist(bookingID, dentistID);  
                 request.setAttribute("bookingID", bookingID);
             }
-
-            List<BookingDTO> listBooking = daoBooking.getAllBookingClinic1();
-            request.setAttribute("listBookingStaff", listBooking);
-
-            String selectedDate = request.getParameter("bookingDate");
-            if (selectedDate == null || selectedDate.isEmpty()) {
-                selectedDate = request.getParameter("hiddenBookingDate");
+            if(customerName == null || customerName.isEmpty()){
+                customerName = "";
             }
+            
+            List<BookingDTO> listBooking = daoBooking.getAllBookingClinic(staff.getClinicID(),customerName);
+            request.setAttribute("listBookingStaff", listBooking);
 
             if (selectedDate != null && !selectedDate.isEmpty()) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

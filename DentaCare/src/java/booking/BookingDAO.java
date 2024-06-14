@@ -213,7 +213,7 @@ public class BookingDAO {
         return slotIDs;
     }
 
-    public List<BookingDTO> getAllBookingClinic1() {
+    public List<BookingDTO> getAllBookingClinic(int clinicID, String fullName) {
     String sql = """
             SELECT 
                 bookingID, createDay, appointmentDay, a.status, a.price, 
@@ -226,7 +226,7 @@ public class BookingDAO {
                 INNER JOIN service c ON a.serviceid = c.serviceid 
                 INNER JOIN timeslot d ON a.slotid = d.slotid
             WHERE 
-                a.clinicID = 1
+                a.clinicID = ? and customer.fullName like ?
             ORDER BY 
                 appointmentDay, timePeriod;
             """;
@@ -235,6 +235,8 @@ public class BookingDAO {
     try {
         Connection con = utils.DBUtils.getConnection();
         PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, clinicID);
+        ps.setString(2, "%"+fullName+"%");
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             BookingDTO booking = new BookingDTO();
