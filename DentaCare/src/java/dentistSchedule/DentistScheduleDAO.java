@@ -263,5 +263,44 @@ public class DentistScheduleDAO {
         }
         return false;
     }
-
+    
+     public List<DentistScheduleDTO> getAccountDentistByRoleID2() throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<DentistScheduleDTO> list = new ArrayList<>();
+        StringBuilder query = new StringBuilder("""
+                                                    select DENTISTSCHEDULE.*, ACCOUNT.fullName from DENTISTSCHEDULE 
+                                                    join ACCOUNT on ACCOUNT.accountID = DENTISTSCHEDULE.accountID 
+                                                    WHERE roleID = 1 
+                                                """);
+        try {
+            String sql = null;
+            sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int dentistScheduleID = rs.getInt("dentistScheduleID");
+                String accountID = rs.getString("accountID");
+                String workingDate = rs.getString("workingDate");
+                DentistScheduleDTO dto = new DentistScheduleDTO(dentistScheduleID, accountID, workingDate);
+                list.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
 }

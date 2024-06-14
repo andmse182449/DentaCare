@@ -69,7 +69,7 @@ public class BookingServlet extends HttpServlet {
                 List<ServiceDTO> listService = serviceDAO.listAllServiceActive();
                 List<TimeSlotDTO> listTimeSlot = timeslotDAO.getAllTimeSLot();
                 List<AccountDTO> listDoctor = accountDAO.getAllDentists();
-                List<DentistScheduleDTO> listDenSchedule = dentistScheduleDAO.getAccountDentistByRoleID1();
+                List<DentistScheduleDTO> listDenSchedule = dentistScheduleDAO.getAccountDentistByRoleID2();
                 List<DayOffScheduleDTO> listDayOff = dayOffDAO.getAllOffDate2();
 
                 List<Integer> listClinicLimit = bookingDAO.getClinicIDLimitBooking();

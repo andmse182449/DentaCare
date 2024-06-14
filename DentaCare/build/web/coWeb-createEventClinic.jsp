@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page import="java.time.LocalDate, java.time.temporal.WeekFields, java.util.Locale" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -68,34 +70,40 @@
         <div class="form-container">
             <c:set var="clinicByID" value="${requestScope.clinicByID}" />
             <c:set var="getByCliScheID" value="${requestScope.getByCliScheID}" />
+            <%
+                                LocalDate now2 = LocalDate.now();
+                                WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                                int currentYear2 = now2.getYear();
+                                int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+            %>
 
-            <form action="CreateEventClinicScheduleServlet?clinicByID=${clinicByID.clinicID}&clinicScheduleID=${getByCliScheID.clinicScheduleID}" method="post">
+            <form action="CreateEventClinicScheduleServlet?clinicByID=${clinicByID.clinicID}&clinicScheduleID=${getByCliScheID.clinicScheduleID}&year=<%=currentYear2%>&week=<%=currentWeek2%>" method="post">
                 <h1>Create new event</h1>
                 <input readonly required="true" type="text" name="clinicScheduleID" value="${getByCliScheID.clinicScheduleID}"><br>
                 <input required="true" type="text" name="description" placeholder="Name of event" ><br>
 
                 <div class="check-button">
-                    <a href="LoadFromClinicToScheduleServlet?clinicByID=${clinicByID.clinicID}"><input type="button" value="Return"></a>
+                    <a href="LoadFromClinicToScheduleServlet?clinicByID=${clinicByID.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>"><input type="button" value="Return"></a>
                     <input type="submit" value="Create">
                 </div>
                 <c:set value="${requestScope.eventAlready}" var="eventAlready" />
-                    <% String eventAlready = (String) request.getAttribute("eventAlready");
-                        if (eventAlready != null) {
-                    %>
-                    <p style="font-weight: bold; color: red" class="error-message">${eventAlready}</p>
-                    <%
-                        }
-                    %>
+                <% String eventAlready = (String) request.getAttribute("eventAlready");
+                    if (eventAlready != null) {
+                %>
+                <p style="font-weight: bold; color: red" class="error-message">${eventAlready}</p>
+                <%
+                    }
+                %>
 
-                    <%
-                        Boolean createEventClinicSchedule = (Boolean) request.getAttribute("createEventClinicSchedule");
-                        if (Boolean.TRUE.equals(createEventClinicSchedule)) {
-                    %>
-                    <p style="font-weight: bold; color: green">Create New Event Successfully!</p>
-                    <%
-                        }
-                    %>
-                </form>
-            </div>
-        </body>
-    </html>
+                <%
+                    Boolean createEventClinicSchedule = (Boolean) request.getAttribute("createEventClinicSchedule");
+                    if (Boolean.TRUE.equals(createEventClinicSchedule)) {
+                %>
+                <p style="font-weight: bold; color: green">Create New Event Successfully!</p>
+                <%
+                    }
+                %>
+            </form>
+        </div>
+    </body>
+</html>

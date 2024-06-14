@@ -1,0 +1,333 @@
+/* ALERT STYLE */
+.custom-alert-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.custom-alert-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.custom-alert-close {
+    margin-top: -20px;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.custom-alert-close:hover,
+.custom-alert-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.custom-alert-message {
+    margin-bottom: 20px;
+}
+
+.custom-alert-button {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.custom-alert-button:hover {
+    background-color: #fa4242;
+}
+
+/* MAIN BODY STYLE */
+@media (min-width: 1200px) {
+    .main-booking {
+        max-width: 1140px;
+    }
+}
+
+.main-booking {
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: calc(100vh - 80px - 60px);
+    position: relative;
+    display: flex;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.main-booking .container {
+    width: 60%;
+}
+
+.main-booking .card {
+    width: 40%;
+    padding: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    max-height: 800px;
+}
+
+.mod-icon {
+    margin-top: 20px;
+    display: flex;
+}
+
+.text-red-500 {
+    --tw-text-opacity: 1;
+    color: rgb(239 68 68 / var(--tw-text-opacity));
+    font-size: 10px;
+    padding-left: 5px;
+}
+
+h1 {
+    color: #333;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+
+.booking-form {
+    display: flex;
+    margin: 0;
+    justify-content: space-between;
+    padding: 0 15px 5px 15px;
+}
+
+.booking-form label {
+    align-content: center;
+    width: 30%;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.booking-form input[type='text'] {
+    width: 70%;
+    border: none;
+    outline: none;
+    background: none;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.booking-form input[type='submit'] {
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: #009dff;
+    color: #fff;
+}
+
+.booking-form input[type='submit']:hover {
+    cursor: pointer;
+    font-weight: 700;
+    background-color: #007bff;
+    color: #fff;
+}
+
+
+.bookingfield {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.bookingfield-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.bookingfield-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #0056b3;
+    display: flex;
+    align-items: center;
+}
+
+.bookingfield-header h3::before {
+    content: attr(data-number);
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    margin-right: 10px;
+}
+
+.bookingfield-header p {
+    margin: auto;
+    font-size: 10px;
+    color: #888;
+    font-style: italic;
+    padding: 5px;
+}
+
+
+.bookingfield-content {
+    display: none;
+    padding: 20px;
+}
+
+.bookingfield-content ul {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    padding: 0;
+}
+
+.bookingfield-content li {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.bookingfield-content li:hover {
+    border:  2px solid #007bff;
+}
+
+
+.selected-clinic {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.selected-service {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.selected-timeslot {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* CONFIRM BOX */
+.confirm-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.confirm-dialog {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+
+}
+
+.confirm-dialog h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.confirm-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.confirm-buttons button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.confirm-buttons .button-cancel {
+    background-color: #f44336;
+    margin-left: 10px;
+}
+
+.confirm-buttons button:hover {
+    opacity: 0.8;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.nothing {
+    display: none;
+}
+
+
+.alert-error {
+    position: fixed;
+    top: 100px; /* Adjust this value to position the alert higher or lower */
+    left: 50%;
+    transform: translateX(-50%); /* Center the alert horizontally */
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    display: none;
+    z-index: 1000; /* Ensure the alert appears above other elements */
+}
+
+.alert-error.show {
+    display: block;
+    opacity: 1;
+}
