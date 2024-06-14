@@ -42,6 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
             option.setAttribute('disabled', '');
             option.setAttribute('style', 'border: none; background: none; color: green;');
             option.setAttribute('value', 'Completed');
+        } else if(option.getAttribute('data-check') === '4') {
+            option.setAttribute('style', 'border: none; background: none; color: red;');
+            option.setAttribute('value', 'Expired');
+            option.setAttribute('disabled', '');
         } else {
             option.setAttribute('style', 'background: red; color: #fff; border:none; width: 100px; border-radius: 50px; cursor: pointer;');
         }

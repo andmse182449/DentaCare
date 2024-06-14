@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,9 +47,19 @@ public class HistoryServlet extends HttpServlet {
         HttpSession session = request.getSession();
         AccountDTO account = (AccountDTO) session.getAttribute("account");
         BookingDAO bookingDAO = new BookingDAO();
+        LocalDate today = LocalDate.now();
         if (action == null || action == "" || action.equals("load")) {
             List<BookingDTO> bookingList = bookingDAO.getBookingListByCustomerID(account.getAccountID());
             try {
+                for (BookingDTO bookingDTO : bookingList) {
+                    if (bookingDTO.getAppointmentDay().isBefore(today)) {
+                        try {
+                            bookingDAO.updateExpiredDate(bookingDTO.getBookingID());
+                        } catch (SQLException ex) {
+                            Logger.getLogger(HistoryServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
                 request.setAttribute("bookingList", bookingList);
                 request.getRequestDispatcher(url).forward(request, response);
             } catch (IOException e) {

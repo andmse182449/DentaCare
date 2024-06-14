@@ -350,5 +350,29 @@ public class BookingDAO {
         }
         return list;
     }
+    
+    public boolean updateExpiredDate(String bookingID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
 
+        String query = "UPDATE BOOKING SET status = 4 WHERE bookingID = ?";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setString(1, bookingID);
+            int rowsUpdated = stm.executeUpdate();
+
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
 }

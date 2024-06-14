@@ -30,13 +30,14 @@ function generateCalendar(year, month) {
     var listBooking = document.getElementById('listBooking').value;
     // Add event listeners to future days
     var futureDays = document.querySelectorAll('.day');
+    
     futureDays.forEach(function (day) {
         console.log(listBooking);
-        var check = new Date(year, month, day.innerHTML).toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'});
-        if (listBooking.includes("appointmentDay=" + check)) {
+        var check = new Date(year, month, day.innerHTML);
+        if (listBooking.includes("appointmentDay=" + check.toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'})) && check > today) {
             day.classList.add('selected-calendar');
             day.setAttribute('data-check', check);
-        } else if (check === today.toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'})) {
+        } else if (check.toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'}) === today.toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'})) {
             day.classList.add('current');
         }
     });

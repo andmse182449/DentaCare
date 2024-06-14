@@ -1,7 +1,10 @@
 .booking-history {
+    display: flex;
     flex-wrap: wrap;
     gap: 20px;
     margin-top: 20px;
+    overflow-y: scroll;
+    height: 450px; /* Adjust as needed */
 }
 .card {
     background-color: #fff;

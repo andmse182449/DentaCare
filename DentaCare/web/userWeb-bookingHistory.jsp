@@ -82,6 +82,9 @@
                                     <c:when test="${booking.status == 3}">
                                         <div class="booking-details" style="text-align: right; font-weight: 600; color: red;">Cancelled</div>
                                     </c:when>
+                                    <c:when test="${booking.status == 4}">
+                                        <div class="booking-details" style="text-align: right; font-weight: 600; color: red;">Expired</div>
+                                    </c:when>
                                     <c:otherwise>
                                         <div class="booking-details" style="text-align: right; font-weight: 600; color: green;">Completed</div>
                                     </c:otherwise>
