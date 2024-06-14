@@ -162,6 +162,25 @@
         .serviceBtn:hover {
             background-color: #1e77e0;
         }
+        .pagination {
+            margin-top: 10px;
+            display: inline-block;
+            justify-content: center;
+        }
+
+        .pagination a {
+            color: black;
+            font-size: 22px;
+            float: left;
+            padding: 0px 12px;
+            text-decoration: none;
+        }
+
+        .pagination a.active {
+            border-radius: 20px;
+            background-color: #2f89fc !important;
+            color: white !important;
+        }
     </style>
     <body>
 
@@ -223,7 +242,7 @@
                 <div class="container" data-scrollax-parent="true">
                     <div class="row slider-text align-items-end">
                         <div class="col-md-7 col-sm-12 ftco-animate mb-5">
-                            <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span class="mr-2"><a href="index.jsp">Home</a></span> <span>Services</span></p>
+                            <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span class="mr-2"><a href="LoginChangePage?action=home">Home</a></span> <span>Services</span></p>
                             <h1 class="mb-3" data-scrollax=" properties: { translateY: '70%', opacity: .9}">See Our Services</h1>
                         </div>
                     </div>
@@ -351,18 +370,19 @@
 
         <!-- Comment Section -->
         <c:set var="comments" value="${requestScope.FEEDBACK}"/>
+        <c:set var="results" value="${requestScope.numberOfResults}"/>
         <div class="containerComment">
             <div class="head">
                 <h1>Post a Comment</h1>
             </div>
-            <div><span id="comment">0</span> Comments</div>
+            <div><span id="comment">${results}</span> Comments</div>
             <div class="comments">
                 <div class="parent">
                     <c:forEach var="comment" items="${comments}">
                         <div class="user-info" style="display: flex;gap:1rem">
                             <img style="width:40px; height:40px;border-radius: 50%;" src="images/user1.png" alt="User">
                             <div class="message" style="border: 1px solid grey; border-radius: 10px; padding: 10px">
-                                <h4 style="text-align: justify;">${comment.getAccountID()}</h4>
+                                <h4 style="text-align: justify;">${comment.getFullName()}</h4>
                                 <p style="margin: 0; word-break: break-all; overflow-wrap: break-word;">${comment.getFeedbackContent()}</p>
                             </div>
                         </div>
@@ -371,11 +391,19 @@
                 </div>
             </div>
             <button id="showAll" class="show-all-btn">Show all comments</button>
+            <form action="#">
+                <c:set var="page" value="${requestScope.page}"/>
+                <div class="pagination">
+                    <c:forEach begin="${1}" end="${requestScope.num}" var="i">
+                        <a class="${i==page ? "active" : ""}" href="LoginChangePage?action=service&page=${i}">${i}</a>
+                    </c:forEach>
+                </div>
+            </form>
             <div class="commentbox">
                 <img src="images/user1.png" alt="">
                 <div class="content">
                     <form id="comment-form" action="#" method="post">
-                        <input type="hidden" value="${account.getUserName()}" class="user" readonly="true">
+                        <input type="hidden" value="${account.getFullName()}" class="user" readonly="true">
 
 
                         <div class="commentinput">
@@ -408,9 +436,8 @@
                 const showAllBtn = document.querySelector("#showAll");
                 const userName = document.querySelector(".user");
 
-                const initialDisplayLimit = 5; // Number of comments to display initially
+                const initialDisplayLimit = 5;
 
-                // Event listener to enable/disable the publish button and change its style
                 userComment.addEventListener("input", e => {
                     if (!userComment.value) {
                         publishBtn.setAttribute("disabled", "disabled");

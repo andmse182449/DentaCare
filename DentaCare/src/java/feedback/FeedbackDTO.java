@@ -1,23 +1,21 @@
 package feedback;
 
-import java.time.LocalDateTime;
 public class FeedbackDTO {
 
     private String feedbackID;
     private String feedbackDay;
     private String feedbackContent;
-    private String accountID;
-    private int clinicID;
+    private String fullName;
 
     public FeedbackDTO() {
     }
 
-    public FeedbackDTO(String feedbackID, String feedbackDay, String feedbackContent, String accountID, int clinicID) {
+    public FeedbackDTO(String feedbackID, String feedbackDay, String feedbackContent, String fullName) {
         this.feedbackID = feedbackID;
         this.feedbackDay = feedbackDay;
         this.feedbackContent = feedbackContent;
-        this.accountID = accountID;
-        this.clinicID = clinicID;
+        this.fullName = fullName;
+
     }
 
     public String getFeedbackID() {
@@ -44,26 +42,17 @@ public class FeedbackDTO {
         this.feedbackContent = feedbackContent;
     }
 
-    public String getAccountID() {
-        return accountID;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setAccountID(String accountID) {
-        this.accountID = accountID;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
-
-    public int getClinicID() {
-        return clinicID;
-    }
-
-    public void setClinicID(int clinicID) {
-        this.clinicID = clinicID;
-    }
-
+    
     @Override
     public String toString() {
         return super.toString(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
-    
 
 }

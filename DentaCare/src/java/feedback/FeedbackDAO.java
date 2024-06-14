@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package feedback;
 
 import java.sql.Timestamp;
@@ -21,6 +17,15 @@ import utils.DBUtils;
  * @author ROG STRIX
  */
 public class FeedbackDAO {
+
+    public List<FeedbackDTO> getListByPage(ArrayList<FeedbackDTO> list,
+            int start, int end) {
+        ArrayList<FeedbackDTO> arr = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            arr.add(list.get(i));
+        }
+        return arr;
+    }
 
     private static long calculateMinutesAgo(LocalDateTime pastDateTime) {
         LocalDateTime now = LocalDateTime.now();
@@ -55,30 +60,29 @@ public class FeedbackDAO {
         }
     }
 
-    public List<FeedbackDTO> getAllFeedbacks() throws SQLException {
+    public List<FeedbackDTO> getAllFeedbacks(String rw_accountID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         FeedbackDTO dto = null;
         List<FeedbackDTO> list = new ArrayList<>();
-        String query = "SELECT * FROM feedback ORDER BY feedbackDay DESC;";
+        String query = "SELECT feedbackID, feedbackDay, feedbackContent, fullName FROM FEEDBACK fb join ACCOUNT ac on fb.accountID = ac.accountID ORDER BY CASE WHEN ac.accountID = ? THEN 0 ELSE 1 END, feedbackDay DESC;";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
+            stm.setString(1, rw_accountID);
             rs = stm.executeQuery();
             while (rs.next()) {
                 String feedbackID = rs.getString("feedbackID");
                 LocalDateTime feedbackDay = rs.getTimestamp("feedbackDay").toLocalDateTime();
                 String feedbackContent = rs.getString("feedbackContent");
-                String accountID = rs.getString("accountID");
-                int clinicID = rs.getInt("clinicID");
+                String fullName = rs.getString("fullName");
 
                 LocalDateTime pastDateTime = LocalDateTime.parse(feedbackDay.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 long minutesAgo = calculateMinutesAgo(pastDateTime);
                 String timeAgo = formatTimeAgo(pastDateTime, minutesAgo);
 
-
-                dto = new FeedbackDTO(feedbackID, timeAgo, feedbackContent, accountID, clinicID);
+                dto = new FeedbackDTO(feedbackID, timeAgo, feedbackContent, fullName);
                 list.add(dto);
             }
         } catch (SQLException e) {

@@ -5,11 +5,13 @@ import account.AccountDAO;
 import account.AccountDTO;
 import clinic.ClinicDAO;
 import feedback.FeedbackDAO;
+import feedback.FeedbackDTO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +42,35 @@ public class LoginChangePage extends HttpServlet {
                     ClinicDAO clinicDAO = new ClinicDAO();
                     ServiceDAO serviceDAO = new ServiceDAO();
                     FeedbackDAO feedbackDAO = new FeedbackDAO();
-                
-                    request.setAttribute("FEEDBACK", feedbackDAO.getAllFeedbacks());
+                    HttpSession session = request.getSession();
+                    AccountDTO account = (AccountDTO) session.getAttribute("account");
+//                    request.setAttribute("FEEDBACK", feedbackDAO.getAllFeedbacks());
                     request.setAttribute("CLINIC", clinicDAO.getAllClinic());
                     request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+                    List<FeedbackDTO> list = feedbackDAO.getAllFeedbacks(account.getAccountID());
+                    int numPs = list.size();
+                    int numperPage = 20;
+                    int numpage = numPs / numperPage + (numPs % numperPage == 0 ? 0 : 1);
+                    int start, end;
+                    String tpage = request.getParameter("page");
+                    int page;
+                    try {
+                        page = Integer.parseInt(tpage);
+                    } catch (NumberFormatException e) {
+                        page = 1;
+                    }
+                    start = (page - 1) * numperPage;
+                    if (page * numperPage > numPs) {
+                        end = numPs;
+                    } else {
+                        end = page * numperPage;
+                    }
+                    List<FeedbackDTO> arr = feedbackDAO.getListByPage((ArrayList<FeedbackDTO>) list, start, end);
+
+                    request.setAttribute("num", numpage);
+                    request.setAttribute("page", page);
+                    request.setAttribute("numberOfResults", feedbackDAO.getAllFeedbacks(account.getAccountID()).size());
+                    request.setAttribute("FEEDBACK", arr);
 
                     url = "service.jsp";
 

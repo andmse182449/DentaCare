@@ -225,7 +225,7 @@
                 <div class="container" data-scrollax-parent="true">
                     <div class="row slider-text align-items-end">
                         <div class="col-md-7 col-sm-12 ftco-animate mb-5">
-                            <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span class="mr-2"><a href="index.jsp">Home</a></span> <span>Services</span></p>
+                            <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span class="mr-2"><a href="LoginChangePage?action=home">Home</a></span> <span>Services</span></p>
                             <h1 class="mb-3" data-scrollax=" properties: { translateY: '70%', opacity: .9}">Well Experienced Doctors</h1>
                         </div>
                     </div>
