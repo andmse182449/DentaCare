@@ -6,12 +6,11 @@ package controller;
 
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
-import clinicSchedule.ClinicScheduleDAO;
-import clinicSchedule.ClinicScheduleDTO;
+import dayOffSchedule.DayOffScheduleDAO;
+import dayOffSchedule.DayOffScheduleDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +18,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import slotDetail.SlotDetailDAO;
 import timeSlot.TimeSlotDAO;
 import timeSlot.TimeSlotDTO;
 
@@ -42,57 +40,66 @@ public class LoadFromClinicToScheduleServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            String action = request.getParameter("action");
+            String key = request.getParameter("key");
+
             String id_raw = request.getParameter("clinicByID");
             String yearStr = request.getParameter("year");
             String weekStr = request.getParameter("week");
+
+            String description = request.getParameter("description");
+            String offDate = request.getParameter("offDate");
+
+            DayOffScheduleDAO offDao = new DayOffScheduleDAO();
+
+            String url = "";
             int id = 0;
             System.out.println(yearStr);
             System.out.println(weekStr);
             try {
                 id = Integer.parseInt(id_raw);
-                ClinicDAO dao = new ClinicDAO();
+                if (("loadClinicSchedule").equals(action)) {
+                    ClinicDAO dao = new ClinicDAO();
 
-                ClinicDTO clinicByID = dao.getClinicByID(id);
-                if (clinicByID == null) {
-                    System.out.println("Clinic with ID " + id + " not found!");
-                    request.setAttribute("error", "Clinic not found!");
-                    request.getRequestDispatcher("errorPage.jsp").forward(request, response);
-                    return;
+                    ClinicDTO clinicByID = dao.getClinicByID(id);
+                    if (clinicByID == null) {
+                        System.out.println("Clinic with ID " + id + " not found!");
+                        request.setAttribute("error", "Clinic not found!");
+                        request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+                        return;
+                    }
+
+                    List<DayOffScheduleDTO> off = offDao.getAllOffDate(id);
+
+                    // Time Slot
+                    TimeSlotDAO timeDao = new TimeSlotDAO();
+                    List<TimeSlotDTO> getAllTimeSlot = timeDao.getAllTimeSLot();
+
+                    // Send month and year to clinicSchedule.jsp
+                    request.setAttribute("yearStr", yearStr);
+                    request.setAttribute("weekStr", weekStr);
+
+                    request.setAttribute("off", off);
+                    request.setAttribute("clinicID", id);
+                    request.setAttribute("clinicByID", clinicByID);
+                    request.setAttribute("getAllTimeSlot", getAllTimeSlot);
+                    if ("setEvent".equals(key)) {
+                        boolean addNewOffDate = offDao.addNewOffDate(offDate, description, id);
+                        response.setContentType("application/json");
+                        response.setStatus(HttpServletResponse.SC_OK);
+                        out.print("{\"success\": true, \"message\": \"Create event successfully !\"}");
+                        out.flush();
+//                        request.setAttribute("addNewOffDate", addNewOffDate);
+                    }
+                    if ("modifyEvent".equals(key)) {
+                        offDao.modifyEvent(offDate, description, id);
+                        response.setContentType("application/json");
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        out.print("{\"success\": false, \"message\": \"Modify event successfully !\"}");
+                        out.flush();
+//                        request.setAttribute("modifyEvent", modifyEvent);
+                    }
                 }
-
-                // Time Slot
-                TimeSlotDAO timeDao = new TimeSlotDAO();
-                List<TimeSlotDTO> getAllTimeSlot = timeDao.getAllTimeSLot();
-                for (TimeSlotDTO timeSlotDTO : getAllTimeSlot) {
-                    System.out.println(timeSlotDTO.getSlotID());   
-                }
-                
-                
-                // SlotDetail
-                SlotDetailDAO slotDao = new SlotDetailDAO();
-
-                // Send attribute clinicSchedule
-                ClinicScheduleDAO clinicScheduleDao = new ClinicScheduleDAO();
-                List<ClinicScheduleDTO> clinicScheduleByClinicID = clinicScheduleDao.getWorkingDaysByClinicId(id);
-                List<ClinicScheduleDTO> getAllClinicSchedule = clinicScheduleDao.getAllClinicSchedule();
-                
-//            for (ClinicScheduleDTO clinicScheduleDTO : clinicScheduleByClinicID) {
-//                String workingDay = clinicScheduleDTO.getWorkingDay();
-//                String[] split = workingDay.split("-");
-//
-//                System.out.println("day: " + split[0]);
-//                System.out.println("month: " + split[1]);
-//                System.out.println("year: " + split[2]);
-//            }
-
-                // Send month and year to clinicSchedule.jsp
-                request.setAttribute("yearStr", yearStr);
-                request.setAttribute("weekStr", weekStr);
-                request.setAttribute("clinicID", id);
-                request.setAttribute("getAllClinicSchedule", getAllClinicSchedule);
-                request.setAttribute("clinicScheduleByClinicID", clinicScheduleByClinicID);
-                request.setAttribute("clinicByID", clinicByID);
-                request.setAttribute("getAllTimeSlot", getAllTimeSlot);
 //coWeb-clinic
                 request.getRequestDispatcher("coWeb-clinic.jsp").forward(request, response);
             } catch (NumberFormatException e) {

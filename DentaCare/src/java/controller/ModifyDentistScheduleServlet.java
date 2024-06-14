@@ -73,8 +73,6 @@ public class ModifyDentistScheduleServlet extends HttpServlet {
 
                 DentistScheduleDAO dao = new DentistScheduleDAO();
                 DentistScheduleDTO checkAlreadyDentistInDenSche = dao.checkAlreadyDentistInDenSche(accountID, clincScheduleID);
-                System.out.println(checkAlreadyDentistInDenSche);
-                System.out.println(accountID2);
                 if (checkAlreadyDentistInDenSche != null) {
                     boolean modifyDentistSchedule = dao.modifyDentistSchedule(accountID2, clincScheduleID, accountID);
                     request.setAttribute("successfully", "Add dentist to the schedule successfully !");

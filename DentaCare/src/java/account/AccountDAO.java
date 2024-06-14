@@ -36,6 +36,7 @@ public class AccountDAO implements Serializable {
                 String fullName = rs.getString("fullName");
                 String phone = rs.getString("phone");
                 String address = rs.getString("address");
+                String image = rs.getString("image");
                 LocalDate dob = null;
                 java.sql.Date dobSql = rs.getDate("dob");
                 if (dobSql != null) {
@@ -48,7 +49,7 @@ public class AccountDAO implements Serializable {
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
                 AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone + "",
-                        address, gender, googleID, googleName, role, status, clinicID);
+                        address, image, gender, googleID, googleName, role, status, clinicID);
                 result.add(accountDTO);
             }
         } catch (SQLException e) {
@@ -65,11 +66,11 @@ public class AccountDAO implements Serializable {
         return result;
     }
 
-    public AccountDTO updateProfileAccount(String fullName, String phone, boolean gender, String userName)
+    public AccountDTO updateProfileAccount(String fullName, String phone, boolean gender, String userName, String dob)
             throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET fullName = ?, phone = ?, gender = ?"
+        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET fullName = ?, phone = ?, gender = ?, dob = ?"
                 + " WHERE USERNAME = ?");
         try {
             String sql = String.valueOf(query);
@@ -79,7 +80,8 @@ public class AccountDAO implements Serializable {
             stm.setString(1, fullName);
             stm.setString(2, phone);
             stm.setBoolean(3, gender);
-            stm.setString(4, userName);
+            stm.setString(4, dob);
+            stm.setString(5, userName);
 
             stm.executeUpdate();
 
@@ -88,19 +90,26 @@ public class AccountDAO implements Serializable {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 String accountID = rs.getString("accountID");
+                String userName2 = rs.getString("username");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
-
+                String fullName2 = rs.getString("fullName");
+                String phone2 = rs.getString("phone");
                 String address = rs.getString("address");
-                LocalDate dob = rs.getDate("dob").toLocalDate();
+                String image = rs.getString("image");
+                LocalDate dob2 = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob2 = dobSql.toLocalDate();
+                }
+                boolean gender2 = rs.getBoolean("gender");
                 String googleID = rs.getString("googleID");
                 String googleName = rs.getString("googleName");
-                int role = rs.getInt("role");
+                int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
-
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone + "",
-                        address, gender, googleID, googleName, role, status, clinicID);
+                AccountDTO accountDTO = new AccountDTO(accountID, userName2, password, email, dob2, fullName2, phone2 + "",
+                        address, image, gender2, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -180,6 +189,7 @@ public class AccountDAO implements Serializable {
                 String fullName = rs.getString("fullName");
                 String phone = rs.getString("phone");
                 String address = rs.getString("address");
+                String image = rs.getString("image");
                 LocalDate dob = null;
                 java.sql.Date dobSql = rs.getDate("dob");
                 if (dobSql != null) {
@@ -191,7 +201,7 @@ public class AccountDAO implements Serializable {
                 int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, gender, googleID, googleName, role, status, clinicID);
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, image, gender, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -322,9 +332,7 @@ public class AccountDAO implements Serializable {
             stm.setString(5, googleName);
             stm.setInt(6, 0);
             stm.setInt(7, 0);
-            
-            
-            
+
             stm.executeUpdate();
 
         } catch (SQLException e) {
@@ -370,7 +378,8 @@ public class AccountDAO implements Serializable {
                 int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
-                AccountDTO accountDTO = new AccountDTO(accountID, username, password, email, dob, fullname, phone, address, gender, googleID, googleName, role, status, clinicID);
+                String image = rs.getString("image");
+                AccountDTO accountDTO = new AccountDTO(accountID, username, password, email, dob, fullname, phone, address, image, gender, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -405,7 +414,7 @@ public class AccountDAO implements Serializable {
                     dob = dobSql.toLocalDate();
                 }
                 acc = new AccountDTO(rs.getString("accountID"), rs.getString("userName"), rs.getString("password"), rs.getString("email"), dob, rs.getString("fullName"), rs.getString("phone"),
-                        rs.getString("address"), rs.getBoolean("gender"), rs.getString("googleID"), rs.getString("googleName"), rs.getInt("roleID"), rs.getInt("status"), rs.getInt("clinicID"));
+                        rs.getString("address"), rs.getString("image"), rs.getBoolean("gender"), rs.getString("googleID"), rs.getString("googleName"), rs.getInt("roleID"), rs.getInt("status"), rs.getInt("clinicID"));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -444,14 +453,14 @@ public class AccountDAO implements Serializable {
                 int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
+                String image = rs.getString("image");
 
                 AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone,
-                        address, gender, googleID, googleName, role, status, clinicID);
+                        address, image, gender, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
             System.out.println("SQL: " + e);
-
         } finally {
             if (rs != null) {
                 rs.close();
@@ -464,6 +473,63 @@ public class AccountDAO implements Serializable {
             }
         }
         return null;
+    }
+
+    public List<AccountDTO> searchByDenWorkingDate(String workingDate) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+                List<AccountDTO> list = new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("select * from ACCOUNT \n"
+                                                + " join DENTISTSCHEDULE on DENTISTSCHEDULE.accountID = ACCOUNT.accountID \n"
+                                                + " where DENTISTSCHEDULE.workingDate = ? ");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, workingDate);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String accountID = rs.getString("accountID");
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                boolean gender = rs.getBoolean("gender");
+                String googleID = rs.getString("googleID");
+                String googleName = rs.getString("googleName");
+                int role = rs.getInt("roleID");
+                int status = rs.getInt("status");
+                int clinicID = rs.getInt("clinicID");
+                String image = rs.getString("image");
+
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone,
+                        address, image, gender, googleID, googleName, role, status, clinicID);
+                list.add(accountDTO);
+                return list;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: " + e);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
     }
 
     public int countAccount() {
@@ -507,7 +573,7 @@ public class AccountDAO implements Serializable {
         }
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -523,16 +589,17 @@ public class AccountDAO implements Serializable {
             stm.setString(9, null);
             stm.setString(10, null);
             stm.setString(11, null);
-            stm.setInt(12, 1);
-            stm.setInt(13, 2);
-            stm.setInt(14, clinicID);
+            stm.setString(12, null);
+            stm.setInt(13, 1);
+            stm.setInt(14, 2);
+            stm.setInt(15, clinicID);
 
             if (stm.executeUpdate() != 0) {
                 flag = true;
             }
 
         } catch (SQLException e) {
-            System.out.println("An SQL error occurred: ");
+            System.out.println(e.getMessage());;
 
         } finally {
             if (stm != null) {
@@ -596,7 +663,8 @@ public class AccountDAO implements Serializable {
             }
 
         } catch (SQLException e) {
-            System.out.println("An SQL error occurred: ");
+            System.out.println("An SQL error occurred: " + e);
+            e.printStackTrace();
 
         } finally {
             if (stm != null) {
@@ -684,7 +752,7 @@ public class AccountDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE ROLE = 2");
+        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE ROLE = 1");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -742,17 +810,18 @@ public class AccountDAO implements Serializable {
         }
     }
 
-    public List<AccountDTO> getAccountDentistByRoleID1() throws SQLException {
+    public List<AccountDTO> getAccountDentistByRoleID1(int clinicID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         List<AccountDTO> list = new ArrayList<>();
-        StringBuilder query = new StringBuilder("select ACCOUNT.* from ACCOUNT where roleID = 1");
+        StringBuilder query = new StringBuilder("select ACCOUNT.* from ACCOUNT where roleID = 1 and clinicID = ?");
         try {
             String sql = null;
             sql = String.valueOf(query);
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
+            stm.setInt(1, clinicID);
             rs = stm.executeQuery();
             while (rs.next()) {
                 String accountID = rs.getString("accountID");
@@ -772,9 +841,10 @@ public class AccountDAO implements Serializable {
                 String googleName = rs.getString("googleName");
                 int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
-                int clinicID = rs.getInt("clinicID");
+                clinicID = rs.getInt("clinicID");
+                String image = rs.getString("image");
 
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, gender, googleID, googleName, role, status, clinicID);
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, image, gender, googleID, googleName, role, status, clinicID);
                 list.add(accountDTO);
             }
         } catch (SQLException e) {
@@ -825,8 +895,8 @@ public class AccountDAO implements Serializable {
                 int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
-
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, gender, googleID, googleName, role, status, clinicID);
+                String image = rs.getString("image");
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, image, gender, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
