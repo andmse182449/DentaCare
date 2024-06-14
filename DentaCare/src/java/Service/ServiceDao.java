@@ -17,13 +17,11 @@ import java.util.List;
  */
 public class ServiceDAO {
 
-    
-
     public boolean addService(ServiceDTO service) {
         String sql = "INSERT INTO service (servicename, servicetype, price, status, description) VALUES (?,?,?,?,?)";
         try {
             Connection con = utils.DBUtils.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);       
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, service.getServiceName());
             ps.setString(2, service.getServiceType());
             ps.setFloat(3, service.getServiceMoney());
@@ -173,6 +171,28 @@ public class ServiceDAO {
             System.out.println("List Service Type: " + e.getMessage());
         }
         return listServiceType;
+    }
+
+    public ServiceDTO getServiceByID(int serviceID) {
+        String sql = "SELECT * FROM SERVICE WHERE serviceID = ? ";
+        try {
+            Connection con = utils.DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, serviceID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String serviceName = rs.getString("serviceName");
+                String serviceType = rs.getString("serviceType");
+                String description = rs.getString("description");
+                float price = rs.getFloat("price");
+                int status = rs.getInt("status");
+                ServiceDTO service = new ServiceDTO(serviceID, serviceName, serviceType, price, status, description);
+                return service;
+            }
+        } catch (SQLException e) {
+            System.out.println("List Service Type: " + e.getMessage());
+        }
+        return null;
     }
 
 }

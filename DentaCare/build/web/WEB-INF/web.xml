@@ -68,35 +68,42 @@
         <servlet-name>LoadDataServlet</servlet-name>
         <servlet-class>controller.LoadDataServlet</servlet-class>
     </servlet>
-      
-      
-      
     <servlet>
         <servlet-name>LoadFromClinicScheduleToAddServlet</servlet-name>
         <servlet-class>controller.LoadFromClinicScheduleToAddServlet</servlet-class>
-    </servlet>     
+    </servlet>
     <servlet>
         <servlet-name>LoadFromClinicScheduleToCreateEventServlet</servlet-name>
         <servlet-class>controller.LoadFromClinicScheduleToCreateEventServlet</servlet-class>
-    </servlet>     
+    </servlet>
     <servlet>
         <servlet-name>LoadFromClinicScheduleToCreateEventServlet2</servlet-name>
         <servlet-class>controller.LoadFromClinicScheduleToCreateEventServlet2</servlet-class>
-    </servlet>     
+    </servlet>
     <servlet>
         <servlet-name>LoadFromClinicScheduleToDentistScheduleServlet</servlet-name>
         <servlet-class>controller.LoadFromClinicScheduleToDentistScheduleServlet</servlet-class>
-    </servlet>     
+    </servlet>
     <servlet>
         <servlet-name>LoadFromClinicToScheduleServlet</servlet-name>
         <servlet-class>controller.LoadFromClinicToScheduleServlet</servlet-class>
-    </servlet>     
+    </servlet>
     <servlet>
         <servlet-name>LoadFromDentistScheduleToAddServlet</servlet-name>
         <servlet-class>controller.LoadFromDentistScheduleToAddServlet</servlet-class>
     </servlet>
-    
-    
+    <servlet>
+        <servlet-name>BookingServlet</servlet-name>
+        <servlet-class>controller.BookingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <servlet-class>controller.UpdateProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendEmailBookingServlet</servlet-name>
+        <servlet-class>GoogleVerify.SendEmailBookingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/SignOutServlet</url-pattern>
@@ -153,7 +160,6 @@
         <servlet-name>SendPasswordServlet</servlet-name>
         <url-pattern>/SendPasswordServlet</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>LoadDataServlet</servlet-name>
         <url-pattern>/LoadDataServlet</url-pattern>
@@ -174,15 +180,25 @@
         <servlet-name>LoadFromClinicScheduleToDentistScheduleServlet</servlet-name>
         <url-pattern>/LoadFromClinicScheduleToDentistScheduleServlet</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>LoadFromClinicToScheduleServlet</servlet-name>
         <url-pattern>/LoadFromClinicToScheduleServlet</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>LoadFromDentistScheduleToAddServlet</servlet-name>
         <url-pattern>/LoadFromDentistScheduleToAddServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingServlet</servlet-name>
+        <url-pattern>/BookingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <url-pattern>/UpdateProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendEmailBookingServlet</servlet-name>
+        <url-pattern>/SendEmailBookingServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

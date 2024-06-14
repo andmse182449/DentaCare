@@ -21,9 +21,9 @@
     </head>
     <body>
         <div class="grid-container">
-            <!-- HEADER -->
+             <!-- HEADER -->
             <header class="header">
-                <div><h1>STAFF</h1></div>
+                <div><h1>MANAGE STAFF</h1></div>
                 <div class="header-icon">
                     <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
                     <!-- Dropdown Content -->
@@ -33,6 +33,7 @@
                                 <h3>${sessionScope.account.userName}</h3>
                             </div>
                             <hr>
+
                             <a href="SignOutServlet" class="sub-menu-link">
                                 <span class="material-symbols-outlined">logout</span>
                                 <p>Logout</p>
@@ -40,21 +41,23 @@
                             </a>
                         </div>
                     </div>
-
                 </div>
             </header>
             <!-- SIDEBAR -->
             <aside id="sidebar">
+                <!-- SIDEBAR -->
+            <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
-                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
-                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
-                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
-                        <a href="ServiceController"><li class="sidebar-list-item">Manage Service</li></a>
+                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
+                        <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
                         <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
                     </ul>
                 </div>
+            </aside>
             </aside>
             <!-- MAIN -->
             <div class="main-container">

@@ -10,15 +10,25 @@ package dentistSchedule;
  */
 public class DentistScheduleDTO {
 
+    private int dentistScheduleID;
     private String accountID;
-    private int clinicScheduleID;
+    private String workingDate;
 
     public DentistScheduleDTO() {
     }
 
-    public DentistScheduleDTO(String accountID, int clinicScheduleID) {
+    public DentistScheduleDTO(int dentistScheduleID, String accountID, String workingDate) {
+        this.dentistScheduleID = dentistScheduleID;
         this.accountID = accountID;
-        this.clinicScheduleID = clinicScheduleID;
+        this.workingDate = workingDate;
+    }
+
+    public int getDentistScheduleID() {
+        return dentistScheduleID;
+    }
+
+    public void setDentistScheduleID(int dentistScheduleID) {
+        this.dentistScheduleID = dentistScheduleID;
     }
 
     public String getAccountID() {
@@ -29,17 +39,17 @@ public class DentistScheduleDTO {
         this.accountID = accountID;
     }
 
-    public int getClinicScheduleID() {
-        return clinicScheduleID;
+    public String getWorkingDate() {
+        return workingDate;
     }
 
-    public void setClinicScheduleID(int clinicScheduleID) {
-        this.clinicScheduleID = clinicScheduleID;
+    public void setWorkingDate(String workingDate) {
+        this.workingDate = workingDate;
     }
 
     @Override
     public String toString() {
-        return "DentistScheduleDTO{" + "accountID=" + accountID + ", clinicScheduleID=" + clinicScheduleID + '}';
+        return "DentistScheduleDTO{" + "dentistScheduleID=" + dentistScheduleID + ", accountID=" + accountID + ", workingDate=" + workingDate + '}';
     }
 
 }
