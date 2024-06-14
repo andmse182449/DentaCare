@@ -1,4 +1,5 @@
 <%@include file="/headerLog.jsp" %>
+
 <%@page import="clinic.*" %>
 <%@page import="Service.*" %>
 <%@page import="timeSlot.*" %>
@@ -81,6 +82,7 @@
             </div>
         </c:forEach>
 
+        <%@include file="/footer.jsp" %>    
         <script src="js/examSchedule.js"></script>
         <script>
 
@@ -106,6 +108,7 @@
             });
 
         </script>
+
     </body>
 
 </html>

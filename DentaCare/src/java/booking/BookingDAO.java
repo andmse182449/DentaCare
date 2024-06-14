@@ -194,10 +194,11 @@ public class BookingDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         List<Integer> clinicIDs = new ArrayList<>();
-        String query = "SELECT clinicID, appointmentDay, slotID, COUNT(*) AS appointmentCount\n"
-                + "FROM BOOKING\n"
-                + "GROUP BY clinicID, appointmentDay, slotID\n"
-                + "HAVING COUNT(*) = 3;";
+        String query = "  SELECT clinicID, appointmentDay, slotID, COUNT(*) AS appointmentCount, status \n"
+                + "  FROM BOOKING\n"
+                + "  WHERE NOT status = 3\n"
+                + "  GROUP BY clinicID, appointmentDay, slotID, status\n"
+                + "  HAVING COUNT(*) = 3 ";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -226,10 +227,11 @@ public class BookingDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         List<Date> appointmentDays = new ArrayList<>();
-        String query = "SELECT clinicID, appointmentDay, slotID, COUNT(*) AS appointmentCount\n"
-                + "FROM BOOKING\n"
-                + "GROUP BY clinicID, appointmentDay, slotID\n"
-                + "HAVING COUNT(*) = 3;";
+        String query = "  SELECT clinicID, appointmentDay, slotID, COUNT(*) AS appointmentCount, status \n"
+                + "  FROM BOOKING\n"
+                + "  WHERE NOT status = 3\n"
+                + "  GROUP BY clinicID, appointmentDay, slotID, status\n"
+                + "  HAVING COUNT(*) = 3 ";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -258,10 +260,11 @@ public class BookingDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         List<Integer> slotIDs = new ArrayList<>();
-        String query = "SELECT clinicID, appointmentDay, slotID, COUNT(*) AS appointmentCount\n"
-                + "FROM BOOKING\n"
-                + "GROUP BY clinicID, appointmentDay, slotID\n"
-                + "HAVING COUNT(*) = 3;";
+        String query = "  SELECT clinicID, appointmentDay, slotID, COUNT(*) AS appointmentCount, status \n"
+                + "  FROM BOOKING\n"
+                + "  WHERE NOT status = 3\n"
+                + "  GROUP BY clinicID, appointmentDay, slotID, status\n"
+                + "  HAVING COUNT(*) = 3 ";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -293,10 +296,10 @@ public class BookingDAO {
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
-            stm.setString(1, bookingID); 
-            int rowsUpdated = stm.executeUpdate(); 
+            stm.setString(1, bookingID);
+            int rowsUpdated = stm.executeUpdate();
 
-            return rowsUpdated > 0; 
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -309,6 +312,7 @@ public class BookingDAO {
             }
         }
     }
+
     public List<BookingDTO> getBookingListByCustomerIDAndStatus(String customerID) {
         String sql = "SELECT * FROM BOOKING WHERE customerID = ? AND ((NOT status = 3) AND (NOT status = 2))";
         Connection con = DBUtils.getConnection();
@@ -346,5 +350,5 @@ public class BookingDAO {
         }
         return list;
     }
-            
+
 }

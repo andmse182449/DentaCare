@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    document.querySelectorAll('.future').forEach(option => {
+    document.querySelectorAll('.future').forEach(function(option) {
         option.addEventListener('click', function () {
             selectedFields[3] = true;
             resetFields(5);
