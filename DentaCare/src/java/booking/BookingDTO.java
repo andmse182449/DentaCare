@@ -5,6 +5,10 @@
 package booking;
 
 import java.time.LocalDate;
+import Service.ServiceDTO;
+import account.AccountDTO;
+import java.time.LocalDate;
+import timeSlot.TimeSlotDTO;
 
 /**
  *
@@ -21,6 +25,10 @@ public class BookingDTO {
     private String customerID;
     private String dentistID;
     private int clinicID;
+    private String fullNameDentist;
+    private ServiceDTO service;
+    private AccountDTO account;
+    private TimeSlotDTO timeSlot;
 
     public BookingDTO(String bookingID, LocalDate createDay, LocalDate appointmentDay, int status, float price, int serviceID, int slotID, String customerID, String dentistID, int clinicID) {
         this.bookingID = bookingID;
@@ -35,6 +43,9 @@ public class BookingDTO {
         this.clinicID = clinicID;
     }
 
+    public BookingDTO() {
+    }
+    
     public String getBookingID() {
         return bookingID;
     }
@@ -115,9 +126,43 @@ public class BookingDTO {
         this.clinicID = clinicID;
     }
 
+    public ServiceDTO getService() {
+        return service;
+    }
+
+    public AccountDTO getAccount() {
+        return account;
+    }
+
+    public TimeSlotDTO getTimeSlot() {
+        return timeSlot;
+    }
+
+    public void setService(ServiceDTO service) {
+        this.service = service;
+    }
+
+    public void setAccount(AccountDTO account) {
+        this.account = account;
+    }
+
+    public void setTimeSlot(TimeSlotDTO timeSlot) {
+        this.timeSlot = timeSlot;
+    }
+
+    public String getFullNameDentist() {
+        return fullNameDentist;
+    }
+
+    public void setFullNameDentist(String fullNameDentist) {
+        this.fullNameDentist = fullNameDentist;
+    }
+    
+    
+    
     @Override
     public String toString() {
-        return "bookingDTO{" + "bookingID=" + bookingID + ", createDay=" + createDay + ", appointmentDay=" + appointmentDay + ", status=" + status + ", price=" + price + ", serviceID=" + serviceID + ", slotID=" + slotID + ", customerID=" + customerID + ", dentistID=" + dentistID + ", clinicID=" + clinicID + '}';
+return "bookingDTO{" + "bookingID=" + bookingID + ", createDay=" + createDay + ", appointmentDay=" + appointmentDay + ", status=" + status + ", price=" + price + ", serviceID=" + serviceID + ", slotID=" + slotID + ", customerID=" + customerID + ", dentistID=" + dentistID + ", clinicID=" + clinicID + '}';
     }
     
     

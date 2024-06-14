@@ -89,7 +89,7 @@ public class AccountDAO implements Serializable {
             stm.setString(1, userName);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-             String accountID = rs.getString("accountID");
+                String accountID = rs.getString("accountID");
                 String userName2 = rs.getString("username");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
@@ -332,9 +332,7 @@ public class AccountDAO implements Serializable {
             stm.setString(5, googleName);
             stm.setInt(6, 0);
             stm.setInt(7, 0);
-            
-            
-            
+
             stm.executeUpdate();
 
         } catch (SQLException e) {
@@ -381,7 +379,7 @@ public class AccountDAO implements Serializable {
                 int status = rs.getInt("status");
                 int clinicID = rs.getInt("clinicID");
                 String image = rs.getString("image");
-                AccountDTO accountDTO = new AccountDTO(accountID, username, password, email, dob, fullname, phone, address,image, gender, googleID, googleName, role, status, clinicID);
+                AccountDTO accountDTO = new AccountDTO(accountID, username, password, email, dob, fullname, phone, address, image, gender, googleID, googleName, role, status, clinicID);
                 return accountDTO;
             }
         } catch (SQLException e) {
@@ -463,7 +461,6 @@ public class AccountDAO implements Serializable {
             }
         } catch (SQLException e) {
             System.out.println("SQL: " + e);
-
         } finally {
             if (rs != null) {
                 rs.close();

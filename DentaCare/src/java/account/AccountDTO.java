@@ -132,7 +132,7 @@ public class AccountDTO implements Serializable {
 
     public boolean isGender() {
         return gender;
-    }
+}
 
     public void setGender(boolean gender) {
         this.gender = gender;
@@ -184,8 +184,4 @@ public class AccountDTO implements Serializable {
         sb.append('}');
         return sb.toString();
     }
-
-    
-
-
 }

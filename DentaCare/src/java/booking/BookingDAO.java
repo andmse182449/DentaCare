@@ -4,6 +4,8 @@
  */
 package booking;
 
+import Service.ServiceDTO;
+import account.AccountDTO;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import timeSlot.TimeSlotDTO;
 import utils.DBUtils;
 
 /**
@@ -375,4 +378,72 @@ public class BookingDAO {
             }
         }
     }
+    public List<BookingDTO> getAllBookingClinic(int clinicID, String fullName) {
+    String sql = """
+            SELECT 
+                bookingID, createDay, appointmentDay, a.status, a.price, 
+                customer.fullName AS customerName, customer.phone, 
+                serviceName, timePeriod, dentist.fullName AS dentistName
+            FROM 
+                booking a
+                INNER JOIN account customer ON a.customerID = customer.accountid
+                LEFT JOIN account dentist ON a.dentistID = dentist.accountID
+                INNER JOIN service c ON a.serviceid = c.serviceid 
+                INNER JOIN timeslot d ON a.slotid = d.slotid
+            WHERE 
+                a.clinicID = ? and customer.fullName like ?
+            ORDER BY 
+                appointmentDay, timePeriod;
+            """;
+
+    List<BookingDTO> list = new ArrayList<>();
+    try {
+        Connection con = utils.DBUtils.getConnection();
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, clinicID);
+        ps.setString(2, "%"+fullName+"%");
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            BookingDTO booking = new BookingDTO();
+            booking.setBookingID(rs.getString("bookingid"));
+            booking.setAppointmentDay(rs.getDate("appointmentDay").toLocalDate());
+            booking.setCreateDay(rs.getDate("createday").toLocalDate());
+            booking.setPrice(rs.getFloat("price"));
+            booking.setStatus(rs.getInt("status"));
+            booking.setFullNameDentist(rs.getString("dentistName"));
+            ServiceDTO service = new ServiceDTO();
+            service.setServiceName(rs.getString("servicename"));
+            AccountDTO customer = new AccountDTO();
+            customer.setFullName(rs.getString("customerName"));
+            customer.setPhone(rs.getString("phone"));
+            TimeSlotDTO timeSlot = new TimeSlotDTO();
+            timeSlot.setTimePeriod(rs.getString("timePeriod"));
+            booking.setService(service);
+            booking.setAccount(customer);
+            booking.setTimeSlot(timeSlot);
+            list.add(booking);
+        }
+        return list;
+    } catch (SQLException e) {
+        System.out.println("getAllBookingClinic1: " + e.getMessage());
+    }
+    return null;
+}
+
+
+    public boolean assignDentist(int bookingID, String dentistID) {
+        String sql = "update booking set dentistID = ?, status = 1 where bookingID = ?";
+        try {
+            Connection con = utils.DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, dentistID);
+            ps.setInt(2, bookingID);
+            ps.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("assignDentist " + e.getMessage());
+            return false;
+        }
+    }
+
 }

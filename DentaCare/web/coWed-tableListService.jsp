@@ -44,7 +44,6 @@
                                 <h3>${sessionScope.account.userName}</h3>
                             </div>
                             <hr>
-
                             <a href="SignOutServlet" class="sub-menu-link">
                                 <span class="material-symbols-outlined">logout</span>
                                 <p>Logout</p>
@@ -52,6 +51,12 @@
                             </a>
                         </div>
                     </div>
+                    <script>
+                        let subMenu = document.getElementById("sub-menu-wrap");
+                        function toggleDropdown() {
+                            subMenu.classList.toggle("open-menu");
+                        }
+                    </script>
                 </div>
             </header>
             <!-- SIDEBAR -->
@@ -160,7 +165,7 @@
                                                     <td>${service.serviceName}</td>
                                                     <td>${service.serviceType}</td>
                                                     <td style="white-space: pre-wrap;">${service.serviceDescription}</td>
-                                                    <td>${service.serviceMoney}</td>
+                                                    <td class="money-format">${service.serviceMoney}</td>
                                                     <td>
                                                         <button onclick="toggleEditForm(this)">Edit</button>
                                                         <div class="popup-overlay"></div>
@@ -173,11 +178,11 @@
                                                                 <select class="serviceType" name="serviceType" required>
                                                                     <option value="Treatment Process" <c:if test="${serviceType == service.serviceType}">selected</c:if>>Treatment Process</option>
                                                                     <option value="Caring Process" <c:if test="${serviceType == service.serviceType}">selected</c:if>>Caring Process</option>
-                                                                </select>
-                                                                <label>Description:</label>
-                                                                <input type="text" name="serviceDescription" value="${service.serviceDescription}"  required/>
-                                                                <label>Price (Min 100 and Max 300):</label>
-                                                                <input type="number" name="serviceMoney" value="${service.serviceMoney}" min="100" max="300" required/>
+                                                                    </select>
+                                                                    <label>Description:</label>
+                                                                    <input type="text" name="serviceDescription" value="${service.serviceDescription}"  required/>
+                                                                <label>Price (Min 500,000 and Max 5,000,000):</label>
+                                                                <input type="number" name="serviceMoney" value="${service.serviceMoney}" min="500000" max="5000000" required/>
                                                                 <input name="action" value="update" type="hidden" />
                                                                 <input type="submit" value="Update" />
                                                             </form>
@@ -204,62 +209,62 @@
                                             <select class="serviceType" name="serviceType" required>
                                                 <option value="Treatment Process" <c:if test="${serviceType == service.serviceType}">selected</c:if>>Treatment Process</option>
                                                 <option value="Caring Process" <c:if test="${serviceType == service.serviceType}">selected</c:if>>Caring Process</option>
-                                            </select>
-                                            <label>Description:</label>
-                                            <input type="text" name="serviceDescription" required/>
-                                            <label>Price (Min 100 and Max 300):</label>
-                                            <input type="number" name="serviceMoney" value="${service.serviceMoney}" min="100" max="300" required/>
-                                            <input name="action" value="add" type="hidden" />
-                                            <input type="submit" value="Add" />
-                                        </form>
+                                                </select>
+                                                <label>Description:</label>
+                                                <input type="text" name="serviceDescription" required/>
+                                                <label>Price (Min 500,000 and Max 5,000,000):</label>
+                                                <input type="number" name="serviceMoney" min="500000" max="5000000" required/>
+                                                <input name="action" value="add" type="hidden" />
+                                                <input type="submit" value="Add" />
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- ============================================================== -->
+                        <!-- End PAge Content -->
+                        <!-- ============================================================== -->
+                        <!-- ============================================================== -->
+                        <!-- Right sidebar -->
+                        <!-- ============================================================== -->
+                        <!-- .right-sidebar -->
+                        <!-- ============================================================== -->
+                        <!-- End Right sidebar -->
+                        <!-- ============================================================== -->
                     </div>
-                    <!-- ============================================================== -->
-                    <!-- End PAge Content -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- Right sidebar -->
-                    <!-- ============================================================== -->
-                    <!-- .right-sidebar -->
-                    <!-- ============================================================== -->
-                    <!-- End Right sidebar -->
-                    <!-- ============================================================== -->
-                </div>
-                <hr>
-                <div class="container-fluid">
-                    <!-- ============================================================== -->
-                    <!-- Start Page Content -->
-                    <!-- ============================================================== -->
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="white-box">
-                                <h3 class="box-title">Table Service Removed</h3>
+                    <hr>
+                    <div class="container-fluid">
+                        <!-- ============================================================== -->
+                        <!-- Start Page Content -->
+                        <!-- ============================================================== -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="white-box">
+                                    <h3 class="box-title">Table Service Removed</h3>
 
 
-                                <div class="table-responsive">
-                                    <table class="table text-nowrap">
-                                        <thead>
-                                            <tr>
-                                                <th class="border-top-0">#</th>
-                                                <th class="border-top-0">Service Name</th>
-                                                <th class="border-top-0">Service Type</th>
-                                                <th class="border-top-0">Service Description</th>
-                                                <th class="border-top-0">Price</th>
+                                    <div class="table-responsive">
+                                        <table class="table text-nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th class="border-top-0">#</th>
+                                                    <th class="border-top-0">Service Name</th>
+                                                    <th class="border-top-0">Service Type</th>
+                                                    <th class="border-top-0">Service Description</th>
+                                                    <th class="border-top-0">Price</th>
 
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                             <c:forEach items="${listUnactive}" var="service" varStatus="status">
                                                 <tr>
                                                     <td>${status.index + 1}</td>
                                                     <td>${service.serviceName}</td>
                                                     <td>${service.serviceType}</td>
                                                     <td style="white-space: pre-wrap;">${service.serviceDescription}</td>
-                                                    <td>${service.serviceMoney}</td>
+                                                    <td class="money-format">${service.serviceMoney}</td>
                                                     <td>
                                                         <i class="fa-solid fa-plus" onclick="submitForm(this.nextElementSibling)"></i>
                                                         <form action="./ServiceController" method="post">
@@ -353,7 +358,17 @@
                             subMenu.classList.toggle("open-menu");
                         }
                 </script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const moneyElements = document.querySelectorAll('.money-format');
 
+                        moneyElements.forEach(element => {
+                            const moneyValue = parseFloat(element.textContent.trim());
+                            const formattedMoney = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(moneyValue);
+                            element.textContent = formattedMoney;
+                        });
+                    });
+                </script>
             </div>
         </div>
     </body>
