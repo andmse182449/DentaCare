@@ -154,7 +154,7 @@ public class SendEmailBookingServlet extends HttpServlet {
             SendEmail send = new SendEmail(account.getEmail(), subject, body);
             request.setAttribute("message", "Booking successfull. Please check your email!");
         }
-        request.setAttribute("action", "book");
+        request.setAttribute("action", "load");
         request.getRequestDispatcher("HistoryServlet").forward(request, response);
     }
 

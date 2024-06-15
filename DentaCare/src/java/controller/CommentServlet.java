@@ -56,13 +56,12 @@ public class CommentServlet extends HttpServlet {
 
         String commentText = jsonInput.get("comment");
         String fbID = generateUniqueFeedbackID();
-        String clinicID = jsonInput.get("clinicID");
         HttpSession session = request.getSession();
         FeedbackDAO feedbackDAO = new FeedbackDAO();
         AccountDTO account = (AccountDTO) session.getAttribute("account");
         try {
 
-            if (feedbackDAO.addComment(fbID, LocalDateTime.now() , commentText, account.getAccountID(), clinicID) == true) {
+            if (feedbackDAO.addComment(fbID, LocalDateTime.now() , commentText, account.getAccountID()) == true) {
                 System.out.println("oke em iu");
             } else {
                 System.out.println("như");

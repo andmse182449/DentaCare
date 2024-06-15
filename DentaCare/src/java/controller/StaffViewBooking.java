@@ -40,12 +40,9 @@ public class StaffViewBooking extends HttpServlet {
                 String bookingIDStr = request.getParameter("bookingID");
                 dentistID = request.getParameter("dentistID");
                 openBookingDetail = request.getParameter("openBookingDetail");
-                int bookingID = 0;
-                if (bookingIDStr != null && !bookingIDStr.isEmpty()) {
-                    bookingID = Integer.parseInt(bookingIDStr);
-                }
-                daoBooking.assignDentist(bookingID, dentistID);  
-                request.setAttribute("bookingID", bookingID);
+                
+                daoBooking.assignDentist(bookingIDStr, dentistID);  
+                request.setAttribute("bookingID", bookingIDStr);
             }
             if(customerName == null || customerName.isEmpty()){
                 customerName = "";

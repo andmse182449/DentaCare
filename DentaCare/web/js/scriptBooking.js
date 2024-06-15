@@ -168,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('serviceID-input').value = this.getAttribute('data-address');
             document.getElementById('price-input').value = this.getAttribute('data-price');
             selectedFields[2] = true;
+            selectedFields[3] = true;
             resetFields(4);
             closeCollapsible(2);
             closeCollapsible(3);

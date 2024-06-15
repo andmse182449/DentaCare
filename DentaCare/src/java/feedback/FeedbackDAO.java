@@ -99,7 +99,7 @@ public class FeedbackDAO {
         return list;
     }
 
-    public boolean addComment(String feedbackID, LocalDateTime feedbackDate, String text, String author, String clinicID) throws SQLException {
+    public boolean addComment(String feedbackID, LocalDateTime feedbackDate, String text, String author) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         String query = "INSERT INTO FEEDBACK VALUES (?, ?, ?, ?)";

@@ -466,13 +466,13 @@ public class BookingDAO {
     }
 
 
-    public boolean assignDentist(int bookingID, String dentistID) {
+    public boolean assignDentist(String bookingID, String dentistID) {
         String sql = "update booking set dentistID = ?, status = 1 where bookingID = ?";
         try {
             Connection con = utils.DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, dentistID);
-            ps.setInt(2, bookingID);
+            ps.setString(2, bookingID);
             ps.executeQuery();
             return true;
         } catch (SQLException e) {

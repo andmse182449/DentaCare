@@ -36,7 +36,7 @@ function generateCalendar(year, month) {
         var check = new Date(year, month, day.innerHTML);
         if (listBooking.includes("appointmentDay=" + check.toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'})) && check > today) {
             day.classList.add('selected-calendar');
-            day.setAttribute('data-check', check);
+            day.setAttribute('data-check', check.toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'}));
         } else if (check.toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'}) === today.toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'})) {
             day.classList.add('current');
         }
