@@ -69,7 +69,7 @@
         <servlet-name>VerifyServlet</servlet-name>
         <servlet-class>controller.VerifyServlet</servlet-class>
     </servlet>
-        <servlet>
+    <servlet>
         <servlet-name>SendPasswordServlet</servlet-name>
         <servlet-class>GoogleVerify.SendPasswordServlet</servlet-class>
     </servlet>
@@ -117,17 +117,6 @@
         <servlet-name>UpdateProfileServlet</servlet-name>
         <servlet-class>controller.UpdateProfileServlet</servlet-class>
     </servlet>
-    <!--    // paging-->
-<!--    <servlet> 
-        <servlet-name>LoginChangePage</servlet-name> 
-        <servlet-class>a2.LoginChangePage</servlet-class> 
-    </servlet> 
-  
-    <servlet-mapping> 
-        <servlet-name>LoginChangePage</servlet-name> 
-        <url-pattern>/employee.do</url-pattern> 
-    </servlet-mapping> -->
-    <!--    // paging-->
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/SignOutServlet</url-pattern>

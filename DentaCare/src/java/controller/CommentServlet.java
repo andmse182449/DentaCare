@@ -18,13 +18,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.Timestamp;
-
 /**
  *
  * @author ROG STRIX
@@ -36,7 +33,7 @@ public class CommentServlet extends HttpServlet {
         // Your logic to generate a unique feedback ID
         return "FB-" + System.currentTimeMillis(); // Simple example using current time
     }
-    private static final long serialVersionUID = 1L;
+//    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

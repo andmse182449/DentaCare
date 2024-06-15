@@ -3,33 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-bookingHistory.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/src/java/booking/BookingDAO.java</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-booking.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/userWeb-examSchedule.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/footer.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/user-information.jsp</file>
-            <file>file:/D:/Uni_Study/Sem5/SWP391/DentaCare/DentaCare/web/js/scriptBooking.js</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/coWed-tableListService.jsp</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/src/java/account/StaffAccountDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/coWeb-dashboard.jsp</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/coWeb-staff.jsp</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/coWeb-dentist.jsp</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/src/java/controller/ManageStaffServlet.java</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/DashBoardServlet.java</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/css/dashboard.css</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/dashBoard.jsp</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/denWeb-Schedule.jsp</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/LoginActionServlet.java</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/booking/BookingDAO.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/Service/ServiceDAO.java</file>
             <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/nbproject/build-impl.xml~</file>
             <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/utils/DBUtils.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/Service/ServiceDao.java</file>
             <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/CommentServlet.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/WEB-INF/web.xml</file>
             <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/META-INF/context.xml</file>
         </group>
     </open-files>
 </project-private>
