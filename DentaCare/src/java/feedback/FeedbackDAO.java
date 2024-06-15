@@ -102,7 +102,7 @@ public class FeedbackDAO {
     public boolean addComment(String feedbackID, LocalDateTime feedbackDate, String text, String author, String clinicID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO FEEDBACK VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO FEEDBACK VALUES (?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -110,8 +110,7 @@ public class FeedbackDAO {
             stm.setString(1, feedbackID);                     // Feedback ID
             stm.setTimestamp(2, Timestamp.valueOf(feedbackDate)); // Feedback Date (LocalDateTime to Timestamp)
             stm.setString(3, text);                           // Comment Text
-            stm.setString(4, author);                         // Author
-            stm.setInt(5, 1);                       // Clinic ID
+            stm.setString(4, author);                         // Author                     // Clinic ID
 
             int rowsAffected = stm.executeUpdate();
             if (rowsAffected > 0) {

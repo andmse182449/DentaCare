@@ -65,7 +65,7 @@ public class CommentServlet extends HttpServlet {
             if (feedbackDAO.addComment(fbID, LocalDateTime.now() , commentText, account.getAccountID(), clinicID) == true) {
                 System.out.println("oke em iu");
             } else {
-                System.out.println("như cc");
+                System.out.println("như");
             }
         } catch (SQLException ex) {
             Logger.getLogger(CommentServlet.class.getName()).log(Level.SEVERE, null, ex);
