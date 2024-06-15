@@ -3,10 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/LoginChangePage.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/service.jsp</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/feedback/FeedbackDAO.java</file>
-            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/RegisterServlet.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/nbproject/build-impl.xml~</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/utils/DBUtils.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/Service/ServiceDao.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/CommentServlet.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/META-INF/context.xml</file>
         </group>
     </open-files>
 </project-private>
