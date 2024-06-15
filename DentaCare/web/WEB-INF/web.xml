@@ -61,6 +61,15 @@
         <servlet-class>controller.ForgetPasswordServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>controller.ChangePasswordServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>VerifyServlet</servlet-name>
+        <servlet-class>controller.VerifyServlet</servlet-class>
+    </servlet>
+        <servlet>
         <servlet-name>SendPasswordServlet</servlet-name>
         <servlet-class>GoogleVerify.SendPasswordServlet</servlet-class>
     </servlet>
@@ -104,6 +113,21 @@
         <servlet-name>SendEmailBookingServlet</servlet-name>
         <servlet-class>GoogleVerify.SendEmailBookingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <servlet-class>controller.UpdateProfileServlet</servlet-class>
+    </servlet>
+    <!--    // paging-->
+<!--    <servlet> 
+        <servlet-name>LoginChangePage</servlet-name> 
+        <servlet-class>a2.LoginChangePage</servlet-class> 
+    </servlet> 
+  
+    <servlet-mapping> 
+        <servlet-name>LoginChangePage</servlet-name> 
+        <url-pattern>/employee.do</url-pattern> 
+    </servlet-mapping> -->
+    <!--    // paging-->
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/SignOutServlet</url-pattern>
@@ -157,6 +181,14 @@
         <url-pattern>/ForgetPasswordServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <url-pattern>/ChangePasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyServlet</servlet-name>
+        <url-pattern>/VerifyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>SendPasswordServlet</servlet-name>
         <url-pattern>/SendPasswordServlet</url-pattern>
     </servlet-mapping>
@@ -200,6 +232,16 @@
         <servlet-name>SendEmailBookingServlet</servlet-name>
         <url-pattern>/SendEmailBookingServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <url-pattern>/UpdateProfileServlet</url-pattern>
+    </servlet-mapping>
+    
+    
+    
+    <welcome-file-list>
+        <welcome-file>LoadDataServlet</welcome-file>
+    </welcome-file-list>
     <session-config>
         <session-timeout>
             30

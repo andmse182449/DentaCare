@@ -4,10 +4,16 @@
  */
 package controller;
 
+<<<<<<<< HEAD:DentaCare/src/java/controller/LoadFromClinicScheduleToCreateEventServlet.java
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
 import clinicSchedule.ClinicScheduleDAO;
 import clinicSchedule.ClinicScheduleDTO;
+========
+import account.AccountDAO;
+import account.AccountDTO;
+import account.Encoder;
+>>>>>>>> an:DentaCare/src/java/controller/ChangePasswordServlet.java
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +21,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+<<<<<<<< HEAD:DentaCare/src/java/controller/LoadFromClinicScheduleToCreateEventServlet.java
+========
+import jakarta.servlet.http.HttpSession;
+>>>>>>>> an:DentaCare/src/java/controller/ChangePasswordServlet.java
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,8 +33,12 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
+<<<<<<<< HEAD:DentaCare/src/java/controller/LoadFromClinicScheduleToCreateEventServlet.java
 @WebServlet(name = "LoadFromClinicScheduleToCreateEventServlet", urlPatterns = {"/LoadFromClinicScheduleToCreateEventServlet"})
 public class LoadFromClinicScheduleToCreateEventServlet extends HttpServlet {
+========
+public class ChangePasswordServlet extends HttpServlet {
+>>>>>>>> an:DentaCare/src/java/controller/ChangePasswordServlet.java
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,6 +52,7 @@ public class LoadFromClinicScheduleToCreateEventServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+<<<<<<<< HEAD:DentaCare/src/java/controller/LoadFromClinicScheduleToCreateEventServlet.java
         try (PrintWriter out = response.getWriter()) {
             String id_raw = request.getParameter("clinicByID");
             String clincScheduleId_raw = request.getParameter("clinicScheduleID");
@@ -67,6 +82,44 @@ public class LoadFromClinicScheduleToCreateEventServlet extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(LoadFromClinicScheduleToAddServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+========
+        String action = request.getParameter("action");
+        if (action.equals("changePasswordFirst")) {
+            String accountId = request.getParameter("accountID");
+            String password = request.getParameter("new-password");
+            String url = "SignOutServlet";
+            try {
+                AccountDAO accountDAO = new AccountDAO();
+                if (accountDAO.changePasswordFirstLogin(password, accountId)) {
+                    request.getRequestDispatcher(url).forward(request, response);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("error", "An error occurred while processing your request.");
+                request.getRequestDispatcher(url).forward(request, response);
+            }
+        } else  if (action.equals("change")) {
+            Encoder encode = new Encoder();
+            try {
+                HttpSession session = request.getSession();
+                AccountDTO account = (AccountDTO) session.getAttribute("account");
+                String oldPass = request.getParameter("register-pass");
+
+                AccountDAO accountDAO = new AccountDAO();
+                if (account.getPassword().equals(encode.encode(oldPass))) {
+                    String newPass = request.getParameter("newPass");
+                    accountDAO.resetPassword(account.getEmail(), newPass);
+//                    request.setAttribute("match", "Password changed successfully!");
+                    response.sendRedirect("SignOutServlet");
+                } else {
+                    request.setAttribute("unmatch", "Old Password does not match !");
+                    request.getRequestDispatcher("user-information.jsp").forward(request, response);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ChangePasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+>>>>>>>> an:DentaCare/src/java/controller/ChangePasswordServlet.java
         }
     }
 

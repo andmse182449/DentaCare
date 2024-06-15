@@ -41,7 +41,7 @@
 	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
 	          <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
 	          <li class="nav-item"><a href="doctors.html" class="nav-link">Doctors</a></li>
-	          <li class="nav-item active"><a href="blog.html" class="nav-link">Blog</a></li>
+	          <li class="nav-item active"><a href="feedback.html" class="nav-link">Blog</a></li>
 	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
 	          <li class="nav-item cta"><a href="contact.html" class="nav-link" data-toggle="modal" data-target="#modalRequest"><span>Make an Appointment</span></a></li>
 	        </ul>
@@ -67,138 +67,153 @@
 		<section class="ftco-section">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-8">
-						<div class="row">
-							<div class="col-md-12 ftco-animate">
-		            <div class="blog-entry">
-		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_1.jpg');">
-		              </a>
-		              <div class="text d-flex py-4">
-		                <div class="meta mb-3">
-		                  <div><a href="#">Sep. 20, 2018</a></div>
-		                  <div><a href="#">Admin</a></div>
-		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-		                </div>
-		                <div class="desc pl-sm-3 pl-md-5">
-			                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-			                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-			                <p><a href="blog-single.html" class="btn btn-primary btn-outline-primary">Read more</a></p>
-			              </div>
+					<div class="col-md-8 ftco-animate">
+            <h2 class="mb-3">#1. We Love WordPress Themes</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, eius mollitia suscipit, quisquam doloremque distinctio perferendis et doloribus unde architecto optio laboriosam porro adipisci sapiente officiis nemo accusamus ad praesentium? Esse minima nisi et. Dolore perferendis, enim praesentium omnis, iste doloremque quia officia optio deserunt molestiae voluptates soluta architecto tempora.</p>
+            <p>
+              <img src="images/image_4.jpg" alt="" class="img-fluid">
+            </p>
+            <p>Molestiae cupiditate inventore animi, maxime sapiente optio, illo est nemo veritatis repellat sunt doloribus nesciunt! Minima laborum magni reiciendis qui voluptate quisquam voluptatem soluta illo eum ullam incidunt rem assumenda eveniet eaque sequi deleniti tenetur dolore amet fugit perspiciatis ipsa, odit. Nesciunt dolor minima esse vero ut ea, repudiandae suscipit!</p>
+            <h2 class="mb-3 mt-5">#2. Creative WordPress Themes</h2>
+            <p>Temporibus ad error suscipit exercitationem hic molestiae totam obcaecati rerum, eius aut, in. Exercitationem atque quidem tempora maiores ex architecto voluptatum aut officia doloremque. Error dolore voluptas, omnis molestias odio dignissimos culpa ex earum nisi consequatur quos odit quasi repellat qui officiis reiciendis incidunt hic non? Debitis commodi aut, adipisci.</p>
+            <p>
+              <img src="images/image_5.jpg" alt="" class="img-fluid">
+            </p>
+            <p>Quisquam esse aliquam fuga distinctio, quidem delectus veritatis reiciendis. Nihil explicabo quod, est eos ipsum. Unde aut non tenetur tempore, nisi culpa voluptate maiores officiis quis vel ab consectetur suscipit veritatis nulla quos quia aspernatur perferendis, libero sint. Error, velit, porro. Deserunt minus, quibusdam iste enim veniam, modi rem maiores.</p>
+            <p>Odit voluptatibus, eveniet vel nihil cum ullam dolores laborum, quo velit commodi rerum eum quidem pariatur! Quia fuga iste tenetur, ipsa vel nisi in dolorum consequatur, veritatis porro explicabo soluta commodi libero voluptatem similique id quidem? Blanditiis voluptates aperiam non magni. Reprehenderit nobis odit inventore, quia laboriosam harum excepturi ea.</p>
+            <p>Adipisci vero culpa, eius nobis soluta. Dolore, maxime ullam ipsam quidem, dolor distinctio similique asperiores voluptas enim, exercitationem ratione aut adipisci modi quod quibusdam iusto, voluptates beatae iure nemo itaque laborum. Consequuntur et pariatur totam fuga eligendi vero dolorum provident. Voluptatibus, veritatis. Beatae numquam nam ab voluptatibus culpa, tenetur recusandae!</p>
+            <p>Voluptas dolores dignissimos dolorum temporibus, autem aliquam ducimus at officia adipisci quasi nemo a perspiciatis provident magni laboriosam repudiandae iure iusto commodi debitis est blanditiis alias laborum sint dolore. Dolores, iure, reprehenderit. Error provident, pariatur cupiditate soluta doloremque aut ratione. Harum voluptates mollitia illo minus praesentium, rerum ipsa debitis, inventore?</p>
+            <div class="tag-widget post-tag-container mb-5 mt-5">
+              <div class="tagcloud">
+                <a href="#" class="tag-cloud-link">Life</a>
+                <a href="#" class="tag-cloud-link">Sport</a>
+                <a href="#" class="tag-cloud-link">Tech</a>
+                <a href="#" class="tag-cloud-link">Travel</a>
+              </div>
+            </div>
+            
+            <div class="about-author d-flex p-5 bg-light">
+              <div class="bio align-self-md-center mr-5">
+                <img src="images/person_1.jpg" alt="Image placeholder" class="img-fluid mb-4">
+              </div>
+              <div class="desc align-self-md-center">
+                <h3>Michael Buff</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>
+              </div>
+            </div>
+
+
+            <div class="pt-5 mt-5">
+              <h3 class="mb-5">6 Comments</h3>
+              <ul class="comment-list">
+                <li class="comment">
+                  <div class="vcard bio">
+                    <img src="images/person_1.jpg" alt="Image placeholder">
+                  </div>
+                  <div class="comment-body">
+                    <h3>John Doe</h3>
+                    <div class="meta">June 27, 2018 at 2:21pm</div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                    <p><a href="#" class="reply">Reply</a></p>
+                  </div>
+                </li>
+
+                <li class="comment">
+                  <div class="vcard bio">
+                    <img src="images/person_1.jpg" alt="Image placeholder">
+                  </div>
+                  <div class="comment-body">
+                    <h3>John Doe</h3>
+                    <div class="meta">June 27, 2018 at 2:21pm</div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                    <p><a href="#" class="reply">Reply</a></p>
+                  </div>
+
+                  <ul class="children">
+                    <li class="comment">
+                      <div class="vcard bio">
+                        <img src="images/person_1.jpg" alt="Image placeholder">
+                      </div>
+                      <div class="comment-body">
+                        <h3>John Doe</h3>
+                        <div class="meta">June 27, 2018 at 2:21pm</div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                        <p><a href="#" class="reply">Reply</a></p>
+                      </div>
+
+
+                      <ul class="children">
+                        <li class="comment">
+                          <div class="vcard bio">
+                            <img src="images/person_1.jpg" alt="Image placeholder">
+                          </div>
+                          <div class="comment-body">
+                            <h3>John Doe</h3>
+                            <div class="meta">June 27, 2018 at 2:21pm</div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                            <p><a href="#" class="reply">Reply</a></p>
+                          </div>
+
+                            <ul class="children">
+                              <li class="comment">
+                                <div class="vcard bio">
+                                  <img src="images/person_1.jpg" alt="Image placeholder">
+                                </div>
+                                <div class="comment-body">
+                                  <h3>John Doe</h3>
+                                  <div class="meta">June 27, 2018 at 2:21pm</div>
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                                  <p><a href="#" class="reply">Reply</a></p>
+                                </div>
+                              </li>
+                            </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+
+                <li class="comment">
+                  <div class="vcard bio">
+                    <img src="images/person_1.jpg" alt="Image placeholder">
+                  </div>
+                  <div class="comment-body">
+                    <h3>John Doe</h3>
+                    <div class="meta">June 27, 2018 at 2:21pm</div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                    <p><a href="#" class="reply">Reply</a></p>
+                  </div>
+                </li>
+              </ul>
+              <!-- END comment-list -->
+              
+              <div class="comment-form-wrap pt-5">
+                <h3 class="mb-5">Leave a comment</h3>
+                <form action="#">
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Your Name">
+
+                    <input type="text" class="form-control" placeholder="Your Email">
+                  </div>
+                  <div class="form-group">
+		                <input type="text" class="form-control" placeholder="Subject">
 		              </div>
-		            </div>
-		          </div>
-		          <div class="col-md-12 ftco-animate">
-		            <div class="blog-entry" data-aos-delay="100">
-		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_2.jpg');">
-		              </a>
-		              <div class="text d-flex py-4">
-		                <div class="meta mb-3">
-		                  <div><a href="#">Sep. 20, 2018</a></div>
-		                  <div><a href="#">Admin</a></div>
-		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-		                </div>
-		                <div class="desc pl-sm-3 pl-md-5">
-			                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-			                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-			                <p><a href="blog-single.html" class="btn btn-primary btn-outline-primary">Read more</a></p>
-			              </div>
+		              <div class="form-group">
+		                <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
 		              </div>
-		            </div>
-		          </div>
-		          <div class="col-md-12 ftco-animate">
-		            <div class="blog-entry" data-aos-delay="200">
-		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_3.jpg');">
-		              </a>
-		              <div class="text d-flex py-4">
-		                <div class="meta mb-3">
-		                  <div><a href="#">Sep. 20, 2018</a></div>
-		                  <div><a href="#">Admin</a></div>
-		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-		                </div>
-		                <div class="desc pl-sm-3 pl-md-5">
-			                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-			                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-			                <p><a href="blog-single.html" class="btn btn-primary btn-outline-primary">Read more</a></p>
-			              </div>
+		              <div class="form-group">
+		                <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
 		              </div>
-		            </div>
-		          </div>
-		          <div class="col-md-12 ftco-animate">
-		            <div class="blog-entry">
-		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_4.jpg');">
-		              </a>
-		              <div class="text d-flex py-4">
-		                <div class="meta mb-3">
-		                  <div><a href="#">Sep. 20, 2018</a></div>
-		                  <div><a href="#">Admin</a></div>
-		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-		                </div>
-		                <div class="desc pl-sm-3 pl-md-5">
-			                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-			                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-			                <p><a href="blog-single.html" class="btn btn-primary btn-outline-primary">Read more</a></p>
-			              </div>
-		              </div>
-		            </div>
-		          </div>
-		          <div class="col-md-12 ftco-animate">
-		            <div class="blog-entry" data-aos-delay="100">
-		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_5.jpg');">
-		              </a>
-		              <div class="text d-flex py-4">
-		                <div class="meta mb-3">
-		                  <div><a href="#">Sep. 20, 2018</a></div>
-		                  <div><a href="#">Admin</a></div>
-		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-		                </div>
-		                <div class="desc pl-sm-3 pl-md-5">
-			                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-			                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-			                <p><a href="blog-single.html" class="btn btn-primary btn-outline-primary">Read more</a></p>
-			              </div>
-		              </div>
-		            </div>
-		          </div>
-		          <div class="col-md-12 ftco-animate">
-		            <div class="blog-entry" data-aos-delay="200">
-		              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_6.jpg');">
-		              </a>
-		              <div class="text d-flex py-4">
-		                <div class="meta mb-3">
-		                  <div><a href="#">Sep. 20, 2018</a></div>
-		                  <div><a href="#">Admin</a></div>
-		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-		                </div>
-		                <div class="desc pl-sm-3 pl-md-5">
-			                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-			                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-			                <p><a href="blog-single.html" class="btn btn-primary btn-outline-primary">Read more</a></p>
-			              </div>
-		              </div>
-		            </div>
-		          </div>
-						</div>
-						<div class="row mt-5">
-		          <div class="col">
-		            <div class="block-27">
-		              <ul>
-		                <li><a href="#">&lt;</a></li>
-		                <li class="active"><span>1</span></li>
-		                <li><a href="#">2</a></li>
-		                <li><a href="#">3</a></li>
-		                <li><a href="#">4</a></li>
-		                <li><a href="#">5</a></li>
-		                <li><a href="#">&gt;</a></li>
-		              </ul>
-		            </div>
-		          </div>
-		        </div>
-					</div> <!-- END: col-md-8 -->
+		            </form>
+              </div>
+            </div>
+
+          </div> <!-- .col-md-8 -->
 					<div class="col-md-4 sidebar ftco-animate">
             <div class="sidebar-box">
               <form action="#" class="search-form">
                 <div class="form-group">
-                  <span class="icon fa fa-search"></span>
+                	<div class="icon"><span class="icon-search"></span></div>
                   <input type="text" class="form-control" placeholder="Type a keyword and hit enter">
                 </div>
               </form>

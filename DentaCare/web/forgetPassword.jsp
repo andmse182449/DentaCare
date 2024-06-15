@@ -68,7 +68,7 @@
                         <li class="nav-item"><a href="about.html" class="nav-link" style="color: black">About</a></li>
                         <li class="nav-item"><a href="services.html" class="nav-link" style="color: black">Services</a></li>
                         <li class="nav-item"><a href="doctors.html" class="nav-link" style="color: black">Doctors</a></li>
-                        <li class="nav-item"><a href="blog.html" class="nav-link" style="color: black">Blog</a></li>
+                        <li class="nav-item"><a href="feedback.html" class="nav-link" style="color: black">Blog</a></li>
                         <li class="nav-item"><a href="contact.html" class="nav-link" style="color: black">Contact</a></li>
                         <li class="nav-item cta"><a href="login.jsp" class="nav-link show-popup" data-target="#modalRequest">Log in</a></li>
                     </ul>
