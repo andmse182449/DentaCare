@@ -273,7 +273,7 @@
                 <div id="confirmationPopup" class="popup">
                     <div class="popup-content">
                         <span class="close-btn" onclick="closePopup('confirmationPopup')">&times;</span>
-                        <p>Do you want to add dentist for this day ?</p>
+                        <p>Do you want to add/modify dentist for this day?</p>
                         <button id="confirmButton">OK</button>
                     </div>
                 </div>
@@ -286,6 +286,7 @@
                     </div>
                 </div>
 
+                <!-- Success Popup -->
                 <div id="successPopup" class="popup">
                     <div class="popup-content">
                         <span class="close-btn" onclick="closePopup('successPopup')">&times;</span>
@@ -293,37 +294,59 @@
                     </div>
                 </div>
 
+                <!-- Sunday Popup -->
                 <div id="sundayPopup" class="popup">
                     <div style="background-color: #ffe6e6;" class="popup-content">
                         <span class="close-btn" onclick="closePopup('sundayPopup')">&times;</span>
-                        <p>Dentists can not be allowed to add on Sundays !</p>
+                        <p>Dentists cannot be added on Sundays!</p>
                     </div>
                 </div>
 
+                <!-- Holiday Popup -->
                 <div id="holidayPopup" class="popup">
                     <div style="background-color: #ffe6e6;" class="popup-content">
                         <span class="close-btn" onclick="closePopup('holidayPopup')">&times;</span>
-                        <p>Dentists can not be allowed to add for the holidays !</p>
+                        <p>Dentists cannot be added for holidays!</p>
                     </div>
                 </div>
 
-                <!-- Second Popup for setting the event -->
+                <!-- Event Popup for setting the event -->
                 <div id="eventPopup" class="popup">
                     <div class="popup-content">
                         <span class="close-btn" onclick="closePopup('eventPopup')">&times;</span>
                         <h2>Set Dentist</h2>
-                        <form id="eventForm" method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
+                        <form id="addForm" method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
                             <input type="hidden" name="offDate" id="eventDate">
-                            <label for="eventName">List of dentist:</label>
+                            <label for="accountID">List of dentist:</label>
                             <select name="accountID">
                                 <c:forEach items="${requestScope.listAllDentist}" var="den">
                                     <option value="${den.accountID}">${den.fullName}</option>
                                 </c:forEach>
                             </select>
-                            <input type="hidden" name="key" value="addDenToSchedule" required>
-                            <br>
+                            <input type="hidden" name="key" value="addDenToSchedule">
                             <div class="button-container">
                                 <button type="submit">Set Dentist</button>
+                            </div>
+                        </form>
+
+                        <h2>Modify Dentist Schedule</h2>
+                        <form id="modifyForm" method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
+                            <input type="hidden" name="offDate" id="eventDate">
+                            <label for="oldAccountID">Current Dentist:</label>
+                            <select name="oldAccountID">
+                                <c:forEach items="${requestScope.listAllDentist}" var="den">
+                                    <option value="${den.accountID}">${den.fullName}</option>
+                                </c:forEach>
+                            </select>
+                            <label for="accountID">New Dentist:</label>
+                            <select name="accountID">
+                                <c:forEach items="${requestScope.listAllDentist}" var="den">
+                                    <option value="${den.accountID}">${den.fullName}</option>
+                                </c:forEach>
+                            </select>
+                            <input type="hidden" name="key" value="modifyDenToSchedule">
+                            <div class="button-container">
+                                <button type="submit">Modify Dentist Schedule</button>
                             </div>
                         </form>
                     </div>
@@ -336,9 +359,6 @@
 
                     function closePopup(popupId) {
                         document.getElementById(popupId).style.display = 'none';
-                        if (popupId === 'successPopup') {
-                            // Do nothing here to delay the reload until the close button is clicked
-                        }
                     }
 
                     // Function to check if the selected date is a Sunday
@@ -348,14 +368,6 @@
                     }
 
                     document.addEventListener('DOMContentLoaded', () => {
-                        const clinicCards = document.querySelectorAll('.clinic-card');
-                        clinicCards.forEach(card => {
-                            card.addEventListener('click', () => {
-                                const url = card.getAttribute('data-url');
-                                window.location.href = url;
-                            });
-                        });
-
                         let selectedDate = '';
 
                         function handleDayClick(date, cell) {
@@ -364,7 +376,6 @@
                             cell.classList.add('selected');
 
                             if (isSunday(date)) {
-                                // Display the sundayPopup if it's a Sunday
                                 showPopup('sundayPopup');
                                 return; // Prevent further actions
                             }
@@ -373,7 +384,6 @@
                                 showPopup('confirmationPopup');
                             } else if (cell.classList.contains('table-cell2')) {
                                 showPopup('holidayPopup');
-                                return;
                             }
                         }
 
@@ -390,11 +400,10 @@
 
                         document.querySelector('#successPopup .close-btn').addEventListener('click', () => {
                             closePopup('successPopup');
-                            // Reload the page after closing successPopup
-                            location.reload();
+                            location.reload(); // Reload the page after closing successPopup
                         });
 
-                        $('#eventForm').on('submit', function (e) {
+                        $('#addForm, #modifyForm').on('submit', function (e) {
                             e.preventDefault();
                             const formData = $(this).serialize();
                             $.ajax({
@@ -405,19 +414,18 @@
                                     if (response.success) {
                                         const successMessage = response.message;
                                         document.getElementById('successMessage').textContent = successMessage;
-                                        closePopup('eventPopup'); // Close eventPopup
+                                        closePopup('eventPopup');
                                         showPopup('successPopup');
                                     } else {
                                         document.getElementById('errorMessage').textContent = response.message;
                                         showPopup('errorPopup');
-                                        location.reload(); // Reload the page to show updated data
                                     }
                                 },
                                 error: function (jqXHR) {
                                     const response = jqXHR.responseJSON;
                                     if (response && !response.success) {
                                         document.getElementById('errorMessage').textContent = response.message;
-                                        closePopup('eventPopup'); // Close eventPopup
+                                        closePopup('eventPopup');
                                         showPopup('errorPopup');
                                     } else {
                                         alert('An error occurred. Please try again.');
