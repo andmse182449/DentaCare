@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,6 +17,15 @@ import utils.DBUtils;
 public class AccountDAO implements Serializable {
 
     Encoder strE = new Encoder();
+
+    public List<AccountDTO> getListByPage(ArrayList<AccountDTO> list,
+            int start, int end) {
+        ArrayList<AccountDTO> arr = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            arr.add(list.get(i));
+        }
+        return arr;
+    }
 
     public List<AccountDTO> getAllDentists() throws SQLException {
         List<AccountDTO> result = new ArrayList<>();
@@ -352,7 +362,7 @@ public class AccountDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE EMAIL = ?");
+        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE email = ?");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -417,7 +427,7 @@ public class AccountDAO implements Serializable {
                         rs.getString("address"), rs.getString("image"), rs.getBoolean("gender"), rs.getString("googleID"), rs.getString("googleName"), rs.getInt("roleID"), rs.getInt("status"), rs.getInt("clinicID"));
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return acc;
@@ -638,7 +648,7 @@ public class AccountDAO implements Serializable {
         }
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -654,9 +664,10 @@ public class AccountDAO implements Serializable {
             stm.setString(9, null);
             stm.setString(10, null);
             stm.setString(11, null);
-            stm.setInt(12, 2);
+            stm.setString(12, null);
             stm.setInt(13, 2);
-            stm.setInt(14, clinicID);
+            stm.setInt(14, 2);
+            stm.setInt(15, clinicID);
 
             if (stm.executeUpdate() != 0) {
                 flag = true;
@@ -929,5 +940,111 @@ public class AccountDAO implements Serializable {
             System.out.println(ex);
         }
         return 0;
+    }
+    
+    public AccountDTO getDentistByID (String dentistID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("select * from ACCOUNT WHERE accountID = ?");
+        try {
+            String sql = null;
+            sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, dentistID);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String accountID = rs.getString("accountID");
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                boolean gender = rs.getBoolean("gender");
+                String googleID = rs.getString("googleID");
+                String googleName = rs.getString("googleName");
+                int role = rs.getInt("roleID");
+                int status = rs.getInt("status");
+                int clinicID = rs.getInt("clinicID");
+                String image = rs.getString("image");
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, image, gender, googleID, googleName, role, status, clinicID);
+                return accountDTO;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
+     public List<AccountDTO> searchDentists(String name) throws SQLException {
+        List<AccountDTO> list = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE fullName like ? and roleID = 1");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, "%" + name + "%");
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String accountID = rs.getString("accountID");
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                boolean gender = rs.getBoolean("gender");
+                String googleID = rs.getString("googleID");
+                String googleName = rs.getString("googleName");
+                int role = rs.getInt("roleID");
+                int status = rs.getInt("status");
+                String image = rs.getString("image");
+                int clinicID = rs.getInt("clinicID");
+
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone,
+                        address, image,gender, googleID, googleName, role, status, clinicID);
+                list.add(accountDTO);
+                
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: " + e);
+
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
     }
 }

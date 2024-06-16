@@ -49,6 +49,36 @@ public class TimeSlotDAO {
         }
         return list;
     }
+    
+    public TimeSlotDTO getTimeSLotByID(int slotID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        TimeSlotDTO dto = null;
+        String query = "SELECT * FROM TIMESLOT WHERE slotID = ? ";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setInt(1, slotID);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                String timePeriod = rs.getString("timePeriod");
+                dto = new TimeSlotDTO(slotID, timePeriod);
+            }
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return dto;
+    }
+
 
     
 }

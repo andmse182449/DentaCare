@@ -60,17 +60,23 @@ public class RegisterServlet extends HttpServlet {
                 String pass = request.getParameter("register-pass");
                 int numOfUsers = accountDAO.countUserAccount();
                 AccountDTO existed = accountDAO.checkExistAccount(username, pass);
-                if (existed == null) {
-                    String accountId = "CUS" + Year.now().getValue() % 100 + String.format("%05d", numOfUsers + 1);
-                    AccountDTO newAccount = accountDAO.createAnNormalAccount(username, pass, mail, accountId);
-                    session.setAttribute("account", newAccount);
-                    request.setAttribute("success", "Registered Successfully!");
-                } else {
-                    res = true;
-                }
-                if (res == true) {
-                    request.setAttribute("error", "User Name existed !");
+                if (mail.equalsIgnoreCase(accountDAO.checkExistEmail(mail))) {
+                    request.setAttribute("error", "Email registed !");
                     request.setAttribute("ac", " active");
+                    url = "error.jsp";
+                } else {
+                    if (existed == null) {
+                        String accountId = "CUS" + Year.now().getValue() % 100 + String.format("%05d", numOfUsers + 1);
+                        AccountDTO newAccount = accountDAO.createAnNormalAccount(username, pass, mail, accountId);
+                        session.setAttribute("account", newAccount);
+                        request.setAttribute("success", "Registered Successfully!");
+                    } else {
+                        res = true;
+                    }
+                    if (res == true) {
+                        request.setAttribute("error", "User Name existed !");
+                        request.setAttribute("ac", " active");
+                    }
                 }
                 request.getRequestDispatcher(url).forward(request, response);
             }

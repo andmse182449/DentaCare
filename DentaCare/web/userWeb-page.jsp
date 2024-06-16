@@ -38,19 +38,19 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="LoadDataServlet?url=userWeb-page.jsp">Denta<span>Care</span></a>
+                <a class="navbar-brand" href="#">Denta<span>Care</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
                 </button>
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a href="LoadDataServlet?url=userWeb-page.jsp" class="nav-link">Home</a></li>
-<!--                        <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>-->
-                        <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-                        <li class="nav-item"><a href="doctors.html" class="nav-link">Doctors</a></li>
-                        <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-<!--                        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+                        <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
+                        <!--                        <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>-->
+                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
+                        <li class="nav-item"><a href="BookingServlet" class="nav-link">Book Appointment</a></li>
+                        <!--                        <li class="nav-item"a></li>><a href="contact.html" class="nav-link">Contact</a></li>-->
                         <li class="nav-item" style="margin-top: 3px;">
                             <c:set var="account" value="${sessionScope.account}"/>
 
@@ -197,72 +197,70 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer class="ftco-footer ftco-bg-dark ftco-section" style="
-            background-color: white;">
-        <div class="container">
-            <div class="row mb-5" >
-                <div class="col-md-6" >
-                    <div class="ftco-footer-widget mb-4">
-                        <h2 class="ftco-heading-2" style="color: black">DentaCare.</h2>
-                        <p style="color: black">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+        <footer class="ftco-footer ftco-bg-dark ftco-section" style="
+                background-color: white;">
+            <div class="container">
+                <div class="row mb-5" >
+                    <div class="col-md-6" >
+                        <div class="ftco-footer-widget mb-4">
+                            <h2 class="ftco-heading-2" style="color: black">DentaCare.</h2>
+                            <p style="color: black">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="ftco-footer-widget mb-4 ml-md-5">
+                            <h2 class="ftco-heading-2" style="color: black">Quick Links</h2>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="py-2 d-block" style="color: black">Features</a></li>
+                                <li><a href="#" class="py-2 d-block" style="color: black">Blog</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+
+                        <p style="color: black">
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> FPT University Campus Ho Chi Minh
+                        </p>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="ftco-footer-widget mb-4 ml-md-5">
-                        <h2 class="ftco-heading-2" style="color: black">Quick Links</h2>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="py-2 d-block" style="color: black">Features</a></li>
-                            <li><a href="#" class="py-2 d-block" style="color: black">Blog</a></li>
-                        </ul>
-                    </div>
-                </div>
-
             </div>
-            <div class="row">
-                <div class="col-md-12 text-center">
-
-                    <p style="color: black">
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> FPT University Campus Ho Chi Minh
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
+        </footer>
 
 
 
-    <!-- loader -->
-    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+        <!-- loader -->
+        <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
-    <!--MINH AN-->
-    <script>
-        function menuToggle() {
-            const toggleMenu = document.querySelector(".menu");
-            toggleMenu.classList.toggle("active");
-        }
-    </script>
-    <!-- END MINH AN-->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery-migrate-3.0.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.easing.1.3.js"></script>
-    <script src="js/jquery.waypoints.min.js"></script>
-    <script src="js/jquery.stellar.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/aos.js"></script>
-    <script src="js/jquery.animateNumber.min.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
-    <script src="js/jquery.timepicker.min.js"></script>
-    <script src="js/scrollax.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-    <script src="js/google-map.js"></script>
-    <script src="js/main.js"></script>
+        <script>
+            function menuToggle() {
+                const toggleMenu = document.querySelector(".menu");
+                toggleMenu.classList.toggle("active");
+            }
+        </script>
+        <!-- END MINH AN-->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-migrate-3.0.1.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.easing.1.3.js"></script>
+        <script src="js/jquery.waypoints.min.js"></script>
+        <script src="js/jquery.stellar.min.js"></script>
+        <script src="js/owl.carousel.min.js"></script>
+        <script src="js/jquery.magnific-popup.min.js"></script>
+        <script src="js/aos.js"></script>
+        <script src="js/jquery.animateNumber.min.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/jquery.timepicker.min.js"></script>
+        <script src="js/scrollax.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+        <script src="js/google-map.js"></script>
+        <script src="js/main.js"></script>
 
-</body>
+    </body>
 </html>

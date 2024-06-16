@@ -184,8 +184,4 @@ public class AccountDTO implements Serializable {
         sb.append('}');
         return sb.toString();
     }
-
-    
-
-
 }

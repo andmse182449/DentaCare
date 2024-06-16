@@ -54,8 +54,42 @@ public class DayOffScheduleDAO {
         }
         return list;
     }
+    
+    public List<DayOffScheduleDTO> getAllOffDate2() throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<DayOffScheduleDTO> list = new ArrayList<>();
+        String sql = "select * from DAYOFFSCHEDULE ";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int dayOffScheduleID = rs.getInt("dayOffScheduleID");
+                String dayOff = rs.getString("dayOff");
+                String description = rs.getString("description");
+                int clinicID = rs.getInt("clinicID");
 
-    public boolean addNewOffDate(String dayOff, String description, int clinicID) throws SQLException {
+                DayOffScheduleDTO off = new DayOffScheduleDTO(dayOffScheduleID, dayOff, description, clinicID);
+                list.add(off);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+        } finally {
+            if (con != null) {
+                con.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return list;
+    }
+public boolean addNewOffDate(String dayOff, String description, int clinicID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         StringBuilder query = new StringBuilder("INSERT INTO DAYOFFSCHEDULE (dayOff, description, clinicID) VALUES (?, ?, ?)");
