@@ -24,7 +24,6 @@ body {
 /*----------- HEADER ------------*/
 .header {
     grid-area: header;
-    height: 52px;
     display: flex;
     justify-content: space-between;
     padding: 30px 5%;
@@ -346,3 +345,4 @@ body {
     display: block;
     opacity: 1;
 }
+

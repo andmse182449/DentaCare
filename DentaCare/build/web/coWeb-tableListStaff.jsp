@@ -18,6 +18,7 @@
         <meta name="robots" content="noindex,nofollow">
         <title>Admin</title>
         <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Favicon icon -->
 
         <!-- Custom CSS -->

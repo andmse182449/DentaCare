@@ -196,6 +196,7 @@
                         <li class="nav-item"><a href="LoginChangePage?action=home" class="nav-link">Home</a></li>
                         <li class="nav-item active"><a href="#" class="nav-link">Services</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
+                        <li class="nav-item"><a href="BookingServlet" class="nav-link">Book Appointment</a></li>
                         <!--                        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
                         <li class="nav-item" style="margin-top: 3px;">
                             <c:set var="account" value="${sessionScope.account}"/>

@@ -114,6 +114,7 @@ public class BookingServlet extends HttpServlet {
             String service = request.getParameter("service");
             String timeslot = request.getParameter("timeslot");
             String doctor = request.getParameter("doctor");
+
             String url = "";
 
             try {
@@ -149,7 +150,7 @@ public class BookingServlet extends HttpServlet {
                         request.setAttribute("clinic", clinic);
                         request.setAttribute("timeslot", timeslot);
                         request.setAttribute("service", service);
-                        request.setAttribute("doctor", doctor);
+                        request.setAttribute("price", price);
                         url = "SendEmailBookingServlet";
                     }
                 }

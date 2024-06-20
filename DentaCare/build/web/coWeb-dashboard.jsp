@@ -86,7 +86,6 @@
                 <!-- Page Content -->
                 <div id="page-content-wrapper">
                     <div class="content-wrapper">
-                        <h1 class="mt-4">Dashboard</h1>
 
                         <!-- Row start -->
                         <div class="row gutters">

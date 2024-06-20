@@ -47,7 +47,7 @@ public class SendEmailBookingServlet extends HttpServlet {
         String now_raw = (String) request.getAttribute("createTime");
         String service = (String) request.getAttribute("service");
         String timeslot = (String) request.getAttribute("timeslot");
-        String doctor = (String) request.getAttribute("doctor");
+        String price = (String) request.getAttribute("price");
         String now[] = now_raw.split(" ");
 
         AccountDAO dao = new AccountDAO();
@@ -138,7 +138,7 @@ public class SendEmailBookingServlet extends HttpServlet {
                     + "                <p><strong>Name of service:</strong> " + service + "</p>\n"
                     + "                <p><strong>Address:</strong> " + clinic + " - " + clinicAddress +"</p>\n"
                     + "                <p><strong>Appointment Time:</strong> " + timeslot + " on " + bookingDTO.getAppointmentDay() + "</p>\n"
-                    + "                <p><strong>Dentist:</strong> " + doctor + "</p>\n"
+                    + "                <p><strong>Service Price:</strong> " + price + "</p>\n"
                     + "            </div>\n"
                     + "            <div class=\"section\">\n"
                     + "                <h2></h2>\n"

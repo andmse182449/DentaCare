@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="css/stylesheet.css">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
@@ -25,7 +26,7 @@
     </head>
     <body>
         <div class="grid-container">
-             <!-- HEADER -->
+            <!-- HEADER -->
             <header class="header">
                 <div><h1>MANAGE STAFF</h1></div>
                 <div class="header-icon">
@@ -51,18 +52,18 @@
             <!-- SIDEBAR -->
             <aside id="sidebar">
                 <!-- SIDEBAR -->
-            <aside id="sidebar">
-                <div>
-                    <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
-                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
-                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
-                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
-                        <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
-                        <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
-                    </ul>
-                </div>
-            </aside>
+                <aside id="sidebar">
+                    <div>
+                        <ul class="sidebar-list">
+                            <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                            <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                            <a href="coWeb-staff.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                            <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
+                            <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
+                            <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
+                        </ul>
+                    </div>
+                </aside>
             </aside>
             <!-- MAIN -->
             <div class="main-container">

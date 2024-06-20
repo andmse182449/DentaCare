@@ -74,21 +74,21 @@
                                 <div class="booking-details"><%= clinic.getClinicName() %><br><%= slot.getTimePeriod()%> <strong>on</strong> ${booking.getAppointmentDay()}</div>
                                     <c:choose>
                                         <c:when test="${booking.status == 0}">
-                                        <div class="booking-details" style="text-align: right; font-weight: 600; color: darkorange;">Placed</div>
-                                    </c:when>
-                                    <c:when test="${booking.status == 1}">
-                                        <div class="booking-details" style="text-align: right; font-weight: 600; color: blue;">Check-in</div>
-                                    </c:when>
-                                    <c:when test="${booking.status == 3}">
-                                        <div class="booking-details" style="text-align: right; font-weight: 600; color: red;">Cancelled</div>
-                                    </c:when>
-                                    <c:when test="${booking.status == 4}">
-                                        <div class="booking-details" style="text-align: right; font-weight: 600; color: red;">Expired</div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="booking-details" style="text-align: right; font-weight: 600; color: green;">Completed</div>
-                                    </c:otherwise>
-                                </c:choose>
+                                            <div class="booking-details" style="text-align: right; font-weight: 600; color: darkorange;">Placed</div>
+                                        </c:when>
+                                        <c:when test="${booking.status == 1}">
+                                            <div class="booking-details" style="text-align: right; font-weight: 600; color: blue;">Check-in</div>
+                                        </c:when>
+                                        <c:when test="${booking.status == 3}">
+                                            <div class="booking-details" style="text-align: right; font-weight: 600; color: red;">Cancelled</div>
+                                        </c:when>
+                                        <c:when test="${booking.status == 4}">
+                                            <div class="booking-details" style="text-align: right; font-weight: 600; color: red;">Expired</div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="booking-details" style="text-align: right; font-weight: 600; color: green;">Completed</div>
+                                        </c:otherwise>
+                                    </c:choose>
 
                                 <a href="#" class="details-link" data-booking-id="${booking.bookingID}"><span class="material-symbols-outlined">visibility</span></a>
                             </div>
@@ -112,7 +112,7 @@
                                     <hr>
                                     <div style="display: flex; justify-content: space-between;">
                                         <div><strong>Price</strong> <p>${booking.getPrice()}</p></div>
-                                        <form action="HistoryServlet"  style="margin-top: 20px; margin-right: 20px;">
+                                        <form action="HistoryServlet"  method="post" style="margin-top: 20px; margin-right: 20px;">
                                             <input type="hidden" name="bookingID" value="${booking.bookingID}"/>
                                             <input type="hidden" name="action" value="cancel"/>
                                             <input type="submit" value="Cancel" id="bookingStatus" data-check="${booking.status}" />

@@ -195,18 +195,9 @@ document.addEventListener('DOMContentLoaded', function () {
             selectedFields[4] = true;
             resetFields(6);
             closeCollapsible(4);
-            closeCollapsible(5);
         });
     });
 
-    document.querySelectorAll('.doctor-option').forEach(option => {
-        option.addEventListener('click', function () {
-            document.getElementById('doctor-input').value = this.innerText;
-            document.getElementById('doctorID-input').value = this.getAttribute('data-address');
-            selectedFields[5] = true;
-            closeCollapsible(5);
-        });
-    });
 
     function closeCollapsible(fieldNumber) {
         const header = document.querySelector(`.bookingfield-header h3[data-number="${fieldNumber}"]`).parentNode;
