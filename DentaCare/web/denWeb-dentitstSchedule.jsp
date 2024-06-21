@@ -100,7 +100,7 @@
                                 YEAR 
                                 <select name="year" onchange="this.form.submit()">
                                     <option value="">Select Year</option>
-                                    <% 
+                                    <%
                                         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
                                         String selectedYear = request.getParameter("year");
                                         for (int i = currentYear - 5; i <= currentYear + 5; i++) {
@@ -113,22 +113,22 @@
                                 WEEK
                                 <select name="week" onchange="this.form.submit()" id="weekSelect">
                                     <option value="">Select Week</option>
-                                    <% 
+                                    <%
                                         String selectedWeek = request.getParameter("week");
                                         if (selectedYear != null && !selectedYear.isEmpty()) {
                                             int year = Integer.parseInt(selectedYear);
                                             Calendar calendar = new GregorianCalendar();
                                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
-                                
+
                                             for (int i = 1; i <= 52; i++) {
                                                 calendar.set(Calendar.YEAR, year);
                                                 calendar.set(Calendar.WEEK_OF_YEAR, i);
                                                 calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                                    
+
                                                 String startDate = sdf.format(calendar.getTime());
                                                 calendar.add(Calendar.DAY_OF_MONTH, 6);  // Move to the end of the week
                                                 String endDate = sdf.format(calendar.getTime());
-                                    
+
                                                 String weekLabel = i + " (" + startDate + " - " + endDate + ")";
                                                 String selected = (selectedWeek != null && Integer.toString(i).equals(selectedWeek)) ? " selected" : "";
                                                 out.println("<option value=\"" + i + "\"" + selected + ">" + weekLabel + "</option>");
@@ -147,123 +147,121 @@
                         </tr>    
                         <tr>
                             <%--<c:forEach items="${requestScope.clinicScheduleByClinicIDToDen}" var="clinicScheduleByClinicIDToDen">--%>
-                            <% 
+                            <%
                                 out.println("<th></th>");
-                            String yearStr = (String) request.getAttribute("yearStr");
-                            String weekStr = (String) request.getAttribute("weekStr");
-                        
-                            List<DayOffScheduleDTO> off = (List<DayOffScheduleDTO>) request.getAttribute("off");
+                                String yearStr = (String) request.getAttribute("yearStr");
+                                String weekStr = (String) request.getAttribute("weekStr");
 
+                                List<DayOffScheduleDTO> off = (List<DayOffScheduleDTO>) request.getAttribute("off");
 
-                            if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
-                                int year = Integer.parseInt(yearStr);
-                                int week = Integer.parseInt(weekStr);
+                                if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
+                                    int year = Integer.parseInt(yearStr);
+                                    int week = Integer.parseInt(weekStr);
 
-                                Calendar calendar = new GregorianCalendar();
-                                calendar.set(Calendar.YEAR, year);
-                                calendar.set(Calendar.WEEK_OF_YEAR, week);
-                                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                                    Calendar calendar = new GregorianCalendar();
+                                    calendar.set(Calendar.YEAR, year);
+                                    calendar.set(Calendar.WEEK_OF_YEAR, week);
+                                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                                for (int i = 0; i < 7; i++) {
-                                    boolean isWorkingDay = false;
-                                    String workingDayInfo = "";
-                                    String checkEvent = "";
-                                    String currentDate = sdf.format(calendar.getTime());
-                                      for (DayOffScheduleDTO offDateDTO : off) {
-                                                if (offDateDTO.getDayOff().equals(currentDate)) {
-                                                    isWorkingDay = true;
-                                                    checkEvent = offDateDTO.getDescription();
-                                                }
+                                    for (int i = 0; i < 7; i++) {
+                                        boolean isWorkingDay = false;
+                                        String workingDayInfo = "";
+                                        String checkEvent = "";
+                                        String currentDate = sdf.format(calendar.getTime());
+                                        for (DayOffScheduleDTO offDateDTO : off) {
+                                            if (offDateDTO.getDayOff().equals(currentDate)) {
+                                                isWorkingDay = true;
+                                                checkEvent = offDateDTO.getDescription();
                                             }
-                                            if (!isWorkingDay) {
-                                                out.println("<td class='table-cell' data-date='" + currentDate + "' onclick='handleDayClick(\"" + currentDate + "\")'>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
-                                        } else {
-                                                out.println("<td class='table-cell2' data-date='" + currentDate + "'>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
                                         }
-                                            calendar.add(Calendar.DAY_OF_MONTH, 1);
-                                }
+                                        if (!isWorkingDay) {
+                                            out.println("<td class='table-cell' data-date='" + currentDate + "' onclick='handleDayClick(\"" + currentDate + "\", this)'>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
 
+                                        } else {
+                                            out.println("<td class='table-cell2' data-date='" + currentDate + "'>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
+                                        }
+                                        calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                    }
 
-                            } else {
-                                for (int i = 0; i < 8; i++) {
-                                    out.println("<td></td>");
+                                } else {
+                                    for (int i = 0; i < 8; i++) {
+                                        out.println("<td></td>");
+                                    }
                                 }
-                            }
                             %>
                             </div> 
                         </tr>     
                         <tr>
                         <div class="clickDay">
-                            <% 
-                                    out.println("<th></th>");
-                                    if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
-                                        int year = Integer.parseInt(yearStr);
-                                        int week = Integer.parseInt(weekStr);
+                            <%
+                                out.println("<th></th>");
+                                if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
+                                    int year = Integer.parseInt(yearStr);
+                                    int week = Integer.parseInt(weekStr);
 
-                                        Calendar calendar = new GregorianCalendar();
-                                        calendar.set(Calendar.YEAR, year);
-                                        calendar.set(Calendar.WEEK_OF_YEAR, week);
-                                        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                                    Calendar calendar = new GregorianCalendar();
+                                    calendar.set(Calendar.YEAR, year);
+                                    calendar.set(Calendar.WEEK_OF_YEAR, week);
+                                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                        List<DentistScheduleDTO> getEachdentist = (List<DentistScheduleDTO>) request.getAttribute("getEachdentist"); // get session form servlet
-                                        AccountDAO accDao = new AccountDAO();
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                    List<DentistScheduleDTO> getEachdentist = (List<DentistScheduleDTO>) request.getAttribute("getEachdentist"); // get session form servlet
+                                    AccountDAO accDao = new AccountDAO();
 //                                        List<AccountDTO> denList = accDao.getAccountDentistByRoleID1();
 
-                                        Map<String, String> dayOffMap = new HashMap<>();
-                                        for (DayOffScheduleDTO offDate : off) {
-                                            dayOffMap.put(offDate.getDayOff(), offDate.getDescription());
-                                        }
+                                    Map<String, String> dayOffMap = new HashMap<>();
+                                    for (DayOffScheduleDTO offDate : off) {
+                                        dayOffMap.put(offDate.getDayOff(), offDate.getDescription());
+                                    }
 
-                                        for (int i = 0; i < 7; i++) {
-                                            String workingDayInfo = "";
-                                            String currentDate = sdf.format(calendar.getTime());
-                                            boolean isWorkingDay = false;
-                                            String checkEvent = "";
-                                            boolean workingDayExists = false;
+                                    for (int i = 0; i < 7; i++) {
+                                        String workingDayInfo = "";
+                                        String currentDate = sdf.format(calendar.getTime());
+                                        boolean isWorkingDay = false;
+                                        String checkEvent = "";
+                                        boolean workingDayExists = false;
 
-                                            if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                                                for (DentistScheduleDTO dentistScheduleDTO : getEachdentist) {
-                                                    if (currentDate.equals(dentistScheduleDTO.getWorkingDate())) {
-                                                        if (!dentistScheduleDTO.getAccountID().equals(null)) {
-                                                                isWorkingDay = true;
-                                                                workingDayInfo = "di lam`";
-                                                                break;
-                                                        }
+                                        if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                                            for (DentistScheduleDTO dentistScheduleDTO : getEachdentist) {
+                                                if (currentDate.equals(dentistScheduleDTO.getWorkingDate())) {
+                                                    if (!dentistScheduleDTO.getAccountID().equals(null)) {
+                                                        isWorkingDay = true;
+                                                        workingDayInfo = "di lam`";
+                                                        break;
                                                     }
                                                 }
-                                                checkEvent = dayOffMap.getOrDefault(currentDate, "");
+                                            }
+                                            checkEvent = dayOffMap.getOrDefault(currentDate, "");
 
-                                                if (!checkEvent.isEmpty()) {
-                                                    out.println("<td class=\"working-day\">" + checkEvent + "</td>");
-                                                } else if (isWorkingDay) {
-                                                    out.println("<td class=\"event-day\">" + workingDayInfo.toString() + "</td>");
-                                                } else {
-                                                    out.println("<td></td>");
-                                                }
+                                            if (!checkEvent.isEmpty()) {
+                                                out.println("<td class=\"working-day\">" + checkEvent + "</td>");
+                                            } else if (isWorkingDay) {
+                                                out.println("<td class=\"event-day\">" + workingDayInfo.toString() + "</td>");
                                             } else {
                                                 out.println("<td></td>");
                                             }
-                                            calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                        } else {
+                                            out.println("<td></td>");
                                         }
-                                    
-                                            } else {
-                                                for (int i = 0; i < 7; i++) {
-                                                    out.println("<td></td>");
-                                                }
-                                            }
+                                        calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                    }
+
+                                } else {
+                                    for (int i = 0; i < 7; i++) {
+                                        out.println("<td></td>");
+                                    }
+                                }
                             %>                       
                         </div>
                         </tr>
                     </table>
                     <%
-          String selectedDateDisplay = request.getParameter("selectedDateDisplay");
-                    AccountDTO account = (AccountDTO) session.getAttribute("account");
+                        String selectedDateDisplay = request.getParameter("selectedDateDisplay");
+                        AccountDTO account = (AccountDTO) session.getAttribute("account");
 
 //          String app = (String) request.getParameter("app");
-          
 
                     %>
 
@@ -316,80 +314,103 @@
                             <p>Dentists cannot be added for holidays!</p>
                         </div>
                     </div>
-
+                    <ul id="bookingsList"></ul>
                     <script>
-                        function showPopup(popupId) {
-                            document.getElementById(popupId).style.display = 'flex';
-                        }
-
-                        function closePopup(popupId) {
-                            document.getElementById(popupId).style.display = 'none';
-                        }
                         document.addEventListener('DOMContentLoaded', () => {
+                            console.log('DOMContentLoaded event triggered.');
+
+                            // Global variable for selected date
                             let selectedDate = '';
 
+                            // Function to handle the click event on a date cell
                             function handleDayClick(date, cell) {
-                                console.log('Clicked date:', date);
-                                selectedDate = date;
-                                console.log('Selected date:', selectedDate);
+                                console.log('handleDayClick function triggered for date:', date);
 
+                                selectedDate = date; // Store the selected date
+                                console.log('Selected date set to:', selectedDate);
+
+                                // Remove 'selected' class from all cells and add to the clicked cell
                                 document.querySelectorAll('.table-cell, .table-cell2').forEach(c => c.classList.remove('selected'));
                                 cell.classList.add('selected');
 
-                                if (cell.classList.contains('table-cell')) {
-//                                    document.getElementById('selectedDateDisplay').textContent = `Selected Date:` ${selectedDate};
-//                                    document.getElementById('selectedDateDisplay').innerHTML = 'Selected Date: ' ${selectedDate};
-                                    document.getElementById('selectedDateDisplay').textContent = 'Selected Date: ' + selectedDate;
+                                // Update the display for the selected date
+                                document.getElementById('selectedDateDisplay').textContent = 'Selected Date: ' + selectedDate;
 
-                                    showPopup('confirmationPopup');
-                                } else if (cell.classList.contains('table-cell2')) {
-                                    showPopup('holidayPopup');
+                                // Create a JSON payload with the selected date
+                                const data = JSON.stringify({selectedDate: selectedDate});
+
+                                // Send the JSON payload to the server using fetch
+                                console.log('Sending JSON payload:', data);
+
+                                fetch('GetBookServlet', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({selectedDate: selectedDate})
+                                })
+                                        .then(response => {
+                                            console.log('Response status:', response.status);
+                                            console.log('Response headers:', response.headers);
+                                            return response.json();
+                                        })
+                                        .then(data => {
+                                            console.log('Data received:', data);
+                                            showPopup('successPopup');
+                                        })
+                                        .catch(error => {
+                                            console.error('Fetch error:', error);
+                                            document.getElementById('errorMessage').textContent = 'Error: ' + error.message;
+                                            showPopup('errorPopup');
+                                        });
+
+
+                                function displayBookings(bookings) {
+                                    // This is an example function to display the bookings
+                                    const bookingsList = document.getElementById('bookingsList');
+                                    bookingsList.innerHTML = ''; // Clear previous content
+
+                                    bookings.forEach(booking => {
+                                        const li = document.createElement('li');
+                                        li.textContent = `Booking ID: ${booking.bookingID}`;
+                                        bookingsList.appendChild(li);
+                                    });
                                 }
+
                             }
 
+                            // Attach click event listeners to all date cells dynamically
                             document.querySelectorAll('.table-cell').forEach(cell => {
                                 const date = cell.getAttribute('data-date');
                                 cell.addEventListener('click', () => handleDayClick(date, cell));
                             });
 
-                            document.getElementById('confirmButton').addEventListener('click', () => {
+                            // Function to show a popup by ID
+                            function showPopup(popupId) {
+                                const popup = document.getElementById(popupId);
+                                if (popup) {
+                                    popup.style.display = 'flex';
+                                }
+                            }
+
+                            // Function to close a popup by ID
+                            function closePopup(popupId) {
+                                const popup = document.getElementById(popupId);
+                                if (popup) {
+                                    popup.style.display = 'none';
+                                }
+                            }
+
+                            // Example for confirmButton (ensure this button exists in your HTML)
+                            document.getElementById('confirmButton').addEventListener('click', (event) => {
+                                event.preventDefault(); // Prevent the default form submission behavior
                                 closePopup('confirmationPopup');
                                 showPopup('eventPopup');
                                 document.getElementById('eventDate').textContent = selectedDate;
                             });
-
-                            $('#calendarForm').on('submit', function (e) {
-                                e.preventDefault();
-                                const formData = $(this).serialize();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: $(this).attr('action'),
-                                    data: formData,
-                                    success: function (response) {
-                                        if (response.success) {
-                                            const successMessage = response.message;
-                                            document.getElementById('successMessage').textContent = successMessage;
-                                            closePopup('eventPopup');
-                                            showPopup('successPopup');
-                                        } else {
-                                            document.getElementById('errorMessage').textContent = response.message;
-                                            showPopup('errorPopup');
-                                        }
-                                    },
-                                    error: function (jqXHR) {
-                                        const response = jqXHR.responseJSON;
-                                        if (response && !response.success) {
-                                            document.getElementById('errorMessage').textContent = response.message;
-                                            closePopup('eventPopup');
-                                            showPopup('errorPopup');
-                                        } else {
-                                            alert('An error occurred. Please try again.');
-                                        }
-                                    }
-                                });
-                            });
                         });
                     </script>
+
 
                 </form>  
                 <c:set value="${requestScope.weekStr}" var="year"/>
