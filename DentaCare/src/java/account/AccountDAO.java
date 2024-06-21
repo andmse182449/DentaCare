@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import utils.DBUtils;
@@ -489,11 +491,11 @@ public class AccountDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-                List<AccountDTO> list = new ArrayList<>();
+        List<AccountDTO> list = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("select * from ACCOUNT \n"
-                                                + " join DENTISTSCHEDULE on DENTISTSCHEDULE.accountID = ACCOUNT.accountID \n"
-                                                + " where DENTISTSCHEDULE.workingDate = ? ");
+                + " join DENTISTSCHEDULE on DENTISTSCHEDULE.accountID = ACCOUNT.accountID \n"
+                + " where DENTISTSCHEDULE.workingDate = ? ");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -941,8 +943,8 @@ public class AccountDAO implements Serializable {
         }
         return 0;
     }
-    
-    public AccountDTO getDentistByID (String dentistID) throws SQLException {
+
+    public AccountDTO getDentistByID(String dentistID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -993,7 +995,8 @@ public class AccountDAO implements Serializable {
         }
         return null;
     }
-     public List<AccountDTO> searchDentists(String name) throws SQLException {
+
+    public List<AccountDTO> searchDentists(String name) throws SQLException {
         List<AccountDTO> list = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -1027,9 +1030,9 @@ public class AccountDAO implements Serializable {
                 int clinicID = rs.getInt("clinicID");
 
                 AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone,
-                        address, image,gender, googleID, googleName, role, status, clinicID);
+                        address, image, gender, googleID, googleName, role, status, clinicID);
                 list.add(accountDTO);
-                
+
             }
         } catch (SQLException e) {
             System.out.println("SQL: " + e);
@@ -1046,5 +1049,125 @@ public class AccountDAO implements Serializable {
             }
         }
         return list;
+    }
+
+    public List<Map<String, Object>> getAgeGroupStatisticsForMale() throws SQLException {
+        List<Map<String, Object>> results = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBUtils.getConnection();;
+            String sql = "SELECT \n"
+                    + "    CASE \n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 0 AND 10 THEN '0-10'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 11 AND 20 THEN '11-20'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 21 AND 30 THEN '21-30'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 31 AND 40 THEN '31-40'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 41 AND 50 THEN '41-50'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 51 AND 60 THEN '51-60'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 61 AND 70 THEN '61-70'\n"
+                    + "        ELSE '71+' \n"
+                    + "    END AS age_range, \n"
+                    + "    COUNT(gender) AS Numb\n"
+                    + "FROM ACCOUNT \n"
+                    + "WHERE gender = 1 \n"
+                    + "GROUP BY CASE \n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 0 AND 10 THEN '0-10'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 11 AND 20 THEN '11-20'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 21 AND 30 THEN '21-30'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 31 AND 40 THEN '31-40'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 41 AND 50 THEN '41-50'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 51 AND 60 THEN '51-60'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 61 AND 70 THEN '61-70'\n"
+                    + "             ELSE '71+' \n"
+                    + "         END";
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String ageRange = resultSet.getString("age_range");
+                int count = resultSet.getInt("Numb");
+
+                Map<String, Object> result = new HashMap<>();
+                result.put("age_range", ageRange);
+                result.put("count", count);
+
+                results.add(result);
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return results;
+    }
+
+    public List<Map<String, Object>> getAgeGroupStatisticsForFemale() throws SQLException {
+        List<Map<String, Object>> results = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBUtils.getConnection();;
+            String sql = "SELECT \n"
+                    + "    CASE \n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 0 AND 10 THEN '0-10'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 11 AND 20 THEN '11-20'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 21 AND 30 THEN '21-30'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 31 AND 40 THEN '31-40'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 41 AND 50 THEN '41-50'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 51 AND 60 THEN '51-60'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 61 AND 70 THEN '61-70'\n"
+                    + "        ELSE '71+' \n"
+                    + "    END AS age_range, \n"
+                    + "    COUNT(gender) AS Numb\n"
+                    + "FROM ACCOUNT \n"
+                    + "WHERE gender = 0 \n"
+                    + "GROUP BY CASE \n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 0 AND 10 THEN '0-10'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 11 AND 20 THEN '11-20'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 21 AND 30 THEN '21-30'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 31 AND 40 THEN '31-40'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 41 AND 50 THEN '41-50'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 51 AND 60 THEN '51-60'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 61 AND 70 THEN '61-70'\n"
+                    + "             ELSE '71+' \n"
+                    + "         END";
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String ageRange = resultSet.getString("age_range");
+                int count = resultSet.getInt("Numb");
+
+                Map<String, Object> result = new HashMap<>();
+                result.put("age_range", ageRange);
+                result.put("count", count);
+
+                results.add(result);
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return results;
     }
 }

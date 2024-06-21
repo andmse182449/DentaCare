@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,6 +56,14 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
             String oldAccountID = request.getParameter("oldAccountID");
             String offDate = request.getParameter("offDate");
 
+            String[] words = null;
+            if ("addMultiDen".equals(key)) {
+                String selectedDaysDisplay = request.getParameter("selectedDaysDisplay");
+                if (selectedDaysDisplay != null) {
+                    words = selectedDaysDisplay.split(",");
+                }
+            } else {
+            }
             DayOffScheduleDAO offDao = new DayOffScheduleDAO();
 
             int id = 0;
@@ -63,11 +72,6 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
                 if (("loadDenSchedule").equals(action)) {
                     ClinicDAO dao = new ClinicDAO();
                     ClinicDTO clinicByID = dao.getClinicByID(id);
-
-                    if (clinicByID == null) {
-                        handleClinicNotFound(request, response, id);
-                        return;
-                    }
 
                     List<DayOffScheduleDTO> off = offDao.getAllOffDate(id);
 
@@ -85,7 +89,7 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
                     setRequestAttributes(request, yearStr, weekStr, id, off, clinicByID, getAllDentist, listAllDentist, denList);
 
                     // Handle actions based on 'key'
-                    handleKeyActions(key, dentDao, accountID, offDate, oldAccountID, out, response);
+                    handleKeyActions(key, words, dentDao, accountID, offDate, oldAccountID, out, response);
 
                 }
                 // Always forward after processing all logic
@@ -100,12 +104,6 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
         }
     }
 
-    private void handleClinicNotFound(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
-        System.out.println("Clinic with ID " + id + " not found!");
-        request.setAttribute("error", "Clinic not found!");
-        request.getRequestDispatcher("errorPage.jsp").forward(request, response);
-    }
-
     private void setRequestAttributes(HttpServletRequest request, String yearStr, String weekStr, int id, List<DayOffScheduleDTO> off, ClinicDTO clinicByID, List<DentistScheduleDTO> getAllDentist, List<AccountDTO> listAllDentist, List<AccountDTO> denList) {
         request.setAttribute("yearStr", yearStr);
         request.setAttribute("weekStr", weekStr);
@@ -117,7 +115,7 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
         request.setAttribute("denList", denList);
     }
 
-    private void handleKeyActions(String key, DentistScheduleDAO dentDao, String accountID, String offDate, String oldAccountID, PrintWriter out, HttpServletResponse response) throws SQLException {
+    private void handleKeyActions(String key, String[] words, DentistScheduleDAO dentDao, String accountID, String offDate, String oldAccountID, PrintWriter out, HttpServletResponse response) throws SQLException {
         if ("addDenToSchedule".equals(key)) {
             if (dentDao.checkAlreadyDentistInDenSche(accountID, offDate) == null) {
                 boolean addDenToSche = dentDao.addDenToSche(accountID, offDate);
@@ -131,8 +129,7 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
                 out.print("{\"success\": false, \"message\": \"Dentist is already scheduled for this date!\"}");
                 out.flush();
             }
-        }
-        if ("modifyDenToSchedule".equals(key)) {
+        } else if ("modifyDenToSchedule".equals(key)) {
             if (dentDao.checkAlreadyDentistInDenSche(oldAccountID, offDate) != null) {
                 boolean modifyDentistSchedule = dentDao.modifyDentistSchedule(accountID, offDate, oldAccountID);
                 response.setContentType("application/json");
@@ -145,11 +142,79 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
                 out.print("{\"success\": false, \"message\": \"Dentist is not already scheduled for this date!\"}");
                 out.flush();
             }
+        } else if ("addMultiDen".equals(key)) {
+            List<String> alreadyScheduledDates = new ArrayList<>();
+            List<String> addedDates = new ArrayList<>();
+            boolean allAddedSuccessfully = true;
+
+            for (String date : words) {
+                if (date != null) {
+                    DentistScheduleDTO check = dentDao.checkAlreadyDentistInDenSche(accountID, date);
+                    if (check != null) {
+                        alreadyScheduledDates.add(date);
+                    } else {
+                        boolean addSuccess = dentDao.addDenToSche(accountID, date);
+                        if (addSuccess) {
+                            addedDates.add(date);
+                        } else {
+                            allAddedSuccessfully = false;
+                        }
+                    }
+                }
+            }
+
+            response.setContentType("application/json");
+            if (!alreadyScheduledDates.isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"success\": false, \"message\": \"Dentist is already scheduled for the following dates: " + String.join(", ", alreadyScheduledDates) + "\"}");
+            } else if (words.equals(null)) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"success\": false, \"message\": \"Please choose dates\"}");
+            } else if (allAddedSuccessfully) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                out.print("{\"success\": true, \"message\": \"Add dentist successfully to the following dates: " + String.join(", ", addedDates) + "\"}");
+            } else {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.print("{\"success\": false, \"message\": \"An error occurred while adding the dentist to some of the dates.\"}");
+            }
+            out.flush();
         }
+
+//        else if ("addMultiDen".equals(key)) {
+//        boolean allAddedSuccessfully = true;
+//        boolean alreadyScheduled = false;
+//
+//        for (String word : words) {
+//            if (word != null) {
+//                DentistScheduleDTO check = dentDao.checkAlreadyDentistInDenSche(accountID, word);
+//                if (check != null) {
+//                    alreadyScheduled = true;
+//                    break;
+//                } else {
+//                    boolean addSuccess = dentDao.addDenToSche(accountID, word);
+//                    if (!addSuccess) {
+//                        allAddedSuccessfully = false;
+//                    }
+//                }
+//            }
+//        }
+//
+//        response.setContentType("application/json");
+//        if (alreadyScheduled) {
+//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            out.print("{\"success\": false, \"message\": \"Dentist is already scheduled for one of the selected dates!\"}");
+//        } else if (allAddedSuccessfully) {
+//            response.setStatus(HttpServletResponse.SC_OK);
+//            out.print("{\"success\": true, \"message\": \"Add dentist successfully!\"}");
+//        } else {
+//            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//            out.print("{\"success\": false, \"message\": \"An error occurred while adding the dentist to some of the dates.\"}");
+//        }
+//        out.flush();
+//    }
     }
 
     // Other required methods (e.g., doGet, doPost) would be implemented here
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -187,6 +252,5 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

@@ -3,9 +3,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Calendar, java.util.GregorianCalendar" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="clinicSchedule.ClinicScheduleDTO" %>
 <%@ page import="java.util.List" %>
-<%@ page import="clinicSchedule.ClinicScheduleDAO" %>
 <%@ page import="account.AccountDAO" %>
 <%@ page import="account.AccountDTO" %>
 <%@ page import="dentistSchedule.DentistScheduleDAO" %>
@@ -25,7 +23,9 @@
         <!--<link rel="stylesheet" href="css/stylesheet.css">-->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
-        <link rel="stylesheet" href="css/clinicSchedule.css">
+        <link rel="stylesheet" href="css/co-denSchedule.css">
+        <link rel="stylesheet" href="css/selectCalendar.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     </head>
@@ -42,12 +42,18 @@
                     <span class="material-symbols-outlined">account_circle</span>
                 </div>
             </header>
-
+            <%
+                        LocalDate now2 = LocalDate.now();
+                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                        int currentYear2 = now2.getYear();
+                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                        int currentMonth2 = now2.getMonthValue(); // Get current month number
+            %>
             <!-- SIDEBAR -->
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
+                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item">Dashboard</li></a>
                         <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
                         <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
@@ -56,13 +62,7 @@
                     </ul>
                 </div>
             </aside>
-            <% ClinicScheduleDAO clinicScheduleDAO = new ClinicScheduleDAO(); %>
-            <%
-                        LocalDate now2 = LocalDate.now();
-                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-                        int currentYear2 = now2.getYear();
-                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
-            %>
+
             <!-- MAIN -->
             <div class="main-container">
                 <h2>Dentist</h2>
@@ -258,6 +258,27 @@
                     <c:set value="${requestScope.weekStr}" var="year"/>
                     <c:set value="${requestScope.weekStr}" var="week"/>
                     <br>
+                    <div class="calendar-box">
+                        <h2>Add multiple dentist</h2>
+                        <button id="openCalendarButton">Open Calendar</button>
+                        <form id="calendarForm" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" method=<label for="dentistSelect">Choose a dentist:</label>
+                            <select name="accountID">
+                                <c:forEach items="${requestScope.listAllDentist}" var="den">
+                                    <option value="${den.accountID}">${den.fullName}</option>
+                                </c:forEach>
+                            </select>
+                            <div id="calendarModal" style="display: none;">
+                                <div id="calendar"></div>
+                                <input type="hidden" id="date-input" name="selectedDaysDisplay">
+                                <input type="hidden" name="key" value="addMultiDen">
+                                <div id="selectedDaysDisplay"></div>
+                            </div>
+                            <br>
+                            <button type="submit">Add Dentist</button>
+                        </form>
+                    </div>
+                    <script src="js/selectCalendar.js"></script>
+                    <br>
                     <a href="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicByID.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>" style="background-color: red;
                        color: white;
                        padding: 10px 20px;
@@ -403,7 +424,12 @@
                             location.reload(); // Reload the page after closing successPopup
                         });
 
-                        $('#addForm, #modifyForm').on('submit', function (e) {
+                        document.querySelector('#errorPopup .close-btn').addEventListener('click', () => {
+                            closePopup('errorPopup');
+                            location.reload(); // Reload the page after closing successPopup
+                        });
+
+                        $('#addForm, #modifyForm, #calendarForm').on('submit', function (e) {
                             e.preventDefault();
                             const formData = $(this).serialize();
                             $.ajax({

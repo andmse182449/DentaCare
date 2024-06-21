@@ -161,6 +161,41 @@ public class DentistScheduleDAO {
         return dto;
     }
 
+    public List<DentistScheduleDTO> checkListAlreadyDentistInDenSche(String accountID, String workingDate) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        DentistScheduleDTO dto = null;
+        List<DentistScheduleDTO> list = new ArrayList<>();
+        String query = "SELECT * FROM DENTISTSCHEDULE WHERE accountID = ? and workingDate = ?";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setString(1, accountID);
+            stm.setString(2, workingDate);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int dentistScheduleID = rs.getInt("dentistScheduleID");
+                accountID = rs.getString("accountID");
+                workingDate = rs.getString("workingDate");
+
+                dto = new DentistScheduleDTO(dentistScheduleID, accountID, workingDate);
+                list.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
+
     public List<DentistScheduleDTO> getDenFromDate(String workingDate, int clinicID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -247,8 +282,8 @@ public class DentistScheduleDAO {
             return false;
         }
     }
-    
-     public List<DentistScheduleDTO> getAccountDentistByRoleID2() throws SQLException {
+
+    public List<DentistScheduleDTO> getAccountDentistByRoleID2() throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;

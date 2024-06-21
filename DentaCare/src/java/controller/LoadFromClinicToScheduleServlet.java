@@ -50,6 +50,12 @@ public class LoadFromClinicToScheduleServlet extends HttpServlet {
             String description = request.getParameter("description");
             String offDate = request.getParameter("offDate");
 
+            String timePeriod = request.getParameter("timePeriod");
+            String timePeriod1 = request.getParameter("timePeriod1");
+            String timePeriod2 = request.getParameter("timePeriod2");
+
+            String oldTimePeriod = request.getParameter("oldTimePeriod");
+
             DayOffScheduleDAO offDao = new DayOffScheduleDAO();
 
             String url = "";
@@ -98,6 +104,76 @@ public class LoadFromClinicToScheduleServlet extends HttpServlet {
                         out.print("{\"success\": false, \"message\": \"Modify event successfully !\"}");
                         out.flush();
 //                        request.setAttribute("modifyEvent", modifyEvent);
+                    } // chua hoan thien
+                    if ("timeSlot".equals(key)) {
+                        if (timePeriod1 != null && timePeriod2 != null) {
+                            //                            String[] timeSplit = timePeriod.split("-");
+                            //
+                            //                            String time1 = timeSplit[0].trim();
+                            //                            String time2 = timeSplit[1].trim();
+                            //
+                            //                            String[] splitHandM1 = time1.split(":");
+                            //                            String[] splitHandM2 = time2.split(":");
+                            //
+                            //                            String hour1 = splitHandM1[0].trim();
+                            //                            String minute1 = splitHandM1[1].trim();
+                            //
+                            //                            String hour2 = splitHandM2[0].trim();
+                            //                            String minute2 = splitHandM2[1].trim();
+                            //
+                            //                            int h1 = Integer.parseInt(hour1);
+                            //                            int h2 = Integer.parseInt(hour2);
+                            //                            int m1 = Integer.parseInt(minute1);
+                            //                            int m2 = Integer.parseInt(minute2);
+
+                            String[] timeSplit1 = timePeriod1.split(":");
+                            String hour1 = timeSplit1[0].trim();
+                            String minute1 = timeSplit1[1].trim();
+
+                            String[] timeSplit2 = timePeriod2.split(":");
+                            String hour2 = timeSplit2[0].trim();
+                            String minute2 = timeSplit2[1].trim();
+
+                            int h1 = Integer.parseInt(hour1);
+                            int h2 = Integer.parseInt(hour2);
+                            int m1 = Integer.parseInt(minute1);
+                            int m2 = Integer.parseInt(minute2);
+
+                            if (h2 < h1) {
+                                response.setContentType("application/json");
+                                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                                out.print("{\"success\": false, \"message\": \"The starting time can not greater  than the ending time !\"}");
+                                out.flush();
+                            } else if (h1 == h2) {
+                                if (m2 < m1) {
+                                    response.setContentType("application/json");
+                                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                                    out.print("{\"success\": false, \"message\": \"The starting time can not greater than the ending time !\"}");
+                                    out.flush();
+                                }
+                            } else {
+                                List<TimeSlotDTO> listTime = timeDao.getAllTimeSLot();
+                                boolean isModified = false;
+
+                                for (TimeSlotDTO timeSlotDTO : listTime) {
+                                    if (timeSlotDTO.getTimePeriod().contains(timePeriod1) || timeSlotDTO.getTimePeriod().contains(timePeriod2)) {
+                                        response.setContentType("application/json");
+                                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                                        out.print("{\"success\": false, \"message\": \"This time slot is already exist !\"}");
+                                        out.flush();
+                                        return; // Exit the loop and method if the time period is already present
+                                    }
+                                }
+
+                                if (!isModified) {
+                                    boolean modifyTime = timeDao.modifyTime(timePeriod1 + "-" + timePeriod2, oldTimePeriod);
+                                    response.setContentType("application/json");
+                                    response.setStatus(HttpServletResponse.SC_OK);
+                                    out.print("{\"success\": true, \"message\": \"Modify event successfully !\"}");
+                                    out.flush();
+                                }
+                            }
+                        }
                     }
                 }
 //coWeb-clinic
