@@ -91,12 +91,11 @@ public class LoadScheduleForEachDentistServlet extends HttpServlet {
                     request.setAttribute("getEachdentist", getEachdentist);
                     request.setAttribute("clinicByID", clinicByID);
 
-                    
                     // gui day ne => jsp: line 360
-                    Gson gson = new Gson();
+//                    Gson gson = new Gson();
                     List<Map<String, Object>> getAllBookingForDen = bookDao.getAllBookingForDen2(account.getAccountID());
-//                                        request.setAttribute("getAllBookingForDen", getAllBookingForDen);
-                    response.setContentType("application/json");
+                    request.setAttribute("getAllBookingForDen", getAllBookingForDen);
+//                    response.setContentType("application/json");
 //                    String getAllBookingForDenJson = gson.toJson(getAllBookingForDen);
 //                    out.print(getAllBookingForDenJson);
 //                    response.setStatus(HttpServletResponse.SC_OK);
