@@ -97,12 +97,12 @@ public class LoadScheduleForEachDentistServlet extends HttpServlet {
                     List<Map<String, Object>> getAllBookingForDen = bookDao.getAllBookingForDen2(account.getAccountID());
 //                                        request.setAttribute("getAllBookingForDen", getAllBookingForDen);
                     response.setContentType("application/json");
-                    String getAllBookingForDenJson = gson.toJson(getAllBookingForDen);
-                    out.print(getAllBookingForDenJson);
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    out.flush();
+//                    String getAllBookingForDenJson = gson.toJson(getAllBookingForDen);
+//                    out.print(getAllBookingForDenJson);
+//                    response.setStatus(HttpServletResponse.SC_OK);
+//                    out.flush();
                 }
-//                request.getRequestDispatcher("denWeb-dentitstSchedule.jsp").forward(request, response);
+                request.getRequestDispatcher("denWeb-dentitstSchedule.jsp").forward(request, response);
 
             } catch (Exception ex) {
                 Logger.getLogger(LoadFromClinicScheduleToDentistScheduleServlet.class.getName()).log(Level.SEVERE, null, ex);
