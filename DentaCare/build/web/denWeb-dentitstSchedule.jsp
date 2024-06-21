@@ -272,13 +272,14 @@
                     <div id="confirmationPopup" class="popup">
                         <div class="popup-content">
                             <span class="close-btn" onclick="closePopup('confirmationPopup')">&times;</span>
+
                             <p id="selectedDateDisplay">Selected Date: </p>
 
-                            <div id="bookingDetails">
-                                <!-- Booking details will be populated here -->
-                                <input type="hidden" value="${clinicByID.clinicID}" class="clinicID"/>
-
-                            </div>
+                            <!--                            <div id="bookingDetails">
+                                                             Booking details will be populated here 
+                                                            <input type="hidden" value="${clinicByID.clinicID}" class="clinicID"/>
+                            
+                                                        </div>-->
 
                             <button id="confirmButton">OK</button>
                         </div>
@@ -317,13 +318,6 @@
                     </div>
 
                     <script>
-                        const clinicID = document.querySelector('.clinicID').value;
-                        
-                        
-                        console.log('clinicByID:', clinicByID);
-                        console.log('yearStr:', yearStr);
-                        console.log('weekStr:', weekStr);
-
                         function showPopup(popupId) {
                             document.getElementById(popupId).style.display = 'flex';
                         }
@@ -331,55 +325,21 @@
                         function closePopup(popupId) {
                             document.getElementById(popupId).style.display = 'none';
                         }
-
-                        function isSunday(date) {
-                            const dayOfWeek = new Date(date).getDay();
-                            return dayOfWeek === 0;
-                        }
-
                         document.addEventListener('DOMContentLoaded', () => {
                             let selectedDate = '';
 
                             function handleDayClick(date, cell) {
-                                console.log('Clicked date:', date); // Check if date is correctly passed
+                                console.log('Clicked date:', date);
                                 selectedDate = date;
-                                console.log('Selected date:', selectedDate); // Check if selectedDate is correctly set
+                                console.log('Selected date:', selectedDate);
 
-                                selectedDate = date;
                                 document.querySelectorAll('.table-cell, .table-cell2').forEach(c => c.classList.remove('selected'));
                                 cell.classList.add('selected');
 
-                                if (isSunday(date)) {
-                                    showPopup('sundayPopup');
-                                    return;
-                                }
-
                                 if (cell.classList.contains('table-cell')) {
-                                    document.getElementById('selectedDateDisplay').textContent = `Selected Date: ` + selectedDate.trim();
-                                    var bookList = bookingDetails; // query cai ID 
-                                    //
-                                    fetch(`LoadScheduleServlet?action=loadDenSchedule&clinicByID=${clinicID}`)
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                data.forEach(booking => {
-                                                    if (booking.appointmentDay === selectedDate) {
-                                                        const bookingItem1 = document.createElement("li");
-                                                        const bookingItem2 = document.createElement("li");
-                                                        const bookingItem3 = document.createElement("li");
-                                                        const bookingItem4 = document.createElement("li");
-                                                        bookingItem1.textContent = bookList.appointmentDay;
-                                                        bookingItem2.textContent = bookList.customerName;
-                                                        bookingItem3.textContent = bookList.serviceName;
-                                                        bookingItem4.textContent = bookList.timePeriod;
-                                                        bookList.appendChild(bookingItem);
-                                                    }
-                                                });
-                                                console.log('Data fetched:', data); // Log data to verify it's fetched correctly
-
-                                            })
-                                            .catch(error => {
-                                                console.error('Error fetching data:', error);
-                                            });
+//                                    document.getElementById('selectedDateDisplay').textContent = `Selected Date:` ${selectedDate};
+//                                    document.getElementById('selectedDateDisplay').innerHTML = 'Selected Date: ' ${selectedDate};
+                                    document.getElementById('selectedDateDisplay').textContent = 'Selected Date: ' + selectedDate;
 
                                     showPopup('confirmationPopup');
                                 } else if (cell.classList.contains('table-cell2')) {
@@ -395,20 +355,10 @@
                             document.getElementById('confirmButton').addEventListener('click', () => {
                                 closePopup('confirmationPopup');
                                 showPopup('eventPopup');
-                                document.getElementById('eventDate').value = selectedDate;
+                                document.getElementById('eventDate').textContent = selectedDate;
                             });
 
-                            document.querySelector('#successPopup .close-btn').addEventListener('click', () => {
-                                closePopup('successPopup');
-                                location.reload();
-                            });
-
-                            document.querySelector('#errorPopup .close-btn').addEventListener('click', () => {
-                                closePopup('errorPopup');
-                                location.reload();
-                            });
-
-                            $('#addForm, #modifyForm, #calendarForm').on('submit', function (e) {
+                            $('#calendarForm').on('submit', function (e) {
                                 e.preventDefault();
                                 const formData = $(this).serialize();
                                 $.ajax({
@@ -438,23 +388,7 @@
                                     }
                                 });
                             });
-
-                        <% if (request.getAttribute("wrong") != null) { %>
-                            document.addEventListener('DOMContentLoaded', () => {
-                                document.getElementById('errorMessage').textContent = '<%= request.getAttribute("wrong") %>';
-                                showPopup('errorPopup');
-                            });
-                        <% } %>
                         });
-                        function showBookingDetails(details) {
-                            const bookingDetailsDiv = document.getElementById('bookingDetails');
-                            bookingDetailsDiv.innerHTML = `
-            <p>Appointment Day: ${details.appointmentDay}</p>
-            <p>Service ID: ${details.serviceID}</p>
-            <p>Dentist: ${details.fullNameDentist}</p>
-            <p>Time Slot: ${details.timeSlot}</p>
-        `;
-                        }
                     </script>
 
                 </form>  
