@@ -46,10 +46,9 @@
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
-                        <!--                        <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>-->
-                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=service&comment=unallow" class="nav-link">Services</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
-                        <!--                        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+                        <li class="nav-item"><a href="BookingServlet" class="nav-link">Book Appointment</a></li>
                         <li class="nav-item" style="margin-top: 3px;">
                             <c:set var="account" value="${sessionScope.account}"/>
 
@@ -236,7 +235,6 @@
         <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
-        <!--MINH AN-->
         <script>
             function menuToggle() {
                 const toggleMenu = document.querySelector(".menu");

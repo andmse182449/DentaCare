@@ -71,6 +71,11 @@ public class LoginChangePage extends HttpServlet {
                     request.setAttribute("page", page);
                     request.setAttribute("numberOfResults", feedbackDAO.getAllFeedbacks(account.getAccountID()).size());
                     request.setAttribute("FEEDBACK", arr);
+                    if (request.getParameter("comment").equals("allow")) {
+                        request.setAttribute("none", "block");
+                    } else if (request.getParameter("comment").equals("unallow")) {
+                        request.setAttribute("none", "none");
+                    }
 
                     url = "service.jsp";
 

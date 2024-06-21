@@ -4,12 +4,17 @@
  */
 package controller;
 
+import clinic.ClinicDAO;
+import clinic.ClinicDTO;
+import clinicSchedule.ClinicScheduleDAO;
+import clinicSchedule.ClinicScheduleDTO;
 import account.AccountDAO;
 import account.AccountDTO;
 import account.Encoder;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,10 +23,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Admin
- */
+
+
 public class ChangePasswordServlet extends HttpServlet {
 
     /**
@@ -71,7 +74,6 @@ public class ChangePasswordServlet extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(ChangePasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }
 

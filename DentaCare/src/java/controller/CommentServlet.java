@@ -4,6 +4,7 @@
  */
 package controller;
 
+import BadWordFilter.BadWordFilter;
 import account.AccountDTO;
 import com.google.gson.Gson;
 import feedback.FeedbackDAO;
@@ -18,12 +19,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.Timestamp;
 
 /**
  *
@@ -36,7 +35,7 @@ public class CommentServlet extends HttpServlet {
         // Your logic to generate a unique feedback ID
         return "FB-" + System.currentTimeMillis(); // Simple example using current time
     }
-    private static final long serialVersionUID = 1L;
+//    private static final long serialVersionUID = 1L;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -59,16 +58,18 @@ public class CommentServlet extends HttpServlet {
 
         String commentText = jsonInput.get("comment");
         String fbID = generateUniqueFeedbackID();
-        String clinicID = jsonInput.get("clinicID");
         HttpSession session = request.getSession();
         FeedbackDAO feedbackDAO = new FeedbackDAO();
+        String bookingID = jsonInput.get("bookingID");
         AccountDTO account = (AccountDTO) session.getAttribute("account");
+        BadWordFilter check = new BadWordFilter();
+        String filteredText = check.filterBadWords(commentText);
         try {
 
-            if (feedbackDAO.addComment(fbID, LocalDateTime.now() , commentText, account.getAccountID(), clinicID) == true) {
+            if (feedbackDAO.addComment(fbID, LocalDateTime.now(), filteredText, account.getAccountID(), bookingID) == true) {
                 System.out.println("oke em iu");
             } else {
-                System.out.println("như cc");
+                System.out.println("như");
             }
         } catch (SQLException ex) {
             Logger.getLogger(CommentServlet.class.getName()).log(Level.SEVERE, null, ex);

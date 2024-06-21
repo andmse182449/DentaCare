@@ -13,6 +13,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
+import java.time.LocalDate;
+import static java.time.LocalDate.now;
+import java.time.Month;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 
 public class LoginActionServlet extends HttpServlet {
 
@@ -39,8 +44,16 @@ public class LoginActionServlet extends HttpServlet {
                 switch (checkAccount.getRoleID()) {
                     // admin
                     case 3 -> {
+                        LocalDate now2 = LocalDate.now();
+                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                        int currentYear2 = now2.getYear();
+                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                        int currentMonth2 = now2.getMonthValue(); // Get current month number
+
+                        System.out.println(currentMonth2);
+
                         session.setAttribute("account", checkAccount);
-                        response.sendRedirect("coWeb-dashboard.jsp");
+                        response.sendRedirect("DashBoardServlet?action=dashboardAction&year1=" + currentYear2 + "&year2=" + currentYear2 + "&month=" + currentMonth2);
                     }
                     // staff
                     case 2 -> {

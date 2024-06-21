@@ -6,6 +6,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.time.LocalDate, java.time.temporal.WeekFields, java.util.Locale" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -76,9 +78,15 @@
     <div class="form-container">
         <c:set var="clinicID" value="${clinicByID.clinicID}" />
         <c:set var="clinicScheduleID" value="${getByCliScheID.clinicScheduleID}" />
+        <%
+    LocalDate now = LocalDate.now();
+    WeekFields weekFields = WeekFields.of(Locale.getDefault());
+    int currentYear = now.getYear();
+    int currentWeek = now.get(weekFields.weekOfWeekBasedYear());
+        %>
 
 
-        <form action="AddDentistToScheduleServlet?clinicSchedule=${clinicScheduleID}&clinicByID=${clinicID}" method="post">
+        <form action="AddDentistToScheduleServlet?clinicSchedule=${clinicScheduleID}&clinicByID=${clinicID}&year=<%=currentYear%>&week=<%=currentWeek%>" method="post">
             <h1>Add Dentist Schedule</h1>
             <input readonly required="true" type="text" name="clinicScheduleID" value="${clinicScheduleID}"><br>
             Den list
@@ -89,7 +97,7 @@
             </select>
 
             <div class="check-button">
-                <a href="LoadFromClinicScheduleToDentistScheduleServlet?clinicSchedule=${clinicScheduleID}&clinicByID=${clinicID}" 
+                <a href="LoadFromClinicScheduleToDentistScheduleServlet?clinicSchedule=${clinicScheduleID}&clinicByID=${clinicID}&year=<%=currentYear%>&week=<%=currentWeek%>" 
                    style="background-color: red; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-size: 16px; display: inline-block; text-align: center;">
                     Return
                 </a>                <input type="submit" value="Create">
@@ -114,7 +122,8 @@
             %>
         </form>
 
-        <form action="ModifyDentistScheduleServlet?clinicSchedule=${clinicScheduleID}&clinicByID=${clinicID}" method="post">
+
+        <form action="ModifyDentistScheduleServlet?clinicSchedule=${clinicScheduleID}&clinicByID=${clinicID}&year=<%=currentYear%>&week=<%=currentWeek%>" method="post">
             <h1>Modify Dentist Schedule</h1>
             <input readonly required="true" type="text" name="clinicScheduleID" value="${clinicScheduleID}"><br>
             Change this dentist:
@@ -132,7 +141,7 @@
 
 
             <div class="check-button">
-                <a href="LoadFromClinicScheduleToDentistScheduleServlet?clinicSchedule=${clinicScheduleID}&clinicByID=${clinicID}" 
+                <a href="LoadFromClinicScheduleToDentistScheduleServlet?clinicSchedule=${clinicScheduleID}&clinicByID=${clinicID}&year=<%=currentYear%>&week=<%=currentWeek%>" 
                    style="background-color: red; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-size: 16px; display: inline-block; text-align: center;">
                     Return
                 </a>                <input type="submit" value="Create">

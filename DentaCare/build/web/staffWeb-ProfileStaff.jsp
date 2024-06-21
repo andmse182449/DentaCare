@@ -21,31 +21,44 @@
         <div class="container rounded bg-white mt-5 mb-5">
             <div class="row">
                 <div class="col-md-3 border-right">
-                    <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">Edogaru</span><span class="text-black-50">edogaru@mail.com.my</span><span> </span></div>
+                    <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">${account.fullName}</span><span class="text-black-50">${account.email}</span><span> </span></div>
                 </div>
                 <div class="col-md-5 border-right">
                     <div class="p-3 py-5">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h4 class="text-right">Profile Settings</h4>
                         </div>
-                        <div class="row mt-2">
-                            <div class="col-md-6"><label class="labels">UserName</label><input type="text" class="form-control" placeholder="Username" name="username" value="${sessionScope.account.userName}"></div>
-                            <div class="col-md-6"><label class="labels">Password</label><input type="password" class="form-control" placeholder="password" name="password" value=""></div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-12"><label class="labels">Full Name</label><input type="text" class="form-control" value="${sessionScope.account.fullName}"></div>
-                            <div class="col-md-12"><label class="labels">Phone</label><input type="text" class="form-control" value="${sessionScope.account.phone}"></div>
-                            <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" value="${sessionScope.account.address}"></div>
-                            <div class="col-md-12"><label class="labels">Date of birth</label><input type="text" class="form-control" value="${sessionScope.account.dob}"></div>
+                        <div>
+                            <form id="profileForm" action="./ProfileStaffServlet" method="post">
+
+                                <div class="row mt-3">
+                                    <input type="hidden" value="${account.accountID}" name="accountId" />
+                                    <div class="col-md-12"><label class="labels">UserName</label><input type="text" class="form-control" placeholder="Username" name="username" value="${account.userName}" required></div>
+                                    <div class="col-md-12"><label class="labels">Full Name</label><input type="text" class="form-control" placeholder="Full Name" name="fullName" value="${account.fullName}"></div>
+                                    <div class="col-md-12"><label class="labels">Phone</label><input type="text" class="form-control" placeholder="Phone" name="phone" value="${account.phone}"></div>
+                                    <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" placeholder="Address" name="address" value="${account.address}"></div>
+                                    <div class="col-md-12">
+                                        <label class="labels">Date of birth</label>
+                                        <input type="text" class="form-control" placeholder="Date of birth (dd/MM/yyyy)" name="dob" value="${account.dob}">
+                                        <small id="dobError" style="color:red; display:none;">Please enter a valid date in dd/MM/yyyy format.</small>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="labels">Gender</label><br>
+                                        <input type="radio" class="form-control-radio" name="gender" value="Male" ${account.gender ? 'checked' : ''}> Male
+                                        <input type="radio" class="form-control-radio" name="gender" value="Female" ${!account.gender ? 'checked' : ''}> Female                                 
+                                    </div>
+                                    <input type="hidden" value="updateProfileStaff" name="action" />
+                                </div>
+                                <input type="submit" value="Save Profile" />
+                            </form>
                         </div>
 
-                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
+
                     </div>
                 </div>
 
             </div>
         </div>
-    </div>
-</div>
-</body>
+        <script src="admin-front-end/js/profileStaff.js"></script>                         <
+    </body>
 </html>

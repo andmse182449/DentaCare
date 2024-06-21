@@ -45,7 +45,7 @@ public class StaffServlet extends HttpServlet {
         if (action == null || action.equals("staffLogin") || action == "") {
             HttpSession session = request.getSession();
             AccountDTO account = (AccountDTO) session.getAttribute("account");
-            String url = "staWeb-abc.jsp";
+            String url = "StaffViewBooking";
             if (account.getStatus() == 2) {
                 url = "changePasswordFirstTime.jsp";
                 request.getRequestDispatcher(url).forward(request, response);

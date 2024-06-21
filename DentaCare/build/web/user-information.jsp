@@ -40,7 +40,7 @@
     </style>
     <body>
         <div class="container user">
-            <nav class="navbar user">
+            <nav class="navbar user" style="margin-top: -50px;">
                 <ul>
                     <li><a href="#" id="userProfileLink" class="active">User Profile</a></li>
                     <li><a href="ExamScheduleServlet">Examination Schedule</a></li>

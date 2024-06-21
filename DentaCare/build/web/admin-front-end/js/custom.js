@@ -51,3 +51,4 @@ function toggleEditForm(button) {
         $(popup).hide();
     });
 }
+

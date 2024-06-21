@@ -41,7 +41,8 @@ public class ManageStaffServlet extends HttpServlet {
             if (clinicName == null) {
                 clinicName = request.getParameter("selectedClinic");
             }
-            System.out.println(clinicName);
+            
+            System.out.println(action);
             List<String> listClinicName = dao.listClinicName();
             request.setAttribute("clinicName", listClinicName);
             if (action == null) {
@@ -49,15 +50,17 @@ public class ManageStaffServlet extends HttpServlet {
                 List<AccountDTO> listStaffUnactive = dao.listAccountStaffRemovedClinic(clinicName);
                 request.setAttribute("listAccount", listStaffActive);
                 request.setAttribute("listAccountRemoved", listStaffUnactive);
-                request.getRequestDispatcher("coWeb-tableListStaff.jsp").forward(request, response);
+                request.getRequestDispatcher("coWeb-staff.jsp").forward(request, response);
             } else if (action.equals("deteleStaff")) {
                 String userName = request.getParameter("staffUserName");
+                System.out.println(userName);
                 dao.updateStaffAccountUnactive(userName);
                 List<AccountDTO> listStaffActive = dao.listAccountStaffClinic1(clinicName);
                 List<AccountDTO> listStaffUnactive = dao.listAccountStaffRemovedClinic(clinicName);
                 request.setAttribute("listAccount", listStaffActive);
                 request.setAttribute("listAccountRemoved", listStaffUnactive);
-                request.getRequestDispatcher("coWeb-tableListStaff.jsp").forward(request, response);
+                request.setAttribute("selectedClinic", clinicName);
+                request.getRequestDispatcher("coWeb-staff.jsp").forward(request, response);
             } else if (action.equals("addAgainStaff")) {
                 String userName = request.getParameter("staffUserName");
                 dao.updateStaffAccountActive(userName);
@@ -65,7 +68,8 @@ public class ManageStaffServlet extends HttpServlet {
                 List<AccountDTO> listStaffUnactive = dao.listAccountStaffRemovedClinic(clinicName);
                 request.setAttribute("listAccount", listStaffActive);
                 request.setAttribute("listAccountRemoved", listStaffUnactive);
-                request.getRequestDispatcher("coWeb-tableListStaff.jsp").forward(request, response);
+                request.setAttribute("selectedClinic", clinicName);
+                request.getRequestDispatcher("coWeb-staff.jsp").forward(request, response);
             }
         }
     }
