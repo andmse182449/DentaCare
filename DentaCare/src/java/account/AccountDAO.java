@@ -9,12 +9,15 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import utils.DBUtils;
 
 public class AccountDAO implements Serializable {
+            
 
     Encoder strE = new Encoder();
 
@@ -46,6 +49,7 @@ public class AccountDAO implements Serializable {
                 String accountID = rs.getString("accountID");
                 String majorName = rs.getString("majorName");
                 String introduction = rs.getString("introduction");
+                        
                 String email = rs.getString("email");
                 String fullName = rs.getString("fullName");
                 String phone = rs.getString("phone");
@@ -63,6 +67,7 @@ public class AccountDAO implements Serializable {
                 result.add(accountDTO);
             }
         } catch (SQLException e) {
+            
             System.out.println("An SQL error occurred: ");
 
         } finally {
@@ -142,6 +147,7 @@ public class AccountDAO implements Serializable {
             stm.setString(4, dob);
             stm.setString(5, userName);
 
+                        
             stm.executeUpdate();
 
             stm = con.prepareStatement("Select * from account where username = ?");
@@ -289,6 +295,7 @@ public class AccountDAO implements Serializable {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
+                        
             stm.setString(1, userNameK);
             rs = stm.executeQuery();
             while (rs.next()) {
@@ -305,26 +312,27 @@ public class AccountDAO implements Serializable {
             if (stm != null) {
                 stm.close();
             }
-            if (con != null) {
-                con.close();
-            }
-        }
-        return "";
-    }
+     
 
-    public String checkExistEmail(String email) throws SQLException {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        StringBuilder query = new StringBuilder("SELECT email FROM ACCOUNT WHERE email = ?");
-        try {
-            String sql = String.valueOf(query);
-            con = DBUtils.getConnection();
-            stm = con.prepareStatement(sql);
-            stm.setString(1, email);
-            rs = stm.executeQuery();
-            while (rs.next()) {
-                String gmail = rs.getString("email");
+             }
+       
+       turn "";
+       
+     
+       ing checkExistEmail(String email) throws SQLExcep
+       tion con = null;
+       edStatement stm = null;
+      
+       Builder query = 
+       
+    // 
+       r
+         con = DBUtils.getConnect
+       m = con.prepareStateme
+        
+      
+         while (rs
+                 String gmail = rs.getString("email");
                 return gmail;
             }
         } catch (SQLException e) {
@@ -356,6 +364,7 @@ public class AccountDAO implements Serializable {
             stm.setString(1, userNameK);
             rs = stm.executeQuery();
             while (rs.next()) {
+            
                 String userName = rs.getString("username");
                 return userName;
             }
@@ -414,6 +423,7 @@ public class AccountDAO implements Serializable {
         StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE email = ?");
         try {
             String sql = String.valueOf(query);
+            
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
             stm.setString(1, mail);
@@ -1188,6 +1198,195 @@ public class AccountDAO implements Serializable {
             System.out.println(e.getMessage());
 
         } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return flag;
+    }
+
+
+
+
+
+    public List<Map<String, Object>> getAgeGroupStatisticsForMale() throws SQLException {
+        List<Map<String, Object>> results = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBUtils.getConnection();;
+            String sql = "SELECT \n"
+                    + "    CASE \n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 0 AND 10 THEN '0-10'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 11 AND 20 THEN '11-20'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 21 AND 30 THEN '21-30'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 31 AND 40 THEN '31-40'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 41 AND 50 THEN '41-50'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 51 AND 60 THEN '51-60'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 61 AND 70 THEN '61-70'\n"
+                    + "        ELSE '71+' \n"
+                    + "    END AS age_range, \n"
+                    + "    COUNT(gender) AS Numb\n"
+                    + "FROM ACCOUNT \n"
+                    + "WHERE gender = 1 \n"
+                    + "GROUP BY CASE \n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 0 AND 10 THEN '0-10'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 11 AND 20 THEN '11-20'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 21 AND 30 THEN '21-30'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 31 AND 40 THEN '31-40'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 41 AND 50 THEN '41-50'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 51 AND 60 THEN '51-60'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 61 AND 70 THEN '61-70'\n"
+                    + "             ELSE '71+' \n"
+                    + "         END";
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String ageRange = resultSet.getString("age_range");
+                int count = resultSet.getInt("Numb");
+
+                Map<String, Object> result = new HashMap<>();
+                result.put("age_range", ageRange);
+                result.put("count", count);
+
+                results.add(result);
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return results;
+    }
+
+    public List<Map<String, Object>> getAgeGroupStatisticsForFemale() throws SQLException {
+        List<Map<String, Object>> results = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBUtils.getConnection();;
+            String sql = "SELECT \n"
+                    + "    CASE \n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 0 AND 10 THEN '0-10'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 11 AND 20 THEN '11-20'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 21 AND 30 THEN '21-30'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 31 AND 40 THEN '31-40'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 41 AND 50 THEN '41-50'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 51 AND 60 THEN '51-60'\n"
+                    + "        WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 61 AND 70 THEN '61-70'\n"
+                    + "        ELSE '71+' \n"
+                    + "    END AS age_range, \n"
+                    + "    COUNT(gender) AS Numb\n"
+                    + "FROM ACCOUNT \n"
+                    + "WHERE gender = 0 \n"
+                    + "GROUP BY CASE \n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 0 AND 10 THEN '0-10'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 11 AND 20 THEN '11-20'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 21 AND 30 THEN '21-30'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 31 AND 40 THEN '31-40'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 41 AND 50 THEN '41-50'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 51 AND 60 THEN '51-60'\n"
+                    + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 61 AND 70 THEN '61-70'\n"
+                    + "             ELSE '71+' \n"
+                    + "         END";
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String ageRange = resultSet.getString("age_range");
+                int count = resultSet.getInt("Numb");
+
+                Map<String, Object> result = new HashMap<>();
+                result.put("age_range", ageRange);
+                result.put("count", count);
+
+                results.add(result);
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return results;
+    }
+
+    public List<AccountDTO> getCusInfo(String dentistID) throws SQLException {
+        List<AccountDTO> list = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String query = """
+                       SELECT acc.accountID, acc.username, acc.password, acc.email, acc.fullName, 
+                              acc.phone, acc.address, acc.dob, acc.gender, acc.googleID, 
+                              acc.googleName, acc.roleID, acc.status, acc.clinicID, acc.image
+                       FROM ACCOUNT AS acc
+                       JOIN BOOKING AS b ON acc.accountID = b.customerID
+                       WHERE b.dentistID = ? 
+                         AND (b.status = 2 OR b.status = 1)
+                       """;
+
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setString(1, dentistID);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String accountID = rs.getString("accountID");
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                boolean gender = rs.getBoolean("gender");
+                String googleID = rs.getString("googleID");
+                String googleName = rs.getString("googleName");
+                int role = rs.getInt("roleID");
+                int status = rs.getInt("status");
+                int clinicID = rs.getInt("clinicID");
+                String image = rs.getString("image");
+
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, image, gender, googleID, googleName, role, status, clinicID);
+                list.add(accountDTO);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: ");
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
             if (stm != null) {
                 stm.close();
             }

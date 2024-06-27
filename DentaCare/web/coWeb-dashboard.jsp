@@ -199,79 +199,118 @@
                         </form>
 
                         <div class="container">
-                            <h1 class="mt-4">Patients by Age and Gender</h1>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="card mb-6">
-                                        <div class="card-header">
-                                            Patients by Age Group and Gender
-                                        </div>
-                                        <div class="card-body">
-                                            <canvas id="patientsChart"></canvas>
-                                            <script>
-                                                document.addEventListener('DOMContentLoaded', function () {
-                                                    // Sample data for patients by age group and gender
-                                                    var data = {
-                                                        labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71+'],
-                                                        datasets: [{
-                                                                label: 'Male',
-                                                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                                                                borderColor: 'rgba(54, 162, 235, 1)',
-                                                                borderWidth: 1,
-                                                                data: [15, 30, 45, 60, 50, 30, 20, 10] // Example data for males by age group
-                                                            }, {
-                                                                label: 'Female',
-                                                                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                                                                borderColor: 'rgba(255, 99, 132, 1)',
-                                                                borderWidth: 1,
-                                                                data: [10, 25, 40, 55, 45, 25, 15, 5] // Example data for females by age group
-                                                            }]
-                                                    };
+                                    <h1 class="mt-4">Patients by Age and Gender</h1>
+                                    <form action="DashBoardServlet?action=Table&year2=${year2}&month=${month}" method="Post" id="yearForm">
+                                        <div class="card mb-6">
+                                            <div class="card-header">
+                                                Patients by Age Group and Gender
+                                            </div>
+                                            <div class="card-body">
+                                                <canvas id="patientsChart"></canvas>
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function () {
+                                                        // Fetch the values from the request attributes
+                                                        var male = <%= new com.google.gson.Gson().toJson(request.getAttribute("male")) %>;
+                                                        var female = <%= new com.google.gson.Gson().toJson(request.getAttribute("female")) %>;
 
-                                                    var ctx = document.getElementById('patientsChart').getContext('2d');
-                                                    var patientsChart = new Chart(ctx, {
-                                                        type: 'bar',
-                                                        data: data,
-                                                        options: {
-                                                            responsive: true,
-                                                            plugins: {
-                                                                legend: {
-                                                                    position: 'top',
-                                                                },
-                                                                title: {
-                                                                    display: true,
-                                                                    text: 'Patients by Age Group and Gender'
-                                                                }
-                                                            },
-                                                            scales: {
-                                                                x: {
-                                                                    stacked: true,
-                                                                    title: {
-                                                                        display: true,
-                                                                        text: 'Age Group'
+                                                        // Check if the data is being fetched correctly
+                                                        console.log('Male data:', male);
+                                                        console.log('Female data:', female);
+
+                                                        // Validate data is not null or undefined
+                                                        if (male && female && male.length > 0 && female.length > 0) {
+                                                            var labels = ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71+'];
+                                                            var data = {
+                                                                labels: labels,
+                                                                datasets: [{
+                                                                        label: 'Male',
+                                                                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                                                        borderColor: 'rgba(54, 162, 235, 1)',
+                                                                        borderWidth: 1,
+                                                                        data: []
+                                                                    }, {
+                                                                        label: 'Female',
+                                                                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                                                        borderColor: 'rgba(255, 99, 132, 1)',
+                                                                        borderWidth: 1,
+                                                                        data: []
+                                                                    }]
+                                                            };
+
+                                                            // Populate data array for males
+                                                            labels.forEach(function (label) {
+                                                                var maleCount = 0;
+                                                                var femaleCount = 0;
+
+                                                                // Find the corresponding count in male and female data
+                                                                male.forEach(function (item) {
+                                                                    if (item.age_range === label) {
+                                                                        maleCount = item.count;
                                                                     }
-                                                                },
-                                                                y: {
-                                                                    stacked: true,
-                                                                    title: {
-                                                                        display: true,
-                                                                        text: 'Number of Patients'
+                                                                });
+
+                                                                female.forEach(function (item) {
+                                                                    if (item.age_range === label) {
+                                                                        femaleCount = item.count;
+                                                                    }
+                                                                });
+
+                                                                data.datasets[0].data.push(maleCount);
+                                                                data.datasets[1].data.push(femaleCount);
+                                                            });
+
+                                                            var ctx = document.getElementById('patientsChart').getContext('2d');
+                                                            var patientsChart = new Chart(ctx, {
+                                                                type: 'bar',
+                                                                data: data,
+                                                                options: {
+                                                                    responsive: true,
+                                                                    plugins: {
+                                                                        legend: {
+                                                                            position: 'top',
+                                                                        },
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: 'Patients by Age Group and Gender'
+                                                                        }
                                                                     },
-                                                                    ticks: {
-                                                                        beginAtZero: true
+                                                                    scales: {
+                                                                        x: {
+                                                                            stacked: true,
+                                                                            title: {
+                                                                                display: true,
+                                                                                text: 'Age Group'
+                                                                            }
+                                                                        },
+                                                                        y: {
+                                                                            stacked: true,
+                                                                            title: {
+                                                                                display: true,
+                                                                                text: 'Number of Patients'
+                                                                            },
+                                                                            ticks: {
+                                                                                beginAtZero: true
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
-                                                            }
+                                                            });
+                                                        } else {
+                                                            console.log("No data available for the selected year and month.");
                                                         }
                                                     });
-                                                });
-                                            </script>
-                                        </div>
-                                    </div>
-                                </div>
+                                                </script>
 
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                                 <!-- Second Chart -->
+
                                 <div class="col-md-6">
+                                    <h1 class="mt-4">Booking Status Overview</h1>
                                     <div class="card mb-6">
                                         <div class="card-header">
                                             Booking Status Overview

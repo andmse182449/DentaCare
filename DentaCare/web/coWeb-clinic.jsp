@@ -11,6 +11,7 @@
 <%@ page import="slotDetail.SlotDetailDTO" %>
 <%@ page import="dayOffSchedule.DayOffScheduleDTO" %>
 <%@ page import="dayOffSchedule.DayOffScheduleDAO" %>
+<%@ page import="com.google.gson.Gson" %>
 
 
 <%@ page import="java.time.LocalDate, java.time.temporal.WeekFields, java.util.Locale" %>
@@ -35,6 +36,7 @@
                         WeekFields weekFields = WeekFields.of(Locale.getDefault());
                         int currentYear2 = now2.getYear();
                         int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                        int currentMonth2 = now2.getMonthValue(); // Get current month number
         %>
         <div class="grid-container">
             <!-- HEADER -->
@@ -51,7 +53,7 @@
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
+                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item">Dashboard</li></a>
                         <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
                         <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
@@ -221,6 +223,7 @@
                             </div>
                             </tr>
                         </table>
+
                         <!--TIME SLOT-->
                         <div style="margin-top: 100px" class="time-slot-container">
                             <h1>Time Slot</h1>
@@ -228,13 +231,16 @@
                                 <tr>
                                     <!-- <th>Time Periods</th> --> 
                                 </tr>
-                                <tr>
-                                    <c:forEach items="${requestScope.getAllTimeSlot}" var="getAllTimeSlot">
-                                        <td>${getAllTimeSlot.getTimePeriod()}</td>
-                                    </c:forEach>
+                                <c:forEach items="${requestScope.getAllTimeSlot}" var="getAllTimeSlot">
+                                    <td class="time-slot-row" data-time-period="${getAllTimeSlot.getTimePeriod()}"
+                                        onclick="showModifyTimeSlotPopup('${getAllTimeSlot.getTimePeriod()}')">
+                                        ${getAllTimeSlot.getTimePeriod()}
+                                    </td>                               
+                                </c:forEach>
                                 </tr>
                             </table>
-                        </div>                <!-- END POPUP -->
+                            <button id="modifyTimeSlotButton">Modify Time Slot</button>
+                        </div>
 
                         <div class="center-button">
                             <a href="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>">
@@ -318,6 +324,28 @@
                     </div>
                 </div>
 
+                <!-- Modify Time Slot Popup -->
+                <div id="modifyTimeSlotPopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close-btn" onclick="closePopup('modifyTimeSlotPopup')">&times;</span>
+                        <h2>Modify Time Slot</h2>
+                        <form id="modifyTimeSlotForm" method="post" action="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
+                            <label for="timePeriod">Change Time Period From:</label>
+                            <input readonly type="text" id="timePeriod" name="oldTimePeriod" required>
+                            <label for="timePeriod">To Time Period</label>
+                            <!--<input type="text" id="timePeriod" name="timePeriod" required>-->
+                            
+                            <input type="time" id="timePeriod" name="timePeriod1" required>
+                            <input type="time" id="timePeriod" name="timePeriod2" required>
+
+                            <button type="submit">Save Changes</button>
+                            <input type="hidden" name="key" value="timeSlot">
+                        </form>
+                    </div>
+                </div>
+
+
+
                 <script>
                     document.querySelector("#create-button").addEventListener("click", function () {
                         document.querySelector(".popup").classList.add("active");
@@ -351,7 +379,6 @@
                 <script>
                     // JavaScript code for handling calendar cell clicks
                     let selectedDate = '';
-
                     function handleDayClick(date, cell) {
                         selectedDate = date;
                         // Remove 'selected' class from all cells
@@ -372,41 +399,37 @@
                             const date = cell.getAttribute('data-date');
                             cell.addEventListener('click', () => handleDayClick(date, cell));
                         });
-
                         // Add click event listener to the confirm button in the confirmation popup
                         document.getElementById('confirmButton').addEventListener('click', () => {
                             document.getElementById('confirmationPopup').style.display = 'none';
                             document.getElementById('eventPopup').style.display = 'flex';
                             document.getElementById('eventDate').value = selectedDate;
                         });
-
                         // Add click event listener to the confirm button in the confirmation popup2
                         document.getElementById('confirmButton2').addEventListener('click', () => {
                             document.getElementById('confirmationPopup2').style.display = 'none';
                             document.getElementById('eventPopup2').style.display = 'flex';
                             document.getElementById('eventDate2').value = selectedDate;
                         });
-
                         // Add click event listener to the close button in the confirmation popup
                         document.querySelector('#confirmationPopup .close-btn').addEventListener('click', () => {
                             closePopup('confirmationPopup');
                         });
-
                         // Add click event listener to the close button in the confirmation popup2
                         document.querySelector('#confirmationPopup2 .close-btn').addEventListener('click', () => {
                             closePopup('confirmationPopup2');
                         });
-
                         // Add click event listener to the close button in the event popup
                         document.querySelector('#eventPopup .close-btn').addEventListener('click', () => {
                             closePopup('eventPopup');
                         });
-
                         // Add click event listener to the close button in the event popup2
                         document.querySelector('#eventPopup2 .close-btn').addEventListener('click', () => {
                             closePopup('eventPopup2');
                         });
-
+                        document.getElementById('modifyTimeSlotButton').addEventListener('click', function () {
+                            document.getElementById('modifyTimeSlotPopup').style.display = 'flex';
+                        });
                         // Handle the event form submission via AJAX
                         $('#eventForm').on('submit', function (e) {
                             e.preventDefault();
@@ -438,7 +461,6 @@
                                 }
                             });
                         });
-
                         // Handle the event form2 submission via AJAX
                         $('#eventForm2').on('submit', function (e) {
                             e.preventDefault();
@@ -471,7 +493,6 @@
                                 }
                             });
                         });
-
                         // Add click event listener to the close button in the success popup to reload the page
                         document.querySelector('#successPopup .close-btn').addEventListener('click', () => {
                             closePopup('successPopup');
@@ -482,7 +503,6 @@
                             location.reload();
                         });
                     });
-
                     function closePopup(popupId) {
                         document.getElementById(popupId).style.display = 'none';
                     }
@@ -496,8 +516,69 @@
                         // For example, you could check if the date has an event or some other condition
                         return true; // or false depending on the condition
                     }
-
                 </script>
+
+                <script>
+                    function showModifyTimeSlotPopup(timePeriod) {
+                        document.getElementById('timePeriod').value = timePeriod;
+                        document.getElementById('modifyTimeSlotPopup').style.display = 'flex';
+                    }
+
+                    document.getElementById('modifyTimeSlotButton').addEventListener('click', function () {
+                        document.getElementById('modifyTimeSlotPopup').style.display = 'flex';
+                    });
+
+                    function closePopup(popupId) {
+                        document.getElementById(popupId).style.display = 'none';
+                    }
+
+                    function showPopup(popupId) {
+                        document.getElementById(popupId).style.display = 'flex';
+                    }
+
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Handle the modify time slot form submission via AJAX
+                        $('#modifyTimeSlotForm').on('submit', function (e) {
+                            e.preventDefault();
+                            const formData = $(this).serialize();
+                            $.ajax({
+                                type: 'POST',
+                                url: $(this).attr('action'),
+                                data: formData,
+                                success: function (response) {
+                                    if (response.success) {
+                                        document.getElementById('successMessage').textContent = response.message || 'Time slot modified successfully!';
+                                        closePopup('modifyTimeSlotPopup');
+                                        showPopup('successPopup');
+                                    } else {
+                                        document.getElementById('errorMessage').textContent = response.message || 'Failed to modify the time slot. Please try again.';
+                                        closePopup('modifyTimeSlotPopup');
+                                        showPopup('errorPopup');
+                                    }
+                                },
+                                error: function (jqXHR) {
+                                    const response = jqXHR.responseJSON;
+                                    if (response && !response.success) {
+                                        document.getElementById('errorMessage').textContent = response.message || 'Failed to modify the time slot. Please try again.';
+                                    } else {
+                                        document.getElementById('errorMessage').textContent = 'An error occurred. Please try again.';
+                                    }
+                                    closePopup('modifyTimeSlotPopup');
+                                    showPopup('errorPopup');
+                                }
+                            });
+                        });
+
+                        // Add click event listeners to close buttons in popups
+                        document.querySelectorAll('.popup .close-btn').forEach(button => {
+                            button.addEventListener('click', () => {
+                                closePopup(button.parentElement.parentElement.id);
+                            });
+                        });
+                    });
+                </script>
+
+
                 <style>
                     /* General popup styling */
                     .popup {
@@ -585,7 +666,7 @@
                     }
 
                     #errorPopup .popup-content {
-                        background-color: #e6ffe6;
+                        background-color: #ffe6e6;
                     }
 
                     #successPopup .popup-content {
@@ -614,6 +695,7 @@
                     }
 
                 </style>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
             </div>
         </div>

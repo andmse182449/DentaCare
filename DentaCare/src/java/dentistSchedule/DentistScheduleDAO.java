@@ -161,13 +161,48 @@ public class DentistScheduleDAO {
         return dto;
     }
 
+    public List<DentistScheduleDTO> checkListAlreadyDentistInDenSche(String accountID, String workingDate) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        DentistScheduleDTO dto = null;
+        List<DentistScheduleDTO> list = new ArrayList<>();
+        String query = "SELECT * FROM DENTISTSCHEDULE WHERE accountID = ? and workingDate = ?";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setString(1, accountID);
+            stm.setString(2, workingDate);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int dentistScheduleID = rs.getInt("dentistScheduleID");
+                accountID = rs.getString("accountID");
+                workingDate = rs.getString("workingDate");
+
+                dto = new DentistScheduleDTO(dentistScheduleID, accountID, workingDate);
+                list.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
+
     public List<DentistScheduleDTO> getDenFromDate(String workingDate, int clinicID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         DentistScheduleDTO dto = null;
         List<DentistScheduleDTO> list = new ArrayList<>();
-        String query = "SELECT * FROM DENTISTSCHEDULE WHERE workingDate = ?";
+        String query = "SELECT * FROM DENTISTSCHEDULE WHERE workingDate = ? and clinicID = ?";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -232,39 +267,39 @@ public class DentistScheduleDAO {
     }
 
     public boolean modifyDentistSchedule(String accountID, String workingDate, String oldAccountID) {
-        Connection con = null;
-        PreparedStatement stm = null;
-        try {
-            con = DBUtils.getConnection();
-            String query = "UPDATE DENTISTSCHEDULE SET accountID = ? WHERE workingDate = ? and accountID = ? ";
-            stm = con.prepareStatement(query);
+        String query = "UPDATE DENTISTSCHEDULE SET accountID = ? WHERE workingDate = ? AND accountID = ?";
+
+        try (Connection con = DBUtils.getConnection(); PreparedStatement stm = con.prepareStatement(query)) {
+
             stm.setString(1, accountID);
             stm.setString(2, workingDate);
             stm.setString(3, oldAccountID);
-            int e = stm.executeUpdate();
-            if (e > 0) {
-                return true;
-            }
+
+            int rowsAffected = stm.executeUpdate();
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            System.out.println("An SQL error occurred: ");
-            e.printStackTrace();
-        } finally {
-            try {
-                if (stm != null) {
-                    stm.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("An error occurred while closing the resources: ");
-                e.printStackTrace();
-            }
+            System.out.println(e);
+            return false;
         }
-        return false;
     }
-    
-     public List<DentistScheduleDTO> getAccountDentistByRoleID2() throws SQLException {
+
+    public boolean modifyScheduleOfDentist(String accountID, String workingDate, String oldWorkingDate) {
+        String query = "UPDATE DENTISTSCHEDULE SET workingDate = ? WHERE workingDate = ? AND accountID = ?";
+
+        try (Connection con = DBUtils.getConnection(); PreparedStatement stm = con.prepareStatement(query)) {
+            stm.setString(1, workingDate);
+            stm.setString(2, oldWorkingDate);
+            stm.setString(3, accountID);
+
+            int rowsAffected = stm.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public List<DentistScheduleDTO> getAccountDentistByRoleID2() throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
