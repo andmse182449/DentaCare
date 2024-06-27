@@ -225,18 +225,20 @@ body {
     box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     transition: top 0ms ease-in-out 200ms,
-                opacity 200ms ease-in-out 0ms,
-                transform 200ms ease-in-out 0ms;
+        opacity 200ms ease-in-out 0ms,
+        transform 200ms ease-in-out 0ms;
 }
 
-.popup.active {
+.popup.active,  #popup-form.active  {
+    z-index: 1000;
     top: 50%;
+    display: block;
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
     transition: top 0ms ease-in-out 0ms,
-                opacity 200ms ease-in-out 0ms,
-                transform 200ms ease-in-out 0ms;
-} 
+        opacity 200ms ease-in-out 0ms,
+        transform 200ms ease-in-out 0ms;
+}
 
 .popup .close-btn {
     position: absolute;

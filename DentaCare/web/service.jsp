@@ -390,7 +390,6 @@
                     </c:forEach>
                 </div>
             </div>
-            <button id="showAll" class="show-all-btn">Show all comments</button>
             <form action="#">
                 <c:set var="page" value="${requestScope.page}"/>
                 <div class="pagination">
@@ -398,191 +397,14 @@
                         <a class="${i==page ? "active" : ""}" href="LoginChangePage?action=service&page=${i}">${i}</a>
                     </c:forEach>
                 </div>
-            </form>
-            <div class="commentbox">
-                <img src="images/user1.png" alt="">
-                <div class="content">
-                    <form id="comment-form" action="#" method="post">
-                        <input type="hidden" value="${account.getFullName()}" class="user" readonly="true">
-
-
-                        <div class="commentinput">
-                            <input type="text" placeholder="Write a comment..." class="usercomment" id="comment-text">
-                            <div class="buttons">
-                                <input type="submit" id="publish" value="Publish">
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-
+            </form>         
         </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const commentForm = document.getElementById('comment-form');
-
-                const USERID = {
-                    name: null,
-                    identity: null,
-                    image: null,
-                    message: null,
-                    date: null
-                };
-
-                const userComment = document.querySelector(".usercomment");
-                const publishBtn = document.querySelector("#publish");
-                const comments = document.querySelector(".comments");
-                const showAllBtn = document.querySelector("#showAll");
-                const userName = document.querySelector(".user");
-
-                const initialDisplayLimit = 5;
-
-                userComment.addEventListener("input", e => {
-                    if (!userComment.value) {
-                        publishBtn.setAttribute("disabled", "disabled");
-                        publishBtn.classList.remove("abled");
-                    } else {
-                        publishBtn.removeAttribute("disabled");
-                        publishBtn.classList.add("abled");
-                    }
-                });
-
-                function addPost() {
-                    if (!userComment.value)
-                        return;
-
-                    USERID.name = userName.value;
-                    USERID.image = USERID.name === "Anonymous" ? "images/anonymous.png" : "images/user2.png";
-                    USERID.message = userComment.value;
-                    USERID.date = new Date().toLocaleString();
-
-                    let published = `
-    <div class="parent">
-    <div class="user-info" style="display: flex;gap:1rem">
-    <img style="width:40px; height:40px"src="\${USERID.image}">
-    <div class="message" style="border: 1px solid grey; border-radius: 10px; padding: 10px">
-   <h4 style="text-align: justify;">\${USERID.name}</h4>
-   <p style="margin: 0;word-break: break-all;overflow-wrap: break-word;">\${USERID.message}</p>
-    </div>
-    </div>
-    <span class="date">\${USERID.date}</span>
-    </div>
-`;
-
-                    comments.innerHTML += published;
-                    userComment.value = "";
-                    publishBtn.classList.remove("abled");
-                    publishBtn.setAttribute("disabled", "disabled");
-
-//                    updateCommentsDisplay();
-                }
-
-                commentForm.addEventListener('submit', function (event) {
-                    event.preventDefault(); // Prevent the form from submitting the traditional way
-
-                    const commentText = document.getElementById('comment-text').value;
-                    if (!commentText) {
-                        return; // Don't submit if the comment is empty
-                    }
-
-                    // Send the comment to the server using AJAX
-                    fetch('CommentServlet', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            comment: commentText,
-                            author: document.querySelector('.user').value,
-                            feedbackDate: new Date().toISOString(),
-                            clinicID: '1'
-                        })
-                    })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    // Optionally, add the new comment to the DOM without reloading
-                                    addPost(data.comment); // Assuming addPost function adds the comment to the display
-                                } else {
-                                    alert('Failed to save the comment. Please try again.');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                            });
-                    USERID.name = ocument.querySelector('.user').value;
-                    USERID.image = ocument.querySelector('.user').value === "Anonymous" ? "images/anonymous.png" : "images/user2.png";
-                    USERID.message = commentText;
-                    USERID.date = new Date().toISOString();
-                    let published = `
-    <div class="parent">
-    <div class="user-info" style="display: flex;">
-    <img style="width:40px; height:40px"src="\${USERID.image}">
-    <div class="message" style="border: 1px solid grey; border-radius: 10px; padding: 10px">
-   <h4 style="text-align: justify;">\${USERID.name}</h4>
-   <p style="margin: 0;word-break: break-all;overflow-wrap: break-word;">\${USERID.message}</p>
-    </div>
-    </div>
-    <span class="date">\${USERID.date}</span>
-    </div>
-`;
-
-                    comments.innerHTML += published;
-                    userComment.value = "";
-                    publishBtn.classList.remove("abled");
-                    publishBtn.setAttribute("disabled", "disabled");
-                });
-
-
-
-
-//                function updateCommentsDisplay() {
-//                    const allComments = comments.querySelectorAll('.parent');
-//                    const commentsNum = allComments.length;
-//                    document.getElementById("comment").textContent = commentsNum;
-//
-//                    // Hide comments exceeding the initial display limit
-//                    allComments.forEach((comment, index) => {
-//                        if (index >= initialDisplayLimit) {
-//                            comment.classList.add('hidden');
-//                        } else {
-//                            comment.classList.remove('hidden');
-//                        }
-//                    });
-//
-//                    // Show or hide the "Show all comments" button based on the number of comments
-//                    if (commentsNum > initialDisplayLimit) {
-//                        showAllBtn.style.display = 'block';
-//                    } else {
-//                        showAllBtn.style.display = 'none';
-//                    }
-//                }
-//
-//                showAllBtn.addEventListener('click', () => {
-//                    // Remove hidden class to show all comments
-//                    comments.querySelectorAll('.parent.hidden').forEach(comment => {
-//                        comment.classList.remove('hidden');
-//                    });
-//
-//                    // Hide the "Show all comments" button after clicking
-//                    showAllBtn.style.display = 'none';
-//                });
-//
-//                // Initial check for the number of comments to set up the display correctly
-//                updateCommentsDisplay();
-            });
-        </script>
         <%@include file="/footer.jsp" %>
 
 
 
         <!-- loader -->
         <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
-
-
-
         <script src="js/jquery.min.js"></script>
         <script src="js/jquery-migrate-3.0.1.min.js"></script>
         <script src="js/popper.min.js"></script>

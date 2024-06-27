@@ -7,6 +7,8 @@ package controller;
 import account.AccountDTO;
 import booking.BookingDAO;
 import booking.BookingDTO;
+import feedback.FeedbackDAO;
+import feedback.FeedbackDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -47,23 +49,30 @@ public class HistoryServlet extends HttpServlet {
         HttpSession session = request.getSession();
         AccountDTO account = (AccountDTO) session.getAttribute("account");
         BookingDAO bookingDAO = new BookingDAO();
+        FeedbackDAO feedbackDAO = new FeedbackDAO();
         LocalDate today = LocalDate.now();
         if (action == null || action == "" || action.equals("load")) {
-            List<BookingDTO> bookingList = bookingDAO.getBookingListByCustomerID(account.getAccountID());
             try {
-                for (BookingDTO bookingDTO : bookingList) {
-                    if (bookingDTO.getAppointmentDay().isBefore(today)) {
-                        try {
-                            bookingDAO.updateExpiredDate(bookingDTO.getBookingID());
-                        } catch (SQLException ex) {
-                            Logger.getLogger(HistoryServlet.class.getName()).log(Level.SEVERE, null, ex);
+                List<BookingDTO> bookingList = bookingDAO.getBookingListByCustomerID(account.getAccountID());
+                List<FeedbackDTO> fbList = feedbackDAO.getAllFeedbacksByUser(account.getAccountID());
+                try {
+                    for (BookingDTO bookingDTO : bookingList) {
+                        if (bookingDTO.getAppointmentDay().isBefore(today)) {
+                            try {
+                                bookingDAO.updateExpiredDate(bookingDTO.getBookingID());
+                            } catch (SQLException ex) {
+                                Logger.getLogger(HistoryServlet.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
+                    request.setAttribute("bookingList", bookingList);
+                    request.setAttribute("feedbackList", fbList);
+                    request.getRequestDispatcher(url).forward(request, response);
+                } catch (IOException e) {
+                    System.out.println(e);
                 }
-                request.setAttribute("bookingList", bookingList);
-                request.getRequestDispatcher(url).forward(request, response);
-            } catch (IOException e) {
-                System.out.println(e);
+            } catch (SQLException ex) {
+                Logger.getLogger(HistoryServlet.class.getName()).log(Level.SEVERE, null,ex);
             }
         } else if (action.equals("cancel")) {
             String bookingID = request.getParameter("bookingID");
