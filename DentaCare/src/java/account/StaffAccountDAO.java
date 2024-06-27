@@ -130,28 +130,48 @@ public class StaffAccountDAO {
         }
     }
 
-    public List<AccountDTO> listNameDentist1(Date today) {
+    public List<AccountDTO> listNameDentist1(Date today, int clinicID) {
         String sql = """
-                     SELECT 
+                 SELECT 
                          a.accountID AS dentistID, 
                          a.fullname, 
-                         COUNT(b.bookingID) AS bookingCount
+                         COUNT(DISTINCT b.bookingID) AS bookingCount,
+                         (SELECT COUNT(DISTINCT n.medicalRecordID)
+                          FROM MEDIICALRECORDS n
+                          WHERE n.reExanime = ? 
+                          AND n.bookingID IN (SELECT b2.bookingID 
+                                              FROM booking b2
+                                              WHERE b2.dentistID = a.accountID)) AS medicalCount,
+                         (COUNT(DISTINCT b.bookingID) +
+                          (SELECT COUNT(DISTINCT n.medicalRecordID)
+                           FROM MEDIICALRECORDS n
+                           WHERE n.reExanime = ? 
+                           AND n.bookingID IN (SELECT b2.bookingID 
+                                               FROM booking b2 
+                                               WHERE b2.dentistID = a.accountID))) AS totalCount
                      FROM 
                          account a
                          LEFT JOIN booking b ON a.accountID = b.dentistID AND b.appointmentDay = ?
+                         RIGHT JOIN DENTISTSCHEDULE b3 ON b3.accountID = a.accountID AND b3.workingDate = ?
                      WHERE 
-                         a.roleid = 1 
+                         a.roleID = 1 
                          AND a.status = 0 
-                         AND a.clinicid = 1
+                         AND a.clinicID = ?
                      GROUP BY 
                          a.accountID, a.fullname
                      ORDER BY 
-                         bookingCount;""";
+                         totalCount 
+                 """;
 
         List<AccountDTO> list = new ArrayList<>();
         try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             java.sql.Date sqlDate = new java.sql.Date(today.getTime());
             ps.setDate(1, sqlDate);
+            ps.setDate(2, sqlDate);
+            ps.setDate(3, sqlDate);
+            ps.setDate(4, sqlDate);
+            ps.setInt(5, clinicID);
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     AccountDTO dentist = new AccountDTO();
@@ -165,15 +185,15 @@ public class StaffAccountDAO {
         }
         return list;
     }
-    
-    public AccountDTO checkDentist(String id){
+
+    public AccountDTO checkDentist(String id) {
         String sql = "select fullname from account where accountid = ?";
         try {
             Connection con = utils.DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 AccountDTO dentist = new AccountDTO();
                 dentist.setFullName(rs.getString("fullname"));
                 return dentist;
@@ -182,6 +202,38 @@ public class StaffAccountDAO {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public List<AccountDTO> listAccount(int roleID, int status) {
+        String sql = "SELECT * FROM account where roleid = ? and status = ?";
+
+        List<AccountDTO> list = new ArrayList<>();
+        try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, roleID);
+            ps.setInt(2, status);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    AccountDTO account = new AccountDTO();
+                    account.setAccountID(rs.getString("accountid"));
+                    account.setEmail(rs.getString("email"));
+                    account.setFullName(rs.getString("fullname"));
+                    account.setAddress(rs.getString("address"));
+                    java.sql.Date dob = rs.getDate("dob");
+                    if (dob != null) {
+                        account.setDob(dob.toLocalDate());
+                    } else {
+                        account.setDob(null);
+                    }
+                    account.setPhone(rs.getString("phone"));
+                    account.setUserName(rs.getString("username"));
+                    account.setGender(rs.getBoolean("gender"));
+                    list.add(account);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
     }
 
 }

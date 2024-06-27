@@ -130,7 +130,6 @@
                                                 <th class="border-top-0">Staff-Username</th>
                                                 <th class="border-top-0">Email</th>
                                                 <th class="border-top-0">Full Name</th>
-                                                <th class="border-top-0">Dob</th>
                                                 <th class="border-top-0">Address</th>
 
 
@@ -142,8 +141,7 @@
                                                     <td>${status.index + 1}</td>
                                                     <td>${staff.userName}</td>
                                                     <td>${staff.email}</td>
-                                                    <td>${staff.fullName}</td>
-                                                    <td>${staff.dob}</td>     
+                                                    <td>${staff.fullName}</td>  
                                                     <td>${staff.address}</td>
                                                     <td>
                                                         <i class="fa-solid fa-trash" onclick="submitForm(this.nextElementSibling)"></i>
@@ -192,7 +190,6 @@
                                                 <th class="border-top-0">Staff-Username</th>
                                                 <th class="border-top-0">Email</th>
                                                 <th class="border-top-0">Full Name</th>
-                                                <th class="border-top-0">Dob</th>
                                                 <th class="border-top-0">Address</th>
 
 
@@ -205,7 +202,6 @@
                                                     <td>${staff.userName}</td>
                                                     <td>${staff.email}</td>
                                                     <td>${staff.fullName}</td>
-                                                    <td>${staff.dob}</td> 
                                                     <td>${staff.address}</td>
                                                     <td>
                                                         <i class="fa-solid fa-plus" onclick="submitForm(this.nextElementSibling)"></i>

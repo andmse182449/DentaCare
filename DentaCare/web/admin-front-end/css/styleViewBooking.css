@@ -135,26 +135,20 @@ form input[type="submit"]:hover {
 
 /* Button */
 button, input[type="button"] {
-    padding: 10px 20px;
+    padding: 10px;
     font-size: 1em;
-    cursor: pointer;
-    background-color: #007bff;
-    color: #fff;
     border: none;
     border-radius: 5px;
+    margin: 5px 0;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover, input[type="button"]:hover {
     background-color: #0056b3;
 }
-
-
-
-
-
-
-
 
 .booking-detail .dentist-info {
     display: flex;
@@ -183,11 +177,10 @@ button:hover, input[type="button"]:hover {
 
 .header-icon .fa-user {
     cursor: pointer;
-    transition: color 0.3s ease;
 }
 
 .header-icon .fa-user:hover {
-    color: #007bff; /* Change the color on hover */
+    color: #0056b3; /* Change the color on hover */
 }
 
 .sub-menu-wrap {
