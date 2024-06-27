@@ -143,7 +143,7 @@ public class FeedbackDAO {
         ResultSet rs = null;
         FeedbackDTO dto = null;
         List<FeedbackDTO> list = new ArrayList<>();
-        String query = "SELECT feedbackID, feedbackDay, feedbackContent, accountID, bookingID FROM FEEDBACK WHERE bookingID = ?";
+        String query = "SELECT feedbackID, feedbackDay, feedbackContent, username, bookingID FROM FEEDBACK fb join ACCOUNT ac on fb.accountID = ac.accountID WHERE bookingID = ?";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -153,14 +153,14 @@ public class FeedbackDAO {
                 String feedbackID = rs.getString("feedbackID");
                 LocalDateTime feedbackDay = rs.getTimestamp("feedbackDay").toLocalDateTime();
                 String feedbackContent = rs.getString("feedbackContent");
-                String accountID = rs.getString("accountID");
+                String fullName = rs.getString("username");
                 String bookingID = rs.getString("bookingID");
 
                 LocalDateTime pastDateTime = LocalDateTime.parse(feedbackDay.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                long minutesAgo = calculateMinutesAgo(pastDateTime);
-                String timeAgo = formatTimeAgo(pastDateTime, minutesAgo);
+//                long minutesAgo = calculateMinutesAgo(pastDateTime);
+//                String timeAgo = formatTimeAgo(pastDateTime, minutesAgo);
 
-                dto = new FeedbackDTO(feedbackID, timeAgo, feedbackContent, accountID, bookingID);
+                dto = new FeedbackDTO(feedbackID, pastDateTime.toString(), feedbackContent, fullName, bookingID);
                 list.add(dto);
             }
         } catch (SQLException e) {

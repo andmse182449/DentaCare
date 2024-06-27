@@ -27,6 +27,55 @@ public class AccountDAO implements Serializable {
         return arr;
     }
 
+    public List<AccountDTO> getAllDentistsByOwner() throws SQLException {
+        List<AccountDTO> result = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        StringBuilder query = new StringBuilder("select a.accountID, email, fullName, phone, address, dob, gender, image, cl.clinicName, m.majorName, md.introduction, status from account a "
+                + "left join MAJORDETAIL md on a.accountID = md.accountID "
+                + "left join MAJOR m on md.majorID = m.majorID "
+                + "left join CLINIC cl on cl.clinicID = a.clinicID "
+                + "where a.roleID = 1");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.executeQuery();
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String accountID = rs.getString("accountID");
+                String majorName = rs.getString("majorName");
+                String introduction = rs.getString("introduction");
+                String email = rs.getString("email");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String image = rs.getString("image");
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                boolean gender = rs.getBoolean("gender");
+                int status = rs.getInt("status");
+                String clinicName = rs.getString("clinicName");
+                AccountDTO accountDTO = new AccountDTO(accountID, email, dob, fullName, phone, address, image, gender, status, clinicName, majorName, introduction);
+                result.add(accountDTO);
+            }
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
+    }
+
     public List<AccountDTO> getAllDentists() throws SQLException {
         List<AccountDTO> result = new ArrayList<>();
         Connection con = null;
@@ -489,11 +538,11 @@ public class AccountDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-                List<AccountDTO> list = new ArrayList<>();
+        List<AccountDTO> list = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("select * from ACCOUNT \n"
-                                                + " join DENTISTSCHEDULE on DENTISTSCHEDULE.accountID = ACCOUNT.accountID \n"
-                                                + " where DENTISTSCHEDULE.workingDate = ? ");
+                + " join DENTISTSCHEDULE on DENTISTSCHEDULE.accountID = ACCOUNT.accountID \n"
+                + " where DENTISTSCHEDULE.workingDate = ? ");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -706,6 +755,76 @@ public class AccountDAO implements Serializable {
             stm.setDate(5, Date.valueOf(date));
             stm.setBoolean(6, gender);
             stm.setString(7, accountId);
+
+            if (stm.executeUpdate() != 0) {
+                flag = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return flag;
+    }
+
+    public boolean updateDentist(String fullName, String phone, String address, LocalDate dob, boolean gender, String image, int clinicID, String accountId)
+            throws SQLException {
+        boolean flag = false;
+        Connection con = null;
+        PreparedStatement stm = null;
+        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET fullName = ?, phone = ?, address = ?, dob = ?, gender = ?, image = ?, clinicID = ?  WHERE accountID = ?");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+
+            stm.setString(1, fullName);
+            stm.setString(2, phone);
+            stm.setString(3, address);
+            stm.setDate(4, Date.valueOf(dob));
+            stm.setBoolean(5, gender);
+            stm.setString(6, image);
+            stm.setInt(7, clinicID);
+            stm.setString(8, accountId);
+
+            if (stm.executeUpdate() != 0) {
+                flag = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return flag;
+    }
+
+    public boolean updateDentistBio(String bio, String accountId)
+            throws SQLException {
+        boolean flag = false;
+        Connection con = null;
+        PreparedStatement stm = null;
+        StringBuilder query = new StringBuilder("UPDATE MAJORDETAIL SET introduction = ? WHERE accountID = ?");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+
+            stm.setString(1, bio);
+            stm.setString(2, accountId);
 
             if (stm.executeUpdate() != 0) {
                 flag = true;
@@ -941,8 +1060,8 @@ public class AccountDAO implements Serializable {
         }
         return 0;
     }
-    
-    public AccountDTO getDentistByID (String dentistID) throws SQLException {
+
+    public AccountDTO getDentistByID(String dentistID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -993,7 +1112,8 @@ public class AccountDAO implements Serializable {
         }
         return null;
     }
-     public List<AccountDTO> searchDentists(String name) throws SQLException {
+
+    public List<AccountDTO> searchDentists(String name) throws SQLException {
         List<AccountDTO> list = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -1027,9 +1147,9 @@ public class AccountDAO implements Serializable {
                 int clinicID = rs.getInt("clinicID");
 
                 AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone,
-                        address, image,gender, googleID, googleName, role, status, clinicID);
+                        address, image, gender, googleID, googleName, role, status, clinicID);
                 list.add(accountDTO);
-                
+
             }
         } catch (SQLException e) {
             System.out.println("SQL: " + e);
@@ -1046,5 +1166,66 @@ public class AccountDAO implements Serializable {
             }
         }
         return list;
+    }
+
+    public boolean disableDentist(String accountId)
+            throws SQLException {
+        boolean flag = false;
+        Connection con = null;
+        PreparedStatement stm = null;
+        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET status = 1 WHERE accountID = ?");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, accountId);
+
+            if (stm.executeUpdate() != 0) {
+                flag = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return flag;
+    }
+
+    public boolean restoreDentist(String accountId)
+            throws SQLException {
+        boolean flag = false;
+        Connection con = null;
+        PreparedStatement stm = null;
+        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET status = 0  WHERE accountID = ?");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+
+            stm.setString(1, accountId);
+
+            if (stm.executeUpdate() != 0) {
+                flag = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return flag;
     }
 }

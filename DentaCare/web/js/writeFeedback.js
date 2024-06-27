@@ -114,9 +114,9 @@ document.addEventListener('DOMContentLoaded', function () {
             modal.classList.add('modal');
             modal.id = `feedbackModal-${bookingID}`;
 
-            // Create the modal content
+            // Create the modal content container
             const modalContent = document.createElement('div');
-            modalContent.classList.add('modal-content2');
+            modalContent.classList.add('modal-content');
 
             // Create the modal header
             const modalHeader = document.createElement('div');
@@ -129,10 +129,12 @@ document.addEventListener('DOMContentLoaded', function () {
             closeBtn.addEventListener('click', () => {
                 modal.style.display = 'none';
             });
+
+            // Append title and close button to header
             modalHeader.appendChild(modalTitle);
             modalHeader.appendChild(closeBtn);
 
-            // Create the feedback list
+            // Create the feedback list container
             const feedbackList = document.createElement('ul');
             feedbackList.id = `feedbackList-${bookingID}`;
             feedbackList.classList.add('feedback-list');
@@ -142,17 +144,45 @@ document.addEventListener('DOMContentLoaded', function () {
                     .then(response => response.json())
                     .then(data => {
                         data.forEach(feedback => {
+                            // Create feedback content list items
                             const feedbackItem = document.createElement('li');
+                            const feedbackItem2 = document.createElement('li');
+                            const feedbackItem3 = document.createElement('li');
+
+                            // Style the feedback items
+                            feedbackItem.style.color = 'black';
+                            feedbackItem.style.fontWeight = 'bold';
+                            feedbackItem3.style.color = 'black';
+                            feedbackItem3.style.fontStyle = 'italic';
+
+                            // Set the content for each feedback item
                             feedbackItem.textContent = feedback.feedbackContent;
+
+                            const dateObj = new Date(feedback.feedbackDay);
+                            const customDate = `${dateObj.getDate()}-${dateObj.getMonth() + 1}-${dateObj.getFullYear()}`;
+                            const hours = dateObj.getHours();
+                            const minutes = dateObj.getMinutes();
+                            const customTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+                            feedbackItem2.textContent = `${customDate} ${customTime}`;
+                            feedbackItem3.textContent = `By: ${feedback.fullName}`;
+
+                            // Append the feedback items to the feedback list
+                            feedbackList.appendChild(feedbackItem3);
                             feedbackList.appendChild(feedbackItem);
-                            console.log('Added feedback:', feedbackItem); // Log added feedback
+                            feedbackList.appendChild(feedbackItem2);
+
+                            console.log('Added feedback:', feedbackItem, feedbackItem2, feedbackItem3); // Log added feedback
                         });
                     })
                     .catch(error => {
                         console.error('Error fetching feedback:', error);
                     });
 
-            // Create the OK button
+            // Create the modal footer for the OK button
+            const modalFooter = document.createElement('div');
+            modalFooter.classList.add('modal-footer');
+
             const okBtn = document.createElement('button');
             okBtn.classList.add('ok-btn');
             okBtn.textContent = 'OK';
@@ -160,15 +190,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 modal.style.display = 'none';
             });
 
-            // Append the modal elements to the document body
+            // Append the OK button to the footer
+            modalFooter.appendChild(okBtn);
+
+            // Append all parts to the modal content
             modalContent.appendChild(modalHeader);
             modalContent.appendChild(feedbackList);
-            modalContent.appendChild(okBtn);
+            modalContent.appendChild(modalFooter);
+
+            // Append the modal content to the modal
             modal.appendChild(modalContent);
+
+            // Append the modal to the document body
             document.body.appendChild(modal);
         }
 
         // Show the modal
         modal.style.display = 'block';
     }
+
 });
