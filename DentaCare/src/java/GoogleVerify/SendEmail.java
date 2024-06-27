@@ -58,7 +58,7 @@ public class SendEmail {
 
             // Create the body part
             MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent(this.emailBody, "text/html");
+            messageBodyPart.setContent(this.emailBody, "text/html; charset=UTF-8");
 
             // Add body part to multipart
             multipart.addBodyPart(messageBodyPart);

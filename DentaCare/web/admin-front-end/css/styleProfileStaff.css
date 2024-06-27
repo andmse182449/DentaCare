@@ -122,3 +122,14 @@ input[type="submit"]:focus {
 .mt-3 {
     margin-top: 15px;
 }
+.back-link {
+
+    font-size: 16px;
+    color: #000;
+    margin-bottom: 10px;
+    display: inline-block;
+
+}
+.back-link:hover{
+    color: #007bff;
+}

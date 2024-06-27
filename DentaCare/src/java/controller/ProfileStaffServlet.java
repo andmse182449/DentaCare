@@ -4,7 +4,9 @@
  */
 package controller;
 
+import account.AccountDAO;
 import account.AccountDTO;
+import account.Encoder;
 import account.StaffAccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,9 +16,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,12 +40,13 @@ public class ProfileStaffServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             HttpSession session = request.getSession();
             StaffAccountDAO dao = new StaffAccountDAO();
+            AccountDAO accountDao = new AccountDAO();
             if (action == null) {
                 session.getAttribute("account");
                 request.getRequestDispatcher("staffWeb-ProfileStaff.jsp").forward(request, response);
@@ -89,6 +95,39 @@ public class ProfileStaffServlet extends HttpServlet {
                 dao.UpdateProfileStaff(staff);
                 session.setAttribute("account", staff);
                 request.getRequestDispatcher("staffWeb-ProfileStaff.jsp").forward(request, response);
+            } else if (action.equals("changePassword")) {
+                request.getRequestDispatcher("staffWeb-ChangePassword.jsp").forward(request, response);
+            } else if (action.equals("updatePassword")) {
+                AccountDTO staff = (AccountDTO) session.getAttribute("account");
+                Encoder encoder = new Encoder();
+                String oldPassword = request.getParameter("oldPassword");
+                String newPassword1 = request.getParameter("newPassword1");
+                String newPassword2 = request.getParameter("newPassword2");
+
+                if (oldPassword == null || newPassword1 == null || newPassword2 == null) {
+                    String error = "Fill all fields";
+                    request.setAttribute("error", error);
+                    request.getRequestDispatcher("ProfileStaffServlet?action=changePassword").forward(request, response);
+                    return; 
+                }
+
+                if (!encoder.encode(oldPassword).equals(staff.getPassword())) {
+                    String error = "Old password is incorrect";
+                    request.setAttribute("error", error);
+                    request.getRequestDispatcher("ProfileStaffServlet?action=changePassword").forward(request, response);
+                    return; 
+                }
+
+                if (!newPassword1.equals(newPassword2)) {
+                    String error = "New passwords do not match";
+                    request.setAttribute("error", error);
+                    request.getRequestDispatcher("ProfileStaffServlet?action=changePassword").forward(request, response);
+                    return; 
+                }
+
+                accountDao.changePasswordFirstLogin(newPassword1, staff.getAccountID());
+                request.setAttribute("error", "Update Password Successfully");
+                request.getRequestDispatcher("ProfileStaffServlet?action=changePassword").forward(request, response);
             }
             System.out.println(action);
         }
@@ -107,7 +146,11 @@ public class ProfileStaffServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfileStaffServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -121,7 +164,11 @@ public class ProfileStaffServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfileStaffServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

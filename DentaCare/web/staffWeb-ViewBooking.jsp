@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,6 +24,12 @@
                             <a href="ProfileStaffServlet" class="sub-menu-link">
                                 <span class="material-symbols-outlined"></span>
                                 <p>Profile</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                            <hr>
+                             <a href="ProfileStaffServlet?action=changePassword" class="sub-menu-link">
+                                <span class="material-symbols-outlined"></span>
+                                <p>Change Password</p>
                                 <i class="fa fa-chevron-right"></i>
                             </a>
                             <hr>
@@ -59,14 +66,17 @@
                         Booking ID: ${booking.bookingID} | Name: ${booking.account.fullName} | Time: ${booking.timeSlot.timePeriod} |
                         <c:choose>
                             <c:when test="${booking.status == 1}">
-                                Status: Check-in
+                                Status: Checked-in
                             </c:when>
                             <c:when test="${booking.status == 0}">
                                 Status: Placed
                             </c:when>
-                            <c:otherwise>
-                                Status: Unknown
-                            </c:otherwise>
+                            <c:when test="${booking.status == 2}">
+                                Status: Completed
+                            </c:when>
+                            <c:when test="${booking.status == 4}">
+                                Status: Placed and Sent Email
+                            </c:when>
                         </c:choose>
                         <div id="detail-${status.index}" class="booking-detail hidden">
                             <p><strong>Booking ID:</strong> ${booking.bookingID}</p>
@@ -76,10 +86,16 @@
                             <p><strong>Status:</strong> 
                                 <c:choose>
                                     <c:when test="${booking.status == 1}">
-                                        Check-in
+                                        Checked-in
                                     </c:when>
                                     <c:when test="${booking.status == 0}">
                                         Placed
+                                    </c:when>
+                                    <c:when test="${booking.status == 2}">
+                                        Completed
+                                    </c:when>
+                                    <c:when test="${booking.status == 4}">
+                                        Placed and Sent Email
                                     </c:when>
                                     <c:otherwise>
                                         Unknown
@@ -102,11 +118,30 @@
                                     <input name="bookingID" value="${booking.bookingID}" type="hidden" />
                                     <input type="hidden" name="openBookingDetail" value="${status.index}" />
                                     <input type="hidden" name="bookingDate" value="${selectedDate}" />
-                                    <input type="submit" value="Assign" />
-                                </form>
+                                    <input type="submit" value="Assign" <c:if test="${booking.status == 1}">disabled</c:if> />
+                                    </form>
+                                </div>       
+                                <p><strong>Price:</strong> ${booking.price}</p>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div style="display: flex; gap: 20px">
+                                    <c:if test="${booking.status == 2}">
+                                        <form action="./StaffViewBooking" method="post">
+                                            <input type="hidden" name="action" value="viewInvoice" />
+                                            <input name="bookingID" value="${booking.bookingID}" type="hidden" />
+                                            <input name="customerID" value="${booking.customerID}" type="hidden" />
+                                            <input type="submit" value="View Invoice" />
+                                        </form>
+                                    </c:if>
+                                    <c:if test="${booking.status == 0}">
+                                        <form action="./SendEmailNotificationBookingServlet" method="post">
+                                            <input name="bookingInvoiceID" value="${booking.bookingID}" type="hidden" />
+                                            <input name="customerID" value="${booking.customerID}" type="hidden" />
+                                            <input type="Submit" value="Send Mail" />
+                                        </form>
+                                    </c:if>
+                                </div>
+                                <button style="margin-left: 445px; height: 42px; margin-top: 15px; z-index: 899" onclick="closeDetail('${status.index}', event)">Close</button>
                             </div>
-                            <p><strong>Price:</strong> ${booking.price}</p>
-                            <button style="margin-left: 650px;" onclick="closeDetail('${status.index}', event)">Close</button>
                         </div>
                     </div>
                 </c:forEach>

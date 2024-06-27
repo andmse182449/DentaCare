@@ -19,6 +19,7 @@
     </head>
     <body>
         <div class="container rounded bg-white mt-5 mb-5">
+            <div><a class="back-link" href="StaffViewBooking">Back</a></div>
             <div class="row">
                 <div class="col-md-3 border-right">
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">${account.fullName}</span><span class="text-black-50">${account.email}</span><span> </span></div>
@@ -33,7 +34,7 @@
 
                                 <div class="row mt-3">
                                     <input type="hidden" value="${account.accountID}" name="accountId" />
-                                    <div class="col-md-12"><label class="labels">UserName</label><input type="text" class="form-control" placeholder="Username" name="username" value="${account.userName}" required></div>
+                                    <div class="col-md-12"><label class="labels">UserName</label><input type="text" class="form-control" placeholder="Username" name="username" value="${account.userName}" required readonly></div>
                                     <div class="col-md-12"><label class="labels">Full Name</label><input type="text" class="form-control" placeholder="Full Name" name="fullName" value="${account.fullName}"></div>
                                     <div class="col-md-12"><label class="labels">Phone</label><input type="text" class="form-control" placeholder="Phone" name="phone" value="${account.phone}"></div>
                                     <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" placeholder="Address" name="address" value="${account.address}"></div>
