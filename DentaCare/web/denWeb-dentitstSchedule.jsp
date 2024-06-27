@@ -22,11 +22,11 @@
 <%@ page import="dayOffSchedule.DayOffScheduleDAO" %>
 <%@ page import="java.time.LocalDate, java.time.temporal.WeekFields, java.util.Locale" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+
 <html>
-    <style>
-
-
-    </style>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dentist</title>
@@ -153,6 +153,8 @@
                                 String weekStr = (String) request.getAttribute("weekStr");
 
                                 List<DayOffScheduleDTO> off = (List<DayOffScheduleDTO>) request.getAttribute("off");
+                                BookingDAO bookDao = new BookingDAO();
+                                AccountDTO account1 = (AccountDTO) session.getAttribute("account");
 
                                 if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
                                     int year = Integer.parseInt(yearStr);
@@ -164,12 +166,13 @@
                                     calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
                                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+                                    String currentDate = null;
+                                    
                                     for (int i = 0; i < 7; i++) {
                                         boolean isWorkingDay = false;
                                         String workingDayInfo = "";
                                         String checkEvent = "";
-                                        String currentDate = sdf.format(calendar.getTime());
+                                        currentDate = sdf.format(calendar.getTime());
                                         for (DayOffScheduleDTO offDateDTO : off) {
                                             if (offDateDTO.getDayOff().equals(currentDate)) {
                                                 isWorkingDay = true;
@@ -178,7 +181,6 @@
                                         }
                                         if (!isWorkingDay) {
                                             out.println("<td class='table-cell' data-date='" + currentDate + "' onclick='handleDayClick(\"" + currentDate + "\", this)'>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
-
                                         } else {
                                             out.println("<td class='table-cell2' data-date='" + currentDate + "'>" + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "</td>");
                                         }
@@ -194,7 +196,7 @@
                             </div> 
                         </tr>     
                         <tr>
-                        <div class="clickDay">
+                        <div style="background-color: red" class="clickDay">
                             <%
                                 out.println("<th></th>");
                                 if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
@@ -215,18 +217,19 @@
                                     for (DayOffScheduleDTO offDate : off) {
                                         dayOffMap.put(offDate.getDayOff(), offDate.getDescription());
                                     }
+                                    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-                                    for (int i = 0; i < 7; i++) {
+                                     for (int i = 0; i < 7; i++) {
                                         String workingDayInfo = "";
                                         String currentDate = sdf.format(calendar.getTime());
                                         boolean isWorkingDay = false;
+                                        boolean isHaveBooking = false;
                                         String checkEvent = "";
-                                        boolean workingDayExists = false;
 
                                         if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                                             for (DentistScheduleDTO dentistScheduleDTO : getEachdentist) {
                                                 if (currentDate.equals(dentistScheduleDTO.getWorkingDate())) {
-                                                    if (!dentistScheduleDTO.getAccountID().equals(null)) {
+                                                    if (dentistScheduleDTO.getAccountID() != null) {
                                                         isWorkingDay = true;
                                                         workingDayInfo = "di lam`";
                                                         break;
@@ -234,11 +237,22 @@
                                                 }
                                             }
                                             checkEvent = dayOffMap.getOrDefault(currentDate, "");
-
                                             if (!checkEvent.isEmpty()) {
-                                                out.println("<td class=\"working-day\">" + checkEvent + "</td>");
+                                                out.println("<td class='working-day'>" + checkEvent + "</td>");
                                             } else if (isWorkingDay) {
-                                                out.println("<td class=\"event-day\">" + workingDayInfo.toString() + "</td>");
+                                                List<BookingDTO> getAllBookingForDen = bookDao.getAllBookingByIdAndDayForDen(account1.getAccountID());
+                                                for (BookingDTO bookingDTO : getAllBookingForDen) {
+                                                    String bookingDate = bookingDTO.getAppointmentDay().format(dateFormatter);
+                                                    if (currentDate.equals(bookingDate)) {
+                                                        isHaveBooking = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if (isHaveBooking) {
+                                                    out.println("<td style='background-color: #ffcccc' class='event-day'>" + workingDayInfo + "</td>");
+                                                } else {
+                                                    out.println("<td class='event-day'>" + workingDayInfo + "</td>");
+                                                }
                                             } else {
                                                 out.println("<td></td>");
                                             }
@@ -247,7 +261,6 @@
                                         }
                                         calendar.add(Calendar.DAY_OF_MONTH, 1);
                                     }
-
                                 } else {
                                     for (int i = 0; i < 7; i++) {
                                         out.println("<td></td>");
@@ -259,7 +272,6 @@
                     </table>
                     <%
                         String selectedDateDisplay = request.getParameter("selectedDateDisplay");
-                        AccountDTO account = (AccountDTO) session.getAttribute("account");
 
 //          String app = (String) request.getParameter("app");
 
@@ -272,13 +284,7 @@
                             <span class="close-btn" onclick="closePopup('confirmationPopup')">&times;</span>
 
                             <p id="selectedDateDisplay">Selected Date: </p>
-
-                            <!--                            <div id="bookingDetails">
-                                                             Booking details will be populated here 
-                                                            <input type="hidden" value="${clinicByID.clinicID}" class="clinicID"/>
-                            
-                                                        </div>-->
-
+                            <ul id="bookingsList"></ul>
                             <button id="confirmButton">OK</button>
                         </div>
                     </div>
@@ -314,34 +320,17 @@
                             <p>Dentists cannot be added for holidays!</p>
                         </div>
                     </div>
-                    <ul id="bookingsList"></ul>
                     <script>
                         document.addEventListener('DOMContentLoaded', () => {
                             console.log('DOMContentLoaded event triggered.');
-
-                            // Global variable for selected date
                             let selectedDate = '';
-
-                            // Function to handle the click event on a date cell
                             function handleDayClick(date, cell) {
-                                console.log('handleDayClick function triggered for date:', date);
-
-                                selectedDate = date; // Store the selected date
-                                console.log('Selected date set to:', selectedDate);
-
-                                // Remove 'selected' class from all cells and add to the clicked cell
+                                selectedDate = date;
                                 document.querySelectorAll('.table-cell, .table-cell2').forEach(c => c.classList.remove('selected'));
                                 cell.classList.add('selected');
-
-                                // Update the display for the selected date
                                 document.getElementById('selectedDateDisplay').textContent = 'Selected Date: ' + selectedDate;
-
-                                // Create a JSON payload with the selected date
+                                showPopup('confirmationPopup');
                                 const data = JSON.stringify({selectedDate: selectedDate});
-
-                                // Send the JSON payload to the server using fetch
-                                console.log('Sending JSON payload:', data);
-
                                 fetch('GetBookServlet', {
                                     method: 'POST',
                                     headers: {
@@ -351,41 +340,75 @@
                                 })
                                         .then(response => {
                                             console.log('Response status:', response.status);
-                                            console.log('Response headers:', response.headers);
                                             return response.json();
                                         })
                                         .then(data => {
                                             console.log('Data received:', data);
-                                            showPopup('successPopup');
+                                            const bookings = data.bookings;
+                                            if (bookings) {
+                                                const bookingsList = document.getElementById('bookingsList');
+                                                bookingsList.innerHTML = '';
+                                                bookings.forEach(booking => {
+                                                    const li1 = document.createElement('ul');
+                                                    const li2 = document.createElement('ul');
+                                                    const li3 = document.createElement('ul');
+                                                    const li4 = document.createElement('ul');
+                                                    const li5 = document.createElement('ul');
+                                                    const li6 = document.createElement('ul');
+                                                    const li7 = document.createElement('ul');
+
+                                                    li1.textContent = booking.bookingID;
+                                                    li2.textContent = booking.appointmentDay;
+                                                    li3.textContent = booking.customerName;
+                                                    li4.textContent = booking.serviceName;
+                                                    li5.textContent = booking.timePeriod;
+                                                    li6.textContent = booking.price;
+                                                    li6.textContent = `=======================`;
+
+                                                    bookingsList.appendChild(li1);
+                                                    bookingsList.appendChild(li2);
+                                                    bookingsList.appendChild(li3);
+                                                    bookingsList.appendChild(li4);
+                                                    bookingsList.appendChild(li5);
+                                                    bookingsList.appendChild(li6);
+                                                    bookingsList.appendChild(li7);
+
+                                                });
+                                                showPopup('confirmationPopup');
+                                            } else {
+                                                console.error('Bookings not found in the response:', data);
+                                                document.getElementById('errorMessage').textContent = 'Error: Bookings not found in the response';
+                                                showPopup('errorPopup');
+                                            }
                                         })
                                         .catch(error => {
                                             console.error('Fetch error:', error);
                                             document.getElementById('errorMessage').textContent = 'Error: ' + error.message;
                                             showPopup('errorPopup');
                                         });
-
-
-                                function displayBookings(bookings) {
-                                    // This is an example function to display the bookings
-                                    const bookingsList = document.getElementById('bookingsList');
-                                    bookingsList.innerHTML = ''; // Clear previous content
-
-                                    bookings.forEach(booking => {
-                                        const li = document.createElement('li');
-                                        li.textContent = `Booking ID: ${booking.bookingID}`;
-                                        bookingsList.appendChild(li);
-                                    });
-                                }
-
                             }
 
-                            // Attach click event listeners to all date cells dynamically
+                            function displayBookings(bookings) {
+                                const bookingsList = document.getElementById('bookingsList');
+                                bookingsList.innerHTML = '';
+                                bookings.forEach(booking => {
+                                    console.log('Booking:', booking);
+                                    const li1 = document.createElement('li');
+                                    const li2 = document.createElement('li');
+                                    const li3 = document.createElement('li');
+                                    li1.textContent = `Booking ID: ${booking.bookingID}`;
+                                    li2.textContent = `appointmentDay: ${booking.appointmentDay}`;
+                                    li3.textContent = `Customer: ${booking.cus }`;
+                                    bookingsList.appendChild(li1);
+                                    bookingsList.appendChild(li2);
+                                    bookingsList.appendChild(li3);
+                                });
+                            }
+
                             document.querySelectorAll('.table-cell').forEach(cell => {
                                 const date = cell.getAttribute('data-date');
                                 cell.addEventListener('click', () => handleDayClick(date, cell));
                             });
-
-                            // Function to show a popup by ID
                             function showPopup(popupId) {
                                 const popup = document.getElementById(popupId);
                                 if (popup) {
@@ -393,39 +416,24 @@
                                 }
                             }
 
-                            // Function to close a popup by ID
                             function closePopup(popupId) {
-                                const popup = document.getElementById(popupId);
-                                if (popup) {
-                                    popup.style.display = 'none';
-                                }
+                                document.getElementById(popupId).style.display = 'none';
                             }
 
-                            // Example for confirmButton (ensure this button exists in your HTML)
                             document.getElementById('confirmButton').addEventListener('click', (event) => {
-                                event.preventDefault(); // Prevent the default form submission behavior
+                                event.preventDefault();
                                 closePopup('confirmationPopup');
                                 showPopup('eventPopup');
                                 document.getElementById('eventDate').textContent = selectedDate;
                             });
                         });
-                    </script>
 
+                    </script>
 
                 </form>  
                 <c:set value="${requestScope.weekStr}" var="year"/>
                 <c:set value="${requestScope.weekStr}" var="week"/>
                 <br>
-                <a href="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicByID.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>" style="background-color: red;
-                   color: white;
-                   padding: 10px 20px;
-                   text-decoration: none;
-                   border-radius: 4px;
-                   font-size: 16px;
-                   display: inline-block;
-                   text-align: center;">
-                    Return
-                </a>
             </div>
 
         </div>

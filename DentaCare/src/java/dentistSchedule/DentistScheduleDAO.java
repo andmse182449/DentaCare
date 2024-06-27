@@ -283,6 +283,22 @@ public class DentistScheduleDAO {
         }
     }
 
+    public boolean modifyScheduleOfDentist(String accountID, String workingDate, String oldWorkingDate) {
+        String query = "UPDATE DENTISTSCHEDULE SET workingDate = ? WHERE workingDate = ? AND accountID = ?";
+
+        try (Connection con = DBUtils.getConnection(); PreparedStatement stm = con.prepareStatement(query)) {
+            stm.setString(1, workingDate);
+            stm.setString(2, oldWorkingDate);
+            stm.setString(3, accountID);
+
+            int rowsAffected = stm.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
     public List<DentistScheduleDTO> getAccountDentistByRoleID2() throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;

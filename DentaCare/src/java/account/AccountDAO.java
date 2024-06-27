@@ -1170,4 +1170,65 @@ public class AccountDAO implements Serializable {
 
         return results;
     }
+
+    public List<AccountDTO> getCusInfo(String dentistID) throws SQLException {
+        List<AccountDTO> list = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String query = """
+                       SELECT acc.accountID, acc.username, acc.password, acc.email, acc.fullName, 
+                              acc.phone, acc.address, acc.dob, acc.gender, acc.googleID, 
+                              acc.googleName, acc.roleID, acc.status, acc.clinicID, acc.image
+                       FROM ACCOUNT AS acc
+                       JOIN BOOKING AS b ON acc.accountID = b.customerID
+                       WHERE b.dentistID = ? 
+                         AND (b.status = 2 OR b.status = 1)
+                       """;
+
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setString(1, dentistID);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String accountID = rs.getString("accountID");
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String fullName = rs.getString("fullName");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                LocalDate dob = null;
+                java.sql.Date dobSql = rs.getDate("dob");
+                if (dobSql != null) {
+                    dob = dobSql.toLocalDate();
+                }
+                boolean gender = rs.getBoolean("gender");
+                String googleID = rs.getString("googleID");
+                String googleName = rs.getString("googleName");
+                int role = rs.getInt("roleID");
+                int status = rs.getInt("status");
+                int clinicID = rs.getInt("clinicID");
+                String image = rs.getString("image");
+
+                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone, address, image, gender, googleID, googleName, role, status, clinicID);
+                list.add(accountDTO);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: ");
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
 }

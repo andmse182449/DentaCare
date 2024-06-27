@@ -1,5 +1,6 @@
 package controller; // Ensure this matches your package structure
 
+import account.AccountDTO;
 import java.io.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -8,6 +9,7 @@ import java.util.List;
 import booking.BookingDTO;
 import booking.BookingDAO;
 import jakarta.servlet.annotation.WebServlet;
+import java.util.Map;
 
 @WebServlet(name = "GetBookServlet", urlPatterns = {"/GetBookServlet"})
 public class GetBookServlet extends HttpServlet {
@@ -22,27 +24,25 @@ public class GetBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         PrintWriter out = response.getWriter();
         Gson gson = new Gson();
+        HttpSession session = request.getSession();
+        AccountDTO account = (AccountDTO) session.getAttribute("account");
 
         try {
-            // Read JSON payload from the request
             BufferedReader reader = request.getReader();
             JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
             String selectedDate = jsonObject.get("selectedDate").getAsString();
 
-            // Get the booking list
             BookingDAO bDAO = new BookingDAO();
-            List<BookingDTO> res = bDAO.getAllBookingList();
-
-            // Create a JSON response object
+            List<Map<String, Object>> getAllBookingForDen = bDAO.getAllBookingForDen2(account.getAccountID(), selectedDate);
             JsonObject jsonResponse = new JsonObject();
             jsonResponse.addProperty("status", "success");
             jsonResponse.addProperty("message", "Date received: " + selectedDate);
 
-            // Convert the booking list to JSON and add it to the response
-            JsonArray bookingsArray = gson.toJsonTree(res).getAsJsonArray();
+            JsonArray bookingsArray = gson.toJsonTree(getAllBookingForDen).getAsJsonArray();
             jsonResponse.add("bookings", bookingsArray);
 
-            // Send the JSON response back to the client
+            System.out.println("JSON Response: " + jsonResponse.toString());
+
             out.print(jsonResponse.toString());
         } catch (Exception e) {
             e.printStackTrace();

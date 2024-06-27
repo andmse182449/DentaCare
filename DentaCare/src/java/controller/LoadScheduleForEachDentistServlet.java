@@ -8,7 +8,6 @@ import account.AccountDTO;
 import booking.BookingDAO;
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
-import com.google.gson.Gson;
 import dayOffSchedule.DayOffScheduleDAO;
 import dayOffSchedule.DayOffScheduleDTO;
 import dentistSchedule.DentistScheduleDAO;
@@ -21,9 +20,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -91,15 +88,6 @@ public class LoadScheduleForEachDentistServlet extends HttpServlet {
                     request.setAttribute("getEachdentist", getEachdentist);
                     request.setAttribute("clinicByID", clinicByID);
 
-                    // gui day ne => jsp: line 360
-//                    Gson gson = new Gson();
-                    List<Map<String, Object>> getAllBookingForDen = bookDao.getAllBookingForDen2(account.getAccountID());
-                    request.setAttribute("getAllBookingForDen", getAllBookingForDen);
-//                    response.setContentType("application/json");
-//                    String getAllBookingForDenJson = gson.toJson(getAllBookingForDen);
-//                    out.print(getAllBookingForDenJson);
-//                    response.setStatus(HttpServletResponse.SC_OK);
-//                    out.flush();
                 }
                 request.getRequestDispatcher("denWeb-dentitstSchedule.jsp").forward(request, response);
 

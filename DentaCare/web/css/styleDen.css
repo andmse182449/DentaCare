@@ -240,28 +240,13 @@ hr {
 }
 
 form input[type="text"],
-form input[type="email"],
-form input[type="date"] {
-    width: 100%;
-    border: none;
-    outline: none;
+form input[type="email"] {
+    width: 550px;
     background: none;
     font-size: 20px;
     color: #525252;
-    text-align: right;
     margin-bottom: 10px;
-}
-
-form input[type="submit"] {
-    background-color: #2f89fc;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100px;
-    text-align: center;
+    border-radius: 10px;
 }
 
 form input[type="submit"]:hover {
@@ -288,22 +273,5 @@ form input[type="submit"]:hover {
     opacity: 1;
 }
 
-.alert-message {
-    position: fixed;
-    top: 100px; /* Adjust this value to position the alert higher or lower */
-    left: 50%;
-    transform: translateX(-50%); /* Center the alert horizontally */
-    background-color: green;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.5s ease-out;
-    display: none;
-    z-index: 1000; /* Ensure the alert appears above other elements */
-}
 
-.alert-message.show {
-    display: block;
-    opacity: 1;
-}
+
