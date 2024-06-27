@@ -474,8 +474,8 @@ public class BookingDAO {
         return null;
     }
 
-    public List<BookingDTO> getAllBookingCustomer(String customerID) {
-        String sql = "
+   public List<BookingDTO> getAllBookingCustomer(String customerID) {
+        String sql = """
               SELECT 
                 bookingID, a.clinicID, customerID, createDay, appointmentDay, a.status, a.price, 
                 customer.fullName AS customerName, customer.phone, 
@@ -488,7 +488,7 @@ public class BookingDAO {
                 INNER JOIN timeslot d ON a.slotid = d.slotid
                             WHERE 
                 customerID = ?
-            ";
+            """;
 
         List<BookingDTO> list = new ArrayList<>();
         try {
@@ -525,10 +525,10 @@ public class BookingDAO {
         return null;
     }
 
-    public List<BookingDTO> getAllBookingByIdAndDayForDen(String dentistID) {
-        String sql = "
+   public List<BookingDTO> getAllBookingByIdAndDayForDen(String dentistID) {
+        String sql = """
             SELECT * from BOOKING where dentistID = ?
-            ";
+            """;
 
         List<BookingDTO> list = new ArrayList<>();
         try {
@@ -565,7 +565,7 @@ public class BookingDAO {
         return null;
     }
 
-    public List<Map<String, Object>> getAllBookingForDen2(String dentistID, String appointmentDay) throws SQLException {
+   public List<Map<String, Object>> getAllBookingForDen2(String dentistID, String appointmentDay) throws SQLException {
         List<Map<String, Object>> results = new ArrayList<>();
         Connection connection = null;
         PreparedStatement statement = null;
@@ -573,7 +573,7 @@ public class BookingDAO {
 
         try {
             connection = DBUtils.getConnection();
-            String sql = "
+            String sql = """
         SELECT 
             bookingID, createDay, appointmentDay, a.status, a.price, 
             customer.fullName AS customerName, 
@@ -588,7 +588,7 @@ public class BookingDAO {
             a.dentistID = ? and a.appointmentDay = ?
         ORDER BY 
             appointmentDay, timePeriod;
-        ";
+        """;
             statement = connection.prepareStatement(sql);
             statement.setString(1, dentistID);
             statement.setString(2, appointmentDay);
@@ -696,9 +696,9 @@ public class BookingDAO {
         return timeResults;
     }
 
-    public List<Map<String, Object>> getAccountInfosByDentistID(String dentistID) throws SQLException {
+public List<Map<String, Object>> getAccountInfosByDentistID(String dentistID) throws SQLException {
         List<Map<String, Object>> bookingDetailsList = new ArrayList<>();
-        String sql = "
+        String sql = """
                      SELECT acc.email, acc.fullName, acc.phone, 
                                        acc.address, acc.dob, acc.gender, acc.image, s.timePeriod, se.serviceName 
                                        FROM ACCOUNT AS acc 
@@ -706,7 +706,7 @@ public class BookingDAO {
                                         JOIN TIMESLOT as s on s.slotID = b.slotID 
                                		JOIN SERVICE as se on se.serviceID = b.serviceID 
                                         WHERE b.dentistID = ? 
-                                        AND (b.status = 2 OR b.status = 1)";
+                                        AND (b.status = 2 OR b.status = 1)""";
         Connection con = DBUtils.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);
@@ -731,7 +731,6 @@ public class BookingDAO {
         }
         return bookingDetailsList;
     }
-
     public List<BookingDTO> getBookingListByDenID(String dentistID) {
         String sql = "SELECT \n"
                 + "            a.bookingID, createDay, appointmentDay, a.status, a.price, \n"

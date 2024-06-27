@@ -5,41 +5,47 @@
     margin-top: 20px;
     overflow-y: scroll;
     height: 450px; /* Adjust as needed */
+    padding: 10px;
 }
+
 .card {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s;
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 30px;
 }
+
 .card:hover {
     cursor: pointer;
     transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
+
 .card-content {
     display: flex;
     padding: 16px;
     justify-content: space-between;
     align-items: center;
-
 }
+
 .booking-title {
     font-size: 1.2em;
     width: 30%;
     color: #2f89fc;
 }
+
 .booking-details {
     font-size: 0.9em;
     color: #555;
     width: 30%;
     text-align: left;
 }
+
 .details-link {
     color: black;
     text-decoration: none;
@@ -47,6 +53,16 @@
     padding: 10px;
     width: 10%;
     text-align: right;
+    display: flex;
+    align-items: center;
+}
+
+.details-link span {
+    margin-left: 5px;
+}
+
+.details-link:focus {
+    outline: 2px solid #2f89fc;
 }
 
 .modal {
@@ -58,13 +74,7 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content h2 {
-    color: #2f89fc;
-
 }
 
 .modal.active {
@@ -82,6 +92,10 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.modal-content h2 {
+    color: #2f89fc;
+}
+
 .modal-detail div {
     margin-bottom: 10px;
 }
@@ -90,7 +104,7 @@
     color: #aaa;
     font-size: 28px;
     font-weight: bold;
-    text-align: right
+    text-align: right;
 }
 
 .close:hover,
@@ -105,4 +119,120 @@
     background: #2f89fc;
     border-radius: 50px;
     padding: 5px;
+}
+@media (max-width: 768px) {
+    .card-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .details-link {
+        width: 100%;
+        text-align: left;
+        margin-top: 10px;
+    }
+
+    .booking-title, .booking-details {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .booking-history {
+        height: auto;
+        overflow-y: visible;
+    }
+
+    .modal-content {
+        margin: 50px auto;
+        width: 90%;
+    }
+}
+
+
+.modal-detail-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.modal-detail {
+    flex: 1;
+    min-width: 250px;
+    margin-bottom: 10px;
+}
+
+.modal-detail div {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .modal-detail-container {
+        flex-direction: column;
+    }
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-form div {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-button {
+    background-color: #2f89fc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.modal-button:hover {
+    background-color: #1a6cd1;
+    transform: translateY(-2px);
+}
+
+.modal-button:active {
+    background-color: #155aa6;
+    transform: translateY(0);
+}
+
+.modal-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(47, 137, 252, 0.5);
+}
+
+#bookingStatus1 {
+    margin-left: 200px;
+    background-color: #2f89fc;
+    color: white;
+    border: none;
+    border-radius: 1000px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#bookingStatus1:hover {
+    background-color: #1a6cd1;
+    transform: translateY(-2px);
+}
+
+#bookingStatus1:active {
+    background-color: #155aa6;
+    transform: translateY(0);
+}
+
+#bookingStatus1:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(47, 137, 252, 0.5);
 }

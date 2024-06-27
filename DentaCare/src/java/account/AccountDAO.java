@@ -1,5 +1,6 @@
 package account;
 
+import account.AccountDTO;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Date;
@@ -17,7 +18,6 @@ import java.util.logging.Logger;
 import utils.DBUtils;
 
 public class AccountDAO implements Serializable {
-            
 
     Encoder strE = new Encoder();
 
@@ -49,7 +49,7 @@ public class AccountDAO implements Serializable {
                 String accountID = rs.getString("accountID");
                 String majorName = rs.getString("majorName");
                 String introduction = rs.getString("introduction");
-                        
+
                 String email = rs.getString("email");
                 String fullName = rs.getString("fullName");
                 String phone = rs.getString("phone");
@@ -67,7 +67,7 @@ public class AccountDAO implements Serializable {
                 result.add(accountDTO);
             }
         } catch (SQLException e) {
-            
+
             System.out.println("An SQL error occurred: ");
 
         } finally {
@@ -147,7 +147,6 @@ public class AccountDAO implements Serializable {
             stm.setString(4, dob);
             stm.setString(5, userName);
 
-                        
             stm.executeUpdate();
 
             stm = con.prepareStatement("Select * from account where username = ?");
@@ -295,7 +294,6 @@ public class AccountDAO implements Serializable {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
-                        
             stm.setString(1, userNameK);
             rs = stm.executeQuery();
             while (rs.next()) {
@@ -312,27 +310,26 @@ public class AccountDAO implements Serializable {
             if (stm != null) {
                 stm.close();
             }
-     
+            if (con != null) {
+                con.close();
+            }
+        }
+        return "";
+    }
 
-             }
-       
-       turn "";
-       
-     
-       ing checkExistEmail(String email) throws SQLExcep
-       tion con = null;
-       edStatement stm = null;
-      
-       Builder query = 
-       
-    // 
-       r
-         con = DBUtils.getConnect
-       m = con.prepareStateme
-        
-      
-         while (rs
-                 String gmail = rs.getString("email");
+    public String checkExistEmail(String email) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("SELECT email FROM ACCOUNT WHERE email = ?");
+        try {
+            String sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, email);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String gmail = rs.getString("email");
                 return gmail;
             }
         } catch (SQLException e) {
@@ -364,7 +361,7 @@ public class AccountDAO implements Serializable {
             stm.setString(1, userNameK);
             rs = stm.executeQuery();
             while (rs.next()) {
-            
+
                 String userName = rs.getString("username");
                 return userName;
             }
@@ -423,7 +420,7 @@ public class AccountDAO implements Serializable {
         StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE email = ?");
         try {
             String sql = String.valueOf(query);
-            
+
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
             stm.setString(1, mail);
@@ -1178,8 +1175,7 @@ public class AccountDAO implements Serializable {
         return list;
     }
 
-    public boolean disableDentist(String accountId)
-            throws SQLException {
+    public boolean disableDentist(String accountId) throws SQLException {
         boolean flag = false;
         Connection con = null;
         PreparedStatement stm = null;
@@ -1198,23 +1194,11 @@ public class AccountDAO implements Serializable {
             System.out.println(e.getMessage());
 
         } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (statement != null) {
-                statement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
+
         }
 
         return flag;
     }
-
-
-
-
 
     public List<Map<String, Object>> getAgeGroupStatisticsForMale() throws SQLException {
         List<Map<String, Object>> results = new ArrayList<>();
@@ -1394,7 +1378,7 @@ public class AccountDAO implements Serializable {
                 con.close();
             }
         }
-        return flag;
+        return list;
     }
 
     public boolean restoreDentist(String accountId)
