@@ -68,6 +68,7 @@ public class SendEmailNotificationBookingServlet extends HttpServlet {
                     request.getRequestDispatcher("StaffViewBooking").forward(request, response);
                     return;
                 }
+                //set booking status thanh 4
                 bookingDao.updateStatusBookingComplete(bookingID, 4);
                 String body = "<html>\n"
                         + "<head>\n"
