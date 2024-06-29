@@ -109,7 +109,7 @@
                                     <div><strong>Time</strong> <p><%= slot.getTimePeriod()%></p></div>
                                     <div><strong>Day</strong> <p>${booking.getAppointmentDay()}</p></div>
                                     <div><strong>Dentist</strong> <p><%= dentist != null ? dentist.getFullName() : "" %></p></div>
-                                    <hr>
+                                    <hr> 
                                     <div style="display: flex; justify-content: space-between;">
                                         <div><strong>Price</strong> <p>${booking.getPrice()}</p></div>
                                         <form action="HistoryServlet"  method="post" style="margin-top: 20px; margin-right: 20px;">

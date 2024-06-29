@@ -12,6 +12,8 @@ import booking.BookingDAO;
 import booking.BookingDTO;
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import dayOffSchedule.DayOffScheduleDAO;
 import dayOffSchedule.DayOffScheduleDTO;
 import dentistSchedule.DentistScheduleDAO;
@@ -22,16 +24,27 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import timeSlot.TimeSlotDAO;
 import timeSlot.TimeSlotDTO;
+import payment.Config;
 
 /**
  *
@@ -140,8 +153,9 @@ public class BookingServlet extends HttpServlet {
                 if (listClinicLimit.contains(clinicID) && listSlotLimit.contains(slotID) && listDayLimit.contains(sqlDate)) {
                     request.setAttribute("error", "Something Wrong");
                     request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
+                    return;
                 } else {
-                    if (bookingDAO.createBooking(bookingID, createDay, appointmentDay, price, serviceID, slotID, customerID, dentistID, clinicID)) {
+                    
                         String now_raw = createTime.format(formatter2);
                         request.setAttribute("createTime", now_raw);
                         request.setAttribute("bookingID", bookingID);
@@ -151,14 +165,15 @@ public class BookingServlet extends HttpServlet {
                         request.setAttribute("timeslot", timeslot);
                         request.setAttribute("service", service);
                         request.setAttribute("price", price);
-                        url = "SendEmailBookingServlet";
-                    }
+                    
+                        
+ 
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BookingServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             //request.setAttribute("action", "book");
-            request.getRequestDispatcher(url).forward(request, response);
+            //request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

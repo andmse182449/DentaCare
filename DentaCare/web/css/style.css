@@ -10160,11 +10160,13 @@ h1, h2, h3, h4, h5,
 .ftco-navbar-light {
     background: transparent !important;
     position: absolute;
-    top: 20px;
+    top: 0px;
+    height: 100px;
     left: 0;
     right: 0;
     z-index: 3;
 }
+
 
 @media (min-width: 992px) {
     .ftco-navbar-light {

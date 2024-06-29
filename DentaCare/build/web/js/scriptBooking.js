@@ -1,4 +1,5 @@
 // Function to generate a calendar
+
 function generateCalendar(year, month) {
     var today = new Date();
     var lastSelectableDate = new Date();
@@ -54,11 +55,11 @@ function generateCalendar(year, month) {
             document.querySelectorAll('.timeslot-option').forEach(timeslot => {
                 timeslot.setAttribute('data-date', document.getElementById('date-input').value);
             });
-            
+
             document.querySelectorAll('.doctor-option').forEach(doctor => {
                 doctor.setAttribute('data-date', document.getElementById('date-input').value);
             });
-            
+
         });
     });
 
@@ -142,15 +143,15 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('clinic-input').value = this.innerText;
             document.getElementById('clinicAddress-input').value = this.getAttribute('data-address');
             document.getElementById('clinicID-input').value = this.getAttribute('data-id');
-            
+
             document.querySelectorAll('.timeslot-option').forEach(timeslot => {
                 timeslot.setAttribute('data-clinic', document.getElementById('clinicID-input').value);
             });
-            
+
             document.querySelectorAll('.doctor-option').forEach(timeslot => {
                 timeslot.setAttribute('data-clinic', document.getElementById('clinicID-input').value);
             });
-            
+
             selectedFields[1] = true;
             resetFields(2);
             closeCollapsible(1);
@@ -158,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
             closeCollapsible(3);
             closeCollapsible(4);
             closeCollapsible(5);
-            
+
         });
     });
 
@@ -178,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    document.querySelectorAll('.future').forEach(function(option) {
+    document.querySelectorAll('.future').forEach(function (option) {
         option.addEventListener('click', function () {
             selectedFields[3] = true;
             resetFields(5);
@@ -301,4 +302,93 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
     }
+});
+
+function menuToggle() {
+    const toggleMenu = document.querySelector(".menu");
+    toggleMenu.classList.toggle("active");
+}
+
+
+//Limit attempt of booking
+document.addEventListener('DOMContentLoaded', function () {
+    const timeslotList = document.getElementById('timeslot-list');
+
+    const clinicLimit = "${requestScope.clinicLimit}";
+    const slotLimit = "${requestScope.slotLimit}";
+    const dayLimit = "${requestScope.dayLimit}";
+
+    function updateTimeslotAttributes() {
+
+        timeslotList.querySelectorAll('.timeslot-option').forEach(function (option) {
+            const timeslotDate = option.getAttribute('data-date');
+            const timeslotClinic = option.getAttribute('data-clinic');
+            const timeslotID = option.getAttribute('data-address');
+
+            option.classList.remove('disabled');
+
+            if (dayLimit.includes(timeslotDate) && clinicLimit.includes(timeslotClinic) && slotLimit.includes(timeslotID)) {
+                option.classList.add('disabled');
+            }
+
+        });
+    }
+
+    document.querySelectorAll('.future').forEach(function (option) {
+        option.addEventListener('click', updateTimeslotAttributes);
+    });
+
+
+    document.querySelectorAll('.clinic-option').forEach(function (option) {
+        option.addEventListener('click', updateTimeslotAttributes);
+    });
+    // Initial check
+    updateTimeslotAttributes();
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const workingList = "${requestScope.listDenSchedule}";
+    const doctorList = document.getElementById('doctor-list');
+
+    function updateDentistOption() {
+        doctorList.querySelectorAll('.doctor-option').forEach(function (option) {
+            const doctorDate = option.getAttribute('data-date');
+            const doctorClinic = option.getAttribute('data-clinic');
+            const doctorID = option.getAttribute('data-address');
+
+
+            option.classList.add('nothing');
+
+            if (workingList.includes(doctorDate) && workingList.includes(doctorClinic) && workingList.includes(doctorID)) {
+                option.classList.remove('nothing');
+            }
+
+        });
+    }
+
+    document.querySelectorAll('.future').forEach(function (option) {
+        option.addEventListener('click', updateDentistOption);
+    });
+
+
+    document.querySelectorAll('.clinic-option').forEach(function (option) {
+        option.addEventListener('click', updateDentistOption);
+    });
+    // Initial check
+    updateDentistOption();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const alertBox = document.querySelector(".alert-error.sec");
+    if (alertBox && alertBox.textContent.trim()) {
+        alertBox.style.display = "block"; // Show the alert if there's an error message
+        alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+        setTimeout(function () {
+            alertBox.classList.remove("show");
+            setTimeout(function () {
+                alertBox.style.display = "none"; // Hide the alert after the fade-out animation
+            }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+        }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+    }
+
 });

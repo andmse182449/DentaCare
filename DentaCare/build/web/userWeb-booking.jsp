@@ -6,7 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +21,9 @@
         <link rel="stylesheet" href="css/styleCalendar.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+        
+        
+        
     </head>
     <body>
         <c:set var="account" value="${sessionScope.account}"/>
@@ -37,41 +39,36 @@
                 </a>
                 <div class="navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a href="#" class="nav-link">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="services.html" class="nav-link">Services</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="doctors.html" class="nav-link">Doctors</a>
-                        </li>
-                        <li class="nav-item" style="margin-top: 3px;">
-                            <div class="action">
-                                <div onclick="menuToggle();">
-                                    <a href="#" class="nav-link" style="color:white; padding: 8px 18px;">${account.userName}</a>
-                                </div>
-                                <div class="menu">
-                                    <ul>
-                                        <li>
-                                            <img src="images/user.png">
-                                            <a href="ProfileServlet">Profile</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/schedule.png">
-                                            <a href="ExamScheduleServlet">Examination Schedule</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/history.png">
-                                            <a href="HistoryServlet">Booking History</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/log-out.png">
-                                            <a href="SignOutServlet">Logout</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                        <li class="nav-item"><a href="LoginChangePage?action=home" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
+                        <li class="nav-item active"><a href="BookingServlet" class="nav-link" style="color: black">Book Appointment</a></li>
+
+                        <div class="action">
+                            <div onclick="menuToggle();">
+                                <a href="#" class="nav-link" style="color:white; padding: 8px 18px;">${account.userName}</a>
                             </div>
+                            <div class="menu">
+                                <ul>
+                                    <li>
+                                        <img src="images/user.png">
+                                        <a href="ProfileServlet">Profile</a>
+                                    </li>
+                                    <li>
+                                        <img src="images/schedule.png">
+                                        <a href="ExamScheduleServlet">Examination Schedule</a>
+                                    </li>
+                                    <li>
+                                        <img src="images/history.png">
+                                        <a href="HistoryServlet">Booking History</a>
+                                    </li>
+                                    <li>
+                                        <img src="images/log-out.png">
+                                        <a href="SignOutServlet">Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                         </li>
                     </ul>
                 </div>
@@ -139,7 +136,7 @@
                 <h1 style="font-size: 24px;">Booking Information</h1>
                 <p style="font-size: 11px; font-style: italic; margin: 0;"> <span class="text-red-500">*</span>Please make sure you have completely updated your personal information. </p>
                 <hr>
-                <form action="BookingServlet" method="post">
+                <form action="BookingServlet" id="frmCreateOrder" method="post">
 
                     <div class="booking-form">
                         <label for="fullName">Full Name</label>
@@ -190,7 +187,12 @@
                         <label for="service">Service</label>
                         <input type="text" name="service" id="service-input" class="input-field-2" required readonly>
                     </div>
-
+                    
+                    <div class="booking-form">
+                        <label for="price">Service Price</label>
+                        <input type="text" name="price" id="price-input" class="input-field-3" style="font-style: italic;" required readonly>
+                    </div>
+                    
                     <div class="booking-form">
                         <label for="date">Date</label>
                         <input type="text" name="date" id="date-input" class="input-field-4" required readonly>
@@ -200,10 +202,7 @@
                         <label for="time">Time</label>
                         <input type="text" name="timeslot" id="timeslot-input" class="input-field-5" required readonly>
                     </div>
-                    <div class="booking-form">
-                        <label for="price">Service Price</label>
-                        <input type="text" name="price" id="price-input" class="input-field-3" style="font-style: italic;" required readonly>
-                    </div>
+                    
 
 
                     <input type="hidden" name="action" value="create">
@@ -214,37 +213,6 @@
                     <input type="hidden" name="clinicID" id="clinicID-input">
 
                     <hr>
-                    <div class="booking-form">
-                        <label for="price">Deposit</label>
-                        <input type="text" name="price" id="price-input" class="input-field-3" style="font-style: italic;" required readonly>
-                    </div>
-                    
-                    
-                    <div class="booking-form">
-                        <h5>Cách 1: Chuyển hướng sang Cổng VNPAY chọn phương thức thanh toán</h5>
-                       <input type="radio" Checked="True" id="bankCode" name="bankCode" value="">
-                       <label for="bankCode">Cổng thanh toán VNPAYQR</label><br>
-                       
-                       <h5>Cách 2: Tách phương thức tại site của đơn vị kết nối</h5>
-                       <input type="radio" id="bankCode" name="bankCode" value="VNPAYQR">
-                       <label for="bankCode">Thanh toán bằng ứng dụng hỗ trợ VNPAYQR</label><br>
-                       
-                       <input type="radio" id="bankCode" name="bankCode" value="VNBANK">
-                       <label for="bankCode">Thanh toán qua thẻ ATM/Tài khoản nội địa</label><br>
-                       
-                       <input type="radio" id="bankCode" name="bankCode" value="INTCARD">
-                       <label for="bankCode">Thanh toán qua thẻ quốc tế</label><br>
-                       
-                    </div>
-                    <div class="form-group">
-                        <h5>Chọn ngôn ngữ giao diện thanh toán:</h5>
-                         <input type="radio" id="language" Checked="True" name="language" value="vn">
-                         <label for="language">Tiếng việt</label><br>
-                         <input type="radio" id="language" name="language" value="en">
-                         <label for="language">Tiếng anh</label><br>
-                         
-                    </div>
-                
                     
                     <div class="booking-form">
                         <input type="submit" value="Confirm Booking" class="confirm-booking-button">
@@ -310,99 +278,10 @@
         </footer>
         <!-- loader -->
         <div id="ftco-loader" class="show fullscreen"></div>
+
+            
         <script src="js/scriptBooking.js"></script>
-        <script>
-                                function menuToggle() {
-                                    const toggleMenu = document.querySelector(".menu");
-                                    toggleMenu.classList.toggle("active");
-                                }
-
-
-                                //Limit attempt of booking
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    const timeslotList = document.getElementById('timeslot-list');
-
-                                    const clinicLimit = "${requestScope.clinicLimit}";
-                                    const slotLimit = "${requestScope.slotLimit}";
-                                    const dayLimit = "${requestScope.dayLimit}";
-
-                                    function updateTimeslotAttributes() {
-
-                                        timeslotList.querySelectorAll('.timeslot-option').forEach(function (option) {
-                                            const timeslotDate = option.getAttribute('data-date');
-                                            const timeslotClinic = option.getAttribute('data-clinic');
-                                            const timeslotID = option.getAttribute('data-address');
-
-                                            option.classList.remove('disabled');
-
-                                            if (dayLimit.includes(timeslotDate) && clinicLimit.includes(timeslotClinic) && slotLimit.includes(timeslotID)) {
-                                                option.classList.add('disabled');
-                                            }
-
-                                        });
-                                    }
-
-                                    document.querySelectorAll('.future').forEach(function (option) {
-                                        option.addEventListener('click', updateTimeslotAttributes);
-                                    });
-
-
-                                    document.querySelectorAll('.clinic-option').forEach(function (option) {
-                                        option.addEventListener('click', updateTimeslotAttributes);
-                                    });
-                                    // Initial check
-                                    updateTimeslotAttributes();
-                                });
-
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    const workingList = "${requestScope.listDenSchedule}";
-                                    const doctorList = document.getElementById('doctor-list');
-
-                                    function updateDentistOption() {
-                                        doctorList.querySelectorAll('.doctor-option').forEach(function (option) {
-                                            const doctorDate = option.getAttribute('data-date');
-                                            const doctorClinic = option.getAttribute('data-clinic');
-                                            const doctorID = option.getAttribute('data-address');
-
-
-                                            option.classList.add('nothing');
-
-                                            if (workingList.includes(doctorDate) && workingList.includes(doctorClinic) && workingList.includes(doctorID)) {
-                                                option.classList.remove('nothing');
-                                            }
-
-                                        });
-                                    }
-
-                                    document.querySelectorAll('.future').forEach(function (option) {
-                                        option.addEventListener('click', updateDentistOption);
-                                    });
-
-
-                                    document.querySelectorAll('.clinic-option').forEach(function (option) {
-                                        option.addEventListener('click', updateDentistOption);
-                                    });
-                                    // Initial check
-                                    updateDentistOption();
-                                });
-
-                                document.addEventListener("DOMContentLoaded", function () {
-                                    const alertBox = document.querySelector(".alert-error.sec");
-                                    if (alertBox && alertBox.textContent.trim()) {
-                                        alertBox.style.display = "block"; // Show the alert if there's an error message
-                                        alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
-                                        setTimeout(function () {
-                                            alertBox.classList.remove("show");
-                                            setTimeout(function () {
-                                                alertBox.style.display = "none"; // Hide the alert after the fade-out animation
-                                            }, 600); // Adjust the delay (in milliseconds) to match the transition duration
-                                        }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
-                                    }
-
-                                });
-
-        </script>
-
+            
     </body>
 </html>
 

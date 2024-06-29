@@ -52,7 +52,7 @@ public class HistoryServlet extends HttpServlet {
             List<BookingDTO> bookingList = bookingDAO.getBookingListByCustomerID(account.getAccountID());
             try {
                 for (BookingDTO bookingDTO : bookingList) {
-                    if (bookingDTO.getAppointmentDay().isBefore(today)) {
+                    if (bookingDTO.getAppointmentDay().isBefore(today) && bookingDTO.getStatus() == 0) {
                         try {
                             bookingDAO.updateExpiredDate(bookingDTO.getBookingID());
                         } catch (SQLException ex) {

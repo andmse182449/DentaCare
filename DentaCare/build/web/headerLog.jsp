@@ -45,10 +45,11 @@
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a href="userWeb-page.jsp" class="nav-link" style="color: black">Home</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=home" class="nav-link" style="color: black">Home</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link" style="color: black">Services</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link" style="color: black">Doctors</a></li>
                         <li class="nav-item"><a href="BookingServlet" class="nav-link" style="color: black">Book Appointment</a></li>
+                        <li class="nav-item" style="margin-top: 3px;">
                         <li class="nav-item">
                             <c:set var="account" value="${sessionScope.account}"/>
                             <div href="contact.html" class="nav-link" style="color: black">
