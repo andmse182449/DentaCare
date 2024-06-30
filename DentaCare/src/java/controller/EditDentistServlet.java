@@ -109,6 +109,7 @@ public class EditDentistServlet extends HttpServlet {
 
         } catch (SQLException e) {
             Logger.getLogger(CommentServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CommentServlet.class.getName()).log(Level.SEVERE, null, e);
         }
 
         // Prepare the response data

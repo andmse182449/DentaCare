@@ -28,11 +28,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin</title>
         <!--<link rel="stylesheet" href="css/stylesheet.css">-->
-        <link rel="stylesheet" href="css/dashboard.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+        <link rel="stylesheet" href="css/stylesheet.css">
+        <link rel="stylesheet" href="css/dashboard.css">
+
     </head>
     <body>
         <div class="grid-container">
@@ -59,10 +61,17 @@
                 </div>
             </header>
             <!-- SIDEBAR -->
+            <%
+                        LocalDate now2 = LocalDate.now();
+                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                        int currentYear2 = now2.getYear();
+                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                        int currentMonth2 = now2.getMonthValue(); // Get current month number
+            %>
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
                         <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
                         <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
                         <a href="coWeb-staff.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
@@ -87,46 +96,49 @@
                 <!-- Page Content -->
                 <div id="page-content-wrapper">
                     <div class="content-wrapper">
-                        <h1 class="mt-4">Dashboard</h1>
 
                         <!-- Row start -->
                         <div class="row gutters">
-                            <div class="col-lg-2 col-sm-4 col-12">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                 <div class="hospital-tiles">
-                                    <img src="images/img/hospital/patient.svg" alt="Best Dashboards" />
+                                    <img src="images/img/user-hand-up-svgrepo-com.png" alt="Best Dashboards" />
                                     <p>Customer</p>
                                     <h2>${countUserAccount}</h2>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-sm-4 col-12">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                 <div class="hospital-tiles">
-                                    <img src="images/img/hospital/doctor.svg" alt="Top Dashboards" />
+                                    <img src="images/img/dentist-1-svgrepo-com.png" alt="Top Dashboards" />
                                     <p>Dentist</p>
                                     <h2>${countDentist}</h2>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-sm-4 col-12">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                 <div class="hospital-tiles">
-                                    <img src="images/img/hospital/staff.svg" alt="Top Dashboards" />
+                                    <img src="images/img/customer-class-line-svgrepo-com (2).png" alt="Top Dashboards" />
                                     <p>Staff</p>
                                     <h2>${countStaff}</h2>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-sm-4 col-12">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                 <div class="hospital-tiles">
-                                    <img src="images/img/hospital/revenue.svg" alt="Top Dashboards" />
-                                    <p>Earnings</p>
-                                    <h2>$900k</h2>
+                                    <img src="images/img/money-mouth-face-svgrepo-com.png" alt="Top Dashboards" />
+                                    <p>Total earning in year</p>
+                                    <c:forEach var="item" items="${allPriceInYear}">
+                                        <h2>$<c:out value="${item.TotalPrice}" /></h2>
+                                    </c:forEach>
                                 </div>
                             </div>
                         </div>
 
+
                         <form action="DashBoardServlet?action=Table&year2=${year2}&month=${month}" method="Post" id="yearForm">
                             <div class="container-fluid">
                                 <div class="row">
+                                    <h1 class="mt-4">Total earning in year</h1>
                                     <div class="card mb-4">
                                         <div class="card-header">
-                                            Chart Example
+                                            Total earning in year
                                         </div>
                                         <div class="card-body">
                                             YEAR 
@@ -310,10 +322,10 @@
                                 <!-- Second Chart -->
 
                                 <div class="col-md-6">
-                                    <h1 class="mt-4">Booking Status Overview</h1>
+                                    <h1 class="mt-4">Booking Time Slot Overview</h1>
                                     <div class="card mb-6">
                                         <div class="card-header">
-                                            Booking Status Overview
+                                            Booking Time Slot Overview
                                         </div>
                                         <div class="card-body">
                                             <form action="DashBoardServlet?action=Table&year1=${year1}" method="post" id="yearForm">

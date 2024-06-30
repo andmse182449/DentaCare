@@ -1,0 +1,44 @@
+#sanpham3 {
+    display: flex;
+    flex-wrap: wrap; /* Ensure cards wrap properly */
+    gap: 20px; /* Space between each clinic card */
+    padding: 20px; /* Add padding to the container */
+}
+
+.clinic-card {
+    width: 400px; /* Fixed width to ensure square shape */
+    height: 400px; /* Fixed height to ensure square shape */
+    border: 1px solid #ddd; /* Add a border around each card */
+    padding: 50px; /* Add padding inside each card */
+    border-radius: 8px; /* Optional: rounded corners for each card */
+    background-color: #f9f9f9; /* Optional: background color for each card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for a card */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute space evenly */
+    align-items: center; /* Center align the contents */
+    text-align: center; /* Center align the text */
+    transition: transform 0.2s; /* Optional: smooth hover effect */
+}
+
+.clinic-card:hover {
+    transform: scale(1.05); /* Optional: scale up on hover */
+}
+
+.clinic-card img {
+    width: 100px; /* Fixed width for the image */
+    height: 100px; /* Fixed height for the image */
+    object-fit: cover; /* Ensure image fits within the square */
+    margin-bottom: 10px; /* Space between the image and the text */
+}
+
+.clinic-card .first-line {
+    font-weight: bold; /* Make the first line bold */
+    margin-bottom: 5px; /* Space between the first line and the following text */
+}
+
+/* Optional: additional styling for other text elements */
+.clinic-card p {
+    margin: 0; /* Space between each paragraph */
+    font-size: 14px; /* Adjust font size */
+}
