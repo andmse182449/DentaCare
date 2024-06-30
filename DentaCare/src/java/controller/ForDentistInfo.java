@@ -8,6 +8,7 @@ import account.AccountDAO;
 import account.AccountDTO;
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
+import feedback.FeedbackDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,30 +45,54 @@ public class ForDentistInfo extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         try (PrintWriter out = response.getWriter()) {
-            if (action.equalsIgnoreCase("forward")) {
-                AccountDAO dao = new AccountDAO();
-                ClinicDAO cdao = new ClinicDAO();
-                MajorDAO mdao = new MajorDAO();
-                List<AccountDTO> res = dao.getAllDentistsByOwner();
-                for (int i = 0; i < res.size(); i++) {
-                    AccountDTO fr = res.get(i);
-                    for (int j = i + 1; j < res.size(); j++) {
-                        AccountDTO re = res.get(j);
-                        if (fr.getAccountID().equals(re.getAccountID())) {
-                            String m1 = fr.getMajorName();
-                            m1 += ", " + re.getMajorName();
-                            fr.setMajorName(m1);
-                            res.remove(j);
-                            j--;
-                        }
+            AccountDAO dao = new AccountDAO();
+            ClinicDAO cdao = new ClinicDAO();
+            MajorDAO mdao = new MajorDAO();
+            List<AccountDTO> res = dao.getAllDentistsByOwner();
+            for (int i = 0; i < res.size(); i++) {
+                AccountDTO fr = res.get(i);
+                for (int j = i + 1; j < res.size(); j++) {
+                    AccountDTO re = res.get(j);
+                    if (fr.getAccountID().equals(re.getAccountID())) {
+                        String m1 = fr.getMajorName();
+                        m1 += ", " + re.getMajorName();
+                        fr.setMajorName(m1);
+                        res.remove(j);
+                        j--;
                     }
                 }
-                List<MajorDTO> majors = mdao.getAllMajors();
-                List<ClinicDTO> clinics = cdao.getAllClinic();
-                request.setAttribute("DENTIST", res);
-                request.setAttribute("MAJOR", majors);
-                request.setAttribute("CLINIC", clinics);
+            }
+            List<MajorDTO> majors = mdao.getAllMajors();
+            List<ClinicDTO> clinics = cdao.getAllClinic();
+            request.setAttribute("DENTIST", res);
+            request.setAttribute("MAJOR", majors);
+            request.setAttribute("CLINIC", clinics);
+//            int numPs = res.size();
+//            int numperPage = 10;
+//            int numpage = numPs / numperPage + (numPs % numperPage == 0 ? 0 : 1);
+//            int start, end;
+//            String tpage = request.getParameter("page");
+//            int page;
+//            try {
+//                page = Integer.parseInt(tpage);
+//            } catch (NumberFormatException e) {
+//                page = 1;
+//            }
+//            start = (page - 1) * numperPage;
+//            if (page * numperPage > numPs) {
+//                end = numPs;
+//            } else {
+//                end = page * numperPage;
+//            }
+//            List<AccountDTO> arr = dao.getListByPage((ArrayList<AccountDTO>) res, start, end);
+//
+//            request.setAttribute("num", numpage);
+//            request.setAttribute("page", page);
+//            request.setAttribute("DENTIST", arr);
+            if (action.equalsIgnoreCase("forward")) {
                 request.getRequestDispatcher("coWeb-dentist.jsp").forward(request, response);
+            } else if (action.equalsIgnoreCase("edit")) {
+                request.setAttribute("defaultDentistId", request.getParameter("denID"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(ForDentistInfo.class.getName()).log(Level.SEVERE, null, ex);

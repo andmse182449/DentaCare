@@ -13,6 +13,7 @@
         <title>Admin</title>
         <!--<link rel="stylesheet" href="css/stylesheet.css">-->
         <link rel="stylesheet" href="css/dashboard.css">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
@@ -225,7 +226,11 @@
 
                                                     // Clear previous results
                                                     const resultsList = document.getElementById('resultsList');
-                                                    resultsList.innerHTML = ''; // Clear previous results
+                                                    resultsList.innerHTML = '';
+                                                    const idList = document.getElementById('denIdList');
+                                                    idList.innerHTML = '';
+                                                    const btnList = document.getElementById('btnList');
+                                                    btnList.innerHTML = '';
                                                     const selectElement = document.getElementById('tagSelect');
                                                     selectElement.innerHTML = '<option value="">Choose a dentist</option>'; // Clear previous results
 
@@ -237,45 +242,82 @@
                                                                 const listItem = document.createElement('li');
                                                                 listItem.textContent = dentist.accountFullName;
                                                                 listItem.id = dentist.accountID;
+                                                                listItem.style.marginBottom = '10px';
+                                                                listItem.style.borderBottom = '1px solid #ccc';
                                                                 const deleteButton = document.createElement('button');
                                                                 deleteButton.textContent = 'Delete';
-                                                                deleteButton.style.marginLeft = '10px';
+                                                                deleteButton.id = dentist.accountID;
+                                                                deleteButton.style.marginBottom = '8px';
+                                                                deleteButton.style.fontSize = 'revert';
+
+
+                                                                const idItem = document.createElement('li');
+                                                                idItem.textContent = dentist.accountID;
+                                                                idItem.id = dentist.accountID;
+                                                                idItem.style.marginBottom = '10px';
+                                                                idItem.style.borderBottom = '1px solid #ccc';
+
+                                                                dentist.listItem = listItem;
+                                                                dentist.deleteButton = deleteButton;
+                                                                dentist.idItem = idItem;
+
                                                                 deleteButton.addEventListener('click', function () {
-                                                                    removeListItemById(dentist.accountID);
+                                                                    swal({
+                                                                        title: "Are you sure?",
+//                                                                        text: "Once deleted, you will not be able to recover this dentist!",
+                                                                        icon: "warning",
+                                                                        buttons: true,
+                                                                        dangerMode: true,
+                                                                    })
+                                                                            .then((willDelete) => {
+                                                                                if (willDelete) {
+                                                                                    removeListItemById(dentist.accountID);
+                                                                                    // Log the dentist object for debugging
 
-                                                                    // Log the dentist object for debugging
+                                                                                    // Send the dentist data as JSON
+                                                                                    $.ajax({
+                                                                                        type: 'POST',
+                                                                                        url: 'RemoveDentistMajorServlet', // Replace with the actual URL for deleting a dentist
+                                                                                        contentType: 'application/json',
+                                                                                        data: JSON.stringify({
+                                                                                            dentistID: dentist.accountID,
+                                                                                            majorName: majorName
+                                                                                        }), // Convert the dentist object to a JSON string
+                                                                                        success: function (response) {
+                                                                                            response.Notdentist.forEach(notDentist => {
+                                                                                                // Validate each notDentist object to ensure it has the expected property
+                                                                                                if (notDentist && notDentist.accountFullName) {
+                                                                                                    const option = document.createElement('option');
+                                                                                                    option.id = notDentist.accountID;
+                                                                                                    option.text = notDentist.accountFullName;
+                                                                                                    selectElement.appendChild(option); // Assuming you have a separate select element for notDentist
 
-                                                                    // Send the dentist data as JSON
-                                                                    $.ajax({
-                                                                        type: 'POST',
-                                                                        url: 'RemoveDentistMajorServlet', // Replace with the actual URL for deleting a dentist
-                                                                        contentType: 'application/json',
-                                                                        data: JSON.stringify({
-                                                                            dentistID: dentist.accountID,
-                                                                            majorName: majorName
-                                                                        }), // Convert the dentist object to a JSON string
-                                                                        success: function (response) {
-
-                                                                            response.Notdentist.forEach(notDentist => {
-                                                                                // Validate each notDentist object to ensure it has the expected property
-                                                                                if (notDentist && notDentist.accountFullName) {
-                                                                                    const option = document.createElement('option');
-                                                                                    option.id = notDentist.accountID;
-                                                                                    option.text = notDentist.accountFullName;
-                                                                                    selectElement.appendChild(option); // Assuming you have a separate select element for notDentist
-
-                                                                                } else {
-                                                                                    console.error('notDentist object:', notDentist);
+                                                                                                } else {
+                                                                                                    console.error('notDentist object:', notDentist);
+                                                                                                }
+                                                                                            });
+                                                                                            swal("Dentist deleted successfully!", {
+                                                                                                icon: "success",
+                                                                                            });
+                                                                                        },
+                                                                                        error: function (xhr, status, error) {
+                                                                                            console.error('Error deleting dentist:', error);
+                                                                                            swal("Error deleting dentist!", {
+                                                                                                icon: "error",
+                                                                                            });
+                                                                                        }
+                                                                                    });
                                                                                 }
                                                                             });
-                                                                        },
-                                                                        error: function (xhr, status, error) {
-                                                                            console.error('Error deleting dentist:', error);
-                                                                        }
-                                                                    });
                                                                 });
-                                                                listItem.appendChild(deleteButton);
+
+
+
+
+//                                                                listItem.appendChild(deleteButton);
                                                                 resultsList.appendChild(listItem);
+                                                                idList.appendChild(idItem)
+                                                                btnList.appendChild(deleteButton)
                                                             } else {
                                                                 console.error('Invalid dentist object:', dentist);
                                                             }
@@ -295,7 +337,6 @@
                                                         console.error('Unexpected response format:', response);
                                                     }
                                                 },
-
                                                 error: function (xhr, status, error) {
                                                     console.error('Error sending major name:', error);
                                                 }
@@ -304,14 +345,18 @@
                                         function removeListItemById(itemId) {
                                             // Find the list item element by its ID
                                             const listItem = document.getElementById(itemId);
-
                                             // Check if the element exists
                                             if (listItem) {
                                                 // Remove the element from the DOM
                                                 listItem.remove();
-                                                console.log(`Element with id \${itemId} has been removed.`);
+                                                // Remove the corresponding idItem and deleteButton elements
+                                                const idItem = document.getElementById(itemId);
+                                                idItem.remove();
+                                                const deleteButton = document.getElementById(itemId);
+                                                deleteButton.remove();
+                                                console.log(`Element with id ${itemId} has been removed.`);
                                             } else {
-                                                console.error(`Element with id \${itemId} not found.`);
+                                                console.error(`Element with id ${itemId} not found.`);
                                             }
                                         }
                                         // Add active class to the clicked element
@@ -320,7 +365,6 @@
                                             $(this).find('.circle').addClass('active');
                                         });
                                     });
-
                                 </script>
                             </c:forEach>
 
@@ -378,25 +422,38 @@
                                 </script>
                                 <button id="closePopup">Cancel</button>
                             </div>
+                            <div style="display: flex;
+                                 gap: 10rem;">
+                                <div>
+                                    <h3>Full Name</h3>
+                                    <ul id="resultsList" class="results"></ul>
+                                </div>
+                                <div>
+                                    <h3>Identifier Number</h3>
+                                    <ul id="denIdList" class="results"></ul>
+                                </div>
+                                <div style="
+                                     width: 100px;
 
-                            <h3>Dentist's Name</h3>
-                            <ul id="resultsList" class="results"></ul>
+                                     ">
+                                    <h3 style="
+                                        color: white;
 
+                                        " >Func</h3>
+                                    <ul id="btnList" class="results"></ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <script>
                         const searchBar = document.getElementById('searchBar');
                         const resultsCount = document.getElementById('resultsCount');
                         const resultsList = document.getElementById('resultsList');
-
-
-
                         searchBar.addEventListener('input', function () {
                             const filter = this.value.toLowerCase();
                             const items = document.querySelectorAll('.scroll-item');
                             let visibleCount = 0;
                             resultsList.innerHTML = '';
-
                             items.forEach(item => {
                                 const text = item.textContent.toLowerCase();
                                 if (text.includes(filter)) {
@@ -409,11 +466,8 @@
                                     item.style.display = 'none';
                                 }
                             });
-
                             resultsCount.textContent = visibleCount;
                         });
-
-
                         document.querySelectorAll('.scroll-item').forEach(item => {
                             function selectFirstService() {
                                 const firstServiceItem = document.querySelector('.scroll-item');
@@ -429,15 +483,12 @@
                                     circle.classList.remove('active');
                                 });
                                 this.querySelector('.circle').classList.add('active');
-
-
                                 // Optionally, you can handle booking functionality here
                                 // For example, by showing a modal or redirecting to a booking page
 
                                 const selectedItemText = this.textContent.trim();
                                 const currentUrl = new URL(window.location.href);
                                 const selectedParam = currentUrl.searchParams.get('selected');
-
                                 if (selectedParam) {
                                     // Remove the previous selection from the URL
                                     currentUrl.searchParams.delete('selected');
@@ -462,19 +513,18 @@
                     const tagSelect = document.getElementById('tagSelect');
                     const addTagButton = document.getElementById('addTag');
                     const tagContainer = document.getElementById('tagContainer');
+                    const idList = document.getElementById('denIdList');
+                    const btnList = document.getElementById('btnList');
                     const addedTags = new Set();
-
                     function createTagElement(tag) {
                         const tagElement = document.createElement('div');
                         tagElement.className = 'tag';
                         tagElement.innerHTML = `\${tag}<button class="deleteBtn button"></button>`;
-
                         const deleteBtn = tagElement.querySelector('.deleteBtn');
                         deleteBtn.addEventListener('click', () => {
                             tagContainer.removeChild(tagElement);
                             addedTags.delete(tag);
                         });
-
                         return tagElement;
                     }
 
@@ -492,34 +542,28 @@
                     openPopupButton.addEventListener('click', openPopup);
                     closePopupButton.addEventListener('click', closePopup);
                     overlay.addEventListener('click', closePopup);
-
-
-
-//                    addTagButton.addEventListener('click', () => {
-//                        const selectedOption = tagSelect.options[tagSelect.selectedIndex];
-//                        const selectedTagId = selectedOption.id;
-//                        const selectedTag = tagSelect.value;
-//                        if (selectedTag && !addedTags.has(selectedTag)) {
-//                            addedTags.add(selectedTag);
-//                            const tagElement = createTagElement(selectedTag);
-//                            tagElement.id = selectedTagId;
-//                            tagContainer.appendChild(tagElement);
-//                            closePopup();
-//                        } else if (addedTags.has(selectedTag)) {
-//                            alert('This tag has already been added!');
-//                        }
-//                    });
+                    //                    addTagButton.addEventListener('click', () => {
+                    //                        const selectedOption = tagSelect.options[tagSelect.selectedIndex];
+                    //                        const selectedTagId = selectedOption.id;
+                    //                        const selectedTag = tagSelect.value;
+                    //                        if (selectedTag && !addedTags.has(selectedTag)) {
+                    //                            addedTags.add(selectedTag);
+                    //                            const tagElement = createTagElement(selectedTag);
+                    //                            tagElement.id = selectedTagId;
+                    //                            tagContainer.appendChild(tagElement);
+                    //                            closePopup();
+                    //                        } else if (addedTags.has(selectedTag)) {
+                    //                            alert('This tag has already been added!');
+                    //                        }
+                    //                    });
 
                     let tagElements = [];
-
                     addTagButton.addEventListener('click', () => {
                         const selectedOption = tagSelect.options[tagSelect.selectedIndex];
                         const selectedTagId = selectedOption.id;
-
                         const selectedTag = tagSelect.value;
                         const scrollItem = document.querySelector('.circle.active').closest('.scroll-item')
                         const majorNameElement = scrollItem.querySelector('.majorName').textContent;
-
                         if (selectedTag && !addedTags.has(selectedTag)) {
                             addedTags.add(selectedTag);
                             const tagElement = createTagElement(selectedTag);
@@ -530,59 +574,80 @@
                             // Add the new tag to the resultsList
                             const newTagLi = document.createElement('li');
                             newTagLi.textContent = selectedTag;
-
                             newTagLi.id = `\${selectedTagId}`; // Add the id to the list item
+                            newTagLi.style.borderBottom = '1px solid #ccc';
+
+                            const idItem = document.createElement('li');
+                            idItem.textContent = `\${selectedTagId}`;
+                            idItem.id = `\${selectedTagId}`;
+                            idItem.style.marginBottom = '10px';
+                            idItem.style.borderBottom = '1px solid #ccc';
+
 
                             // Add a delete button to the list item
                             const deleteBtn = document.createElement('button');
                             deleteBtn.textContent = 'Delete';
-                            deleteBtn.style.marginLeft = '10px';
+                            deleteBtn.style.marginBottom = '8px';
+                            deleteBtn.style.fontSize = 'revert';
                             deleteBtn.addEventListener('click', () => {
-                                // Remove the list item from the resultsList
+                                swal({
+                                    title: "Are you sure?",
+                               
+                                    icon: "warning",
+                                    buttons: true,
+                                    dangerMode: true,
+                                })
+                                        .then((willDelete) => {
+                                            if (willDelete) {
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: 'RemoveDentistMajorServlet', // Replace with the actual URL for deleting a dentist
+                                                    contentType: 'application/json',
+                                                    data: JSON.stringify({
+                                                        dentistID: selectedTagId,
+                                                        majorName: majorNameElement
+                                                    }), // Convert the dentist object to a JSON string
+                                                    success: function (response) {
+                                                        response.Notdentist.forEach(notDentist => {
+                                                            // Validate each notDentist object to ensure it has the expected property
+                                                            if (notDentist && notDentist.accountFullName) {
+                                                                const option = document.createElement('option');
+                                                                option.id = notDentist.accountID;
+                                                                option.text = notDentist.accountFullName;
+                                                                selectElement.appendChild(option); // Assuming you have a separate select element for notDentist
 
-                                $.ajax({
-                                    type: 'POST',
-                                    url: 'RemoveDentistMajorServlet', // Replace with the actual URL for deleting a dentist
-                                    contentType: 'application/json',
-                                    data: JSON.stringify({
-                                        dentistID: selectedTagId,
-                                        majorName: majorNameElement
-                                    }), // Convert the dentist object to a JSON string
-                                    success: function (response) {
+                                                            } else {
+                                                                console.error('notDentist object:', notDentist);
+                                                            }
+                                                        });
+                                                        swal("Dentist deleted successfully!", {
+                                                            icon: "success",
+                                                        });
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        console.error('Error deleting dentist:', error);
+                                                        swal("Error deleting dentist!", {
+                                                            icon: "error",
+                                                        });
+                                                    }
+                                                });
 
-                                        response.Notdentist.forEach(notDentist => {
-                                            // Validate each notDentist object to ensure it has the expected property
-                                            if (notDentist && notDentist.accountFullName) {
-                                                const option = document.createElement('option');
-                                                option.id = notDentist.accountID;
-                                                option.text = notDentist.accountFullName;
-                                                selectElement.appendChild(option); // Assuming you have a separate select element for notDentist
-
-                                            } else {
-                                                console.error('notDentist object:', notDentist);
+                                                // Remove the tag from the tagContainer
+                                                const tagToRemove = tagContainer.querySelector(`#${selectedTagId}`);
+                                                if (tagToRemove) {
+                                                    tagContainer.removeChild(tagToRemove);
+                                                }
+                                                resultsList.removeChild(newTagLi);
+                                                btnList.removeChild(deleteBtn);
+                                                idList.removeChild(idItem);
+                                                // Remove the tag from the addedTags set
+                                                addedTags.delete(selectedTag);
                                             }
                                         });
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.error('Error deleting dentist:', error);
-                                    }
-                                });
-
-                                resultsList.removeChild(newTagLi);
-
-                                // Remove the tag from the tagContainer
-                                const tagToRemove = tagContainer.querySelector(`#\${selectedTagId}`);
-                                if (tagToRemove) {
-                                    tagContainer.removeChild(tagToRemove);
-                                }
-
-                                // Remove the tag from the addedTags set
-                                addedTags.delete(selectedTag);
                             });
-                            newTagLi.appendChild(deleteBtn);
-
+                            btnList.appendChild(deleteBtn);
                             resultsList.appendChild(newTagLi);
-
+                            idList.appendChild(idItem);
                             // If there are more than one tags, remove the first tag
                             if (resultsList.children.length > 1) {
                                 const firstTagElement = tagElements.shift(); // Remove the first tag element from the array
@@ -593,7 +658,6 @@
 
                             const selectElement = document.getElementById('tagSelect');
                             selectElement.innerHTML = '<option value="">Choose a dentist</option>';
-
                             $.ajax({
                                 type: 'POST',
                                 url: 'AddDentistMajorServlet',
@@ -611,6 +675,7 @@
                                             option.id = notDentist.accountID;
                                             option.text = notDentist.accountFullName;
                                             selectElement.appendChild(option); // Assuming you have a separate select element for notDentist
+                                            swal("Added Successfully!", "New dentist has been added!", "success");
                                         } else {
                                             console.error('Invalid notDentist object:', notDentist);
                                         }
@@ -620,13 +685,13 @@
                                     console.error('Error sending dentist names:', error);
                                 }
                             });
-
                             /// end 2
                             closePopup();
                         } else if (addedTags.has(selectedTag)) {
                             alert('This tag has already been added!');
                         }
-                    });
+                    })
+                            ;
 
                 </script>
             </div>

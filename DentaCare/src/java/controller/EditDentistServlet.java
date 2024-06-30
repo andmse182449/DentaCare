@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.BufferedReader;
+import java.io.IOException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -21,21 +22,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -108,7 +94,7 @@ public class EditDentistServlet extends HttpServlet {
             denDAO.updateDentistBio(bio, id);
 
         } catch (SQLException e) {
-            Logger.getLogger(CommentServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CommentServlet.class.getName()).log(Level.SEVERE, null, e);
         }
 
         // Prepare the response data

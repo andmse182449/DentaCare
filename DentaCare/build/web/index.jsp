@@ -56,7 +56,7 @@
     </head>
 
     <body>
-       <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
                 <a class="navbar-brand" href="#">Denta<span>Care</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +67,8 @@
                     <div class="alert sec">${requestScope.error}</div>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
                         <li class="nav-item">
                             <div href="#" class="nav-link">
                                 <div class="action">

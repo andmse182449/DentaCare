@@ -9,6 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700" rel="stylesheet">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
         <link href="css/drop-down.css" rel="stylesheet"/>
 
@@ -49,32 +50,65 @@
                         <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
                         <li class="nav-item"><a href="BookingServlet" class="nav-link">Book Appointment</a></li>
-                        <li class="nav-item" style="margin-top: 3px;">
                             <c:set var="account" value="${sessionScope.account}"/>
-
-                            <div class="action">
-                                <div  onclick="menuToggle();">
-                                    <a href="#" class="nav-link" style="color:white; padding: 8px 18px;">${account.getUserName()}</a>
-                                </div>
-                                <div class="menu">
-                                    <ul>
-                                        <li>
-                                            <img src="images/user.png" /><a href="ProfileServlet">Profile</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/schedule.png"/><a href="ExamScheduleServlet">Examination Schedule</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/history.png" /><a href="HistoryServlet">Booking History</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/log-out.png" /><a href="SignOutServlet">Logout</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                        </li>
+                            <c:choose>
+                                <c:when test="${account == null}">
+                                <li class="nav-item">
+                                    <div href="#" class="nav-link">
+                                        <div class="action">
+                                            <div class="" onclick="menuToggle();">
+                                                <a style="cursor: pointer;">For Employees</a>
+                                            </div>
+                                            <div class="menu">
+                                                <ul>
+                                                    <li>
+                                                        <i class="fa fa-chevron-right"></i><a href="login-dentist.jsp">Login for Dentist</a>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-chevron-right"></i><a href="login-staff.jsp">Login for Staff</a>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-chevron-right"></i><a href="login3">Login for Clinic Owner</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item cta"><a href="login.jsp" class="nav-link show-popup" data-target="#modalRequest">Log in</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                <li class="nav-item" style="margin-top: 3px; display: ">
+                                    <div class="action">
+                                        <div onclick="menuToggle();">
+                                            <a href="#" class="nav-link" style="color:white; padding: 8px 18px;">${account.getUserName()}</a>
+                                        </div>
+                                        <script>
+                                            function menuToggle() {
+                                                const toggleMenu = document.querySelector(".menu");
+                                                toggleMenu.classList.toggle("active");
+                                            }
+                                        </script>
+                                        <div class="menu">
+                                            <ul>
+                                                <li>
+                                                    <img src="images/user.png" /><a href="ProfileServlet">Profile</a>
+                                                </li>
+                                                <li>
+                                                    <img src="images/schedule.png"/><a href="ExamScheduleServlet">Examination Schedule</a>
+                                                </li>
+                                                <li>
+                                                    <img src="images/history.png" /><a href="HistoryServlet">Booking History</a>
+                                                </li>
+                                                <li>
+                                                    <img src="images/log-out.png" /><a href="SignOutServlet">Logout</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
                     </ul>
                 </div>
             </div>
@@ -197,43 +231,21 @@
             </div>
         </section>
 
-        <footer class="ftco-footer ftco-bg-dark ftco-section" style="
-                background-color: white;">
-            <div class="container">
-                <div class="row mb-5" >
-                    <div class="col-md-6" >
-                        <div class="ftco-footer-widget mb-4">
-                            <h2 class="ftco-heading-2" style="color: black">DentaCare.</h2>
-                            <p style="color: black">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="ftco-footer-widget mb-4 ml-md-5">
-                            <h2 class="ftco-heading-2" style="color: black">Quick Links</h2>
-                            <ul class="list-unstyled">
-                                <li><a href="#" class="py-2 d-block" style="color: black">Features</a></li>
-                                <li><a href="#" class="py-2 d-block" style="color: black">Blog</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-12 text-center">
-
-                        <p style="color: black">
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> FPT University Campus Ho Chi Minh
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <%@include file="/footer.jsp" %>
 
 
 
         <!-- loader -->
         <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
+            <%
+                if (request.getAttribute("loginSuccess") != null) {
+            %>
+        <script>
+            swal("Login successfully!", "You have logged in!", "success");
+        </script>
+        <%
+            }
+        %>
 
         <script>
             function menuToggle() {

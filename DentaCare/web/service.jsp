@@ -186,7 +186,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="#">Denta<span>Care</span></a>
+                <a class="navbar-brand" href="LoginChangePage?action=home">Denta<span>Care</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
                 </button>
@@ -197,38 +197,72 @@
                         <li class="nav-item active"><a href="#" class="nav-link">Services</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
                         <!--                        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
-                        <li class="nav-item" style="margin-top: 3px;">
-                            <c:set var="account" value="${sessionScope.account}"/>
+                        <c:set var="account" value="${sessionScope.account}"/>
 
-                            <div class="action">
-                                <div  onclick="menuToggle();">
-                                    <a href="#" class="nav-link" style="color:white; padding: 8px 18px;">${account.getUserName()}</a>
-                                </div>
-                                <script>
-                                    function menuToggle() {
-                                        const toggleMenu = document.querySelector(".menu");
-                                        toggleMenu.classList.toggle("active");
-                                    }
-                                </script>
-                                <div class="menu">
-                                    <ul>
-                                        <li>
-                                            <img src="images/user.png" /><a href="ProfileServlet">Profile</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/schedule.png"/><a href="ExamScheduleServlet">Examination Schedule</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/history.png" /><a href="HistoryServlet">Booking History</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/log-out.png" /><a href="SignOutServlet">Logout</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                        </li>
+                        <c:choose>
+                            <c:when test="${account == null}">
+                                <li class="nav-item">
+                                    <div href="#" class="nav-link">
+                                        <div class="action">
+                                            <div class="" onclick="menuToggle();">
+                                                <a style="cursor: pointer;">For Employees</a>
+                                            </div>
+                                            <div class="menu">
+                                                <ul>
+                                                    <li>
+                                                        <i class="fa fa-chevron-right"></i><a href="login-dentist.jsp">Login for Dentist</a>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-chevron-right"></i><a href="login-staff.jsp">Login for Staff</a>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-chevron-right"></i><a href="login3">Login for Clinic Owner</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item cta"><a href="login.jsp" class="nav-link show-popup" data-target="#modalRequest">Log in</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                <li class="nav-item" style="margin-top: 3px; display: ">
+                                    <div class="action">
+                                        <div onclick="menuToggle();">
+                                            <a href="#" class="nav-link" style="color:white; padding: 8px 18px;">${account.getUserName()}</a>
+                                        </div>
+                                        <script>
+                                            function menuToggle() {
+                                                const toggleMenu = document.querySelector(".menu");
+                                                toggleMenu.classList.toggle("active");
+                                            }
+                                        </script>
+                                        <div class="menu">
+                                            <ul>
+                                                <li>
+                                                    <img src="images/user.png" /><a href="ProfileServlet">Profile</a>
+                                                </li>
+                                                <li>
+                                                    <img src="images/schedule.png"/><a href="ExamScheduleServlet">Examination Schedule</a>
+                                                </li>
+                                                <li>
+                                                    <img src="images/history.png" /><a href="HistoryServlet">Booking History</a>
+                                                </li>
+                                                <li>
+                                                    <img src="images/log-out.png" /><a href="SignOutServlet">Logout</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
+                        <script>
+                            function menuToggle() {
+                                const toggleMenu = document.querySelector(".menu");
+                                toggleMenu.classList.toggle("active");
+                            }
+                        </script>
                     </ul>
                 </div>
             </div>

@@ -100,6 +100,45 @@ public class FeedbackDAO {
         return list;
     }
 
+    public List<FeedbackDTO> getAllFeedbacks() throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        FeedbackDTO dto = null;
+        List<FeedbackDTO> list = new ArrayList<>();
+        String query = "SELECT feedbackID, feedbackDay, feedbackContent, fullName, bookingID FROM FEEDBACK";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String feedbackID = rs.getString("feedbackID");
+                LocalDateTime feedbackDay = rs.getTimestamp("feedbackDay").toLocalDateTime();
+                String feedbackContent = rs.getString("feedbackContent");
+                String fullName = rs.getString("fullName");
+                String bookingID = rs.getString("bookingID");
+
+                LocalDateTime pastDateTime = LocalDateTime.parse(feedbackDay.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                long minutesAgo = calculateMinutesAgo(pastDateTime);
+                String timeAgo = formatTimeAgo(pastDateTime, minutesAgo);
+
+                dto = new FeedbackDTO(feedbackID, timeAgo, feedbackContent, fullName, bookingID);
+                list.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
+
     public boolean addComment(String feedbackID, LocalDateTime feedbackDate, String text, String author, String bookingID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;

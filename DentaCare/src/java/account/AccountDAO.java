@@ -130,11 +130,11 @@ public class AccountDAO implements Serializable {
         return result;
     }
 
-    public AccountDTO updateProfileAccount(String fullName, String phone, boolean gender, String userName, String dob)
+    public AccountDTO updateProfileAccount(String fullName, String phone, boolean gender, String userName, String dob, String addr)
             throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET fullName = ?, phone = ?, gender = ?, dob = ?"
+        StringBuilder query = new StringBuilder("UPDATE ACCOUNT SET fullName = ?, phone = ?, gender = ?, dob = ?, address = ?"
                 + " WHERE USERNAME = ?");
         try {
             String sql = String.valueOf(query);
@@ -145,7 +145,8 @@ public class AccountDAO implements Serializable {
             stm.setString(2, phone);
             stm.setBoolean(3, gender);
             stm.setString(4, dob);
-            stm.setString(5, userName);
+            stm.setString(5, addr);
+            stm.setString(6, userName);
 
             stm.executeUpdate();
 
