@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import account.AccountDAO;
@@ -26,9 +22,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
@@ -38,7 +44,21 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 @WebServlet(name = "EditDentistServlet", urlPatterns = {"/EditDentistServlet"})
 public class EditDentistServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+    public String getPath() throws UnsupportedEncodingException {
+        String path = this.getClass().getClassLoader().getResource("").getPath();
+        String fullPath = URLDecoder.decode(path, "UTF-8");
+        String pathArr[] = fullPath.split("/build/web/WEB-INF/classes/");
+        fullPath = pathArr[0];
+        return fullPath;
+    }
+
+    private static String removeLeadingSlash(String path) {
+        // Check if the path starts with a leading slash and remove it
+        if (path.startsWith("/")) {
+            return path.substring(1);
+        }
+        return path;
+    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,40 +81,15 @@ public class EditDentistServlet extends HttpServlet {
 
         //account
         String id = jsonInput.get("id");
+
         String name = jsonInput.get("fullname");
         String dob = jsonInput.get("dob");
         LocalDate localDate = LocalDate.parse(dob);
         String phone = jsonInput.get("phone");
         String image2 = jsonInput.get("image");
-        String image = "Bs-Nguyen-Xuan-Nhi.png";
 
-        // Get the upload directory path relative to the web application context
-        String appPath = request.getServletContext().getRealPath("");
-        String savePath = "/build/web/images/" + image;
-
-        // Create the directory if it does not exist
-        File fileSaveDir = new File(savePath);
-        if (!fileSaveDir.exists()) {
-            fileSaveDir.mkdirs();
-        }
-
-        // Process the uploaded file
-        for (Part part : request.getParts()) {
-            String fileName = extractFileName(part);
-            if (fileName != null && !fileName.isEmpty()) {
-                // Write the file to the specified directory
-                try (InputStream fileContent = part.getInputStream(); FileOutputStream fos = new FileOutputStream(new File(savePath + File.separator + fileName))) {
-                    int read;
-                    final byte[] bytes = new byte[1024];
-                    while ((read = fileContent.read(bytes)) != -1) {
-                        fos.write(bytes, 0, read);
-                    }
-                    response.getWriter().println("File uploaded successfully: " + fileName);
-                } catch (IOException e) {
-                    response.getWriter().println("Error saving file: " + e.getMessage());
-                }
-            }
-        }
+        Part filePart = request.getPart("edit-image");
+        System.out.println(filePart);
 
         String gender = jsonInput.get("gender");
         boolean gen = false;
@@ -102,8 +97,6 @@ public class EditDentistServlet extends HttpServlet {
             gen = true;
         }
         String address = jsonInput.get("address");
-        // major detail
-//        String specialty = jsonInput.get("specialty");
         String bio = jsonInput.get("bio");
         // clinic
         String clinicID = jsonInput.get("clinic");
@@ -111,12 +104,10 @@ public class EditDentistServlet extends HttpServlet {
         AccountDAO denDAO = new AccountDAO();
         try {
 
-            if (denDAO.updateDentist(name, phone, address, localDate, gen, image, Integer.parseInt(clinicID), id) && denDAO.updateDentistBio(bio, id) == true) {
-                System.out.println("oke em iu");
-            } else {
-                System.out.println("như");
-            }
-        } catch (SQLException ex) {
+            denDAO.updateDentist(name, phone, address, localDate, gen, image2, Integer.parseInt(clinicID), id);
+            denDAO.updateDentistBio(bio, id);
+
+        } catch (SQLException e) {
             Logger.getLogger(CommentServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -135,17 +126,6 @@ public class EditDentistServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] items = contentDisp.split(";");
-        for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                return s.substring(s.indexOf("=") + 2, s.length() - 1);
-            }
-        }
-        return null;
     }
 
     @Override

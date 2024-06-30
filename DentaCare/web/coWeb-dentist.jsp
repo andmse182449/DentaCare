@@ -155,6 +155,7 @@
 
                                 <button class="restore-info" style="display: ${den.getStatus() == 1 ? 'incline-block' : 'none'};">Restore</button>
                             </div>
+
                             <div id="dentist-popup" class="popup2 hidden">
                                 <div class="popup-content">
                                     <span class="close">&times;</span>
@@ -174,253 +175,265 @@
                                     </div>
                                     <div id="edit-mode" class="hidden">
                                         <h2>Edit Dentist Information</h2>
-                                        <input type="hidden" id="edit-id" name="edit-id">
-                                        <label for="edit-fullname">Full Name:</label>
-                                        <input type="text" id="edit-fullname" name="edit-fullname">
+                                        <form action="UploadImage" method="post" enctype="multipart/form-data">
+                                            <input type="hidden" id="edit-id" name="edit-id">
+                                            <label for="edit-fullname">Full Name:</label>
+                                            <input type="text" id="edit-fullname" name="edit-fullname">
 
-                                        <label for="edit-clinic">From Clinic:</label>
-                                        <select id="edit-clinic" name="clinic">
-                                            <script>
-                                                document.addEventListener('DOMContentLoaded', () => {
-                                                const clinics = [
-                                                <c:forEach items="${CLINIC}" var="clinic">
-                                                {
-                                                clinicID: "${clinic.clinicID}",
-                                                        clinicName: "${clinic.clinicName}",
-                                                        clinicAddress: "${clinic.clinicAddress}",
-                                                        city: "${clinic.city}",
-                                                        hotline: "${clinic.hotline}"
-                                                }<c:if test="${!status.last}">,</c:if>
-                                                </c:forEach>
-                                                ];
-                                                        // Populate clinic dropdown
-                                                        clinics.forEach(clinic => {
-                                                        const option = document.createElement('option');
-                                                                option.value = clinic.clinicID;
-                                                                option.textContent = clinic.clinicName;
-                                                                document.getElementById('edit-clinic').appendChild(option);
-                                                        });
-                                                        // Popup and form elements
-                                                        const viewInfoLinks = document.querySelectorAll('.view-info');
-                                                        const popup = document.getElementById('dentist-popup');
-                                                        const closeBtn = popup.querySelector('.close');
-                                                        const dentistList = document.querySelectorAll('.dentist');
-                                                        // View elements
-                                                        const nameElement = document.getElementById('dentist-name');
-                                                        const specialtyElement = document.getElementById('dentist-specialty');
-                                                        const bioElement = document.getElementById('dentist-bio');
-                                                        const fullnameElement = document.getElementById('dentist-fullname');
-                                                        const dobElement = document.getElementById('dentist-dob');
-                                                        const phoneElement = document.getElementById('dentist-phone');
-                                                        const genderElement = document.getElementById('dentist-gender');
-                                                        const emailElement = document.getElementById('dentist-email');
-                                                        const addressElement = document.getElementById('dentist-address');
-                                                        const clinicElement = document.getElementById('dentist-clinic');
-                                                        // Edit elements
+                                            <label for="edit-clinic">From Clinic:</label>
+                                            <select id="edit-clinic" name="clinic">
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', () => {
+                                                    const clinics = [
+                                                    <c:forEach items="${CLINIC}" var="clinic">
+                                                    {
+                                                    clinicID: "${clinic.clinicID}",
+                                                            clinicName: "${clinic.clinicName}",
+                                                            clinicAddress: "${clinic.clinicAddress}",
+                                                            city: "${clinic.city}",
+                                                            hotline: "${clinic.hotline}"
+                                                    }<c:if test="${!status.last}">,</c:if>
+                                                    </c:forEach>
+                                                    ];
+                                                            // Populate clinic dropdown
+                                                            clinics.forEach(clinic => {
+                                                            const option = document.createElement('option');
+                                                                    option.value = clinic.clinicID;
+                                                                    option.textContent = clinic.clinicName;
+                                                                    document.getElementById('edit-clinic').appendChild(option);
+                                                            });
+                                                            // Popup and form elements
+                                                            const viewInfoLinks = document.querySelectorAll('.view-info');
+                                                            const popup = document.getElementById('dentist-popup');
+                                                            const closeBtn = popup.querySelector('.close');
+                                                            const dentistList = document.querySelectorAll('.dentist');
+                                                            // View elements
+                                                            const nameElement = document.getElementById('dentist-name');
+                                                            const specialtyElement = document.getElementById('dentist-specialty');
+                                                            const bioElement = document.getElementById('dentist-bio');
+                                                            const fullnameElement = document.getElementById('dentist-fullname');
+                                                            const dobElement = document.getElementById('dentist-dob');
+                                                            const phoneElement = document.getElementById('dentist-phone');
+                                                            const genderElement = document.getElementById('dentist-gender');
+                                                            const emailElement = document.getElementById('dentist-email');
+                                                            const addressElement = document.getElementById('dentist-address');
+                                                            const clinicElement = document.getElementById('dentist-clinic');
+                                                            // Edit elements
 
 
-                                                        const editBioTextarea = document.getElementById('edit-bio');
-                                                        const editFullnameInput = document.getElementById('edit-fullname');
-                                                        const editDobInput = document.getElementById('edit-dob');
-                                                        const editPhoneInput = document.getElementById('edit-phone');
-                                                        const editID = document.getElementById('edit-id');
-                                                        const editGenderInputs = document.querySelectorAll('input[name="edit-gender"]');
-                                                        const editImageInput = document.getElementById('edit-image');
-                                                        const editAddressInput = document.getElementById('edit-address');
-                                                        const clinicSelect = document.getElementById('edit-clinic');
-                                                        // Buttons
-                                                        const viewMode = document.getElementById('view-mode');
-                                                        const editMode = document.getElementById('edit-mode');
-                                                        const saveChangesButton = document.getElementById('save-changes');
-                                                        const cancelEditButton = document.getElementById('cancel-edit');
-                                                        const editInfoButton = document.getElementById('edit-info');
-                                                        const returnToViewButton = document.getElementById('return-to-view');
-                                                        const saveForm = document.getElementById('save-form');
-                                                        let currentDentist = null;
-                                                        // Close popup functionality
-                                                        if (closeBtn) {
-                                                closeBtn.addEventListener('click', () => {
-                                                resetPopup();
-                                                });
-                                                }
+                                                            const editBioTextarea = document.getElementById('edit-bio');
+                                                            const editFullnameInput = document.getElementById('edit-fullname');
+                                                            const editDobInput = document.getElementById('edit-dob');
+                                                            const editPhoneInput = document.getElementById('edit-phone');
+                                                            const editID = document.getElementById('edit-id');
+                                                            const editGenderInputs = document.querySelectorAll('input[name="edit-gender"]');
+                                                            const editImageInput = document.getElementById('edit-image');
+                                                            const editAddressInput = document.getElementById('edit-address');
+                                                            const clinicSelect = document.getElementById('edit-clinic');
+                                                            // Buttons
+                                                            const viewMode = document.getElementById('view-mode');
+                                                            const editMode = document.getElementById('edit-mode');
+                                                            const saveChangesButton = document.getElementById('save-changes');
+                                                            const cancelEditButton = document.getElementById('cancel-edit');
+                                                            const editInfoButton = document.getElementById('edit-info');
+                                                            const returnToViewButton = document.getElementById('return-to-view');
+                                                            const saveForm = document.getElementById('save-form');
+                                                            let currentDentist = null;
+                                                            // Close popup functionality
+                                                            if (closeBtn) {
+                                                    closeBtn.addEventListener('click', () => {
+                                                    resetPopup();
+                                                    });
+                                                    }
 
-                                                // View Info logic
-                                                viewInfoLinks.forEach(link => {
-                                                link.addEventListener('click', (event) => {
-                                                event.preventDefault();
-                                                        currentDentist = event.target.closest('.dentist');
-                                                        updateViewMode();
-                                                        popup.classList.remove('hidden');
-                                                        viewMode.classList.remove('hidden');
-                                                        editMode.classList.add('hidden');
-                                                });
-                                                });
-                                                        // Edit button functionality
-                                                        editInfoButton.addEventListener('click', () => {
-                                                        populateEditMode();
-                                                                viewMode.classList.add('hidden');
-                                                                editMode.classList.remove('hidden');
-                                                        });
-                                                        // Save Changes logic
-                                                        saveChangesButton.addEventListener('click', (event) => {
-                                                        event.preventDefault(); // Prevent form from submitting normally
-                                                                if (currentDentist) {
-                                                        saveChanges();
-                                                                updateViewMode();
-                                                                viewMode.classList.remove('hidden');
-                                                                editMode.classList.add('hidden');
-                                                        }
-                                                        });
-                                                        // Return to view mode without saving changes
-                                                        returnToViewButton.addEventListener('click', () => {
-                                                        viewMode.classList.remove('hidden');
-                                                                editMode.classList.add('hidden');
-                                                        });
-                                                        // Cancel Edit logic (use returnToViewButton or close popup)
-                                                        cancelEditButton.addEventListener('click', () => {
-                                                        viewMode.classList.remove('hidden');
-                                                                editMode.classList.add('hidden');
-                                                        });
-                                                        // Close popup if clicking outside of the content area
-                                                        popup.addEventListener('click', (event) => {
-                                                        if (event.target === popup) {
-                                                        resetPopup();
-                                                        }
-                                                        });
-                                                        // Prevent form's default submission behavior
-                                                        saveForm.addEventListener('submit', (event) => {
-                                                        event.preventDefault(); // Prevent default form submission
-                                                                saveChangesButton.click(); // Trigger the save changes button logic
-                                                        });
-                                                        function resetPopup() {
-                                                        popup.classList.add('hidden');
-                                                                viewMode.classList.remove('hidden');
-                                                                editMode.classList.add('hidden');
-                                                                currentDentist = null;
-                                                        }
+                                                    // View Info logic
+                                                    viewInfoLinks.forEach(link => {
+                                                    link.addEventListener('click', (event) => {
+                                                    event.preventDefault();
+                                                            currentDentist = event.target.closest('.dentist');
+                                                            updateViewMode();
+                                                            popup.classList.remove('hidden');
+                                                            viewMode.classList.remove('hidden');
+                                                            editMode.classList.add('hidden');
+                                                    });
+                                                    });
+                                                            // Edit button functionality
+                                                            editInfoButton.addEventListener('click', () => {
+                                                            populateEditMode();
+                                                                    viewMode.classList.add('hidden');
+                                                                    editMode.classList.remove('hidden');
+                                                            });
+                                                            // Save Changes logic
+                                                            saveChangesButton.addEventListener('click', (event) => {
+                                                            event.preventDefault(); // Prevent form from submitting normally
+                                                                    if (currentDentist) {
+                                                            saveChanges();
+                                                                    updateViewMode();
+                                                                    viewMode.classList.remove('hidden');
+                                                                    editMode.classList.add('hidden');
+                                                            }
+                                                            });
+                                                            // Return to view mode without saving changes
+                                                            returnToViewButton.addEventListener('click', () => {
+                                                            viewMode.classList.remove('hidden');
+                                                                    editMode.classList.add('hidden');
+                                                            });
+                                                            // Cancel Edit logic (use returnToViewButton or close popup)
+                                                            cancelEditButton.addEventListener('click', () => {
+                                                            viewMode.classList.remove('hidden');
+                                                                    editMode.classList.add('hidden');
+                                                            });
+                                                            // Close popup if clicking outside of the content area
+                                                            popup.addEventListener('click', (event) => {
+                                                            if (event.target === popup) {
+                                                            resetPopup();
+                                                            }
+                                                            });
+                                                            // Prevent form's default submission behavior
+                                                            saveForm.addEventListener('submit', (event) => {
+                                                            event.preventDefault(); // Prevent default form submission
+                                                                    saveChangesButton.click(); // Trigger the save changes button logic
+                                                            });
+                                                            function resetPopup() {
+                                                            popup.classList.add('hidden');
+                                                                    viewMode.classList.remove('hidden');
+                                                                    editMode.classList.add('hidden');
+                                                                    currentDentist = null;
+                                                            }
 
-                                                function updateViewMode() {
-                                                if (currentDentist) {
-                                                nameElement.textContent = currentDentist.dataset.name;
-                                                        specialtyElement.textContent = currentDentist.dataset.specialty;
-                                                        bioElement.textContent = currentDentist.dataset.bio;
-                                                        fullnameElement.textContent = currentDentist.dataset.fullname;
-                                                        dobElement.textContent = currentDentist.dataset.dob;
-                                                        phoneElement.textContent = currentDentist.dataset.phone;
-                                                        genderElement.textContent = currentDentist.dataset.gender;
-                                                        emailElement.textContent = currentDentist.dataset.email;
-                                                        addressElement.textContent = currentDentist.dataset.address;
-                                                        clinicElement.textContent = currentDentist.dataset.clinic;
-                                                }
-                                                }
+                                                    function updateViewMode() {
+                                                    if (currentDentist) {
+                                                    nameElement.textContent = currentDentist.dataset.name;
+                                                            specialtyElement.textContent = currentDentist.dataset.specialty;
+                                                            bioElement.textContent = currentDentist.dataset.bio;
+                                                            fullnameElement.textContent = currentDentist.dataset.fullname;
+                                                            dobElement.textContent = currentDentist.dataset.dob;
+                                                            phoneElement.textContent = currentDentist.dataset.phone;
+                                                            genderElement.textContent = currentDentist.dataset.gender;
+                                                            emailElement.textContent = currentDentist.dataset.email;
+                                                            addressElement.textContent = currentDentist.dataset.address;
+                                                            clinicElement.textContent = currentDentist.dataset.clinic;
+                                                            const imagePath = currentDentist.dataset.image;
+                                                            const imageElement = document.getElementById('dentist-image');
+                                                            if (imagePath && imageElement) {
+                                                    imageElement.src = imagePath;
+                                                    } else {
+                                                    console.warn('Image path is invalid or image element not found.');
+                                                    }
+                                                    }
+                                                    }
 
-                                                function populateEditMode() {
-                                                if (currentDentist) {
-                                                // Populate other edit fields
-                                                editID.value = currentDentist.dataset.id;
-                                                        editFullnameInput.value = currentDentist.dataset.fullname;
-                                                        editBioTextarea.value = currentDentist.dataset.bio;
-                                                        editDobInput.value = currentDentist.dataset.dob;
-                                                        editPhoneInput.value = currentDentist.dataset.phone;
-                                                        editAddressInput.value = currentDentist.dataset.address;
-                                                        // Populate the clinic dropdown (if applicable)
-                                                        const clinicDropdown = document.getElementById('edit-clinic');
-                                                        const dentistClinicID = currentDentist.dataset.clinic;
-                                                        clinicDropdown.innerHTML = ''; // Clear existing options
+                                                    function populateEditMode() {
+                                                    if (currentDentist) {
+                                                    // Populate other edit fields
+                                                    editID.value = currentDentist.dataset.id;
+                                                            editFullnameInput.value = currentDentist.dataset.fullname;
+                                                            editBioTextarea.value = currentDentist.dataset.bio;
+                                                            editDobInput.value = currentDentist.dataset.dob;
+                                                            editPhoneInput.value = currentDentist.dataset.phone;
+                                                            editAddressInput.value = currentDentist.dataset.address;
+                                                            // Populate the clinic dropdown (if applicable)
+                                                            const clinicDropdown = document.getElementById('edit-clinic');
+                                                            const dentistClinicID = currentDentist.dataset.clinic;
+                                                            clinicDropdown.innerHTML = ''; // Clear existing options
 
-                                                        clinics.forEach(clinic => {
-                                                        const option = document.createElement('option');
-                                                                option.value = clinic.clinicID;
-                                                                option.textContent = clinic.clinicName;
-                                                                clinicDropdown.appendChild(option);
-                                                                if (clinic.clinicID === dentistClinicID) {
-                                                        option.selected = true;
-                                                        }
-                                                        });
-                                                        if (!clinicDropdown.value) {
-                                                console.warn("Dentist's clinic ID not found in the clinic list.");
-                                                }
+                                                            clinics.forEach(clinic => {
+                                                            const option = document.createElement('option');
+                                                                    option.value = clinic.clinicID;
+                                                                    option.textContent = clinic.clinicName;
+                                                                    clinicDropdown.appendChild(option);
+                                                                    if (clinic.clinicID === dentistClinicID) {
+                                                            option.selected = true;
+                                                            }
+                                                            });
+                                                            if (!clinicDropdown.value) {
+                                                    console.warn("Dentist's clinic ID not found in the clinic list.");
+                                                    }
 
-                                                const currentGender = currentDentist.dataset.gender.toLowerCase();
-                                                        document.querySelectorAll('input[name="edit-gender"]').forEach((input) => {
-                                                input.checked = input.value.toLowerCase() === currentGender;
-                                                });
-                                                }
-                                                }
+                                                    const currentGender = currentDentist.dataset.gender.toLowerCase();
+                                                            document.querySelectorAll('input[name="edit-gender"]').forEach((input) => {
+                                                    input.checked = input.value.toLowerCase() === currentGender;
+                                                    });
+                                                    }
+                                                    }
 
-                                                function saveChanges() {
-                                                const selectedClinicID = clinicSelect.value;
-                                                        if (currentDentist) {
-                                                const updatedData = {
-                                                id: editID.value,
-                                                        address: editAddressInput.value,
-                                                        fullname: editFullnameInput.value,
-                                                        bio: editBioTextarea.value,
-                                                        dob: editDobInput.value,
-                                                        phone: editPhoneInput.value,
-                                                        image: editImageInput.value,
-                                                        clinic: selectedClinicID,
-                                                        gender: document.querySelector('input[name="edit-gender"]:checked')?.value
-                                                };
-                                                        Object.keys(updatedData).forEach(key => {
-                                                if (updatedData[key] !== undefined) {
-                                                currentDentist.dataset[key] = updatedData[key];
-                                                }
-                                                });
-                                                        currentDentist.querySelector('h2').textContent = updatedData.fullname; // Assuming you want to update the display name
+                                                    function saveChanges() {
+                                                    const selectedClinicID = clinicSelect.value;
+                                                            if (currentDentist) {
+                                                    const updatedData = {
+                                                    id: editID.value,
+                                                            address: editAddressInput.value,
+                                                            fullname: editFullnameInput.value,
+                                                            bio: editBioTextarea.value,
+                                                            dob: editDobInput.value,
+                                                            phone: editPhoneInput.value,
+                                                            image: editImageInput.value,
+                                                            clinic: selectedClinicID,
+                                                            gender: document.querySelector('input[name="edit-gender"]:checked')?.value
 
-                                                        const jsonData = JSON.stringify(updatedData);
-                                                        fetch('EditDentistServlet', {
-                                                        method: 'POST',
-                                                                headers: {
-                                                                'Content-Type': 'application/json'
-                                                                },
-                                                                body: jsonData
-                                                        })
-                                                        .then(response => {
-                                                        if (!response.ok) {
-                                                        throw new Error('Network response was not ok ' + response.statusText);
-                                                        }
-                                                        return response.json();
-                                                        })
-                                                        .then(data => {
-                                                        console.log('Success:', data);
-                                                        })
-                                                        .catch(error => {
-                                                        console.error('Error:', error);
-                                                        });
-                                                }
-                                                }
-                                                });
-                                            </script>
-                                        </select>
-                                        <br>
 
-                                        <label for="edit-dob">Date of Birth:</label>
-                                        <input type="date" id="edit-dob" name="edit-dob">
+                                                    };
+                                                            Object.keys(updatedData).forEach(key => {
+                                                    if (updatedData[key] !== undefined) {
+                                                    currentDentist.dataset[key] = updatedData[key];
+                                                    }
+                                                    });
+                                                            currentDentist.querySelector('h2').textContent = updatedData.fullname; // Assuming you want to update the display name
 
-                                        <label for="edit-phone">Phone:</label>
-                                        <input type="tel" id="edit-phone" name="edit-phone">
+                                                            const jsonData = JSON.stringify(updatedData);
+                                                            fetch('EditDentistServlet', {
+                                                            method: 'POST',
+                                                                    headers: {
+                                                                    'Content-Type': 'application/json'
+                                                                    },
+                                                                    body: jsonData
+                                                            })
+                                                            .then(response => {
+                                                            if (!response.ok) {
+                                                            throw new Error('Network response was not ok ' + response.statusText);
+                                                            }
+                                                            return response.json();
+                                                            })
+                                                            .then(data => {
+                                                            console.log('Success:', data);
+                                                            })
+                                                            .catch(error => {
+                                                            console.error('Error:', error);
+                                                            });
+                                                    }
+                                                    }
+                                                    }
+                                                    );
+                                                </script>
+                                            </select>
+                                            <br>
 
-                                        <label for="edit-address">Address:</label>
-                                        <input type="text" id="edit-address" name="edit-address">
+                                            <label for="edit-dob">Date of Birth:</label>
+                                            <input type="date" id="edit-dob" name="edit-dob">
 
-                                        <fieldset>
-                                            <legend>Gender:</legend>
-                                            <input type="radio" id="edit-gender-male" name="edit-gender" value="Male">
-                                            <label for="edit-gender-male">Male</label>
-                                            <input type="radio" id="edit-gender-female" name="edit-gender" value="Female">
-                                            <label for="edit-gender-female">Female</label>
-                                        </fieldset>
+                                            <label for="edit-phone">Phone:</label>
+                                            <input type="tel" id="edit-phone" name="edit-phone">
 
-                                        <label for="edit-image">Image URL:</label>
-                                        <input required="true" type="file" name="edit-image" id="edit-image" accept="image/png, image/jpg"/><br><br>
+                                            <label for="edit-address">Address:</label>
+                                            <input type="text" id="edit-address" name="edit-address">
 
-                                        <label for="edit-bio">Bio:</label>
-                                        <textarea id="edit-bio" name="edit-bio" rows="4"></textarea>
+                                            <fieldset>
+                                                <legend>Gender:</legend>
+                                                <input type="radio" id="edit-gender-male" name="edit-gender" value="Male">
+                                                <label for="edit-gender-male">Male</label>
+                                                <input type="radio" id="edit-gender-female" name="edit-gender" value="Female">
+                                                <label for="edit-gender-female">Female</label>
+                                            </fieldset>
 
-                                        <form id="save-form">
-                                            <input type="submit" id="save-changes" value="Save Changes">
+                                            <label for="edit-image">Image URL:</label>
+                                            <input required="true" type="file" name="edit-image" id="edit-image" accept="image/png, image/jpg"/><br><br>
+
+                                            <label for="edit-bio">Bio:</label>
+                                            <textarea id="edit-bio" name="edit-bio" rows="4"></textarea>
+
+
+                                            <input type="submit"  id="save-changes" value="Save Changes">
+
                                         </form>
                                         <button id="return-to-view">Return</button>
                                     </div>

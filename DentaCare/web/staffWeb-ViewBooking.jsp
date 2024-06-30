@@ -74,7 +74,7 @@
                             <c:when test="${booking.status == 2}">
                                 Status: Completed
                             </c:when>
-                            <c:when test="${booking.status == 4}">
+                            <c:when test="${booking.status == 5}">
                                 Status: Placed and Sent Email
                             </c:when>
                         </c:choose>
@@ -94,7 +94,7 @@
                                     <c:when test="${booking.status == 2}">
                                         Completed
                                     </c:when>
-                                    <c:when test="${booking.status == 4}">
+                                    <c:when test="${booking.status == 5}">
                                         Placed and Sent Email
                                     </c:when>
                                     <c:otherwise>
