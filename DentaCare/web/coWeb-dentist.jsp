@@ -7,6 +7,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="clinic.*" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Calendar, java.util.GregorianCalendar" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.time.*" %>
+<%@ page import="java.time.temporal.WeekFields" %>
+<%@ page import="java.util.Locale" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -23,7 +29,7 @@
     </head>
     <body>
         <div class="grid-container">
-             <!-- HEADER -->
+            <!-- HEADER -->
             <header class="header">
                 <div><h1>MANAGE DENTIST</h1></div>
                 <div class="header-icon">
@@ -47,10 +53,17 @@
             </header>
             <!-- SIDEBAR -->
             <!-- SIDEBAR -->
+            <%
+                        LocalDate now2 = LocalDate.now();
+                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                        int currentYear2 = now2.getYear();
+                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                        int currentMonth2 = now2.getMonthValue(); // Get current month number
+            %>
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
                         <a href="coWeb-dentist.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
                         <a href="coWeb-staff.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
@@ -200,7 +213,6 @@
                                                         const dobElement = document.getElementById('dentist-dob');
                                                         const phoneElement = document.getElementById('dentist-phone');
                                                         const genderElement = document.getElementById('dentist-gender');
-                                           
                                                         const emailElement = document.getElementById('dentist-email');
                                                         const addressElement = document.getElementById('dentist-address');
                                                         const clinicElement = document.getElementById('dentist-clinic');
@@ -310,7 +322,6 @@
                                                         editBioTextarea.value = currentDentist.dataset.bio;
                                                         editDobInput.value = currentDentist.dataset.dob;
                                                         editPhoneInput.value = currentDentist.dataset.phone;
-                                             
                                                         editAddressInput.value = currentDentist.dataset.address;
                                                         // Populate the clinic dropdown (if applicable)
                                                         const clinicDropdown = document.getElementById('edit-clinic');
@@ -404,7 +415,7 @@
 
                                         <label for="edit-image">Image URL:</label>
                                         <input required="true" type="file" name="edit-image" id="edit-image" accept="image/png, image/jpg"/><br><br>
-                                        
+
                                         <label for="edit-bio">Bio:</label>
                                         <textarea id="edit-bio" name="edit-bio" rows="4"></textarea>
 
@@ -453,7 +464,6 @@
                             const dobElement = document.getElementById('dentist-dob');
                             const phoneElement = document.getElementById('dentist-phone');
                             const genderElement = document.getElementById('dentist-gender');
-                         
                             const emailElement = document.getElementById('dentist-email');
                             const addressElement = document.getElementById('dentist-address');
                             const clinicElement = document.getElementById('dentist-clinic');

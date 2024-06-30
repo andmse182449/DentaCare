@@ -370,7 +370,7 @@ public class BookingDAO {
                 + "    SUM(price) AS TotalPrice\n"
                 + "FROM\n"
                 + "    dbo.BOOKING\n"
-                + "where YEAR(createDay) = ? \n"
+                + "where YEAR(createDay) = ? and BOOKING.status = 2 \n"
                 + "GROUP BY\n"
                 + "    YEAR(createDay),\n"
                 + "    MONTH(createDay)\n"
@@ -387,6 +387,33 @@ public class BookingDAO {
                 Map<String, Object> row = new HashMap<>();
                 row.put("Year", rs.getInt("Year"));
                 row.put("Month", rs.getInt("Month"));
+                row.put("TotalPrice", rs.getFloat("TotalPrice"));
+                resultList.add(row);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return resultList;
+    }
+
+    // sua o day ne`
+    public List<Map<String, Object>> getTotalPriceByYear(int year) {
+        String sql = "SELECT\n"
+                + "    YEAR(createDay) AS Year,\n"
+                + "    SUM(price) AS TotalPrice\n"
+                + "FROM dbo.BOOKING\n"
+                + "WHERE YEAR(createDay) = ? \n"
+                + "and BOOKING.status = 2\n"
+                + "GROUP BY YEAR(createDay)";
+        Connection con = DBUtils.getConnection();
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, year);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("Year", rs.getInt("Year"));
                 row.put("TotalPrice", rs.getFloat("TotalPrice"));
                 resultList.add(row);
             }
@@ -474,7 +501,7 @@ public class BookingDAO {
         return null;
     }
 
-   public List<BookingDTO> getAllBookingCustomer(String customerID) {
+    public List<BookingDTO> getAllBookingCustomer(String customerID) {
         String sql = """
               SELECT 
                 bookingID, a.clinicID, customerID, createDay, appointmentDay, a.status, a.price, 
@@ -525,7 +552,7 @@ public class BookingDAO {
         return null;
     }
 
-   public List<BookingDTO> getAllBookingByIdAndDayForDen(String dentistID) {
+    public List<BookingDTO> getAllBookingByIdAndDayForDen(String dentistID) {
         String sql = """
             SELECT * from BOOKING where dentistID = ?
             """;
@@ -565,7 +592,7 @@ public class BookingDAO {
         return null;
     }
 
-   public List<Map<String, Object>> getAllBookingForDen2(String dentistID, String appointmentDay) throws SQLException {
+    public List<Map<String, Object>> getAllBookingForDen2(String dentistID, String appointmentDay) throws SQLException {
         List<Map<String, Object>> results = new ArrayList<>();
         Connection connection = null;
         PreparedStatement statement = null;
@@ -655,23 +682,24 @@ public class BookingDAO {
 
     public List<Map<String, Object>> getTotalTimeSlotsByYearMonth(int year, int month) throws SQLException {
         List<Map<String, Object>> timeResults = new ArrayList<>();
-        String query = "WITH AllTimePeriods AS ( "
-                + "    SELECT DISTINCT timePeriod "
-                + "    FROM TIMESLOT "
-                + ") "
-                + "SELECT "
-                + "    ? AS Year, "
-                + "    ? AS Month, "
-                + "    COALESCE(SUM(b.slotID), 0) AS TotalTimeSlot, "
-                + "    a.timePeriod AS TimePeriod "
-                + "FROM "
-                + "    AllTimePeriods a "
-                + "    LEFT JOIN BOOKING b ON a.timePeriod = (SELECT timePeriod FROM TIMESLOT WHERE TIMESLOT.slotID = b.slotID) "
-                + "    AND YEAR(b.createDay) = ? "
-                + "    AND MONTH(b.createDay) = ? "
-                + "GROUP BY "
-                + "    a.timePeriod "
-                + "ORDER BY "
+        String query = "WITH AllTimePeriods AS (\n"
+                + "    SELECT DISTINCT timePeriod\n"
+                + "    FROM TIMESLOT\n"
+                + ")\n"
+                + "SELECT\n"
+                + "    ? AS Year,\n"
+                + "    ? AS Month,\n"
+                + "    COALESCE(COUNT(b.slotID), 0) AS TotalTimeSlot,\n"
+                + "    a.timePeriod AS TimePeriod\n"
+                + "FROM\n"
+                + "    AllTimePeriods a\n"
+                + "    LEFT JOIN TIMESLOT t ON a.timePeriod = t.timePeriod\n"
+                + "    LEFT JOIN BOOKING b ON t.slotID = b.slotID\n"
+                + "        AND YEAR(b.appointmentDay) = ?\n"
+                + "        AND MONTH(b.appointmentDay) = ?\n"
+                + "GROUP BY\n"
+                + "    a.timePeriod\n"
+                + "ORDER BY\n"
                 + "    a.timePeriod;";
         Connection con = DBUtils.getConnection();
 
@@ -696,7 +724,7 @@ public class BookingDAO {
         return timeResults;
     }
 
-public List<Map<String, Object>> getAccountInfosByDentistID(String dentistID) throws SQLException {
+    public List<Map<String, Object>> getAccountInfosByDentistID(String dentistID) throws SQLException {
         List<Map<String, Object>> bookingDetailsList = new ArrayList<>();
         String sql = """
                      SELECT acc.email, acc.fullName, acc.phone, 
@@ -731,6 +759,7 @@ public List<Map<String, Object>> getAccountInfosByDentistID(String dentistID) th
         }
         return bookingDetailsList;
     }
+
     public List<BookingDTO> getBookingListByDenID(String dentistID) {
         String sql = "SELECT \n"
                 + "            a.bookingID, createDay, appointmentDay, a.status, a.price, \n"

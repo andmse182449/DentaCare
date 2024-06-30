@@ -70,10 +70,11 @@ public class DashBoardServlet extends HttpServlet {
                 // total Price
                 BookingDAO bookDao = new BookingDAO();
                 List<Map<String, Object>> results = bookDao.getTotalPriceByYearMonth(yearS1);
+                List<Map<String, Object>> allPriceInYear = bookDao.getTotalPriceByYear(yearS1);
 
                 // Total Time Slot
                 List<Map<String, Object>> timeResults = bookDao.getTotalTimeSlotsByYearMonth(yearS2, monthS);
-
+                System.out.println(timeResults);
                 // count female / male
                 List<Map<String, Object>> male = accDao.getAgeGroupStatisticsForMale();
                 List<Map<String, Object>> female = accDao.getAgeGroupStatisticsForFemale();
@@ -89,6 +90,7 @@ public class DashBoardServlet extends HttpServlet {
                 request.setAttribute("female", female);
                 request.setAttribute("timeResults", timeResults);
                 request.setAttribute("results", results);
+                request.setAttribute("allPriceInYear", allPriceInYear);
 
             } else if (action.equals("dashboardAction")) {
                 String year1 = request.getParameter("year1");
@@ -107,10 +109,11 @@ public class DashBoardServlet extends HttpServlet {
                 // total Price
                 BookingDAO bookDao = new BookingDAO();
                 List<Map<String, Object>> results = bookDao.getTotalPriceByYearMonth(yearS1);
+                List<Map<String, Object>> allPriceInYear = bookDao.getTotalPriceByYear(yearS1);
 
                 // Total Time Slot
                 List<Map<String, Object>> timeResults = bookDao.getTotalTimeSlotsByYearMonth(yearS2, monthS);
-
+                System.out.println(timeResults);
                 // count female / male
                 List<Map<String, Object>> male = accDao.getAgeGroupStatisticsForMale();
                 List<Map<String, Object>> female = accDao.getAgeGroupStatisticsForFemale();
@@ -127,6 +130,8 @@ public class DashBoardServlet extends HttpServlet {
                 request.setAttribute("female", female);
                 request.setAttribute("timeResults", timeResults);
                 request.setAttribute("results", results);
+                request.setAttribute("allPriceInYear", allPriceInYear);
+
 //                if (("timeSlot").equals(key)) {
 //                    String yearStr2 = request.getParameter("year2");
 //                    String monthStr2 = request.getParameter("month2");
