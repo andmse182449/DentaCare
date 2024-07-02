@@ -33,6 +33,7 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/drop-down.css">
         <link rel="stylesheet" href="css/readmore.css">
+        <link rel="stylesheet" href="css/celebs.css">
         <!--	  -->
     </head>
     <body>
@@ -139,6 +140,45 @@
             </div>
 
         </section>
+        <section class="ftco-section">
+            <div class="container">
+                <div class="row justify-content-center mb-5 pb-5">
+                    <div class="col-md-7 text-center heading-section ftco-animate">
+                        <h2 class="mb-3" style="font-size: xxx-large;">Celebrities using services at DentaCare</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container-forpic">
+            <div class="card-img big-card">
+                <img src="images/sontungmtp.jpg" alt="Trinh Phạm">
+                <div class="info">
+                    <h3 style="font-style: ">Son Tung-MTP</h3>
+                    <p>Singer</p>
+                </div>
+            </div>
+            <div class="card-img">
+                <img src="images/hth.jpg" alt="Trần Việt Bảo Hoàng">
+                <div class="info">
+                    <h3>HieuThuHai</h3>
+                    <p>Rapper</p>
+                </div>
+            </div>
+            <div class="card-img">
+                <img src="images/mono.jpg" alt="Salim">
+                <div class="info">
+                    <h3>Mono</h3>
+                    <p>Singer</p>
+                </div>
+            </div>
+            <div class="card-img">
+                <img src="images/wrens.jpg" alt="Lê Hà Trúc">
+                <div class="info">
+                    <h3>Wren Evens</h3>
+                    <p>Singer</p>
+                </div>
+            </div>
+        </div>
         <c:set var="dentists" value="${requestScope.DENTIST}"/>
         <section class="ftco-section">
             <div class="container">
@@ -153,9 +193,9 @@
                             <li class="service-item" href="#">
                                 <div class="d-flex mb-sm-4 ftco-animate">
                                     <div class="staff">
-                                        <div class="img mb-4" style="background-image: url(images/person_5.jpg);"></div>
+                                        <div class="img mb-4" style="background-image: url(images/${dentist.getImage() != null ? dentist.getImage() : 'person_5.jpg'})"></div>
                                         <div class="info text-center">
-                                            <h3><a href="teacher-single.html">${dentist.getUserName()}</a></h3>
+                                            <h3><a href="teacher-single.html">${dentist.getFullName()}</a></h3>
                                             <span class="position">Dentist</span>
                                         </div>
                                     </div>

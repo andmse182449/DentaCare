@@ -33,138 +33,52 @@
         <link rel="stylesheet" href="css/forDoc.css">
     </head>
     <style>
-        /* Container for flexbox layout */
-        .contentDen {
-            display: flex;              /* Enable flexbox */
-            flex-wrap: wrap;            /* Allow items to wrap to the next line */
-            gap: 2rem;                  /* Space between columns and rows */
-            justify-content: center;    /* Center the columns horizontally */
-            margin: 0 auto;             /* Center the container itself */
-            width: 100%;                /* Adjust the width as needed */
-        }
-
-        /* Pagination styling */
-        .pagination {
-            margin-top: 10px;
-            display: inline-block;
-            justify-content: center;
-        }
-
-        .pagination a {
-            color: black;
-            font-size: 22px;
-            float: left;
-            padding: 0px 12px;
-            text-decoration: none;
-        }
-
-        .pagination a.active {
-            border-radius: 20px;
-            background-color: #2f89fc !important;
-            color: white !important;
-        }
-
-        /* Doctor card styling */
-        .doctor-card {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            max-width: 800px;
-            margin: auto;
-            align-items: center;
-        }
-
-        /* Doctor info section */
-        .doctor-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .doctor-info h3 {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
-            color: #6c757d;
-            font-size: 18px;
-        }
-
-        .doctor-info h2 {
-            margin: 5px 0;
-            color: #343a40;
-            font-size: 24px;
-        }
-
-        /* List of doctor details */
-        .doctor-details {
-            list-style: none;
             padding: 0;
-            margin: 20px 0;
-            color: #6c757d;
+            background-color: #f0f0f0;
         }
-
-        .doctor-details li {
-            margin-bottom: 10px;
-        }
-
-        /* Button container */
-        .doctor-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        /* General button styling */
-        .btn-detail, .btn-appointment {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            /* font-size: 16px; */
-        }
-
-        /* Specific styles for btn-detail */
-        .btn-detail {
-            font-size: 16px;
-            background: linear-gradient(90deg, #e7f1ff 50%, #1855b8 50%); /* Initial gradient background */
-            color: #007bff; /* Initial text color */
-            background-size: 200% 100%; /* Background size larger than button */
-            background-position: 0%; /* Initial background position, starting from the left */
-            transition: background-position 0.4s ease, color 0.3s ease; /* Smooth transition */
-        }
-
-        .btn-detail:hover {
-            background-position: 100% 0%; /* Move background to show the hover color */
-            color: white; /* Change text color to white on hover */
-        }
-
-        /* Specific styles for btn-appointment */
-        .btn-appointment {
-            font-size: 16px;
-            background-color: #007bff; /* Initial background color */
-            color: white; /* Text color */
-            transition: background-color 0.3s ease; /* Smooth transition */
-        }
-
-        /* Styling for doctor image */
-        .doctor-image {
-            background-size: cover;
-            background-position: center;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            margin-left: auto;
-        }
-
-        /* Container for doctor cards */
-        .doctor-cards-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Two columns */
-            gap: 20px; /* Space between the cards */
+        .header {
+            background-color: #ffffff;
             padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
+        .clinic-image {
+            border-radius: 8px;
+            width: 500px;
+            max-height: 500px;
+            object-fit: cover;
+        }
+        .info-container {
+            background-color: #ffffff;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        .info-item svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
     </style>
     <body>
 
@@ -179,8 +93,8 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a href="LoginChangePage?action=home" class="nav-link">Home</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Service</a></li>
-                        <li class="nav-item active"><a href="#" class="nav-link">Doctor</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link">Clinic</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctor</a></li>
+                        <li class="nav-item active"><a href="#" class="nav-link">Clinic</a></li>
                             <c:set var="account" value="${sessionScope.account}"/>
                             <c:choose>
                                 <c:when test="${account == null}">
@@ -258,160 +172,126 @@
                 <div class="container" data-scrollax-parent="true">
                     <div class="row slider-text align-items-end">
                         <div class="col-md-7 col-sm-12 ftco-animate mb-5">
-                            <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span class="mr-2"><a href="LoginChangePage?action=home">Home</a></span> <span>Services</span></p>
-                            <h1 class="mb-3" data-scrollax=" properties: { translateY: '70%', opacity: .9}">Well Experienced Doctors</h1>
+                            <p class="breadcrumbs" data-scrollax=" properties: { translateY: '70%', opacity: 1.6}"><span class="mr-2"><a href="LoginChangePage?action=home">Home</a></span> <span>Clinic</span></p>
+                            <h1 class="mb-3" data-scrollax=" properties: { translateY: '70%', opacity: .9}">Decent Facilities</h1>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
+        <c:set var="results" value="${requestScope.numberOfResults}"/>
         <section class="ftco-section">
             <div class="container">
                 <div class="row justify-content-center mb-5 pb-5">
                     <div class="col-md-7 text-center heading-section ftco-animate">
-                        <h2 class="mb-3">Meet Our Experience Dentist</h2>
-                        <p>DentaCare's team places a strong emphasis on adhering to procedures, conducting professional consultations, and listening to the needs of their patients.</p>
+                        <h2 class="mb-3">DentaCare's Clinic Units</h2>
+                        <p>As of now, Parkway has ${results} clinics in prime locations in Ho Chi Minh City and neighboring provinces. Find the nearest clinic to enjoy and experience top-notch services.</p>
                     </div>
                 </div>
                 <div class="find-section">
-                    <c:set var="services"  value="${requestScope.SERVICE}"/>
-                    <c:set var="show"  value="${requestScope.show}"/>
-
-                    <div class="left-container">
-                        <form action="SearchServlet">
-                            <div class="search-container">
-                                <input type="text" name="searchValue" id="searchBar" placeholder="Type in doctor's name" value="${requestScope.searchValue}">
-                            </div>
-                            <div class="btn-box" style="margin-top: 20px">
-                                <button class="btn btn-three" type="submit">Find doctors</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <c:set var="results" value="${requestScope.numberOfResults}"/>
                     <div class="right-container">
+                        <div class="booking-section" id="serviceDetails" style="display: block;">
+                            <div class="doctor-cards-container" style="display: flex; gap: 15rem">
+                                <c:forEach items="${requestScope.CLINIC}" var="p">
+                                    <div>
 
-                        <style>
-                            #serviceID, #serviceName, #serviceMoney {
-                                border: none;
-                                background: transparent;
-                                outline: none;
-                                padding: 0;
-                                font-size: 16px;
-                                color: #333;
-                            }
-                        </style>
-                        <ul id="resultsList" class="results"></ul>
+                                        <img src="images/clinic1.jpg" alt="Hình ảnh phòng khám nha khoa" class="clinic-image">
 
-                        <div class="founded" style="display: ${requestScope.founded}">
-                            <img src="images/no-results.jpg" />
-                            <p>${requestScope.noRes}</p>
-                        </div>
-                        <div class="booking-section" id="serviceDetails" style="display: ${show};">
-                            <p style="
-                               font-size: 20px;
-                               ">Find <span><b>${results}</b></span> results</p>
-
-
-                            <div class="doctor-cards-container">
-                                <c:forEach items="${requestScope.dentistList}" var="p">
-                                    <div class="doctor-card">
-                                        <div class="doctor-info">
-                                            <h3>Doctor</h3>
-                                            <h2>${p.getFullName()}</h2>
-                                            <ul class="doctor-details">
-                                                <li>${p.getIntroduction()}</li>
-                                                <li>Specialities: ${p.getMajorName()}</li>
-                                                <li>Available at ${p.getClinicName()}</li>
-                                            </ul>
-                                            <div class="doctor-buttons">
-                                                <!--                                                <button class="btn-detail">Watch in details</button>-->
-                                                <button class="btn-appointment">Book Now</button>
+                                        <div class="info-container">
+                                            <h2>${p.getClinicName()}</h2>
+                                            <div class="info-item">
+                                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 6H12.01M9 20L3 17V4L5 5M9 20L15 17M9 20V14M15 17L21 20V7L19 6M15 17V14M15 6.2C15 7.96731 13.5 9.4 12 11C10.5 9.4 9 7.96731 9 6.2C9 4.43269 10.3431 3 12 3C13.6569 3 15 4.43269 15 6.2Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                                <span>${p.getClinicAddress()}</span>
                                             </div>
+                                            <div class="info-item">
+                                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 6V12L16 14M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                                <span>Opening Hours: 8:00 - 20:00</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M3 5.5C3 14.0604 9.93959 21 18.5 21C18.8862 21 19.2691 20.9859 19.6483 20.9581C20.0834 20.9262 20.3009 20.9103 20.499 20.7963C20.663 20.7019 20.8185 20.5345 20.9007 20.364C21 20.1582 21 19.9181 21 19.438V16.6207C21 16.2169 21 16.015 20.9335 15.842C20.8749 15.6891 20.7795 15.553 20.6559 15.4456C20.516 15.324 20.3262 15.255 19.9468 15.117L16.74 13.9509C16.2985 13.7904 16.0777 13.7101 15.8683 13.7237C15.6836 13.7357 15.5059 13.7988 15.3549 13.9058C15.1837 14.0271 15.0629 14.2285 14.8212 14.6314L14 16C11.3501 14.7999 9.2019 12.6489 8 10L9.36863 9.17882C9.77145 8.93713 9.97286 8.81628 10.0942 8.64506C10.2012 8.49408 10.2643 8.31637 10.2763 8.1317C10.2899 7.92227 10.2096 7.70153 10.0491 7.26005L8.88299 4.05321C8.745 3.67376 8.67601 3.48403 8.55442 3.3441C8.44701 3.22049 8.31089 3.12515 8.15802 3.06645C7.98496 3 7.78308 3 7.37932 3H4.56201C4.08188 3 3.84181 3 3.63598 3.09925C3.4655 3.18146 3.29814 3.33701 3.2037 3.50103C3.08968 3.69907 3.07375 3.91654 3.04189 4.35147C3.01413 4.73067 3 5.11354 3 5.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                                <span>Contact: ${p.getHotline()}</span>
+                                            </div>
+                                            <a href="#" class="button">Book Now</a>
                                         </div>
-                                        <div class="doctor-image" style="background-image: url(images/${p.getImage() != null ? p.getImage() : 'person_5.jpg'})"></div>
+
                                     </div>
+
                                 </c:forEach>
                             </div>
-
-                            <form action="#">
-                                <c:set var="page" value="${requestScope.page}"/>
-                                <div class="pagination">
-                                    <c:forEach begin="${1}" end="${requestScope.num}" var="i">
-                                        <a class="${i==page ? "active" : ""}" href="SearchServlet?searchValue=${requestScope.searchValue}&page=${i}">${i}</a>
-                                    </c:forEach>
-                                </div>
-                            </form>
                         </div>
-                    </div>
-                    <script>
-                        const searchBar = document.getElementById('searchBar');
-                        const resultsCount = document.getElementById('resultsCount');
-                        const resultsList = document.getElementById('resultsList');
+                        <script>
+                            const searchBar = document.getElementById('searchBar');
+                            const resultsCount = document.getElementById('resultsCount');
+                            const resultsList = document.getElementById('resultsList');
 
-                        searchBar.addEventListener('input', function () {
-                            const filter = this.value.toLowerCase();
-                            const items = document.querySelectorAll('.scroll-item');
-                            let visibleCount = 0;
-                            resultsList.innerHTML = '';
+                            searchBar.addEventListener('input', function () {
+                                const filter = this.value.toLowerCase();
+                                const items = document.querySelectorAll('.scroll-item');
+                                let visibleCount = 0;
+                                resultsList.innerHTML = '';
 
-                            items.forEach(item => {
-                                const text = item.textContent.toLowerCase();
-                                if (text.includes(filter)) {
-                                    item.style.display = '';
-                                    visibleCount++;
-                                    const listItem = document.createElement('li');
-                                    listItem.textContent = item.textContent;
-                                    listItem.className = 'result-item';
-                                } else {
-                                    item.style.display = 'none';
-                                }
-                            });
-
-                            resultsCount.textContent = visibleCount;
-                        });
-
-
-                        document.querySelectorAll('.scroll-item').forEach(item => {
-                            item.addEventListener('click', function () {
-                                document.querySelectorAll('.circle').forEach(circle => {
-                                    circle.classList.remove('active');
+                                items.forEach(item => {
+                                    const text = item.textContent.toLowerCase();
+                                    if (text.includes(filter)) {
+                                        item.style.display = '';
+                                        visibleCount++;
+                                        const listItem = document.createElement('li');
+                                        listItem.textContent = item.textContent;
+                                        listItem.className = 'result-item';
+                                    } else {
+                                        item.style.display = 'none';
+                                    }
                                 });
-                                this.querySelector('.circle').classList.add('active');
 
-                                // Get service details from data attribute
-                                const serviceName = this.getAttribute('data-servicename');
-                                const serviceMoney = this.getAttribute('data-servicemoney');
-
-                                // Set service details in the right container
-                                document.getElementById('serviceName').value = serviceName;
-                                document.getElementById('serviceMoney').value = serviceMoney;
-
-                                // Optionally, you can handle booking functionality here
-                                // For example, by showing a modal or redirecting to a booking page
-
-                                const selectedItemText = this.textContent.trim();
-                                const currentUrl = new URL(window.location.href);
-                                const selectedParam = currentUrl.searchParams.get('selected');
-
-                                if (selectedParam) {
-                                    // Remove the previous selection from the URL
-                                    currentUrl.searchParams.delete('selected');
-                                }
-
-                                if (selectedItemText) {
-                                    // Append the new selection to the URL without encoding spaces
-                                    currentUrl.searchParams.append('selected', decodeURIComponent(selectedItemText));
-                                }
-
-                                const newUrl = currentUrl.toString();
-                                window.history.pushState({}, '', newUrl);
+                                resultsCount.textContent = visibleCount;
                             });
-                        });
-                    </script>
+
+
+                            document.querySelectorAll('.scroll-item').forEach(item => {
+                                item.addEventListener('click', function () {
+                                    document.querySelectorAll('.circle').forEach(circle => {
+                                        circle.classList.remove('active');
+                                    });
+                                    this.querySelector('.circle').classList.add('active');
+
+                                    // Get service details from data attribute
+                                    const serviceName = this.getAttribute('data-servicename');
+                                    const serviceMoney = this.getAttribute('data-servicemoney');
+
+                                    // Set service details in the right container
+                                    document.getElementById('serviceName').value = serviceName;
+                                    document.getElementById('serviceMoney').value = serviceMoney;
+
+                                    // Optionally, you can handle booking functionality here
+                                    // For example, by showing a modal or redirecting to a booking page
+
+                                    const selectedItemText = this.textContent.trim();
+                                    const currentUrl = new URL(window.location.href);
+                                    const selectedParam = currentUrl.searchParams.get('selected');
+
+                                    if (selectedParam) {
+                                        // Remove the previous selection from the URL
+                                        currentUrl.searchParams.delete('selected');
+                                    }
+
+                                    if (selectedItemText) {
+                                        // Append the new selection to the URL without encoding spaces
+                                        currentUrl.searchParams.append('selected', decodeURIComponent(selectedItemText));
+                                    }
+
+                                    const newUrl = currentUrl.toString();
+                                    window.history.pushState({}, '', newUrl);
+                                });
+                            });
+                        </script>
+                    </div>
                 </div>
-            </div>
         </section>
 
 

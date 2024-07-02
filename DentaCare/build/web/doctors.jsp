@@ -178,8 +178,9 @@
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a href="LoginChangePage?action=home" class="nav-link">Home</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
-                        <li class="nav-item active"><a href="#" class="nav-link">Doctors</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Service</a></li>
+                        <li class="nav-item active"><a href="#" class="nav-link">Doctor</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link">Clinic</a></li>
                             <c:set var="account" value="${sessionScope.account}"/>
                             <c:choose>
                                 <c:when test="${account == null}">
@@ -320,18 +321,16 @@
                                             <h3>Doctor</h3>
                                             <h2>${p.getFullName()}</h2>
                                             <ul class="doctor-details">
-                                                <li>Tốt nghiệp Bác sĩ Răng Hàm Mặt – Đại học y dược Huế</li>
-                                                <li>Chứng chỉ hành nghề 54 tháng</li>
-                                                <li>Chứng chỉ phẫu thuật nhổ răng khôn lệch – Chứng chỉ đào tạo liên tục Đại học Y dược HCM</li>
-                                                <li>Chứng chỉ Kiểm soát nhiễm khuẩn trong nha khoa – Bệnh viện răng hàm mặt Trung Ương</li>
-                                                <li>Chứng chỉ cấy ghép nha khoa – Bệnh viện răng hàm mặt Trung Ương</li>
+                                                <li>${p.getIntroduction()}</li>
+                                                <li>Specialities: ${p.getMajorName()}</li>
+                                                <li>Available at ${p.getClinicName()}</li>
                                             </ul>
                                             <div class="doctor-buttons">
-                                                <button class="btn-detail">Watch in details</button>
-                                                <button class="btn-appointment">Book</button>
+                                                <!--                                                <button class="btn-detail">Watch in details</button>-->
+                                                <button class="btn-appointment">Book Now</button>
                                             </div>
                                         </div>
-                                        <div class="doctor-image" style="background-image: url('images/person_5.jpg');"></div>
+                                        <div class="doctor-image" style="background-image: url(images/${p.getImage() != null ? p.getImage() : 'person_5.jpg'})"></div>
                                     </div>
                                 </c:forEach>
                             </div>

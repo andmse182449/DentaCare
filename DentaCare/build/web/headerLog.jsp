@@ -46,8 +46,9 @@
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active"><a href="LoginChangePage?action=home" class="nav-link" style="color: black">Home</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link" style="color: black">Services</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link" style="color: black">Doctors</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link" style="color: black">Service</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link" style="color: black">Doctor</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link" style="color: black">Clinic</a></li>
                         <li class="nav-item">
                             <c:set var="account" value="${sessionScope.account}"/>
                             <div href="contact.html" class="nav-link" style="color: black">

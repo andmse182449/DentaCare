@@ -106,7 +106,7 @@ public class FeedbackDAO {
         ResultSet rs = null;
         FeedbackDTO dto = null;
         List<FeedbackDTO> list = new ArrayList<>();
-        String query = "SELECT feedbackID, feedbackDay, feedbackContent, fullName, bookingID FROM FEEDBACK";
+        String query = "SELECT feedbackID, feedbackDay, feedbackContent, fullName, bookingID FROM FEEDBACK fb join ACCOUNT ac on fb.accountID = ac.accountID";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);

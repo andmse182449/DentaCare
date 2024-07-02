@@ -92,9 +92,9 @@ textarea.input-field {
 }
 
 /* Button styles */
-.btnFeedBack {
+.btnFeedBack, .btnViewFeedBack {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 5px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -104,7 +104,7 @@ textarea.input-field {
     margin-top: 15px;
 }
 
-.btnFeedBack:hover {
+.btnFeedBack:hover, .btnViewFeedBack:hover {
     background-color: #0056b3;
 }
 

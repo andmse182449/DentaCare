@@ -38,6 +38,16 @@ public class LoginChangePage extends HttpServlet {
                     request.setAttribute("DENTIST", accountDAO.getAllDentists());
                     url = "userWeb-page.jsp";
                 }
+                case "clinic" -> {
+                    AccountDAO accountDAO = new AccountDAO();
+                    ClinicDAO clinicDAO = new ClinicDAO();
+                    ServiceDAO serviceDAO = new ServiceDAO();
+                    request.setAttribute("CLINIC", clinicDAO.getAllClinic());
+                    request.setAttribute("numberOfResults", clinicDAO.getAllClinic().size());
+                    request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+                    request.setAttribute("DENTIST", accountDAO.getAllDentists());
+                    url = "apartment.jsp";
+                }
                 case "service" -> {
                     ClinicDAO clinicDAO = new ClinicDAO();
                     ServiceDAO serviceDAO = new ServiceDAO();
@@ -46,6 +56,7 @@ public class LoginChangePage extends HttpServlet {
                     List<FeedbackDTO> list = null;
                     if ((AccountDTO) session.getAttribute("account") == null) {
                         list = feedbackDAO.getAllFeedbacks();
+//                        System.out.println(list.size());
                     } else {
                         AccountDTO account = (AccountDTO) session.getAttribute("account");
                         list = feedbackDAO.getAllFeedbacks(account.getAccountID());

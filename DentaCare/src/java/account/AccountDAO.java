@@ -85,7 +85,7 @@ public class AccountDAO implements Serializable {
         List<AccountDTO> result = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
-        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE ROLEID = 1");
+        StringBuilder query = new StringBuilder("SELECT distinct * FROM ACCOUNT WHERE ROLEID = 1");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -1122,11 +1122,15 @@ public class AccountDAO implements Serializable {
     }
 
     public List<AccountDTO> searchDentists(String name) throws SQLException {
-        List<AccountDTO> list = new ArrayList<>();
+        List<AccountDTO> result = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        StringBuilder query = new StringBuilder("SELECT * FROM ACCOUNT WHERE fullName like ? and roleID = 1");
+        StringBuilder query = new StringBuilder("select a.accountID, email, fullName, phone, address, dob, gender, image, cl.clinicName, m.majorName, md.introduction, status from account a "
+                + "LEFT JOIN  MAJORDETAIL md on a.accountID = md.accountID "
+                + "LEFT JOIN  MAJOR m on md.majorID = m.majorID "
+                + "LEFT JOIN  CLINIC cl on cl.clinicID = a.clinicID "
+                + "where a.roleID = 1 and status = 0 and fullName like ?");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -1135,28 +1139,24 @@ public class AccountDAO implements Serializable {
             rs = stm.executeQuery();
             while (rs.next()) {
                 String accountID = rs.getString("accountID");
-                String userName = rs.getString("username");
-                String password = rs.getString("password");
+                String majorName = rs.getString("majorName");
+                String introduction = rs.getString("introduction");
+
                 String email = rs.getString("email");
                 String fullName = rs.getString("fullName");
                 String phone = rs.getString("phone");
                 String address = rs.getString("address");
+                String image = rs.getString("image");
                 LocalDate dob = null;
                 java.sql.Date dobSql = rs.getDate("dob");
                 if (dobSql != null) {
                     dob = dobSql.toLocalDate();
                 }
                 boolean gender = rs.getBoolean("gender");
-                String googleID = rs.getString("googleID");
-                String googleName = rs.getString("googleName");
-                int role = rs.getInt("roleID");
                 int status = rs.getInt("status");
-                String image = rs.getString("image");
-                int clinicID = rs.getInt("clinicID");
-
-                AccountDTO accountDTO = new AccountDTO(accountID, userName, password, email, dob, fullName, phone,
-                        address, image, gender, googleID, googleName, role, status, clinicID);
-                list.add(accountDTO);
+                String clinicName = rs.getString("clinicName");
+                AccountDTO accountDTO = new AccountDTO(accountID, email, dob, fullName, phone, address, image, gender, status, clinicName, majorName, introduction);
+                result.add(accountDTO);
 
             }
         } catch (SQLException e) {
@@ -1173,7 +1173,7 @@ public class AccountDAO implements Serializable {
                 con.close();
             }
         }
-        return list;
+        return result;
     }
 
     public boolean disableDentist(String accountId) throws SQLException {

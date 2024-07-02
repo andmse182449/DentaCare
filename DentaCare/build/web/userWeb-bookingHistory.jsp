@@ -131,7 +131,7 @@
                         <div class="overlay" id="feedbackOverlay-${booking.bookingID}">
 
                             <div class="overlay-content">
-                                <span class="close-btn" onclick="toggleFeedbackForm()">&times;</span>
+                                <span class="close-btn" onclick="closeToggle()">&times;</span>
                                 <div class="product-header">
                                     <img src="product_image.jpg" alt="Product Image" class="product-image">
                                     <div class="product-info">
@@ -156,8 +156,10 @@
                             </div>
                         </div>
                         <!--cua hung-->
+                        <c:set var="records" value="${requestScope.recordList}"/>
                         <div id="bookingModal-${booking.bookingID}" class="modal">
                             <div class="modal-content">
+
                                 <div style="display: flex; justify-content: space-between;">
                                     <h2>Booking Details</h2>
                                     <span class="close" data-booking-id="${booking.bookingID}">&times;</span>      
@@ -166,11 +168,23 @@
                                     <div style="display: flex; justify-content: space-between; margin: 0;"><strong style="width: 40%">Booking Code: </strong> <p style="text-align: left; width: 60%"> ${booking.bookingID}</p></div>
                                     <div style="display: flex; justify-content: space-between; margin: 0;"><strong style="width: 40%">Confirm Booking Day:  </strong> <p style="text-align: left; width: 60%">${booking.createDay}</p></div>
                                     <hr>
-                                    <div><strong>Service Name</strong> <p><%= service.getServiceName()%></p></div>
-                                    <div><strong>Address</strong> <p><%= clinic.getClinicAddress()%></p></div>
-                                    <div><strong>Time</strong> <p><%= slot.getTimePeriod()%></p></div>
-                                    <div><strong>Day</strong> <p>${booking.getAppointmentDay()}</p></div>
-                                    <div><strong>Dentist</strong> <p><%= dentist != null ? dentist.getFullName() : ""%></p></div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <div>
+                                            <div><strong>Service Name</strong> <p><%= service.getServiceName()%></p></div>
+                                            <div><strong>Address</strong> <p><%= clinic.getClinicAddress()%></p></div>
+                                            <div><strong>Time</strong> <p><%= slot.getTimePeriod()%></p></div>
+                                            <div><strong>Day</strong> <p>${booking.getAppointmentDay()}</p></div>
+                                            <div><strong>Dentist</strong> <p><%= dentist != null ? dentist.getFullName() : ""%></p></div>
+                                        </div>
+                                        <div>
+                                            <c:forEach items="${records}" var="record">
+                                                <c:if test="${record.bookingID eq booking.bookingID}">
+                                                    <div><strong>Result</strong> <p>${record.getResults()}</p></div>
+                                                    <div><strong>Re-Examination Date</strong> <p>${record.getReExanime()}</p></div>
+                                                </c:if>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
                                     <hr>
                                     <div style="display: flex; justify-content: space-between;">
                                         <div><strong>Price</strong> <p>${booking.getPrice()}</p></div>
@@ -181,7 +195,10 @@
                                         </form>
                                     </div>
                                 </div>
+
+
                             </div>
+
                         </div>
 
                     </c:forEach>
@@ -204,33 +221,12 @@
         <script src="js/bookingHistory.js"></script>
         <script src="js/writeFeedback.js"></script>
         <script>
-//                        function toggleFeedbackForm() {
-//                            var overlay = document.getElementById('feedbackOverlay-'+ bookingID);
-//                            if (overlay.style.display === 'none' || overlay.style.display === '') {
-//                                overlay.style.display = 'flex';
-//                            } else {
-//                                overlay.style.display = 'none';
-//                            }
-//                        }
-//
-//// Function to toggle the confirmation popup visibility
-//                        function toggleConfirmationPopup() {
-//                            var popup = document.getElementById('confirmationPopup');
-//                            popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-//                        }
-//                        function saveFeedback() {
-//                            // For now, just close the overlay and log a message.
-//                            showConfirmationPopup();
-//                            toggleFeedbackForm();
-//                        }
-//// Function to show the confirmation popup after a comment is saved
-//                        function showConfirmationPopup() {
-//                            toggleConfirmationPopup(); // Show the popup
-//
-//                            // Automatically hide the popup after 3 seconds
-//                            setTimeout(toggleConfirmationPopup, 1500);
-//                        }
-
+                        function closeToggle() {
+                            var overlay = document.querySelectorAll('.overlay');
+                            for (var i = 0; i < overlay.length; i++) {
+                                overlay[i].style.display = 'none';
+                            }
+                        }
 // Function to toggle feedback form visibility for the specific booking
                         function toggleFeedbackForm(bookingID) {
                             // Find the specific overlay for the given bookingID
