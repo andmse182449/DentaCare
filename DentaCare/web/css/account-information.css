@@ -64,7 +64,7 @@ body {
 }
 .profile{
     display:flex;
-    gap: 20rem
+    gap: 17rem
 }
 .input-field input{
     border: 0.1px solid rgba(0, 0, 0, 0.2);

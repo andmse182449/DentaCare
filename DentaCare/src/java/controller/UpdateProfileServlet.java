@@ -37,14 +37,14 @@ public class UpdateProfileServlet extends HttpServlet {
         String name = request.getParameter("fullName");
         String phone = request.getParameter("phone");
         String dob = request.getParameter("dob");
-//        String email = request.getParameter("gender");
+        String address = request.getParameter("address");
         String gender = request.getParameter("gender");
         HttpSession session = request.getSession();
 
         try {
             AccountDTO account = (AccountDTO) session.getAttribute("account");
             AccountDAO accountDao = new AccountDAO();
-            AccountDTO result = accountDao.updateProfileAccount(name, phone, Boolean.parseBoolean(gender), account.getUserName(), dob);
+            AccountDTO result = accountDao.updateProfileAccount(name, phone, Boolean.parseBoolean(gender), account.getUserName(), dob, address);
             if (result != null) {
                 session.setAttribute("account", result);
                 request.setAttribute("success", "Update information successfully.");

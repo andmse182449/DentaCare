@@ -117,4 +117,27 @@ public class MedicalRecordDAO {
         }
     }
 
+    public List<MedicalRecordDTO> getAllRecords() throws SQLException {
+        String sql = "SELECT * FROM MEDIICALRECORDS";
+        List<MedicalRecordDTO> res = new ArrayList<>();
+        MedicalRecordDTO med = null;
+        try (Connection con = DBUtils.getConnection(); PreparedStatement stm = con.prepareStatement(sql)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    String medicalRecordID = rs.getString("medicalRecordID");
+                    String results = rs.getString("results");
+                    String bookingID = rs.getString("bookingID");
+                    String reExanime = rs.getString("reExanime");
+                    med = new MedicalRecordDTO(medicalRecordID, results, bookingID, reExanime);
+                    res.add(med);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred while checking existence: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // Optionally rethrow the exception to propagate it up the call stack
+        }
+
+        return res; // Return null if the record does not exist
+    }
 }

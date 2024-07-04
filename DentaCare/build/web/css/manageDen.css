@@ -40,7 +40,6 @@
 }
 
 .view-info:hover {
-    text-decoration: underline;
     background-color: #cfefff;
 }
 
@@ -125,7 +124,7 @@ button#edit-info {
     color: #fff;
 }
 
-button#edit-info:hover {
+button#edit-info:hover{
     background-color: #0056b3;
 }
 
@@ -229,4 +228,24 @@ input[type="tel"] {
 }
 .hidden {
     display: none;
+}
+
+.pagination {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination a {
+    color: black;
+    font-size: 22px;
+    float: left;
+    padding: 0px 12px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    border-radius: 20px;
+    background-color: #2f89fc !important;
+    color: white !important;
 }

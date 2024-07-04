@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import medicalRecord.MedicalRecordDAO;
 
 /**
  *
@@ -50,6 +51,7 @@ public class HistoryServlet extends HttpServlet {
         AccountDTO account = (AccountDTO) session.getAttribute("account");
         BookingDAO bookingDAO = new BookingDAO();
         FeedbackDAO feedbackDAO = new FeedbackDAO();
+        MedicalRecordDAO medicalDao = new MedicalRecordDAO();
         LocalDate today = LocalDate.now();
         if (action == null || action == "" || action.equals("load")) {
             try {
@@ -65,6 +67,7 @@ public class HistoryServlet extends HttpServlet {
                             }
                         }
                     }
+                    request.setAttribute("recordList", medicalDao.getAllRecords());
                     request.setAttribute("bookingList", bookingList);
                     request.setAttribute("feedbackList", fbList);
                     request.getRequestDispatcher(url).forward(request, response);
@@ -72,7 +75,7 @@ public class HistoryServlet extends HttpServlet {
                     System.out.println(e);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(HistoryServlet.class.getName()).log(Level.SEVERE, null,ex);
+                Logger.getLogger(HistoryServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (action.equals("cancel")) {
             String bookingID = request.getParameter("bookingID");

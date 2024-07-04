@@ -77,6 +77,7 @@ public class LoginActionServlet extends HttpServlet {
                     }
                     default -> {
                         if (key.equals("cus")) {
+                            request.setAttribute("loginSuccess", "true");
                             session.setAttribute("account", checkAccount);
                             request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
                         } else {

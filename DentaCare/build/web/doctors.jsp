@@ -170,7 +170,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="#">Denta<span>Care</span></a>
+                <a class="navbar-brand" href="LoginChangePage?action=home">Denta<span>Care</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
                 </button>
@@ -178,41 +178,74 @@
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a href="LoginChangePage?action=home" class="nav-link">Home</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
-                        <li class="nav-item active"><a href="#" class="nav-link">Doctors</a></li>
-                        <!--                        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
-                        <li class="nav-item" style="margin-top: 3px;">
+                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Service</a></li>
+                        <li class="nav-item active"><a href="#" class="nav-link">Doctor</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link">Clinic</a></li>
                             <c:set var="account" value="${sessionScope.account}"/>
-
-                            <div class="action">
-                                <div  onclick="menuToggle();">
-                                    <a href="#" class="nav-link" style="color:white; padding: 8px 18px;">${account.getUserName()}</a>
-                                </div>
-                                <script>
-                                    function menuToggle() {
-                                        const toggleMenu = document.querySelector(".menu");
-                                        toggleMenu.classList.toggle("active");
-                                    }
-                                </script>
-                                <div class="menu">
-                                    <ul>
-                                        <li>
-                                            <img src="images/user.png" /><a href="ProfileServlet">Profile</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/schedule.png"/><a href="ExamScheduleServlet">Examination Schedule</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/history.png" /><a href="HistoryServlet">Booking History</a>
-                                        </li>
-                                        <li>
-                                            <img src="images/log-out.png" /><a href="SignOutServlet">Logout</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                        </li>
+                            <c:choose>
+                                <c:when test="${account == null}">
+                                <li class="nav-item">
+                                    <div href="#" class="nav-link">
+                                        <div class="action">
+                                            <div class="" onclick="menuToggle();">
+                                                <a style="cursor: pointer;">For Employees</a>
+                                            </div>
+                                            <div class="menu">
+                                                <ul>
+                                                    <li>
+                                                        <i class="fa fa-chevron-right"></i><a href="login-dentist.jsp">Login for Dentist</a>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-chevron-right"></i><a href="login-staff.jsp">Login for Staff</a>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-chevron-right"></i><a href="login3">Login for Clinic Owner</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item cta"><a href="login.jsp" class="nav-link show-popup" data-target="#modalRequest">Log in</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                <li class="nav-item" style="margin-top: 3px; display: ">
+                                    <div class="action">
+                                        <div onclick="menuToggle();">
+                                            <a href="#" class="nav-link" style="color:white; padding: 8px 18px;">${account.getUserName()}</a>
+                                        </div>
+                                        <script>
+                                            function menuToggle() {
+                                                const toggleMenu = document.querySelector(".menu");
+                                                toggleMenu.classList.toggle("active");
+                                            }
+                                        </script>
+                                        <div class="menu">
+                                            <ul>
+                                                <li>
+                                                    <img src="images/user.png" /><a href="ProfileServlet">Profile</a>
+                                                </li>
+                                                <li>
+                                                    <img src="images/schedule.png"/><a href="ExamScheduleServlet">Examination Schedule</a>
+                                                </li>
+                                                <li>
+                                                    <img src="images/history.png" /><a href="HistoryServlet">Booking History</a>
+                                                </li>
+                                                <li>
+                                                    <img src="images/log-out.png" /><a href="SignOutServlet">Logout</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
+                        <script>
+                            function menuToggle() {
+                                const toggleMenu = document.querySelector(".menu");
+                                toggleMenu.classList.toggle("active");
+                            }
+                        </script>
                     </ul>
                 </div>
             </div>
@@ -288,18 +321,16 @@
                                             <h3>Doctor</h3>
                                             <h2>${p.getFullName()}</h2>
                                             <ul class="doctor-details">
-                                                <li>Tốt nghiệp Bác sĩ Răng Hàm Mặt – Đại học y dược Huế</li>
-                                                <li>Chứng chỉ hành nghề 54 tháng</li>
-                                                <li>Chứng chỉ phẫu thuật nhổ răng khôn lệch – Chứng chỉ đào tạo liên tục Đại học Y dược HCM</li>
-                                                <li>Chứng chỉ Kiểm soát nhiễm khuẩn trong nha khoa – Bệnh viện răng hàm mặt Trung Ương</li>
-                                                <li>Chứng chỉ cấy ghép nha khoa – Bệnh viện răng hàm mặt Trung Ương</li>
+                                                <li>${p.getIntroduction()}</li>
+                                                <li>Specialities: ${p.getMajorName()}</li>
+                                                <li>Available at ${p.getClinicName()}</li>
                                             </ul>
                                             <div class="doctor-buttons">
-                                                <button class="btn-detail">Watch in details</button>
-                                                <button class="btn-appointment">Book</button>
+                                                <!--                                                <button class="btn-detail">Watch in details</button>-->
+                                                <button class="btn-appointment">Book Now</button>
                                             </div>
                                         </div>
-                                        <div class="doctor-image" style="background-image: url('images/person_5.jpg');"></div>
+                                        <div class="doctor-image" style="background-image: url(images/${p.getImage() != null ? p.getImage() : 'person_5.jpg'})"></div>
                                     </div>
                                 </c:forEach>
                             </div>
