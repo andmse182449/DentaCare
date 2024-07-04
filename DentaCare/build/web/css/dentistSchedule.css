@@ -1,0 +1,301 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for form elements */
+.form-container, .time-slot-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 1200px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Main container styling */
+.main-container, .main-container2 {
+    padding: 20px;
+    margin-left: 220px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #2f89fc;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 15px;
+    font-size: 16px;
+}
+
+th {
+    background-color: #2f89fc;
+    color: white;
+}
+
+.working-day {
+    background-color: #99ff99;
+    color: black;
+}
+
+.event-day {
+    background-color: #d1f7ff;
+    color: #333;
+}
+
+/* Form elements */
+select, input[type="button"], input[type="submit"], input[type="date"], input[type="text"] {
+    padding: 10px;
+    margin: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+select:hover, input[type="button"]:hover, input[type="submit"]:hover {
+    background-color: #e0e0e0;
+}
+
+input[type="button"] {
+    background-color: #2f89fc;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+input[type="button"]:hover {
+    background-color: #1d6fdc;
+}
+
+.create-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.create-button:hover {
+    background-color: #45a049;
+}
+
+/* Table cell hover and selected styles */
+.table-cell:hover, .table-cell2:hover {
+    background-color: #99ffff; /* Light blue color */
+    cursor: pointer;
+}
+
+.table-cell.selected, .table-cell2.selected {
+    background-color: #2f89fc; /* Blue color */
+    color: white;
+}
+
+/* Popup styles */
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.popup-content {
+    position: relative;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    animation: popupAnimation 0.3s ease-out;
+}
+#selectedDateDisplay {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#bookingsList {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+#bookingsList ul {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#confirmButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#confirmButton:hover {
+    background-color: #45a049;
+}
+
+/* Table cell styles */
+.table-cell, .table-cell2 {
+    padding: 10px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.table-cell.selected, .table-cell2.selected {
+    background-color: #f0f8ff;
+    border-color: #4CAF50;
+    color: #333;
+}
+
+/* Animation for popup */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popupAnimation {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.popup p {
+    margin: 20px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+button {
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.center-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Adjust the height as needed */
+}
+
+.center-button a {
+    text-decoration: none;
+}
+
+.center-button input[type="button"] {
+    padding: 10px 20px; /* Adjust padding as needed */
+    background-color: #007BFF; /* Adjust background color as needed */
+    color: white;
+    border: none;
+    border-radius: 5px; /* Adjust border radius as needed */
+    cursor: pointer;
+    font-size: 16px; /* Adjust font size as needed */
+    transition: background-color 0.3s ease;
+}
+
+.center-button input[type="button"]:hover {
+    background-color: #0056b3; /* Adjust hover color as needed */
+}
+
+/* Specific styles for each popup */
+#confirmationPopup .popup-content {
+    background-color: #f9f9f9;
+}
+
+#errorPopup .popup-content {
+    background-color: #ffe6e6;
+}
+
+#successPopup .popup-content {
+    background-color: #e6ffe6;
+}
+
+#eventPopup .popup-content {
+    background-color: #f9f9f9;
+    text-align: left;
+}
+
+#eventPopup label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+#eventPopup select, #eventPopup input[type="hidden"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}

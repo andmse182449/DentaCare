@@ -1,0 +1,106 @@
+/*
+.box{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  background-color: #2F144C;
+  color:#eee;
+  padding:20px 40px;
+  font-family: monospace;
+  width:200px;
+}*/
+.box input[name="readmore"]{
+  display: none;
+}
+.box h1{
+  margin-bottom: 30px;
+  text-align: center;
+}
+.box .des{
+  text-align: justify;
+  position: relative;
+  overflow: hidden;
+  max-height: 160px;
+  transition: 0.5s ease-in-out;
+}
+.box .des::before{
+  position: absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:50px;
+  transition: 0.5s ease-in-out;
+  content:'';
+}
+.box .button{
+  margin-top:30px;
+  text-align: center;
+}
+.box label{
+  text-align: center;
+  display: inline-block;
+  border:1px solid #000;
+  width:140px;
+  height:50px;
+  position: relative;
+  cursor: pointer;
+}
+.box label::before{
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  content:attr(data-more);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box input[name="readmore"]:checked ~ .content label::before{
+  content:attr(data-less);
+}
+.box input[name="readmore"]:checked ~ .content .des{
+  max-height: max-content;
+}
+.box input[name="readmore"]:checked ~ .content .des::before{
+  height: 0px;
+}
+.content{
+  position: relative;
+}
+.content::before{
+  position: absolute;
+  bottom:50px;
+  right:5px;
+  width:50px;
+  height: 70px;
+  content:'';
+  background-image: url(img1.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  z-index: 1;
+  transition: 2s ease-in-out;
+}
+.content::after{
+  position: absolute;
+  bottom:0px;
+  right:0px;
+  transform: translate(70%,50%);
+  width:200px;
+  height: 150px;
+  content:'';
+  background-image: url(img2.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  z-index: 1;
+  transition: 2s ease-in-out;
+}
+.box input[name="readmore"]:checked ~ .content::before{
+  bottom:80%;
+  right:100%;
+  transform: rotate(-50deg);
+}
+.box input[name="readmore"]:checked ~ .content::after{
+  transform: translate(75%,55%) rotate(30deg);
+}
