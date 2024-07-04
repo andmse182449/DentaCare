@@ -31,7 +31,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dentist</title>
         <link rel="stylesheet" href="css/styleDen.css">
-        <link rel="stylesheet" href="css/dentistSchedule.css">
+        <link rel="stylesheet" href="css/co-denSchedule.css">
+
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -49,32 +50,56 @@
                         <a href="LoadPatientOfDenServlet">my patient</a>
                     </li>
                 </ul>
-                <spadn class="material-symbols-outlined" onclick="toggleMenu()">account_circle
-                    </span>
+                <!--icon-->
+                <div class="header-icon">
+                    <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
+                    <!-- Dropdown Content -->
                     <div class="sub-menu-wrap" id="sub-menu-wrap">
                         <div class="sub-menu">
                             <div class="user-info">
                                 <h3>${sessionScope.account.userName}</h3>
                             </div>
                             <hr>
-                            <form action="DentistServlet" method="post" style="display: inline;">
-                                <input type="hidden" name="action" value="profile">
-                                <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
-                                <button type="submit" class="sub-menu-link" style="border: none; background: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: space-between; width: 100%; cursor: pointer;">
-                                    <div style="display: flex; align-items: center;">
-                                        <span class="material-symbols-outlined">person</span>
-                                        <p>Profile</p>
-                                    </div>
-                                    <i class="fa fa-chevron-right"></i>
-                                </button>
-                            </form>
+
                             <a href="SignOutServlet" class="sub-menu-link">
                                 <span class="material-symbols-outlined">logout</span>
-                                <p>Sign out</p>
+                                <p>Logout</p>
                                 <i class="fa fa-chevron-right"></i>
                             </a>
                         </div>
                     </div>
+                </div>
+                <script>
+                    let subMenu = document.getElementById("sub-menu-wrap");
+                    function toggleDropdown() {
+                        subMenu.classList.toggle("open-menu");
+                    }
+                </script>
+                <!--icon-->
+                <div class="sub-menu-wrap" id="sub-menu-wrap">
+                    <div class="sub-menu">
+                        <div class="user-info">
+                            <h3>${sessionScope.account.userName}</h3>
+                        </div>
+                        <hr>
+                        <form action="DentistServlet" method="post" style="display: inline;">
+                            <input type="hidden" name="action" value="profile">
+                            <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
+                            <button type="submit" class="sub-menu-link" style="border: none; background: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: space-between; width: 100%; cursor: pointer;">
+                                <div style="display: flex; align-items: center;">
+                                    <span class="material-symbols-outlined">person</span>
+                                    <p>Profile</p>
+                                </div>
+                                <i class="fa fa-chevron-right"></i>
+                            </button>
+                        </form>
+                        <a href="SignOutServlet" class="sub-menu-link">
+                            <span class="material-symbols-outlined">logout</span>
+                            <p>Sign out</p>
+                            <i class="fa fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
             </nav>
         </div>
         <% ClinicScheduleDAO clinicScheduleDAO = new ClinicScheduleDAO(); %>
@@ -86,12 +111,11 @@
         %>
         <!-- MAIN -->
         <div class="main-container">
-            <h2>Dentist</h2>
 
             <c:set value="${clinicByID.clinicID}" var="clinicID" />
 
             <div class="form-container">
-                <h1>Dentist Schedule</h1>
+                <h2>Dentist Schedule</h2>
                 <form method="post" action="LoadScheduleForEachDentistServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}">
                     <!--                        <input type="hidden" name="action" value="load">-->
                     <table>
@@ -197,6 +221,7 @@
                         </tr>     
                         <tr>
                         <div style="background-color: red" class="clickDay">
+                            <c:set value="${requestScope.account}" var="account" />
                             <%
                                 out.println("<th></th>");
                                 if (yearStr != null && !yearStr.isEmpty() && weekStr != null && !weekStr.isEmpty()) {
@@ -435,7 +460,6 @@
                 <c:set value="${requestScope.weekStr}" var="week"/>
                 <br>
             </div>
-
         </div>
     </div>
 </div>

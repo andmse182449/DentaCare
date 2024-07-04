@@ -6,7 +6,7 @@
 <%@page import="timeSlot.*" %>
 <%@page import="account.*" %>
 <%@page import="medicalRecord.*" %>
-
+<%@ page import="java.time.LocalDate, java.time.temporal.WeekFields, java.util.Locale" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,38 +28,67 @@
                 <span class="logo">logo</span>
                 <ul>
                     <li>
-                        <a href="#">my schedule</a>
+                        <%
+                LocalDate now2 = LocalDate.now();
+                WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                int currentYear2 = now2.getYear();
+                int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                int currentMonth2 = now2.getMonthValue(); // Get current month number
+                        %>
+                        <a href="LoadScheduleForEachDentistServlet?action=loadDenSchedule&clinicByID=${requestScope.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>">my schedule</a>
                     </li>
                     <li>
                         <a href="LoadPatientOfDenServlet">my patient</a>
                     </li>
                 </ul>
-                <spadn class="material-symbols-outlined" onclick="toggleMenu()">account_circle
-                    </span>
+                <div class="header-icon">
+                    <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
+                    <!-- Dropdown Content -->
                     <div class="sub-menu-wrap" id="sub-menu-wrap">
                         <div class="sub-menu">
                             <div class="user-info">
                                 <h3>${sessionScope.account.userName}</h3>
                             </div>
                             <hr>
-                            <form action="DentistServlet" method="post" style="display: inline;">
-                                <input type="hidden" name="action" value="profile">
-                                <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
-                                <button type="submit" class="sub-menu-link" style="border: none; background: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: space-between; width: 100%; cursor: pointer;">
-                                    <div style="display: flex; align-items: center;">
-                                        <span class="material-symbols-outlined">person</span>
-                                        <p>Profile</p>
-                                    </div>
-                                    <i class="fa fa-chevron-right"></i>
-                                </button>
-                            </form>
+
                             <a href="SignOutServlet" class="sub-menu-link">
                                 <span class="material-symbols-outlined">logout</span>
-                                <p>Sign out</p>
+                                <p>Logout</p>
                                 <i class="fa fa-chevron-right"></i>
                             </a>
                         </div>
                     </div>
+                </div>
+                <script>
+                    let subMenu = document.getElementById("sub-menu-wrap");
+                    function toggleDropdown() {
+                        subMenu.classList.toggle("open-menu");
+                    }
+                </script>
+                <div class="sub-menu-wrap" id="sub-menu-wrap">
+                    <div class="sub-menu">
+                        <div class="user-info">
+                            <h3>${sessionScope.account.userName}</h3>
+                        </div>
+                        <hr>
+                        <form action="DentistServlet" method="post" style="display: inline;">
+                            <input type="hidden" name="action" value="profile">
+                            <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
+                            <button type="submit" class="sub-menu-link" style="border: none; background: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: space-between; width: 100%; cursor: pointer;">
+                                <div style="display: flex; align-items: center;">
+                                    <span class="material-symbols-outlined">person</span>
+                                    <p>Profile</p>
+                                </div>
+                                <i class="fa fa-chevron-right"></i>
+                            </button>
+                        </form>
+                        <a href="SignOutServlet" class="sub-menu-link">
+                            <span class="material-symbols-outlined">logout</span>
+                            <p>Sign out</p>
+                            <i class="fa fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
             </nav>
         </div>
         <div class="container user">
@@ -112,7 +141,7 @@
                                 %>
                                 <div class="booking-title"><strong>${booking.account.getFullName()}</strong></div>
                                 <div class="booking-title"><strong><%= service.getServiceName() %></strong></div>
-                                <div class="booking-title"><strong> ${booking.bookingID}</strong></div>
+<!--                                <div class="booking-title"><strong> ${booking.bookingID}</strong></div>-->
                                 <div class="booking-details">${booking.account.getFullName()}<br><%= slot.getTimePeriod()%> <strong>on</strong> ${booking.getAppointmentDay()}</div>
 
                                 <c:choose>

@@ -130,13 +130,18 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
                 out.flush();
             }
         } else if ("modifyDenToSchedule".equals(key)) {
-            if (dentDao.checkAlreadyDentistInDenSche(oldAccountID, offDate) != null) {
+            if (dentDao.checkAlreadyDentistInDenSche(accountID, offDate) != null) {
                 boolean modifyDentistSchedule = dentDao.modifyDentistSchedule(accountID, offDate, oldAccountID);
+                System.out.println(modifyDentistSchedule);
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.print("{\"success\": true, \"message\": \"Modify dentist successfully!\"}");
                 out.flush();
-            } else {
+            }
+            else if (dentDao.checkAlreadyDentistInDenSche(accountID, offDate) != null) {
+                
+            }
+            else {
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 out.print("{\"success\": false, \"message\": \"Dentist is not already scheduled for this date!\"}");

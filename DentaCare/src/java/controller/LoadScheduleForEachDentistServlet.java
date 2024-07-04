@@ -6,6 +6,7 @@ package controller;
 
 import account.AccountDTO;
 import booking.BookingDAO;
+import booking.BookingDTO;
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
 import dayOffSchedule.DayOffScheduleDAO;
@@ -47,7 +48,7 @@ public class LoadScheduleForEachDentistServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
             AccountDTO account = (AccountDTO) session.getAttribute("account");
-            System.out.println(account);
+            System.out.println("account ne`:" + account);
             String id_raw = request.getParameter("clinicByID");
             String action = request.getParameter("action");
 
@@ -79,14 +80,18 @@ public class LoadScheduleForEachDentistServlet extends HttpServlet {
                     List<DayOffScheduleDTO> off = offDao.getAllOffDate(id);
 
                     List<DentistScheduleDTO> getEachdentist = dentDao.checkSesssionDen(account.getAccountID()); // null
-                    List<DentistScheduleDTO> getAllDentist = dentDao.getAccountDentistByRoleID1(id);
-
+                    List<BookingDTO> getAllBookingForDen = bookDao.getAllBookingByIdAndDayForDen(account.getAccountID());
+                    for (BookingDTO bookingDTO : getAllBookingForDen) {
+                        System.out.println(bookingDTO.getAppointmentDay());
+                    }
+//                    List<DentistScheduleDTO> getAllDentist = dentDao.getAccountDentistByRoleID1(id);
                     request.setAttribute("yearStr", yearStr);
                     request.setAttribute("weekStr", weekStr);
                     request.setAttribute("off", off);
-                    request.setAttribute("getAllDentist", getAllDentist);
+//                    request.setAttribute("getAllDentist", getAllDentist);
                     request.setAttribute("getEachdentist", getEachdentist);
                     request.setAttribute("clinicByID", clinicByID);
+                    request.setAttribute("account", account);
 
                 }
                 request.getRequestDispatcher("denWeb-dentitstSchedule.jsp").forward(request, response);

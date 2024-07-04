@@ -549,7 +549,7 @@ public class AccountDAO implements Serializable {
 
         StringBuilder query = new StringBuilder("select * from ACCOUNT \n"
                 + " join DENTISTSCHEDULE on DENTISTSCHEDULE.accountID = ACCOUNT.accountID \n"
-                + " where DENTISTSCHEDULE.workingDate = ? ");
+                + " where DENTISTSCHEDULE.workingDate = ? and ACCOUNT.status = 0 ");
         try {
             String sql = String.valueOf(query);
             con = DBUtils.getConnection();
@@ -952,7 +952,7 @@ public class AccountDAO implements Serializable {
         PreparedStatement stm = null;
         ResultSet rs = null;
         List<AccountDTO> list = new ArrayList<>();
-        StringBuilder query = new StringBuilder("select ACCOUNT.* from ACCOUNT where roleID = 1 and clinicID = ?");
+        StringBuilder query = new StringBuilder("select ACCOUNT.* from ACCOUNT where roleID = 1 and status = 0 and clinicID = ?");
         try {
             String sql = null;
             sql = String.valueOf(query);

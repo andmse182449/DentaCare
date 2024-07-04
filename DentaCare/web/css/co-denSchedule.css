@@ -1,166 +1,13 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : Jun 8, 2024, 8:40:02 AM
-    Author     : Admin
-*/
-
-/* Styles for the entire document */
-
-.main-container {
-    grid-area: main;
-    overflow-y: auto;
-    padding: 20px 20px;
-    color: #333;
-}
-
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 50px 0 50px;
-}
-#sidebar {
-    grid-area: sidebar;
-    height: 100%;
-    background-color: #2f89fc;
-    overflow-y: auto;
-    transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-}
-
-.sidebar-list {
-    padding: 0;
-    margin-top: 7rem;
-    list-style-type: none;
-}
-
-.sidebar-list-item {
-    padding: 20px 20px 20px 20px;
-    font-size: 18px;
-    font-weight: 500;
-}
-.sidebar-list a {
-    text-decoration: none;
-    color: #f4f4f4;
-}
-
-.sidebar-list-item:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-}
-
-.sidebar-responsive {
-    display: inline !important;
-    position: absolute;
-    z-index: 12 !important;
-}
-.header {
-    grid-area: header;
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 30px 0px 30px;
-    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
-}
-
-.header-icon span{
-    padding: 0;
-    margin-left: 20px;
-}
-.material-symbols-outlined:hover {
-    cursor: pointer;
-}
-.material-icons-outlined {
-    vertical-align: middle;
-    line-height: 1px;
-    font-size: 35px;
-}
-body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #f0f8ff;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
-
-/* Container for form elements */
-.form-container, .time-slot-container {
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 1200px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Header styling */
-header.header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    background-color: white;
-    color: #black;
-}
-
-.header-icon span {
-    margin-left: 15px;
-    cursor: pointer;
-}
-
-/* Sidebar styling */
-#sidebar {
-    background-color: #2f89fc;
-    padding: 20px;
-    color: white;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200px;
-}
-
-.sidebar-list {
-    padding: 0;
-    margin-top: 7rem;
-    list-style-type: none;
-}
-
-.sidebar-list a {
-    text-decoration: none;
-    color: #f4f4f4;
-}
-
-.sidebar-list-item {
-    padding: 20px 20px 20px 20px;
-    font-size: 18px;
-    font-weight: 500;
-}
-
-.sidebar-list-item:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-}
-
-.sidebar-responsive {
-    display: inline !important;
-    position: absolute;
-    z-index: 12 !important;
-}
-
-/* Main container styling */
-.main-container, .main-container2 {
-    padding: 20px;
-    margin-left: 220px;
-}
-
-h1, h2 {
+/* General styles */
+h2 {
     text-align: center;
     color: #2f89fc;
     font-size: 28px;
     margin-bottom: 20px;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 40px;
+
 }
 
 /* Table styling */
@@ -231,23 +78,19 @@ input[type="button"]:hover {
 .create-button:hover {
     background-color: #45a049;
 }
-/* Add this CSS class to define the hover effect */
+
+/* Hover and selected cell styles */
 .table-cell:hover {
-    background-color: #99ffff; /* Blue color */
+    background-color: #99ffff;
     cursor: pointer;
 }
 
-/* CSS class for selected cell */
 .table-cell.selected {
-    background-color: #2f89fc; /* Blue color */
+    background-color: #2f89fc;
     color: white;
 }
 
-.table-cell2:hover {
-    background-color: #ccffcc;
-    cursor: pointer;
-}
-
+/* Popup styles */
 .popup {
     display: none;
     position: fixed;
@@ -274,17 +117,6 @@ input[type="button"]:hover {
     animation: popupAnimation 0.3s ease-out;
 }
 
-@keyframes popupAnimation {
-    from {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
 .close-btn {
     position: absolute;
     right: 15px;
@@ -306,6 +138,7 @@ input[type="button"]:hover {
     color: #555;
 }
 
+/* Button styles */
 button {
     text-align: center;
     background-color: #007bff;
@@ -327,147 +160,109 @@ button:hover {
     justify-content: center;
 }
 
-.center-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%; /* Adjust the height as needed */
-}
-
-.center-button a {
-    text-decoration: none;
-}
-
-.center-button input[type="button"] {
-    padding: 10px 20px; /* Adjust padding as needed */
-    background-color: #007BFF; /* Adjust background color as needed */
-    color: white;
-    border: none;
-    border-radius: 5px; /* Adjust border radius as needed */
-    cursor: pointer;
-    font-size: 16px; /* Adjust font size as needed */
-    transition: background-color 0.3s ease;
-}
-
-.center-button input[type="button"]:hover {
-    background-color: #0056b3; /* Adjust hover color as needed */
-}
-
-/* Specific styles for each popup */
 #confirmationPopup .popup-content {
-    background-color: #f9f9f9;
+    background-color: #ecf0f1; /* light gray background */
+    max-width: 400px;
+    margin: auto; /* center horizontally */
 }
 
-#errorPopup .popup-content {
-    background-color: #ffe6e6;
+#confirmationPopup p {
+    font-size: 20px; /* larger font size for main text */
+    color: #333; /* darker text color */
 }
 
-#successPopup .popup-content {
-    background-color: #e6ffe6;
+#bookingsList {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
 }
 
-#eventPopup .popup-content {
-    background-color: #f9f9f9;
-    text-align: left;
-}
-
-#eventPopup label {
-    display: block;
+#bookingsList li {
     margin-bottom: 10px;
-    font-weight: bold;
-    color: #333;
+    text-align: center;
 }
 
-#eventPopup select, #eventPopup input[type="hidden"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+#confirmButton {
+    background-color: #3498db; /* blue background */
+    margin-top: 20px; /* space between list and button */
 }
 
-/* Calendar Box */
+#confirmButton:hover {
+    background-color: #2980b9; /* darker blue on hover */
+}
+
+/* Calendar box styles */
 .calendar-box {
+    max-width: 100%;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    max-width: 400px; /* Adjust width as needed */
+    background-color: #f9f9f9;
     text-align: center;
+    font-family: Arial, sans-serif;
 }
 
 .calendar-box h2 {
-    color: #2f89fc;
-    margin-bottom: 20px;
+    font-size: 24px;
+    margin-bottom: 15px;
 }
 
-#openCalendarButton {
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
+.calendar-box button {
     padding: 10px 20px;
-    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
     cursor: pointer;
-    border-radius: 4px;
-    margin-bottom: 10px;
+    font-size: 16px;
 }
 
-#openCalendarButton:hover {
+.calendar-box button:hover {
     background-color: #0056b3;
 }
 
-#calendarForm {
-    text-align: center;
+.calendar-box form {
+    margin-top: 20px;
 }
 
-label {
+.calendar-box label {
     display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-weight: bold;
+    margin-bottom: 10px;
 }
 
-#dentistSelect {
+.calendar-box select {
     width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #f9f9f9;
-    box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.2);
-    outline: none;
-    margin-bottom: 15px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
 
-#calendarModal {
-    display: none;
-    text-align: center;
-}
-
+/* Calendar styling */
 #calendar {
-    margin-top: 10px;
+    width: 100%;
     border: 1px solid #ccc;
-    border-radius: 4px;
     padding: 10px;
-    background-color: #f9f9f9;
+    background-color: #fff;
 }
 
-#calendarForm button[type="submit"] {
-    background-color: #28a745;
-    color: #ffffff;
-    border: none;
+#calendarModal button[type="submit"] {
     padding: 10px 20px;
-    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
     cursor: pointer;
-    border-radius: 4px;
-    margin-top: 10px;
+    font-size: 16px;
 }
 
-#calendarForm button[type="submit"]:hover {
-    background-color: #218838;
+#calendarModal button[type="submit"]:hover {
+    background-color: #0056b3;
 }
-
-
+.form-container {
+    max-width: 1500px; /* Adjust max-width as needed */
+    margin: 0 auto; /* Center align the container */
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}

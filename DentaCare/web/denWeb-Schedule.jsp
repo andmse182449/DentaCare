@@ -44,7 +44,7 @@
         <div class="grid-container">
             <!-- HEADER -->
             <header class="header"> 
-                <div><h1>CLINIC</h1></div>
+                <div><h1 style="font-weight: bold">CLINIC</h1></div>
                 <div class="header-icon">
                     <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
                     <!-- Dropdown Content -->
@@ -63,6 +63,13 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    let subMenu = document.getElementById("sub-menu-wrap");
+                    function toggleDropdown() {
+                        subMenu.classList.toggle("open-menu");
+                    }
+                </script>
+
             </header>
 
             <!-- SIDEBAR -->
@@ -82,12 +89,10 @@
 
             <!-- MAIN -->
             <div class="main-container">
-                <h2>Dentist</h2>
-
                 <c:set value="${clinicByID.clinicID}" var="clinicID" />
 
                 <div class="form-container">
-                    <h1>Dentist Schedule</h1>
+                    <h2>Dentist Schedule</h2>
                     <form method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}">
                         <!--                        <input type="hidden" name="action" value="load">-->
                         <table>
