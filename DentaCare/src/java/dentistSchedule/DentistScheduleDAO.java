@@ -26,7 +26,7 @@ public class DentistScheduleDAO {
         StringBuilder query = new StringBuilder("""
                                                     select DENTISTSCHEDULE.*, ACCOUNT.fullName from DENTISTSCHEDULE 
                                                     join ACCOUNT on ACCOUNT.accountID = DENTISTSCHEDULE.accountID 
-                                                    WHERE roleID = 1 and clinicID = ? 
+                                                    WHERE roleID = 1 and status = 0 and clinicID = ? 
                                                 """);
         try {
             String sql = null;
@@ -67,7 +67,7 @@ public class DentistScheduleDAO {
         StringBuilder query = new StringBuilder("""
                                                 select ACCOUNT.accountID, ACCOUNT.fullName, DENTISTSCHEDULE.workingDate from DENTISTSCHEDULE
                                                                                                 join ACCOUNT on ACCOUNT.accountID = DENTISTSCHEDULE.accountID 
-                                                                                                WHERE DENTISTSCHEDULE.accountID = ?
+                                                                                                WHERE ACCOUNT.status = 0 DENTISTSCHEDULE.accountID = ?
                                                 """);
         try {
             String sql = null;
@@ -267,20 +267,51 @@ public class DentistScheduleDAO {
     }
 
     public boolean modifyDentistSchedule(String accountID, String workingDate, String oldAccountID) {
-        String query = "UPDATE DENTISTSCHEDULE SET accountID = ? WHERE workingDate = ? AND accountID = ?";
+        String query = "UPDATE DENTISTSCHEDULE SET accountID = ? WHERE accountID = ? AND workingDate = ?";
 
         try (Connection con = DBUtils.getConnection(); PreparedStatement stm = con.prepareStatement(query)) {
+            stm.setString(1, accountID);     // Set new accountID
+            stm.setString(2, oldAccountID);  // Where old accountID matches
+            stm.setString(3, workingDate);   // And workingDate matches
 
-            stm.setString(1, accountID);
-            stm.setString(2, workingDate);
-            stm.setString(3, oldAccountID);
-
-            int rowsAffected = stm.executeUpdate();
-            return rowsAffected > 0;
+            stm.executeUpdate();
+            return true;
         } catch (SQLException e) {
-            System.out.println(e);
-            return false;
+            e.printStackTrace();  // Print the exception for debugging purposes
+            return false;  // Return false indicating update failure
         }
+    }
+
+    public boolean modifyDentistSchedule2(String accountID, String workingDate, String oldAccountID) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            String query = "UPDATE DENTISTSCHEDULE SET accountID = ? WHERE accountID = ? AND workingDate = ?";
+            stm = con.prepareStatement(query);
+            stm.setString(1, accountID);     // Set new accountID
+            stm.setString(2, oldAccountID);  // Where old accountID matches
+            stm.setString(3, workingDate);     // Set new accountID
+
+            stm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("An error occurred while closing the resources: ");
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public boolean modifyScheduleOfDentist(String accountID, String workingDate, String oldWorkingDate) {
@@ -291,8 +322,8 @@ public class DentistScheduleDAO {
             stm.setString(2, oldWorkingDate);
             stm.setString(3, accountID);
 
-            int rowsAffected = stm.executeUpdate();
-            return rowsAffected > 0;
+            stm.executeUpdate();
+            return true;
         } catch (SQLException e) {
             System.out.println(e);
             return false;

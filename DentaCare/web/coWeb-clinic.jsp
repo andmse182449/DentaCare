@@ -31,6 +31,8 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
         <link rel="stylesheet" href="css/clinicSchedule.css">
         <link rel="stylesheet" href="css/stylesheet2.css">
+                <!--<link rel="stylesheet" href="css/stylesheet.css">-->
+
 
 
     </head>
@@ -65,6 +67,12 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    let subMenu = document.getElementById("sub-menu-wrap");
+                    function toggleDropdown() {
+                        subMenu.classList.toggle("open-menu");
+                    }
+                </script>
             </header>
 
             <!-- SIDEBAR -->
@@ -257,9 +265,9 @@
                                 </c:forEach>
                                 </tr>
                             </table>
-                            <button id="modifyTimeSlotButton">Modify Time Slot</button>
                         </div>
 
+                        <br>
                         <div class="center-button">
                             <a href="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>">
                                 <input type="button" name="" value="View Dentist Schedule">

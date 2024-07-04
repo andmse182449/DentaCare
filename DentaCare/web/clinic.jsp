@@ -22,7 +22,7 @@
         <div class="grid-container">
             <!-- HEADER -->
             <header class="header">
-                <div><h1>DASHBOARD</h1></div>
+                <div><h1 style="font-weight: bold">CLINIC</h1></div>
                 <div class="header-icon">
                     <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
                     <!-- Dropdown Content -->
@@ -41,6 +41,13 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    let subMenu = document.getElementById("sub-menu-wrap");
+                    function toggleDropdown() {
+                        subMenu.classList.toggle("open-menu");
+                    }
+                </script>
+
             </header>
             <!-- SIDEBAR -->
             <%
@@ -64,22 +71,24 @@
                 </div>
             </aside>
 
-            <div class="col-md-4">
-                <div id="sanpham3">
-                    <c:forEach items="${requestScope.clinicList}" var="clinicList">
-                        <div class="clinic-card" data-url="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicList.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>">    
-                            <!--sua lai khuc nay-->
-                            <img src="images/combo03.PNG" class="img-responsive" />
-                            <p class="first-line">${clinicList.clinicID}</p>
-                            <p>${clinicList.clinicName}</p>
-                            <p>${clinicList.clinicAddress}</p>
-                            <p>${clinicList.city}</p>
-                            <p>${clinicList.hotline}</p>
-                        </div>
-                    </c:forEach>
+            <div class="row">
+                <div class="col-12">
+                    <div id="sanpham3" class="d-flex flex-nowrap overflow-auto">
+                        <c:forEach items="${requestScope.clinicList}" var="clinicList">
+                            <div class="p-2 clinic-card" data-url="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicList.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>">
+                                <img src="images/combo03.PNG" class="img-responsive" />
+                                <p class="first-line">${clinicList.clinicID}</p>
+                                <p>${clinicList.clinicName}</p>
+                                <p>${clinicList.clinicAddress}</p>
+                                <p>${clinicList.city}</p>
+                                <p>${clinicList.hotline}</p>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
-            </div>        
+            </div>
         </div>
+                        
     </body>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {

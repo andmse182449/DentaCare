@@ -22,6 +22,7 @@ public class BookingDTO {
     private LocalDate appointmentDay;
     private int status;
     private float price;
+    private float deposit;
     private int serviceID;
     private int slotID;
     private String customerID;
@@ -33,12 +34,13 @@ public class BookingDTO {
     private TimeSlotDTO timeSlot;
     private MedicalRecordDTO medicalRecord;
 
-    public BookingDTO(String bookingID, LocalDate createDay, LocalDate appointmentDay, int status, float price, int serviceID, int slotID, String customerID, String dentistID, int clinicID) {
+    public BookingDTO(String bookingID, LocalDate createDay, LocalDate appointmentDay, int status, float price, float deposit, int serviceID, int slotID, String customerID, String dentistID, int clinicID) {
         this.bookingID = bookingID;
         this.createDay = createDay;
         this.appointmentDay = appointmentDay;
         this.status = status;
         this.price = price;
+        this.deposit = deposit;
         this.serviceID = serviceID;
         this.slotID = slotID;
         this.customerID = customerID;
@@ -120,8 +122,7 @@ public class BookingDTO {
     public void setDentistID(String dentistID) {
         this.dentistID = dentistID;
     }
-
-    public int getClinicID() {
+public int getClinicID() {
         return clinicID;
     }
 
@@ -161,6 +162,14 @@ public class BookingDTO {
         this.fullNameDentist = fullNameDentist;
     }
 
+    public float getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(float deposit) {
+        this.deposit = deposit;
+    }
+
     public MedicalRecordDTO getMedicalRecord() {
         return medicalRecord;
     }
@@ -168,7 +177,7 @@ public class BookingDTO {
     public void setMedicalRecord(MedicalRecordDTO medicalRecord) {
         this.medicalRecord = medicalRecord;
     }
-
+    
     @Override
     public String toString() {
         return "bookingDTO{" + "bookingID=" + bookingID + ", createDay=" + createDay + ", appointmentDay=" + appointmentDay + ", status=" + status + ", price=" + price + ", serviceID=" + serviceID + ", slotID=" + slotID + ", customerID=" + customerID + ", dentistID=" + dentistID + ", clinicID=" + clinicID + '}';

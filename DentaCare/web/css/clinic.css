@@ -1,12 +1,11 @@
 #sanpham3 {
-    display: flex;
-    flex-wrap: wrap; /* Ensure cards wrap properly */
     gap: 20px; /* Space between each clinic card */
     padding: 20px; /* Add padding to the container */
 }
 
 .clinic-card {
-    width: 400px; /* Fixed width to ensure square shape */
+    min-width: 300px; /* Adjust width to fit more cards in a single line */
+    flex: 0 0 auto; /* Prevent the card from shrinking */
     height: 400px; /* Fixed height to ensure square shape */
     border: 1px solid #ddd; /* Add a border around each card */
     padding: 50px; /* Add padding inside each card */
@@ -37,7 +36,6 @@
     margin-bottom: 5px; /* Space between the first line and the following text */
 }
 
-/* Optional: additional styling for other text elements */
 .clinic-card p {
     margin: 0; /* Space between each paragraph */
     font-size: 14px; /* Adjust font size */

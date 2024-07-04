@@ -56,6 +56,7 @@ public class LoadPatientOfDenServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         AccountDTO account = (AccountDTO) session.getAttribute("account");
+        int clinicID = account.getClinicID();
         BookingDAO bookingDAO = new BookingDAO();
         AccountDAO accDao = new AccountDAO();
         LocalDate today = LocalDate.now();
@@ -63,7 +64,7 @@ public class LoadPatientOfDenServlet extends HttpServlet {
 
         if (action == null || action == "" || action.equals("load")) {
             List<BookingDTO> bookingList = bookingDAO.getBookingListByDenID(account.getAccountID());
-            
+
             List<AccountDTO> getCusInfo = accDao.getCusInfo(account.getAccountID());
 
             try {
@@ -78,6 +79,8 @@ public class LoadPatientOfDenServlet extends HttpServlet {
                 }
                 request.setAttribute("getCusInfo", getCusInfo);
                 request.setAttribute("bookingList", bookingList);
+                request.setAttribute("clinicID", clinicID);
+
                 request.getRequestDispatcher(url).forward(request, response);
             } catch (IOException e) {
                 System.out.println(e);

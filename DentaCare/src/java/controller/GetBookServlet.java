@@ -26,7 +26,7 @@ public class GetBookServlet extends HttpServlet {
         Gson gson = new Gson();
         HttpSession session = request.getSession();
         AccountDTO account = (AccountDTO) session.getAttribute("account");
-
+        System.out.println(account);
         try {
             BufferedReader reader = request.getReader();
             JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
