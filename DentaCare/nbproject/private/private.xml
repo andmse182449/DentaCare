@@ -3,17 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/src/java/invoice/InvoiceDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/coWeb-tableListCustomer.jsp</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/staffWeb-ChangePassword.jsp</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/src/java/controller/ProfileStaffServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/src/java/controller/StaffViewBooking.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/src/java/account/StaffAccountDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/staffWeb-ViewBooking.jsp</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/src/java/GoogleVerify/SendEmailInvoiceServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/admin-front-end/css/styleViewInvoice.css</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/src/java/account/AccountDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/staffWeb-viewInvoice.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/login.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/swp/DentaCare/DentaCare/web/coWeb-staff.jsp</file>
         </group>
     </open-files>
 </project-private>

@@ -76,6 +76,9 @@ public class ManageCustomerServlet extends HttpServlet {
                 AccountDTO customer = accountDao.searchAccountByID(customerID);
                 request.setAttribute("customer", customer);
                 List<BookingDTO> listBooking = bookingDao.getAllBookingCustomer(customerID);
+                if(listBooking.isEmpty()){
+                    request.setAttribute("error", "No Information");
+                }
                 request.setAttribute("listBookingOfCustomer", listBooking);
                 List<AccountDTO> listCustomerActive = customerDao.listAccount(0, 0);
                 List<AccountDTO> listCustomerUnactive = customerDao.listAccount(0, 1);

@@ -20,6 +20,7 @@ public class BookingDTO {
     private LocalDate appointmentDay;
     private int status;
     private float price;
+    private float deposit;
     private int serviceID;
     private int slotID;
     private String customerID;
@@ -157,6 +158,16 @@ public class BookingDTO {
     public void setFullNameDentist(String fullNameDentist) {
         this.fullNameDentist = fullNameDentist;
     }
+
+    public float getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(float deposit) {
+        this.deposit = deposit;
+    }
+    
+    
     
     
     

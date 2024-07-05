@@ -24,6 +24,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <link href="admin-front-end/css/style.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/stylesheet.css">
     </head>
@@ -31,25 +34,42 @@
     <body>
         <div class="grid-container">
             <!-- HEADER -->
-            <header class="header"> 
-                <div></div>
+            <header class="header" style="height: 105px;">
+                <div><h1 style="font-weight: bolder;">MANAGE CUSTOMER</h1></div>
                 <div class="header-icon">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span class="material-symbols-outlined">mail</span>
-                    <span class="material-symbols-outlined">account_circle</span>
+                    <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
+                    <!-- Dropdown Content -->
+                    <div class="sub-menu-wrap" id="sub-menu-wrap">
+                        <div class="sub-menu">
+                            <div class="user-info">
+                                <h3>${sessionScope.account.userName}</h3>
+                            </div>
+                            <hr>
+                            <a href="SignOutServlet" class="sub-menu-link">
+                                <span class="material-symbols-outlined">logout</span>
+                                <p>Logout</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <script>
+                        let subMenu = document.getElementById("sub-menu-wrap");
+                        function toggleDropdown() {
+                            subMenu.classList.toggle("open-menu");
+                        }
+                    </script>
                 </div>
             </header>
-
             <!-- SIDEBAR -->
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
-                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
-                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
-                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
-                        <a href="ServiceController"><li class="sidebar-list-item">Manage Service</li></a>
-                        <a href="ManageCustomerServlet"><li class="sidebar-list-item">Manage Customer</li></a>
+                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
+                        <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
+                        <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
                     </ul>
                 </div>
             </aside>
@@ -71,6 +91,7 @@
                     width: 37%;
                     max-height: 80%;
                     overflow-y: auto;
+                    cursor: move;
                 }
 
                 .BookingOfCustomer p {
@@ -118,6 +139,37 @@
                 }
                 .border-top-0{
                     text-align: center;
+                }
+
+                .BookingOfCustomer .error-message {
+                    color: #d9534f;
+                    background-color: #f2dede;
+                    border-color: #ebccd1;
+                    padding: 10px;
+                    border: 1px solid transparent;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    text-align: center;
+                }
+
+                .close-button {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    z-index: 10;
+                    background-color: white; /* Optional: Add background to ensure readability */
+                    padding: 0 5px; /* Optional: Add some padding for better appearance */
+                    border-radius: 5px; /* Optional: Add border radius for better appearance */
+                }
+
+                .close-button a {
+                    color: #d9534f;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+
+                .close-button a:hover {
+                    text-decoration: underline;
                 }
 
 
@@ -241,8 +293,10 @@
                     </div>
                 </div>
                 <div class="BookingOfCustomer hidden" >
-                    <p>List Booking Of ${customer.fullName}<span style="margin-left: 135px;"><a  href="ManageCustomerServlet?action=closePopUp">X</a></span></p>
-
+                    <p>List Booking Of ${customer.fullName}<span class="close-button" style="margin-left: 135px;"><a  href="ManageCustomerServlet?action=closePopUp">X</a></span></p>
+                    <c:if test="${not empty error}">
+                        <p class="error-message">${error}</p>
+                    </c:if>
                     <c:forEach items="${listBookingOfCustomer}" var="booking">
                         <div class="booking-item">
                             <p><strong>Booking ID:</strong> ${booking.bookingID}</p>
@@ -270,7 +324,7 @@
                                 <c:when test="${booking.status == 3}">
                                     <p><strong>Status:</strong> Canceled</p>
                                 </c:when>
-                                <c:when test="${booking.status == 4}">
+                                <c:when test="${booking.status == 5}">
                                     <p><strong>Status:</strong> Placed and sent email</p>
                                 </c:when>
                             </c:choose>
@@ -284,6 +338,9 @@
                     function submitForm(formElement) {
                         formElement.submit();
                     }
+                    $(function () {
+                        $(".BookingOfCustomer").draggable();
+                    });
                 </script>
             </div>
         </div>

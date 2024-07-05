@@ -414,10 +414,10 @@ public class BookingDAO {
         }
     }
 
-    public List<BookingDTO> getAllBookingClinic(int clinicID, String fullName) {
+    public List<BookingDTO> getAllBookingClinic(int clinicID, Date now) {
         String sql = """
             SELECT 
-                bookingID, customerID, createDay, appointmentDay, a.status, a.price, 
+                bookingID, customerID, createDay, appointmentDay, a.deposit, a.status, a.price, 
                 customer.fullName AS customerName, customer.phone, 
                 serviceName, timePeriod, dentist.fullName AS dentistName
             FROM 
@@ -427,9 +427,9 @@ public class BookingDAO {
                 INNER JOIN service c ON a.serviceid = c.serviceid 
                 INNER JOIN timeslot d ON a.slotid = d.slotid
             WHERE 
-                a.clinicID = ? and customer.fullName like ?
+                a.clinicID = ? and appointmentDay = ?
             ORDER BY 
-                appointmentDay, timePeriod;
+                timePeriod, a.status;
             """;
 
         List<BookingDTO> list = new ArrayList<>();
@@ -437,7 +437,7 @@ public class BookingDAO {
             Connection con = utils.DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, clinicID);
-            ps.setString(2, "%" + fullName + "%");
+            ps.setDate(2, now);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 BookingDTO booking = new BookingDTO();
@@ -445,6 +445,7 @@ public class BookingDAO {
                 booking.setCustomerID(rs.getString("customerid"));
                 booking.setAppointmentDay(rs.getDate("appointmentDay").toLocalDate());
                 booking.setCreateDay(rs.getDate("createday").toLocalDate());
+                booking.setDeposit(rs.getFloat("deposit"));
                 booking.setPrice(rs.getFloat("price"));
                 booking.setStatus(rs.getInt("status"));
                 booking.setFullNameDentist(rs.getString("dentistName"));
