@@ -7,6 +7,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="clinic.*" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Calendar, java.util.GregorianCalendar" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.time.*" %>
+<%@ page import="java.time.temporal.WeekFields" %>
+<%@ page import="java.util.Locale" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -49,6 +55,13 @@
             </header>
 
             <!-- SIDEBAR -->
+            <%
+                        LocalDate now2 = LocalDate.now();
+                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                        int currentYear2 = now2.getYear();
+                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                        int currentMonth2 = now2.getMonthValue(); // Get current month number
+            %>
             <aside id="sidebar">
                 <!-- SIDEBAR -->
                 <aside id="sidebar">

@@ -38,16 +38,31 @@ public class LoginChangePage extends HttpServlet {
                     request.setAttribute("DENTIST", accountDAO.getAllDentists());
                     url = "userWeb-page.jsp";
                 }
+                case "clinic" -> {
+                    AccountDAO accountDAO = new AccountDAO();
+                    ClinicDAO clinicDAO = new ClinicDAO();
+                    ServiceDAO serviceDAO = new ServiceDAO();
+                    request.setAttribute("CLINIC", clinicDAO.getAllClinic());
+                    request.setAttribute("numberOfResults", clinicDAO.getAllClinic().size());
+                    request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+                    request.setAttribute("DENTIST", accountDAO.getAllDentists());
+                    url = "apartment.jsp";
+                }
                 case "service" -> {
                     ClinicDAO clinicDAO = new ClinicDAO();
                     ServiceDAO serviceDAO = new ServiceDAO();
                     FeedbackDAO feedbackDAO = new FeedbackDAO();
                     HttpSession session = request.getSession();
-                    AccountDTO account = (AccountDTO) session.getAttribute("account");
-//                    request.setAttribute("FEEDBACK", feedbackDAO.getAllFeedbacks());
+                    List<FeedbackDTO> list = null;
+                    if ((AccountDTO) session.getAttribute("account") == null) {
+                        list = feedbackDAO.getAllFeedbacks();
+//                        System.out.println(list.size());
+                    } else {
+                        AccountDTO account = (AccountDTO) session.getAttribute("account");
+                        list = feedbackDAO.getAllFeedbacks(account.getAccountID());
+                    }
                     request.setAttribute("CLINIC", clinicDAO.getAllClinic());
                     request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
-                    List<FeedbackDTO> list = feedbackDAO.getAllFeedbacks(account.getAccountID());
                     int numPs = list.size();
                     int numperPage = 20;
                     int numpage = numPs / numperPage + (numPs % numperPage == 0 ? 0 : 1);
@@ -69,8 +84,13 @@ public class LoginChangePage extends HttpServlet {
 
                     request.setAttribute("num", numpage);
                     request.setAttribute("page", page);
-                    request.setAttribute("numberOfResults", feedbackDAO.getAllFeedbacks(account.getAccountID()).size());
+                    request.setAttribute("numberOfResults", feedbackDAO.getAllFeedbacks().size());
                     request.setAttribute("FEEDBACK", arr);
+//                    if (request.getParameter("comment").equals("allow")) {
+//                        request.setAttribute("none", "block");
+//                    } else if (request.getParameter("comment").equals("unallow")) {
+//                        request.setAttribute("none", "none");
+//                    }
 
                     url = "service.jsp";
 

@@ -4,8 +4,9 @@
  */
 package controller;
 
-import account.AccountDAO;
 import account.AccountDTO;
+import booking.BookingDAO;
+import booking.BookingDTO;
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
 import dayOffSchedule.DayOffScheduleDAO;
@@ -20,7 +21,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,30 +43,33 @@ public class LoadScheduleForEachDentistServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json");
+
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
             AccountDTO account = (AccountDTO) session.getAttribute("account");
-            System.out.println(account);
+            System.out.println("account ne`:" + account);
             String id_raw = request.getParameter("clinicByID");
             String action = request.getParameter("action");
 
             String yearStr = request.getParameter("year");
             String weekStr = request.getParameter("week");
 
+//            String selectedDateDisplay = request.getParameter("selectedDateDisplay");
             System.out.println(yearStr);
             System.out.println(weekStr);
             int id = 0;
 
-//
-//            String offDate = request.getParameter("offDate");
+            // Initialize DAO objects
             DayOffScheduleDAO offDao = new DayOffScheduleDAO();
+            ClinicDAO dao = new ClinicDAO();
+            DentistScheduleDAO dentDao = new DentistScheduleDAO();
+            BookingDAO bookDao = new BookingDAO();
 
             try {
                 id = Integer.parseInt(id_raw);
                 if (("loadDenSchedule").equals(action)) {
-                    ClinicDAO dao = new ClinicDAO();
-
+                    // Get clinic details
                     ClinicDTO clinicByID = dao.getClinicByID(id);
                     if (clinicByID == null) {
                         System.out.println("Clinic with ID " + id + " not found!");
@@ -74,39 +77,35 @@ public class LoadScheduleForEachDentistServlet extends HttpServlet {
                         request.getRequestDispatcher("errorPage.jsp").forward(request, response);
                         return;
                     }
-
                     List<DayOffScheduleDTO> off = offDao.getAllOffDate(id);
 
-                    // dentist
-                    DentistScheduleDAO dentDao = new DentistScheduleDAO();
                     List<DentistScheduleDTO> getEachdentist = dentDao.checkSesssionDen(account.getAccountID()); // null
-
-                    List<DentistScheduleDTO> getAllDentist = dentDao.getAccountDentistByRoleID1(id);
-
-                    // account
-//                    AccountDAO accDao = new AccountDAO();
-
+                    List<BookingDTO> getAllBookingForDen = bookDao.getAllBookingByIdAndDayForDen(account.getAccountID());
+                    for (BookingDTO bookingDTO : getAllBookingForDen) {
+                        System.out.println(bookingDTO.getAppointmentDay());
+                    }
+//                    List<DentistScheduleDTO> getAllDentist = dentDao.getAccountDentistByRoleID1(id);
                     request.setAttribute("yearStr", yearStr);
                     request.setAttribute("weekStr", weekStr);
                     request.setAttribute("off", off);
-                    request.setAttribute("getAllDentist", getAllDentist);
+//                    request.setAttribute("getAllDentist", getAllDentist);
                     request.setAttribute("getEachdentist", getEachdentist);
-                                        request.setAttribute("clinicByID", clinicByID);
+                    request.setAttribute("clinicByID", clinicByID);
+                    request.setAttribute("account", account);
 
                 }
-
-//denWeb-dentitstSchedule
                 request.getRequestDispatcher("denWeb-dentitstSchedule.jsp").forward(request, response);
-            } catch (NumberFormatException e) {
-                System.out.println("Parse error");
-                e.printStackTrace();
-            } catch (SQLException ex) {
-                Logger.getLogger(LoadFromClinicToScheduleServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+            } catch (Exception ex) {
+                Logger.getLogger(LoadFromClinicScheduleToDentistScheduleServlet.class.getName()).log(Level.SEVERE, null, ex);
+                response.setContentType("application/json");
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.print("{\"success\": false, \"message\": \"An SQL error occurred: " + ex.getMessage() + "\"}");
+                out.flush();
             }
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

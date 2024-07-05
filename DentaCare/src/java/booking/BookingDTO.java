@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import Service.ServiceDTO;
 import account.AccountDTO;
 import java.time.LocalDate;
+import medicalRecord.MedicalRecordDTO;
 import timeSlot.TimeSlotDTO;
 
 /**
@@ -15,6 +16,7 @@ import timeSlot.TimeSlotDTO;
  * @author Admin
  */
 public class BookingDTO {
+
     private String bookingID;
     private LocalDate createDay;
     private LocalDate appointmentDay;
@@ -30,13 +32,15 @@ public class BookingDTO {
     private ServiceDTO service;
     private AccountDTO account;
     private TimeSlotDTO timeSlot;
+    private MedicalRecordDTO medicalRecord;
 
-    public BookingDTO(String bookingID, LocalDate createDay, LocalDate appointmentDay, int status, float price, int serviceID, int slotID, String customerID, String dentistID, int clinicID) {
+    public BookingDTO(String bookingID, LocalDate createDay, LocalDate appointmentDay, int status, float price, float deposit, int serviceID, int slotID, String customerID, String dentistID, int clinicID) {
         this.bookingID = bookingID;
         this.createDay = createDay;
         this.appointmentDay = appointmentDay;
         this.status = status;
         this.price = price;
+        this.deposit = deposit;
         this.serviceID = serviceID;
         this.slotID = slotID;
         this.customerID = customerID;
@@ -46,7 +50,7 @@ public class BookingDTO {
 
     public BookingDTO() {
     }
-    
+
     public String getBookingID() {
         return bookingID;
     }
@@ -118,8 +122,7 @@ public class BookingDTO {
     public void setDentistID(String dentistID) {
         this.dentistID = dentistID;
     }
-
-    public int getClinicID() {
+public int getClinicID() {
         return clinicID;
     }
 
@@ -166,15 +169,18 @@ public class BookingDTO {
     public void setDeposit(float deposit) {
         this.deposit = deposit;
     }
-    
-    
-    
-    
+
+    public MedicalRecordDTO getMedicalRecord() {
+        return medicalRecord;
+    }
+
+    public void setMedicalRecord(MedicalRecordDTO medicalRecord) {
+        this.medicalRecord = medicalRecord;
+    }
     
     @Override
     public String toString() {
-return "bookingDTO{" + "bookingID=" + bookingID + ", createDay=" + createDay + ", appointmentDay=" + appointmentDay + ", status=" + status + ", price=" + price + ", serviceID=" + serviceID + ", slotID=" + slotID + ", customerID=" + customerID + ", dentistID=" + dentistID + ", clinicID=" + clinicID + '}';
+        return "bookingDTO{" + "bookingID=" + bookingID + ", createDay=" + createDay + ", appointmentDay=" + appointmentDay + ", status=" + status + ", price=" + price + ", serviceID=" + serviceID + ", slotID=" + slotID + ", customerID=" + customerID + ", dentistID=" + dentistID + ", clinicID=" + clinicID + '}';
     }
-    
-    
+
 }

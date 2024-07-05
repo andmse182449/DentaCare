@@ -67,11 +67,8 @@
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active"><a href="index.jsp" class="nav-link" style="color: black">Home</a></li>
-                        <li class="nav-item"><a href="about.html" class="nav-link" style="color: black">About</a></li>
-                        <li class="nav-item"><a href="services.html" class="nav-link" style="color: black">Services</a></li>
-                        <li class="nav-item"><a href="doctors.html" class="nav-link" style="color: black">Doctors</a></li>
-                        <li class="nav-item"><a href="feedback.html" class="nav-link" style="color: black">Blog</a></li>
-                        <li class="nav-item"><a href="contact.html" class="nav-link" style="color: black">Contact</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=service" style="color: black" class="nav-link">Services</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" style="color: black" class="nav-link">Doctors</a></li>
                         <li class="nav-item cta"><a href="#" class="nav-link show-popup" data-target="#modalRequest">Log in</a></li>
                     </ul>
                 </div>
@@ -102,11 +99,6 @@
                         </div>
 
                         <div class="checkbox-text">
-                            <div class="checkbox-content">
-                                <input type="checkbox" id="logCheck">
-                                <label for="logCheck" class="text">Remember me</label>
-                            </div>
-
                             <a href="forgetPassword.jsp" class="text">Forgot password?</a>
                         </div>
                         <input type="hidden" name="key" value="cus">

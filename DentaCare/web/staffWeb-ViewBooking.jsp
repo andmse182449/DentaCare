@@ -66,9 +66,18 @@
                     <div class="booking-item" data-date="${booking.appointmentDay}" data-name="${booking.account.fullName}" onclick="showDetail('${status.index}')">
                         Booking ID: ${booking.bookingID} | Name: ${booking.account.fullName} | Time: ${booking.timeSlot.timePeriod} |
                         <c:choose>
-                            <c:when test="${booking.status == 1}">Status: Checked-in</c:when>
-                            <c:when test="${booking.status == 2}">Status: Completed</c:when>
-                            <c:when test="${booking.status == 5}">Status: Placed and Sent Email</c:when>
+                            <c:when test="${booking.status == 1}">
+                                Status: Checked-in
+                            </c:when>
+                            <c:when test="${booking.status == 0}">
+                                Status: Placed
+                            </c:when>
+                            <c:when test="${booking.status == 2}">
+                                Status: Completed
+                            </c:when>
+                            <c:when test="${booking.status == 5}">
+                                Status: Placed and Sent Email
+                            </c:when>
                         </c:choose>
                         <div id="detail-${status.index}" class="booking-detail hidden">
                             <p><strong>Booking ID:</strong> ${booking.bookingID}</p>

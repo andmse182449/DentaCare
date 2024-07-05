@@ -50,8 +50,6 @@ public class LoginActionServlet extends HttpServlet {
                         int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
                         int currentMonth2 = now2.getMonthValue(); // Get current month number
 
-                        System.out.println(currentMonth2);
-
                         session.setAttribute("account", checkAccount);
                         response.sendRedirect("DashBoardServlet?action=dashboardAction&year1=" + currentYear2 + "&year2=" + currentYear2 + "&month=" + currentMonth2);
                     }
@@ -79,6 +77,7 @@ public class LoginActionServlet extends HttpServlet {
                     }
                     default -> {
                         if (key.equals("cus")) {
+                            request.setAttribute("loginSuccess", "true");
                             session.setAttribute("account", checkAccount);
                             request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
                         } else {

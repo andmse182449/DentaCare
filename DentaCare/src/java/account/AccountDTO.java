@@ -2,6 +2,7 @@ package account;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class AccountDTO implements Serializable {
 
@@ -20,6 +21,9 @@ public class AccountDTO implements Serializable {
     private int roleID;
     private int status;
     private int clinicID;
+    private String majorName;
+    private String introduction;
+    private String clinicName;
 
     public AccountDTO() {
     }
@@ -42,6 +46,21 @@ public class AccountDTO implements Serializable {
         this.image = image;
     }
 
+    public AccountDTO(String accountID, String email, LocalDate dob, String fullName, String phone, String address, String image, boolean gender, int status, String clinicName, String majorName, String introduction) {
+        this.accountID = accountID;
+        this.email = email;
+        this.dob = dob;
+        this.fullName = fullName;
+        this.phone = phone;
+        this.address = address;
+        this.image = image;
+        this.gender = gender;
+        this.status = status;
+        this.clinicName = clinicName;
+        this.majorName = majorName;
+        this.introduction = introduction;
+    }
+
     public String getImage() {
         return image;
     }
@@ -49,7 +68,7 @@ public class AccountDTO implements Serializable {
     public void setImage(String image) {
         this.image = image;
     }
-    
+
     public String getAccountID() {
         return accountID;
     }
@@ -132,7 +151,7 @@ public class AccountDTO implements Serializable {
 
     public boolean isGender() {
         return gender;
-}
+    }
 
     public void setGender(boolean gender) {
         this.gender = gender;
@@ -162,6 +181,30 @@ public class AccountDTO implements Serializable {
         this.clinicID = clinicID;
     }
 
+    public String getMajorName() {
+        return majorName;
+    }
+
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public String getClinicName() {
+        return clinicName;
+    }
+
+    public void setClinicName(String clinicName) {
+        this.clinicName = clinicName;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -183,5 +226,22 @@ public class AccountDTO implements Serializable {
         sb.append(", clinicID=").append(clinicID);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountID, majorName);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        AccountDTO other = (AccountDTO) obj;
+        return Objects.equals(accountID, other.accountID) && Objects.equals(majorName, other.majorName);
     }
 }

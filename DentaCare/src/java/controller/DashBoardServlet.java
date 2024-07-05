@@ -55,6 +55,10 @@ public class DashBoardServlet extends HttpServlet {
                 yearS1 = Integer.parseInt(year1);
                 yearS2 = Integer.parseInt(year2);
                 monthS = Integer.parseInt(monthStr);
+
+//                System.out.println(yearS1);
+//                System.out.println(yearS2);
+//                System.out.println(monthS);
                 //
                 AccountDAO accDao = new AccountDAO();
 
@@ -66,9 +70,15 @@ public class DashBoardServlet extends HttpServlet {
                 // total Price
                 BookingDAO bookDao = new BookingDAO();
                 List<Map<String, Object>> results = bookDao.getTotalPriceByYearMonth(yearS1);
+                List<Map<String, Object>> allPriceInYear = bookDao.getTotalPriceByYear(yearS1);
 
                 // Total Time Slot
                 List<Map<String, Object>> timeResults = bookDao.getTotalTimeSlotsByYearMonth(yearS2, monthS);
+                System.out.println(timeResults);
+                // count female / male
+                List<Map<String, Object>> male = accDao.getAgeGroupStatisticsForMale();
+                List<Map<String, Object>> female = accDao.getAgeGroupStatisticsForFemale();
+
                 request.setAttribute("year1", year1);
                 request.setAttribute("year2", year2);
                 request.setAttribute("month", monthStr);
@@ -76,9 +86,12 @@ public class DashBoardServlet extends HttpServlet {
                 request.setAttribute("countDentist", countDentist);
                 request.setAttribute("countStaff", countStaff);
                 request.setAttribute("countUserAccount", countUserAccount);
+                request.setAttribute("male", male);
+                request.setAttribute("female", female);
                 request.setAttribute("timeResults", timeResults);
-
                 request.setAttribute("results", results);
+                request.setAttribute("allPriceInYear", allPriceInYear);
+
             } else if (action.equals("dashboardAction")) {
                 String year1 = request.getParameter("year1");
                 String year2 = request.getParameter("year2");
@@ -96,9 +109,14 @@ public class DashBoardServlet extends HttpServlet {
                 // total Price
                 BookingDAO bookDao = new BookingDAO();
                 List<Map<String, Object>> results = bookDao.getTotalPriceByYearMonth(yearS1);
+                List<Map<String, Object>> allPriceInYear = bookDao.getTotalPriceByYear(yearS1);
 
                 // Total Time Slot
                 List<Map<String, Object>> timeResults = bookDao.getTotalTimeSlotsByYearMonth(yearS2, monthS);
+                System.out.println(timeResults);
+                // count female / male
+                List<Map<String, Object>> male = accDao.getAgeGroupStatisticsForMale();
+                List<Map<String, Object>> female = accDao.getAgeGroupStatisticsForFemale();
 
 //                request.setAttribute("yearStr", yearStr);
 //                request.setAttribute("yearStr", yearStr1);
@@ -108,9 +126,12 @@ public class DashBoardServlet extends HttpServlet {
                 request.setAttribute("countDentist", countDentist);
                 request.setAttribute("countStaff", countStaff);
                 request.setAttribute("countUserAccount", countUserAccount);
+                request.setAttribute("male", male);
+                request.setAttribute("female", female);
                 request.setAttribute("timeResults", timeResults);
-
                 request.setAttribute("results", results);
+                request.setAttribute("allPriceInYear", allPriceInYear);
+
 //                if (("timeSlot").equals(key)) {
 //                    String yearStr2 = request.getParameter("year2");
 //                    String monthStr2 = request.getParameter("month2");
