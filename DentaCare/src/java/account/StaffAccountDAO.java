@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -110,7 +111,7 @@ public class StaffAccountDAO {
     }
 
     public boolean UpdateProfileStaff(AccountDTO staff) {
-        String sql = "UPDATE account SET username = ?, fullname = ?, phone = ?, address = ?, dob = ?, gender = ? WHERE accountId = ?";
+        String sql = "UPDATE account SET username = ?, fullname = ?, phone = ?, address = ?, dob = ?, gender = ?, image = ? WHERE accountId = ?";
         try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, staff.getUserName());
@@ -119,7 +120,8 @@ public class StaffAccountDAO {
             ps.setString(4, staff.getAddress());
             ps.setDate(5, java.sql.Date.valueOf(staff.getDob()));
             ps.setBoolean(6, staff.isGender());
-            ps.setString(7, staff.getAccountID());
+            ps.setString(7, staff.getImage());
+            ps.setString(8, staff.getAccountID());
 
             int rowsUpdated = ps.executeUpdate();
             return rowsUpdated > 0;
@@ -234,6 +236,33 @@ public class StaffAccountDAO {
             System.out.println(e.getMessage());
         }
         return list;
+    }
+
+    public double getRevenue(Date today) {
+        String sql = "SELECT SUM(price) AS revenue FROM booking WHERE appointmentday = ? and status = 2";
+        try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            java.sql.Date sqlDate = new java.sql.Date(today.getTime());
+            ps.setDate(1, sqlDate);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("revenue");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getRevenue: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    public List<LocalDate> getPreviousDaysInCurrentMonth(LocalDate targetDate) {
+        List<LocalDate> dates = new ArrayList<>();
+        LocalDate startDate = targetDate.minusDays(10);
+
+        for (LocalDate date = startDate; date.isBefore(targetDate); date = date.plusDays(1)) {
+            dates.add(date);
+        }
+
+        return dates;
     }
 
 }

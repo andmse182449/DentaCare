@@ -31,7 +31,7 @@
     </head>
     <body>
         <div class="grid-container">
-             <!-- HEADER -->
+            <!-- HEADER -->
             <header class="header">
                 <div><h1>MANAGE STAFF</h1></div>
                 <div class="header-icon">
@@ -64,18 +64,18 @@
             %>
             <aside id="sidebar">
                 <!-- SIDEBAR -->
-            <aside id="sidebar">
-                <div>
-                    <ul class="sidebar-list">
-                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
-                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
-                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
-                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
-                        <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
-                        <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
-                    </ul>
-                </div>
-            </aside>
+                <aside id="sidebar">
+                    <div>
+                        <ul class="sidebar-list">
+                            <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                            <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                            <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                            <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
+                            <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
+                            <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
+                        </ul>
+                    </div>
+                </aside>
             </aside>
             <!-- MAIN -->
             <div class="main-container">
@@ -141,14 +141,13 @@
                                     </div>
                                 </div>
 
-                                <div>
+                                 <div>
                                     <form id="clinicForm" action="./ManageStaffServlet" method="post">
                                         <select name="clinicName-1" id="clinicSelect" onchange="submitFormWithSelectedValue()">
                                             <c:forEach items="${clinicName}" var="name">
                                                 <option value="${name}" <c:if test="${name == param.selectedClinic}">selected</c:if>>${name}</option>
                                             </c:forEach>
                                         </select>
-
                                     </form>
                                 </div>
                                 <script>
@@ -160,21 +159,6 @@
                                         formElement.submit();
                                     }
 
-                                    // Automatically select the first clinic on page load if no selection exists
-                                    window.onload = function () {
-                                        var urlParams = new URLSearchParams(window.location.search);
-                                        var selectedClinic = urlParams.get('selectedClinic');
-                                        if (!selectedClinic) {
-                                            var selectElement = document.getElementById('clinicSelect');
-                                            var firstClinic = selectElement.options[0].value;
-                                            var formElement = document.getElementById('clinicForm');
-                                            formElement.action = './ManageStaffServlet?selectedClinic=' + encodeURIComponent(firstClinic);
-                                            formElement.submit();
-                                        } else {
-                                            var selectElement = document.getElementById('clinicSelect');
-                                            selectElement.value = selectedClinic;
-                                        }
-                                    };
                                 </script>
 
                                 <div class="table-responsive">

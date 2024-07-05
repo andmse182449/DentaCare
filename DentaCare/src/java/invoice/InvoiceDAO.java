@@ -84,7 +84,7 @@ public class InvoiceDAO {
     public BookingDTO getBookingClinic(String bookingID) {
         String sql = """
             SELECT 
-                bookingID, createDay, appointmentDay, a.status, a.price, 
+                bookingID, createDay, appointmentDay, a.status, a.price, a.deposit, 
                 customer.fullName AS customerName, customer.phone, 
                 serviceName, timePeriod, dentist.fullName AS dentistName
             FROM 
@@ -108,6 +108,7 @@ public class InvoiceDAO {
                 booking.setAppointmentDay(rs.getDate("appointmentDay").toLocalDate());
                 booking.setCreateDay(rs.getDate("createday").toLocalDate());
                 booking.setPrice(rs.getFloat("price"));
+                booking.setDeposit(rs.getFloat("deposit"));
                 booking.setStatus(rs.getInt("status"));
                 booking.setFullNameDentist(rs.getString("dentistName"));
                 ServiceDTO service = new ServiceDTO();

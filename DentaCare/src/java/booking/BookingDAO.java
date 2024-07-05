@@ -455,30 +455,30 @@ public class BookingDAO {
         }
     }
 
-    public List<BookingDTO> getAllBookingClinic(int clinicID, String fullName) {
+    public List<BookingDTO> getAllBookingClinic(int clinicID, Date now) {
         String sql = """
-                SELECT
-                    bookingID, customerID, createDay, appointmentDay, a.status, a.price,
-                    customer.fullName AS customerName, customer.phone,
-                    serviceName, timePeriod, dentist.fullName AS dentistName
-                FROM
-                    booking a
-                    INNER JOIN account customer ON a.customerID = customer.accountid
-                    LEFT JOIN account dentist ON a.dentistID = dentist.accountID
-                    INNER JOIN service c ON a.serviceid = c.serviceid
-                    INNER JOIN timeslot d ON a.slotid = d.slotid
-                WHERE
-                    a.clinicID = ? and customer.fullName like ?
-                ORDER BY
-                    appointmentDay, timePeriod;
-                """;
+            SELECT 
+                bookingID, customerID, createDay, appointmentDay, a.deposit, a.status, a.price, 
+                customer.fullName AS customerName, customer.phone, 
+                serviceName, timePeriod, dentist.fullName AS dentistName
+            FROM 
+                booking a
+                INNER JOIN account customer ON a.customerID = customer.accountid
+                LEFT JOIN account dentist ON a.dentistID = dentist.accountID
+                INNER JOIN service c ON a.serviceid = c.serviceid 
+                INNER JOIN timeslot d ON a.slotid = d.slotid
+            WHERE 
+                a.clinicID = ? and appointmentDay = ?
+            ORDER BY 
+                timePeriod, a.status;
+            """;
 
         List<BookingDTO> list = new ArrayList<>();
         try {
             Connection con = utils.DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, clinicID);
-            ps.setString(2, "%" + fullName + "%");
+            ps.setDate(2, now);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 BookingDTO booking = new BookingDTO();
@@ -486,6 +486,7 @@ public class BookingDAO {
                 booking.setCustomerID(rs.getString("customerid"));
                 booking.setAppointmentDay(rs.getDate("appointmentDay").toLocalDate());
                 booking.setCreateDay(rs.getDate("createday").toLocalDate());
+                booking.setDeposit(rs.getFloat("deposit"));
                 booking.setPrice(rs.getFloat("price"));
                 booking.setStatus(rs.getInt("status"));
                 booking.setFullNameDentist(rs.getString("dentistName"));

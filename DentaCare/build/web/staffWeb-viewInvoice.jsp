@@ -34,12 +34,12 @@
                 font-size: 20px;
             }
             .back-link {
-                
+
                 font-size: 16px;
                 color: #000;
                 margin-bottom: 10px;
                 display: inline-block;
-                
+
             }
             .back-link:hover{
                 color: #007BFF;
@@ -125,15 +125,19 @@
                     <!-- Example rows -->
                     <tr>
                         <td>${bookingInvoice.service.serviceName}</td>
-                        <td>${bookingInvoice.appointmentDay} ${bookingInvoice.timeSlot.timePeriod}</td>
-                        <td>${bookingInvoice.price}</td>
+                        <td>${bookingInvoice.timeSlot.timePeriod} ${bookingInvoice.appointmentDay}</td>
+                        <td class="money-format">${bookingInvoice.price}</td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="totals">
-                <p>Total: ${bookingInvoice.price}</p>
+                <p class="money-format">Subtotal: ${bookingInvoice.price}</p>
+                <p class="money-format">Deposit: ${bookingInvoice.deposit}</p>
+                <c:set var="total" value="${bookingInvoice.price - bookingInvoice.deposit}" />
+                <p class="money-format">Total: <c:out value="${total}" /></p>
             </div>
+
             <form style="text-align: right" action="./SendBookingNotificationServlet" method="post">
                 <input name="bookingInvoiceID" value="${bookingInvoice.bookingID}" type="hidden" />
                 <input name="customerID" value="${customer.accountID}" type="hidden" />
@@ -143,6 +147,20 @@
                 <p>Terms and Conditions</p>
             </div>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const moneyElements = document.querySelectorAll('.money-format');
 
+                moneyElements.forEach(element => {
+                    const text = element.textContent;
+                    const amount = text.match(/[\d,.]+/);
+                    if (amount) {
+                        const moneyValue = parseFloat(amount[0].replace(/,/g, ''));
+                        const formattedMoney = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(moneyValue);
+                        element.textContent = text.replace(amount[0], formattedMoney);
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
