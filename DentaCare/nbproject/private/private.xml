@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
-        <file>
-            <url>web/coWeb-clinic.jsp</url>
-            <bookmark id="1">
-                <name/>
-                <line>0</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/coWeb-clinic.jsp</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/src/java/controller/LoadFromClinicScheduleToDentistScheduleServlet.java</file>
-            <file>file:/C:/Study/Sem%205/SWP/DentaCare/DentaCare/web/denWeb-Schedule.jsp</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/LoginChangePage.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/medicalRecord/MedicalRecordDTO.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/utils/DBUtils.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/LoadAllDentaListServlet.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/medicalRecord/MedicalRecordDAO.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/booking/BookingDAO.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/HistoryServlet.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/clinic/ClinicDAO.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/controller/EditDentistServlet.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/feedback/FeedbackDAO.java</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/web/clinic.jsp</file>
+            <file>file:/C:/Users/ROG%20STRIX/DentaCare/DentaCare/src/java/booking/BookingDTO.java</file>
         </group>
     </open-files>
 </project-private>

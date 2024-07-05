@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import medicalRecord.MedicalRecordDAO;
+import medicalRecord.MedicalRecordDTO;
 
 /**
  *
@@ -52,10 +53,13 @@ public class HistoryServlet extends HttpServlet {
         BookingDAO bookingDAO = new BookingDAO();
         FeedbackDAO feedbackDAO = new FeedbackDAO();
         MedicalRecordDAO medicalDao = new MedicalRecordDAO();
+        
         LocalDate today = LocalDate.now();
         if (action == null || action == "" || action.equals("load")) {
             try {
                 List<BookingDTO> bookingList = bookingDAO.getBookingListByCustomerID(account.getAccountID());
+                 List<MedicalRecordDTO> recordLists = medicalDao.getAllRecords();
+                System.out.println(account.getAccountID() + "and" +bookingList.size());
                 List<FeedbackDTO> fbList = feedbackDAO.getAllFeedbacksByUser(account.getAccountID());
                 try {
                     for (BookingDTO bookingDTO : bookingList) {
@@ -67,7 +71,7 @@ public class HistoryServlet extends HttpServlet {
                             }
                         }
                     }
-                    request.setAttribute("recordList", medicalDao.getAllRecords());
+                    request.setAttribute("recordList", recordLists);
                     request.setAttribute("bookingList", bookingList);
                     request.setAttribute("feedbackList", fbList);
                     request.getRequestDispatcher(url).forward(request, response);
