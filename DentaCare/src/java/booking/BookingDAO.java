@@ -27,12 +27,12 @@ import utils.DBUtils;
  */
 public class BookingDAO {
 
-    public boolean createBooking(String bookingID, LocalDate createDay, LocalDate appointmentDay, float price,
+    public boolean createBooking(String bookingID, LocalDate createDay, LocalDate appointmentDay, float price, float deposit,
             int serviceID, int slotID,
             String customerID, String dentistID, int clinicID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO BOOKING VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO BOOKING VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -42,15 +42,16 @@ public class BookingDAO {
             stm.setDate(3, Date.valueOf(appointmentDay));
             stm.setInt(4, 0);
             stm.setFloat(5, price);
-            stm.setInt(6, serviceID);
-            stm.setInt(7, slotID);
-            stm.setString(8, customerID);
+            stm.setFloat(6, deposit);
+            stm.setInt(7, serviceID);
+            stm.setInt(8, slotID);
+            stm.setString(9, customerID);
             if (dentistID == null || dentistID.equals("")) {
-                stm.setString(9, null);
+                stm.setString(10, null);
             } else {
-                stm.setString(9, dentistID);
+                stm.setString(10, dentistID);
             }
-            stm.setInt(10, clinicID);
+            stm.setInt(11, clinicID);
 
             if (stm.executeUpdate() != 0) {
                 return true;
@@ -829,15 +830,16 @@ AND (b.status = 2 OR b.status = 1)""";
         return list;
     }
 
-    public double getDepositPercent() {
+    public int getDepositPercent() {
         String sql = "SELECT depositPercent FROM SETTING ";
-        double percent = 0;
+        int percent = 0;
         Connection con = DBUtils.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            percent = rs.getDouble("depositPercent");
-
+            if (rs.next()) {
+                percent = rs.getInt("depositPercent");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -851,12 +853,42 @@ AND (b.status = 2 OR b.status = 1)""";
         try {
             PreparedStatement st = con.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            limit = rs.getInt("limitBooking");
-
+            if (rs.next()) {
+                limit = rs.getInt("limitBooking");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return limit;
+    }
+    
+    public boolean setDepositPercent(int amount) {
+        String sql = "UPDATE SETTING SET depositPercent = ? ";
+        Connection con = DBUtils.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, amount);
+            int row = st.executeUpdate();
+            return row > 0;
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    public boolean setLimitBooking(int amount) {
+        String sql = "UPDATE SETTING SET limitBooking = ? ";
+        Connection con = DBUtils.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, amount);
+            int row = st.executeUpdate();
+            return row > 0;
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
 }

@@ -12,6 +12,8 @@ import booking.BookingDAO;
 import booking.BookingDTO;
 import clinic.ClinicDAO;
 import clinic.ClinicDTO;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import dayOffSchedule.DayOffScheduleDAO;
 import dayOffSchedule.DayOffScheduleDTO;
 import dentistSchedule.DentistScheduleDAO;
@@ -19,24 +21,40 @@ import dentistSchedule.DentistScheduleDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.sql.Date;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Currency;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import timeSlot.TimeSlotDAO;
 import timeSlot.TimeSlotDTO;
+import payment.Config;
 
 /**
  *
  * @author Admin
  */
+@WebServlet(name = "BookingServlet", urlPatterns = {"/BookingServlet"})
 public class BookingServlet extends HttpServlet {
 
     /**
@@ -91,37 +109,38 @@ public class BookingServlet extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(BookingServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (action.equals("create")) {
+        } else if (action.equals("confirm")) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDate today = LocalDate.now();
-            String bookingID = "BK" + (today.getYear() % 100) + String.format("%02d", today.getMonthValue()) + String.format("%02d", today.getDayOfMonth()) + String.format("%02d", bookingDAO.countBooking() + 1);
-
-            LocalDate createDay = today;
-            LocalDateTime createTime = LocalDateTime.now();
+            
             String appointmentDay_raw = request.getParameter("date");
             LocalDate appointmentDay = LocalDate.parse(appointmentDay_raw, formatter);
             Date sqlDate = Date.valueOf(appointmentDay);
+
             float price = Float.parseFloat(request.getParameter("price"));
+            Locale currentLocale = new Locale("vi", "VN");
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(currentLocale);
+
+            // Format the price and display
+            String formattedPrice = currencyFormatter.format(price);
+            
+            int percent = bookingDAO.getDepositPercent();
+            System.out.println(percent);
+            String formattedDeposit = currencyFormatter.format(price * percent / 100);            
             int serviceID = Integer.parseInt(request.getParameter("serviceID"));
             int slotID = Integer.parseInt(request.getParameter("slotID"));
             String customerID = request.getParameter("accountID");
-            String dentistID = request.getParameter("dentistID");
             int clinicID = Integer.parseInt(request.getParameter("clinicID"));
             String email = request.getParameter("email");
             String clinic_address = request.getParameter("clinic-address");
             String clinic = request.getParameter("clinic");
             String service = request.getParameter("service");
             String timeslot = request.getParameter("timeslot");
-            String doctor = request.getParameter("doctor");
-            String url = "";
 
             try {
                 List<Integer> listClinicLimit = bookingDAO.getClinicIDLimitBooking();
                 List<Integer> listSlotLimit = bookingDAO.getSlotIDLimitBooking();
                 List<Date> listDayLimit = bookingDAO.getDayLimitBooking();
                 List<BookingDTO> list = bookingDAO.getAllBookingList();
-                System.out.println(list);
                 for (BookingDTO booking : list) {
                     if (booking.getCustomerID().equals(customerID) && booking.getSlotID() == slotID && booking.getServiceID() == serviceID && booking.getAppointmentDay().equals(appointmentDay) && booking.getClinicID() == clinicID) {
                         request.setAttribute("error", "You have already booked this service");
@@ -135,29 +154,34 @@ public class BookingServlet extends HttpServlet {
                         return;
                     }
                 }
-
+                
                 if (listClinicLimit.contains(clinicID) && listSlotLimit.contains(slotID) && listDayLimit.contains(sqlDate)) {
                     request.setAttribute("error", "Something Wrong");
                     request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
+                    return;
                 } else {
-                    if (bookingDAO.createBooking(bookingID, createDay, appointmentDay, price, serviceID, slotID, customerID, dentistID, clinicID)) {
-                        String now_raw = createTime.format(formatter2);
-                        request.setAttribute("createTime", now_raw);
-                        request.setAttribute("bookingID", bookingID);
-                        request.setAttribute("mail", email);
-                        request.setAttribute("clinicAddress", clinic_address);
-                        request.setAttribute("clinic", clinic);
-                        request.setAttribute("timeslot", timeslot);
-                        request.setAttribute("service", service);
-                        request.setAttribute("doctor", doctor);
-                        url = "SendEmailBookingServlet";
-                    }
+                    
+                    request.setAttribute("mail", email);
+                    request.setAttribute("clinicAddress", clinic_address);
+                    request.setAttribute("clinic", clinic);
+                    
+                    request.setAttribute("serviceID", serviceID);
+                    request.setAttribute("clinicID", clinicID);
+                    request.setAttribute("slotID", slotID);
+                    
+                    request.setAttribute("timeslot", timeslot);
+                    request.setAttribute("service", service);
+                    request.setAttribute("price", formattedPrice);
+                    request.setAttribute("deposit", formattedDeposit);
+                    request.setAttribute("appointmentDay", appointmentDay_raw);
+                    request.getRequestDispatcher("userWeb-purchase.jsp").forward(request, response);
+
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(BookingServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             //request.setAttribute("action", "book");
-            request.getRequestDispatcher(url).forward(request, response);
+            //request.getRequestDispatcher(url).forward(request, response);
         }
     }
 
