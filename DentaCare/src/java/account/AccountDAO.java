@@ -1412,4 +1412,26 @@ public class AccountDAO implements Serializable {
         }
         return flag;
     }
+    
+    public boolean updateProfileDentist(AccountDTO staff) {
+        String sql = "UPDATE account SET username = ?, fullname = ?, phone = ?, address = ?, dob = ?, gender = ?, image = ? WHERE accountId = ?";
+        try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, staff.getUserName());
+            ps.setString(2, staff.getFullName());
+            ps.setString(3, staff.getPhone());
+            ps.setString(4, staff.getAddress());
+            ps.setDate(5, java.sql.Date.valueOf(staff.getDob()));
+            ps.setBoolean(6, staff.isGender());
+            ps.setString(7, staff.getImage());
+            ps.setString(8, staff.getAccountID());
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.getMessage();
+            return false;
+        }
+    }
 }

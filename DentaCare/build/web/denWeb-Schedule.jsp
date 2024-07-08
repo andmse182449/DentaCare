@@ -76,11 +76,12 @@
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
-                        <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
-                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                         <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
-                        <a href="ManageCustomerServlet"><li class="sidebar-list-item">Manage Customer</li></a>
+                        <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
                     </ul>
                 </div>
             </aside>
@@ -357,7 +358,7 @@
                         <span class="close-btn" onclick="closePopup('eventPopup')">&times;</span>
                         <h2>Set Dentist</h2>
                         <form id="addForm" method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
-                            <input type="hidden" name="offDate" id="eventDate">
+                            <input type="hidden" name="offDate" id="addEventDate"> <!-- Unique ID for add form -->
                             <label for="accountID">List of dentist:</label>
                             <select name="accountID">
                                 <c:forEach items="${requestScope.listAllDentist}" var="den">
@@ -372,7 +373,7 @@
 
                         <h2>Modify Dentist Schedule</h2>
                         <form id="modifyForm" method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
-                            <input type="hidden" name="offDate" id="eventDate">
+                            <input type="hidden" name="offDate" id="modifyEventDate"> <!-- Unique ID for modify form -->
                             <label for="oldAccountID">Current Dentist:</label>
                             <select name="oldAccountID">
                                 <c:forEach items="${requestScope.listAllDentist}" var="den">
@@ -393,6 +394,7 @@
                     </div>
                 </div>
 
+
                 <script>
                     function showPopup(popupId) {
                         document.getElementById(popupId).style.display = 'flex';
@@ -402,7 +404,7 @@
                         document.getElementById(popupId).style.display = 'none';
                     }
 
-                    // Function to check if the selected date is a Sunday
+// Function to check if the selected date is a Sunday
                     function isSunday(date) {
                         const dayOfWeek = new Date(date).getDay();
                         return dayOfWeek === 0; // 0 corresponds to Sunday
@@ -436,7 +438,8 @@
                         document.getElementById('confirmButton').addEventListener('click', () => {
                             closePopup('confirmationPopup');
                             showPopup('eventPopup');
-                            document.getElementById('eventDate').value = selectedDate;
+                            document.getElementById('addEventDate').value = selectedDate;
+                            document.getElementById('modifyEventDate').value = selectedDate;
                         });
 
                         document.querySelector('#successPopup .close-btn').addEventListener('click', () => {
@@ -487,6 +490,7 @@
                         });
                     <% } %>
                     });
+
                 </script>
 
                 <style>
