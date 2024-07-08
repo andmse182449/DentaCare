@@ -50,9 +50,17 @@
                                 <h3>${sessionScope.account.userName}</h3>
                             </div>
                             <hr>
-
+                            <a href="ProfileDentistServlet" class="sub-menu-link">
+                                <p>Profile</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                            <hr>
+                            <a href="ProfileDentistServlet?action=changePassword" class="sub-menu-link">
+                                <p>Change Password</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                            <hr>
                             <a href="SignOutServlet" class="sub-menu-link">
-                                <span class="material-symbols-outlined">logout</span>
                                 <p>Logout</p>
                                 <i class="fa fa-chevron-right"></i>
                             </a>
