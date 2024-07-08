@@ -122,9 +122,7 @@ public class BookingServlet extends HttpServlet {
             String formattedPrice = currencyFormatter.format(price);
             
             int percent = bookingDAO.getDepositPercent();
-            String formattedDeposit = currencyFormatter.format(price * percent / 100);
-            System.out.println(formattedDeposit);
-            
+            String formattedDeposit = currencyFormatter.format(price * percent / 100);            
             int serviceID = Integer.parseInt(request.getParameter("serviceID"));
             int slotID = Integer.parseInt(request.getParameter("slotID"));
             String customerID = request.getParameter("accountID");

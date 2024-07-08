@@ -6,7 +6,10 @@
 <%@page import="Service.*" %>
 <%@page import="timeSlot.*" %>
 <%@page import="account.*" %>
-<%@ page import="java.util.List" %>
+<%@page import="java.util.List" %>
+<%@page import="java.text.NumberFormat" %>
+<%@page import="java.util.Locale" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,12 +45,16 @@
                                     int serviceID = 0;
                                     int clinicID = 0;
                                     int slotID = 0;
+                                    float price1 = 0;
+                                    float deposit1 = 0;
                                     String dentistID = "";
                                     
                                     ServiceDTO service = null;
                                     ClinicDTO clinic = null;
                                     TimeSlotDTO slot = null;
                                     AccountDTO dentist = null;
+                                    String price = " ";
+                                    String deposit = " ";
                                     
                                     try {
                                         serviceID = (int) pageContext.getAttribute("booking").getClass().getMethod("getServiceID").invoke(pageContext.getAttribute("booking"));
@@ -66,6 +73,14 @@
                                         AccountDAO accountDAO = new AccountDAO();
                                         dentist = accountDAO.getDentistByID(dentistID);
                                         
+                                        price1 = (float) pageContext.getAttribute("booking").getClass().getMethod("getPrice").invoke(pageContext.getAttribute("booking"));
+                                        Locale currentLocale = new Locale("vi", "VN");
+                                        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(currentLocale);
+                                        price = currencyFormatter.format(price1);
+                                        
+                                        deposit1 = (float) pageContext.getAttribute("booking").getClass().getMethod("getDeposit").invoke(pageContext.getAttribute("booking"));
+                                        deposit = currencyFormatter.format(deposit1);
+                                
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -111,7 +126,8 @@
                                     <div><strong>Dentist</strong> <p><%= dentist != null ? dentist.getFullName() : "" %></p></div>
                                     <hr> 
                                     <div style="display: flex; justify-content: space-between;">
-                                        <div><strong>Price</strong> <p>${booking.getPrice()}</p></div>
+                                        <div><strong>Price</strong> <p><%= price %></p></div>
+                                        <div><strong>Deposit</strong> <p><%= deposit %></p></div>
                                         <form action="HistoryServlet"  method="post" style="margin-top: 20px; margin-right: 20px;">
                                             <input type="hidden" name="bookingID" value="${booking.bookingID}"/>
                                             <input type="hidden" name="action" value="cancel"/>

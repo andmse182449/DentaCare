@@ -24,12 +24,9 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
@@ -112,15 +109,15 @@ public class SendEmailBookingServlet extends HttpServlet {
                 String vnp_PayDate = request.getParameter("vnp_PayDate");
 
                 String orderInfoList[] = vnp_OrderInfo.trim().split(" ");
-                String appointmentDay_raw = orderInfoList[0];
-                String price = orderInfoList[1].replaceAll("[^\\d]", "");
-                int clinicID = Integer.parseInt(orderInfoList[2]);
-                String serviceID = orderInfoList[3];
-                String slotID = orderInfoList[4];
+                String appointmentDay_raw = orderInfoList[0].trim();
+                String price = orderInfoList[1].replaceAll("[^\\d]", "").trim();
+                int clinicID = Integer.parseInt(orderInfoList[2].trim());
+                String serviceID = orderInfoList[3].trim();
+                String slotID = orderInfoList[4].trim();
 
                 DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime createTime = LocalDateTime.now();
-                String now_raw = createTime.format(formatter2);
+                String now_raw = createTime.format(formatter2).trim();
                 String now[] = now_raw.split(" ");
 
                 String clinic = clinicDAO.getClinicByID(clinicID).getClinicName();
@@ -132,6 +129,19 @@ public class SendEmailBookingServlet extends HttpServlet {
                 DateTimeFormatter payFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
                 LocalDate paydate = LocalDate.parse(vnp_PayDate, payFormatter);
 
+                StringBuilder formatted_price = new StringBuilder(price);
+                int length = price.length();
+                for (int i = length - 3; i > 0; i -= 3) {
+                    formatted_price.insert(i, '.');
+                }
+                
+                int x = Integer.parseInt(vnp_Amount) / 100;
+                
+                StringBuilder formatted_deposit = new StringBuilder(Integer.toString(x));
+                int length1 = Integer.toString(x).length();
+                for (int i = length1 - 3; i > 0; i -= 3) {
+                    formatted_deposit.insert(i, '.');
+                }
                 //String payTime = paydate.format(formatter2);
 
                 Locale currentLocale = new Locale("vi", "VN");
@@ -220,12 +230,12 @@ public class SendEmailBookingServlet extends HttpServlet {
                         + "                <p><strong>Name of service:</strong> " + service + "</p>\n"
                         + "                <p><strong>Address:</strong> " + clinic + " - " + clinicAddress + "</p>\n"
                         + "                <p><strong>Appointment Time:</strong> " + timeSlot + " on " + appointmentDay_raw + "</p>\n"
-                        + "                <p><strong>Service Price:</strong> " + currencyFormatter.format(Float.parseFloat(price)) + "</p>\n"
+                        + "                <p><strong>Service Price:</strong> " + formatted_price + " VND" + "</p>\n"
                         + "            </div>\n"
                         + "            <div class=\"section\" >\n"
                         + "                <h2>Transaction Detail</h2>\n"
                         + "                <p><strong>Transaction ID:</strong> " + vnp_TxnRef + "</p>\n"
-                        + "                <p><strong>Deposit:</strong> " + currencyFormatter.format(Float.parseFloat(vnp_Amount) / 100) + "</p>\n"
+                        + "                <p><strong>Deposit:</strong> " + formatted_deposit + " VND" + "</p>\n"
                         + "                <p><strong>Transaction No at VNPAY-QR GATEWAY:</strong> " + vnp_TransactionNo + "</p>\n"
                         + "                <p><strong>Payment Time:</strong> " + paydate + "</p>\n"
                         + "            </div>\n"
@@ -241,13 +251,14 @@ public class SendEmailBookingServlet extends HttpServlet {
                         + "</html>";
 
                 SendEmail send = new SendEmail(account.getEmail(), subject, body);
-                PaymentDAO paymentDAO = new PaymentDAO();
-                paymentDAO.createPayment(vnp_TxnRef, Float.parseFloat(vnp_Amount), vnp_OrderInfo, Integer.parseInt(vnp_ResponseCode), vnp_TransactionNo, vnp_BankCode, paydate, bookingID);
-
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                System.out.println(appointmentDay_raw);
                 LocalDate appointmentDay = LocalDate.parse(appointmentDay_raw, formatter);
 
-                bookingDAO.createBooking(bookingID, LocalDate.now(), appointmentDay, Float.parseFloat(price), Integer.parseInt(serviceID), Integer.parseInt(slotID), account.getAccountID(), null, clinicID);
+                bookingDAO.createBooking(bookingID, LocalDate.now(), appointmentDay, Float.parseFloat(price), Float.parseFloat(vnp_Amount) / 100, Integer.parseInt(serviceID), Integer.parseInt(slotID), account.getAccountID(), null, clinicID);
+
+                PaymentDAO paymentDAO = new PaymentDAO();
+                paymentDAO.createPayment(vnp_TxnRef, Float.parseFloat(vnp_Amount) / 100, vnp_OrderInfo, Integer.parseInt(vnp_ResponseCode), vnp_TransactionNo, vnp_BankCode, paydate, bookingID);
 
                 request.setAttribute("message", "Booking successfull. Please check your email!");
             }

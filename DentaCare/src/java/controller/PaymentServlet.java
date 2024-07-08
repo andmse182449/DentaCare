@@ -54,7 +54,7 @@ public class PaymentServlet extends HttpServlet {
                         String clinicID = request.getParameter("clinicID");
                         String serviceID = request.getParameter("serviceID");
                         String slotID = request.getParameter("slotID");
-                        String appointmentDay = request.getParameter("appointmentDay");
+                        String appointmentDay = request.getParameter("date");
                         
                         String bankCode = request.getParameter("bankCode");
 
@@ -74,7 +74,7 @@ public class PaymentServlet extends HttpServlet {
                             vnp_Params.put("vnp_BankCode", bankCode);
                         }
                         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-                        vnp_Params.put("vnp_OrderInfo", appointmentDay + " " + price + " " + clinicID + " " + serviceID + " " + slotID);
+                        vnp_Params.put("vnp_OrderInfo", appointmentDay + " " + price.replaceAll("[^\\d]", "").trim() + " " + clinicID + " " + serviceID + " " + slotID);
                         vnp_Params.put("vnp_OrderType", orderType);
 
                         String locate = request.getParameter("language");
