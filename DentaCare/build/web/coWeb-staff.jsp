@@ -28,6 +28,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link href="admin-front-end/css/style.min.css" rel="stylesheet">
+        
     </head>
     <body>
         <div class="grid-container">

@@ -267,20 +267,23 @@ public class DentistScheduleDAO {
     }
 
     public boolean modifyDentistSchedule(String accountID, String workingDate, String oldAccountID) {
-        String query = "UPDATE DENTISTSCHEDULE SET accountID = ? WHERE accountID = ? AND workingDate = ?";
+    String query = "UPDATE DENTISTSCHEDULE SET accountID = ? WHERE accountID = ? AND workingDate = ?";
+    
+    try (Connection con = DBUtils.getConnection(); PreparedStatement stm = con.prepareStatement(query)) {
+        stm.setString(1, accountID);     // Set new accountID
+        stm.setString(2, oldAccountID);  // Where old accountID matches
+        stm.setString(3, workingDate);   // And workingDate matches
 
-        try (Connection con = DBUtils.getConnection(); PreparedStatement stm = con.prepareStatement(query)) {
-            stm.setString(1, accountID);     // Set new accountID
-            stm.setString(2, oldAccountID);  // Where old accountID matches
-            stm.setString(3, workingDate);   // And workingDate matches
+        int rowsUpdated = stm.executeUpdate();  // Execute the update and get the number of affected rows
 
-            stm.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();  // Print the exception for debugging purposes
-            return false;  // Return false indicating update failure
-        }
+        // Check if any rows were updated
+        return rowsUpdated > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();  // Print the exception for debugging purposes
+        return false;  // Return false indicating update failure
     }
+}
+
 
     public boolean modifyDentistSchedule2(String accountID, String workingDate, String oldAccountID) {
         Connection con = null;

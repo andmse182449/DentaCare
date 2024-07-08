@@ -72,10 +72,16 @@
 
 .sub-menu-wrap.open-menu {
     display: block;
+    width: 269px;
+    margin-right: 169px;
+    margin-top: 55px;
 }
 
 .sub-menu {
     padding: 5px;
+    width: 269px;
+    margin-right: 169px;
+    margin-top: 55px;
 }
 
 .user-info {

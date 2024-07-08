@@ -56,25 +56,32 @@
 }
 
 .sub-menu-wrap {
+    display: none;
     position: absolute;
-    top: 70%;
-    right: 30px;
-    width: 300px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s;
+    top: 40px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    z-index: 1;
+    border-radius: 5px;
+    width: 200px;
+    width: 269px;
+    margin-right: 169px;
+    margin-top: 55px;
 }
 
 .sub-menu-wrap.open-menu {
-    max-height: 400px;
+    display: block;
+    width: 269px;
+    margin-right: 169px;
+    margin-top: 55px;
 }
 
 .sub-menu {
-    background-color: #fff;
-    padding: 20px;
-    margin: 10px;
-    box-shadow: 0 4px 8px rgba(73, 127, 189, 0.1);
-    border-radius: 10px;
+    padding: 5px;
+    width: 269px;
+    margin-right: 169px;
+    margin-top: 55px;
 }
 
 .user-info {
