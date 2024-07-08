@@ -32,15 +32,14 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link href="admin-front-end/css/style.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/stylesheet.css">
-        <!--        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
+
     </head>
 
     <body>
         <div class="grid-container">
-             <!-- HEADER -->
-             <header class="header" style="height: 105px;">
-                 <div><h1 style="font-weight: bolder;">MANAGE SERVICE</h1></div>
+            <!-- HEADER -->
+            <header class="header" style="height: 105px;">
+                <div><h1 style="font-weight: bolder;">MANAGE SERVICE</h1></div>
                 <div class="header-icon">
                     <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
                     <!-- Dropdown Content -->
@@ -77,12 +76,12 @@
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
                         <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
-                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                         <a href="ServiceController"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
-                        <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
+                        <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
                     </ul>
                 </div>
             </aside>
@@ -202,11 +201,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <i class="fa-solid fa-trash" onclick="submitForm(this.nextElementSibling)"></i>
-                                                        <form action="./ServiceController" method="post">
-                                                            <input name="action" value="delete" type="hidden" />
-                                                            <input name="serviceId" value="${service.serviceID}" type="hidden" />
-                                                        </form>
+                                                        <a style="text-decoration: none; color: black;" href="ServiceController?action=delete&serviceId=${service.serviceID}"><i class="fa-solid fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -279,11 +274,7 @@
                                                     <td style="white-space: pre-wrap;">${service.serviceDescription}</td>
                                                     <td class="money-format">${service.serviceMoney}</td>
                                                     <td>
-                                                        <i class="fa-solid fa-plus" onclick="submitForm(this.nextElementSibling)"></i>
-                                                        <form action="./ServiceController" method="post">
-                                                            <input name="action" value="addAgain" type="hidden" />
-                                                            <input name="serviceId" value="${service.serviceID}" type="hidden" />
-                                                        </form>
+                                                        <a style="text-decoration: none; color: black;" href="ServiceController?action=addAgain&serviceId=${service.serviceID}"><i class="fa-solid fa-plus"></i></a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -327,58 +318,63 @@
                 <!--Custom JavaScript -->
                 <script src="admin-front-end/js/custom.js"></script>
                 <script>
-                        function submitForm(formElement) {
+                                                            function submitForm(formElement) {
+
                                                                 formElement.submit();
                                                             }
-                        document.querySelector("#create-button").addEventListener("click", function () {
-                            document.querySelector(".popup").classList.add("active");
-                        });
+                                                            document.querySelector("#create-button").addEventListener("click", function () {
+                                                                document.querySelector(".popup").classList.add("active");
+                                                            });
 
-                        document.querySelector(".popup .close-btn").addEventListener("click", function () {
-                            document.querySelector(".popup").classList.remove("active");
-                        });
+                                                            document.querySelector(".popup .close-btn").addEventListener("click", function () {
+                                                                document.querySelector(".popup").classList.remove("active");
+                                                            });
 
-                        document.addEventListener("DOMContentLoaded", function () {
-                            const alertBox = document.querySelector(".alert-error.sec");
-                            if (alertBox && alertBox.textContent.trim()) {  
-                                alertBox.style.display = "block"; // Show the alert if there's an error message
-                                alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
-                                setTimeout(function () {
-                                    alertBox.classList.remove("show");
-                                    setTimeout(function () {
-                                        alertBox.style.display = "none"; // Hide the alert after the fade-out animation
-                                    }, 600); // Adjust the delay (in milliseconds) to match the transition duration
-                                }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
-                            }
-                        });
+                                                            document.addEventListener("DOMContentLoaded", function () {
+                                                                const alertBox = document.querySelector(".alert-error.sec");
+                                                                if (alertBox && alertBox.textContent.trim()) {
+                                                                    alertBox.style.display = "block"; // Show the alert if there's an error message
+                                                                    alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                                                                    setTimeout(function () {
+                                                                        alertBox.classList.remove("show");
+                                                                        setTimeout(function () {
+                                                                            alertBox.style.display = "none"; // Hide the alert after the fade-out animation
+                                                                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                                                                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                                                                }
+                                                            });
 
-                        document.addEventListener("DOMContentLoaded", function () {
-                            const alertBox2 = document.querySelector(".alert-message.sec");
-                            if (alertBox2 && alertBox2.textContent.trim()) {
-                                alertBox2.style.display = "block"; // Show the alert if there's an error message
-                                alertBox2.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
-                                setTimeout(function () {
-                                    alertBox2.classList.remove("show");
-                                    setTimeout(function () {
-                                        alertBox2.style.display = "none"; // Hide the alert after the fade-out animation
-                                    }, 600); // Adjust the delay (in milliseconds) to match the transition duration
-                                }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
-                            }
-                        });
+                                                            document.addEventListener("DOMContentLoaded", function () {
+                                                                const alertBox2 = document.querySelector(".alert-message.sec");
+                                                                if (alertBox2 && alertBox2.textContent.trim()) {
+                                                                    alertBox2.style.display = "block"; // Show the alert if there's an error message
+                                                                    alertBox2.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                                                                    setTimeout(function () {
+                                                                        alertBox2.classList.remove("show");
+                                                                        setTimeout(function () {
+                                                                            alertBox2.style.display = "none"; // Hide the alert after the fade-out animation
+                                                                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                                                                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                                                                }
+                                                            });
 
-                        let subMenu = document.getElementById("sub-menu-wrap");
-                        function toggleDropdown() {
-                            subMenu.classList.toggle("open-menu");
-                        }
+                                                            let subMenu = document.getElementById("sub-menu-wrap");
+                                                            function toggleDropdown() {
+                                                                subMenu.classList.toggle("open-menu");
+                                                            }
                 </script>
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
                         const moneyElements = document.querySelectorAll('.money-format');
 
                         moneyElements.forEach(element => {
-                            const moneyValue = parseFloat(element.textContent.trim());
-                            const formattedMoney = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(moneyValue);
-                            element.textContent = formattedMoney;
+                            const text = element.textContent;
+                            const amount = text.match(/[\d,.]+/);
+                            if (amount) {
+                                const moneyValue = parseFloat(amount[0].replace(/,/g, ''));
+                                const formattedMoney = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(moneyValue);
+                                element.textContent = text.replace(amount[0], formattedMoney);
+                            }
                         });
                     });
                 </script>

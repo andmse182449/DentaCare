@@ -32,8 +32,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link href="admin-front-end/css/style.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/stylesheet.css">
-        <!--        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
+
     </head>
 
     <body>
@@ -76,14 +75,14 @@
             %>
             <aside id="sidebar">
                 <div>
-                     <ul class="sidebar-list">
-                            <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
-                            <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
-                            <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
-                            <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
-                            <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
-                            <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
-                        </ul>
+                    <ul class="sidebar-list">
+                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
+                        <a href="ServiceController"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
+                        <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
+                    </ul>
                 </div>
             </aside>
 
@@ -202,11 +201,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <i class="fa-solid fa-trash" onclick="submitForm(this.nextElementSibling)"></i>
-                                                        <form action="./ServiceController" method="post">
-                                                            <input name="action" value="delete" type="hidden" />
-                                                            <input name="serviceId" value="${service.serviceID}" type="hidden" />
-                                                        </form>
+                                                        <a style="text-decoration: none; color: black;" href="ServiceController?action=delete&serviceId=${service.serviceID}"><i class="fa-solid fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -279,11 +274,7 @@
                                                     <td style="white-space: pre-wrap;">${service.serviceDescription}</td>
                                                     <td class="money-format">${service.serviceMoney}</td>
                                                     <td>
-                                                        <i class="fa-solid fa-plus" onclick="submitForm(this.nextElementSibling)"></i>
-                                                        <form action="./ServiceController" method="post">
-                                                            <input name="action" value="addAgain" type="hidden" />
-                                                            <input name="serviceId" value="${service.serviceID}" type="hidden" />
-                                                        </form>
+                                                        <a style="text-decoration: none; color: black;" href="ServiceController?action=addAgain&serviceId=${service.serviceID}"><i class="fa-solid fa-plus"></i></a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -328,6 +319,7 @@
                 <script src="admin-front-end/js/custom.js"></script>
                 <script>
                                                             function submitForm(formElement) {
+
                                                                 formElement.submit();
                                                             }
                                                             document.querySelector("#create-button").addEventListener("click", function () {

@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-md-3 border-right">
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                        <img class="rounded-circle mt-5" width="150px" src="images/${account.image}?${System.currentTimeMillis()}">
+                        <img class="rounded-circle mt-5" width="150px" src="images/${account.image}">
                         <span class="font-weight-bold">${account.fullName}</span>
                         <span class="text-black-50">${account.email}</span>
                         <span> </span>

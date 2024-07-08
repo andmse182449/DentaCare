@@ -52,7 +52,8 @@ public class ProfileStaffServlet extends HttpServlet {
             StaffAccountDAO dao = new StaffAccountDAO();
             AccountDAO accountDao = new AccountDAO();
             if (action == null) {
-                session.getAttribute("account");
+                AccountDTO account = (AccountDTO) session.getAttribute("account");
+                request.setAttribute("account", account);
                 request.getRequestDispatcher("staffWeb-ProfileStaff.jsp").forward(request, response);
             } else if (action.equals("updateProfileStaff")) {
                 String accountId = request.getParameter("accountId");
