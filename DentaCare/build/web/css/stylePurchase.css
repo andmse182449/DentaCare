@@ -1,0 +1,55 @@
+.booking-form {
+    display: flex;
+    margin: 0;
+    justify-content: space-between;
+    padding: 0 100px 10px 40px;
+}
+
+.booking-form label {
+    align-content: center;
+    width: 40%;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.booking-form input[type='text'] {
+    width: 60%;
+    border: none;
+    outline: none;
+    background: none;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.booking-form input[type='submit'] {
+    width: 200px;
+    height: 40px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #009dff;
+    color: #fff;
+}
+
+.booking-form input[type='submit']:hover {
+    cursor: pointer;
+    font-weight: 700;
+    background-color: #007bff;
+    color: #fff;
+}
+
+.card {
+    width: 60%;
+    padding: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+}

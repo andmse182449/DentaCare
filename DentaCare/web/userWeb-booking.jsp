@@ -134,45 +134,9 @@
             <!-- FORM SUBMIT BOOKING -->
             <div class="card">
                 <h1 style="font-size: 24px;">Booking Information</h1>
-                <p style="font-size: 11px; font-style: italic; margin: 0;"> <span class="text-red-500">*</span>Please make sure you have completely updated your personal information. </p>
+                
                 <hr>
                 <form action="BookingServlet" id="frmCreateOrder" method="post">
-
-                    <div class="booking-form">
-                        <label for="fullName">Full Name</label>
-                        <input type="text" name="fullName" value="${account.fullName}" required readonly>
-                    </div>
-                    <div class="booking-form">
-                        <label for="phone">Phone</label>
-                        <input type="text" name="phone" value="${account.phone.trim()}" required readonly>
-                    </div>
-                    <div class="booking-form">
-                        <label for="dob">Date of Birth</label>
-                        <input type="text" name="dob" value="${account.dob}" required readonly>
-                    </div>
-
-                    <div class="booking-form">
-                        <label for="email">Email</label>
-                        <input type="text" name="email" value="${account.email}" required readonly>
-                    </div>
-
-                    <div class="booking-form">
-                        <label for="address">Gender</label>
-                        <c:choose>
-                            <c:when test="${account.gender == 'true'}">
-                                <input type="text" name="gender" value="Male" required readonly>
-                            </c:when>
-                            <c:when test="${booking.status == 'false'}">
-                                <input type="text" name="gender" value="Female" required readonly>
-                            </c:when>
-                            <c:otherwise>
-                                <input type="text" name="gender" value=" " required readonly>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-
-                    <hr>
-
                     <div class="booking-form">
                         <label for="clinic">Clinic</label>
                         <input type="text" name="clinic" id="clinic-input" class="input-field-1" required readonly>
@@ -205,10 +169,9 @@
                     
 
 
-                    <input type="hidden" name="action" value="create">
+                    <input type="hidden" name="action" value="confirm">
                     <input type="hidden" name="accountID" value="${account.accountID}">
                     <input type="hidden" name="slotID" id="slotID-input">
-                    <input type="hidden" name="dentistID" id="doctorID-input">
                     <input type="hidden" name="serviceID" id="serviceID-input">
                     <input type="hidden" name="clinicID" id="clinicID-input">
 
@@ -282,6 +245,59 @@
             
         <script src="js/scriptBooking.js"></script>
             
+        <script> 
+                    //Limit attempt of booking
+        document.addEventListener('DOMContentLoaded', function () {
+            const timeslotList = document.getElementById('timeslot-list');
+
+            const clinicLimit = "${requestScope.clinicLimit}";
+            const slotLimit = "${requestScope.slotLimit}";
+            const dayLimit = "${requestScope.dayLimit}";
+
+            function updateTimeslotAttributes() {
+
+                timeslotList.querySelectorAll('.timeslot-option').forEach(function (option) {
+                    const timeslotDate = option.getAttribute('data-date');
+                    const timeslotClinic = option.getAttribute('data-clinic');
+                    const timeslotID = option.getAttribute('data-address');
+
+                    option.classList.remove('disabled');
+                    console.log(dayLimit);
+                    if (dayLimit.includes(timeslotDate) && clinicLimit.includes(timeslotClinic) && slotLimit.includes(timeslotID)) {
+                        option.classList.add('disabled');
+                    }
+
+                });
+            }
+
+            document.querySelectorAll('.future').forEach(function (option) {
+                option.addEventListener('click', updateTimeslotAttributes);
+            });
+
+
+            document.querySelectorAll('.clinic-option').forEach(function (option) {
+                option.addEventListener('click', updateTimeslotAttributes);
+            });
+            // Initial check
+            updateTimeslotAttributes();
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const alertBox = document.querySelector(".alert-error.sec");
+            if (alertBox && alertBox.textContent.trim()) {
+                alertBox.style.display = "block"; // Show the alert if there's an error message
+                alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                setTimeout(function () {
+                    alertBox.classList.remove("show");
+                    setTimeout(function () {
+                        alertBox.style.display = "none"; // Hide the alert after the fade-out animation
+                    }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+            }
+
+        });
+        </script>
     </body>
 </html>
 

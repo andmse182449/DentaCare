@@ -31,7 +31,7 @@ public class DBUtils {
     }
 
     private final static String serverName = "localhost";
-    private final static String dbName = "DentaCare";
+    private final static String dbName = "DentaCare2";
     private final static String portNumber = "1433";
     private final static String instance = "";
     private final static String userID = "sa";

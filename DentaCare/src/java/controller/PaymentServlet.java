@@ -47,13 +47,21 @@ public class PaymentServlet extends HttpServlet {
         String vnp_Version = "2.1.0";
                         String vnp_Command = "pay";
                         String orderType = "other";
-                        int amount = 100000;
+                        String deposit= request.getParameter("deposit").replaceAll("[^\\d]", "");
+                        String price = request.getParameter("price");
+                        
+                        int amount = Integer.parseInt(deposit) * 100;
+                        String clinicID = request.getParameter("clinicID");
+                        String serviceID = request.getParameter("serviceID");
+                        String slotID = request.getParameter("slotID");
+                        String appointmentDay = request.getParameter("appointmentDay");
+                        
                         String bankCode = request.getParameter("bankCode");
 
                         String vnp_TxnRef = Config.getRandomNumber(8);
                         String vnp_IpAddr = Config.getIpAddress(request);
 
-                        String vnp_TmnCode = Config.vnp_TmnCode;
+                        String vnp_TmnCode = Config.vnp_TmnCode;                    
 
                         Map<String, String> vnp_Params = new HashMap<>();
                         vnp_Params.put("vnp_Version", vnp_Version);
@@ -66,7 +74,7 @@ public class PaymentServlet extends HttpServlet {
                             vnp_Params.put("vnp_BankCode", bankCode);
                         }
                         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-                        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+                        vnp_Params.put("vnp_OrderInfo", appointmentDay + " " + price + " " + clinicID + " " + serviceID + " " + slotID);
                         vnp_Params.put("vnp_OrderType", orderType);
 
                         String locate = request.getParameter("language");
