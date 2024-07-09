@@ -141,7 +141,7 @@ public class InvoiceDAO {
                 clinic.setClinicID(rs.getInt("clinicid"));
                 clinic.setClinicName(rs.getString("clinicname"));
                 clinic.setClinicAddress(rs.getString("clinicaddress"));
-                clinic.setCity(rs.getString(rs.getString("city")));
+                clinic.setCity(rs.getString("city"));
                 clinic.setHotline(rs.getString("hotline"));
                 return clinic;
             }

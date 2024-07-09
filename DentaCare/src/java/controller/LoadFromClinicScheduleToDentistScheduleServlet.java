@@ -62,8 +62,8 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
                 if (selectedDaysDisplay != null) {
                     words = selectedDaysDisplay.split(",");
                 }
-            } else {
             }
+
             DayOffScheduleDAO offDao = new DayOffScheduleDAO();
 
             int id = 0;
@@ -86,11 +86,89 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
                     List<AccountDTO> listAllDentist = accDao.getAccountDentistByRoleID1(id);
 
                     // Set attributes for JSP
-                    setRequestAttributes(request, yearStr, weekStr, id, off, clinicByID, getAllDentist, listAllDentist, denList);
+                    request.setAttribute("yearStr", yearStr);
+                    request.setAttribute("weekStr", weekStr);
+                    request.setAttribute("clinicID", id);
+                    request.setAttribute("off", off);
+                    request.setAttribute("clinicByID", clinicByID);
+                    request.setAttribute("getAllDentist", getAllDentist);
+                    request.setAttribute("listAllDentist", listAllDentist);
+                    request.setAttribute("denList", denList);
 
                     // Handle actions based on 'key'
-                    handleKeyActions(key, words, dentDao, accountID, offDate, oldAccountID, out, response);
+                    if ("addDenToSchedule".equals(key)) {
+                        Logger.getLogger(LoadFromClinicScheduleToDentistScheduleServlet.class.getName()).log(Level.INFO, "Adding schedule for accountID: {0}, oldAccountID: {1}, offDate: {2}", new Object[]{accountID, oldAccountID, offDate});
+                        if (dentDao.checkAlreadyDentistInDenSche(accountID, offDate) == null) {
+                            boolean addDenToSche = dentDao.addDenToSche(accountID, offDate);
+                            response.setContentType("application/json");
+                            response.setStatus(HttpServletResponse.SC_OK);
+                            out.print("{\"success\": true, \"message\": \"Add dentist successfully!\"}");
+                            out.flush();
+                        } else {
+                            response.setContentType("application/json");
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            out.print("{\"success\": false, \"message\": \"Dentist is already scheduled for this date!\"}");
+                            out.flush();
+                        }
+                    } else if ("modifyDenToSchedule".equals(key)) {
+                        Logger.getLogger(LoadFromClinicScheduleToDentistScheduleServlet.class.getName()).log(Level.INFO, "Modifying schedule for accountID: {0}, oldAccountID: {1}, offDate: {2}", new Object[]{accountID, oldAccountID, offDate});
 
+                        DentistScheduleDTO existingSchedule = dentDao.checkAlreadyDentistInDenSche(oldAccountID, offDate);
+                        if (existingSchedule != null) {
+                            boolean modifyDentistSchedule = dentDao.modifyDentistSchedule(accountID, offDate, oldAccountID);
+                            if (modifyDentistSchedule) {
+                                response.setContentType("application/json");
+                                response.setStatus(HttpServletResponse.SC_OK);
+                                out.print("{\"success\": true, \"message\": \"Modify dentist successfully!\"}");
+                            } else {
+                                response.setContentType("application/json");
+                                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                                out.print("{\"success\": false, \"message\": \"Failed to modify dentist schedule!\"}");
+                            }
+                            out.flush();
+                        } else {
+                            response.setContentType("application/json");
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            out.print("{\"success\": false, \"message\": \"Dentist is not already scheduled for this date!\"}");
+                            out.flush();
+                        }
+                    } else if ("addMultiDen".equals(key)) {
+                        List<String> alreadyScheduledDates = new ArrayList<>();
+                        List<String> addedDates = new ArrayList<>();
+                        boolean allAddedSuccessfully = true;
+
+                        for (String date : words) {
+                            if (date != null) {
+                                DentistScheduleDTO check = dentDao.checkAlreadyDentistInDenSche(accountID, date);
+                                if (check != null) {
+                                    alreadyScheduledDates.add(date);
+                                } else {
+                                    boolean addSuccess = dentDao.addDenToSche(accountID, date);
+                                    if (addSuccess) {
+                                        addedDates.add(date);
+                                    } else {
+                                        allAddedSuccessfully = false;
+                                    }
+                                }
+                            }
+                        }
+
+                        response.setContentType("application/json");
+                        if (!alreadyScheduledDates.isEmpty()) {
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            out.print("{\"success\": false, \"message\": \"Dentist is already scheduled for the following dates: " + String.join(", ", alreadyScheduledDates) + "\"}");
+                        } else if (words == null) {
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            out.print("{\"success\": false, \"message\": \"Please choose dates\"}");
+                        } else if (allAddedSuccessfully) {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                            out.print("{\"success\": true, \"message\": \"Add dentist successfully to the following dates: " + String.join(", ", addedDates) + "\"}");
+                        } else {
+                            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                            out.print("{\"success\": false, \"message\": \"An error occurred while adding the dentist to some of the dates.\"}");
+                        }
+                        out.flush();
+                    }
                 }
                 // Always forward after processing all logic
                 request.getRequestDispatcher("denWeb-Schedule.jsp").forward(request, response);
@@ -102,121 +180,6 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
                 out.flush();
             }
         }
-    }
-
-    private void setRequestAttributes(HttpServletRequest request, String yearStr, String weekStr, int id, List<DayOffScheduleDTO> off, ClinicDTO clinicByID, List<DentistScheduleDTO> getAllDentist, List<AccountDTO> listAllDentist, List<AccountDTO> denList) {
-        request.setAttribute("yearStr", yearStr);
-        request.setAttribute("weekStr", weekStr);
-        request.setAttribute("clinicID", id);
-        request.setAttribute("off", off);
-        request.setAttribute("clinicByID", clinicByID);
-        request.setAttribute("getAllDentist", getAllDentist);
-        request.setAttribute("listAllDentist", listAllDentist);
-        request.setAttribute("denList", denList);
-    }
-
-    private void handleKeyActions(String key, String[] words, DentistScheduleDAO dentDao, String accountID, String offDate, String oldAccountID, PrintWriter out, HttpServletResponse response) throws SQLException {
-        if ("addDenToSchedule".equals(key)) {
-            if (dentDao.checkAlreadyDentistInDenSche(accountID, offDate) == null) {
-                boolean addDenToSche = dentDao.addDenToSche(accountID, offDate);
-                response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.print("{\"success\": true, \"message\": \"Add dentist successfully!\"}");
-                out.flush();
-            } else {
-                response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                out.print("{\"success\": false, \"message\": \"Dentist is already scheduled for this date!\"}");
-                out.flush();
-            }
-        } else if ("modifyDenToSchedule".equals(key)) {
-            if (dentDao.checkAlreadyDentistInDenSche(accountID, offDate) != null) {
-                boolean modifyDentistSchedule = dentDao.modifyDentistSchedule(accountID, offDate, oldAccountID);
-                System.out.println(modifyDentistSchedule);
-                response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.print("{\"success\": true, \"message\": \"Modify dentist successfully!\"}");
-                out.flush();
-            }
-            else if (dentDao.checkAlreadyDentistInDenSche(accountID, offDate) != null) {
-                
-            }
-            else {
-                response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                out.print("{\"success\": false, \"message\": \"Dentist is not already scheduled for this date!\"}");
-                out.flush();
-            }
-        } else if ("addMultiDen".equals(key)) {
-            List<String> alreadyScheduledDates = new ArrayList<>();
-            List<String> addedDates = new ArrayList<>();
-            boolean allAddedSuccessfully = true;
-
-            for (String date : words) {
-                if (date != null) {
-                    DentistScheduleDTO check = dentDao.checkAlreadyDentistInDenSche(accountID, date);
-                    if (check != null) {
-                        alreadyScheduledDates.add(date);
-                    } else {
-                        boolean addSuccess = dentDao.addDenToSche(accountID, date);
-                        if (addSuccess) {
-                            addedDates.add(date);
-                        } else {
-                            allAddedSuccessfully = false;
-                        }
-                    }
-                }
-            }
-
-            response.setContentType("application/json");
-            if (!alreadyScheduledDates.isEmpty()) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                out.print("{\"success\": false, \"message\": \"Dentist is already scheduled for the following dates: " + String.join(", ", alreadyScheduledDates) + "\"}");
-            } else if (words.equals(null)) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                out.print("{\"success\": false, \"message\": \"Please choose dates\"}");
-            } else if (allAddedSuccessfully) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                out.print("{\"success\": true, \"message\": \"Add dentist successfully to the following dates: " + String.join(", ", addedDates) + "\"}");
-            } else {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                out.print("{\"success\": false, \"message\": \"An error occurred while adding the dentist to some of the dates.\"}");
-            }
-            out.flush();
-        }
-
-//        else if ("addMultiDen".equals(key)) {
-//        boolean allAddedSuccessfully = true;
-//        boolean alreadyScheduled = false;
-//
-//        for (String word : words) {
-//            if (word != null) {
-//                DentistScheduleDTO check = dentDao.checkAlreadyDentistInDenSche(accountID, word);
-//                if (check != null) {
-//                    alreadyScheduled = true;
-//                    break;
-//                } else {
-//                    boolean addSuccess = dentDao.addDenToSche(accountID, word);
-//                    if (!addSuccess) {
-//                        allAddedSuccessfully = false;
-//                    }
-//                }
-//            }
-//        }
-//
-//        response.setContentType("application/json");
-//        if (alreadyScheduled) {
-//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            out.print("{\"success\": false, \"message\": \"Dentist is already scheduled for one of the selected dates!\"}");
-//        } else if (allAddedSuccessfully) {
-//            response.setStatus(HttpServletResponse.SC_OK);
-//            out.print("{\"success\": true, \"message\": \"Add dentist successfully!\"}");
-//        } else {
-//            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            out.print("{\"success\": false, \"message\": \"An error occurred while adding the dentist to some of the dates.\"}");
-//        }
-//        out.flush();
-//    }
     }
 
     // Other required methods (e.g., doGet, doPost) would be implemented here

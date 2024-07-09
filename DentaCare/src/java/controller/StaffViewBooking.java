@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -61,7 +62,7 @@ public class StaffViewBooking extends HttpServlet {
                 Date nextDate = Date.from(nextDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 java.sql.Date sqlNextDate = new java.sql.Date(nextDate.getTime());
                 List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate);
-                
+                 //Show revenue
                 Double revenue = daoStaffAccount.getRevenue(now);
                 //Set Attribute
                 request.setAttribute("style", "none");

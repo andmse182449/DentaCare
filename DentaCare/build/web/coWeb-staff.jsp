@@ -28,6 +28,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link href="admin-front-end/css/style.min.css" rel="stylesheet">
+
     </head>
     <body>
         <div class="grid-container">
@@ -68,7 +69,8 @@
                     <div>
                         <ul class="sidebar-list">
                             <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
-                            <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                            <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                            <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
                             <a href="ManageStaffServlet"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                             <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                             <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
@@ -141,7 +143,7 @@
                                     </div>
                                 </div>
 
-                                 <div>
+                                <div>
                                     <form id="clinicForm" action="./ManageStaffServlet" method="post">
                                         <select name="clinicName-1" id="clinicSelect" onchange="submitFormWithSelectedValue()">
                                             <c:forEach items="${clinicName}" var="name">

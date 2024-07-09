@@ -1,4 +1,5 @@
 // Function to generate a calendar
+
 function generateCalendar(year, month) {
     var today = new Date();
     var lastSelectableDate = new Date();
@@ -54,11 +55,6 @@ function generateCalendar(year, month) {
             document.querySelectorAll('.timeslot-option').forEach(timeslot => {
                 timeslot.setAttribute('data-date', document.getElementById('date-input').value);
             });
-            
-            document.querySelectorAll('.doctor-option').forEach(doctor => {
-                doctor.setAttribute('data-date', document.getElementById('date-input').value);
-            });
-            
         });
     });
 
@@ -142,15 +138,11 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('clinic-input').value = this.innerText;
             document.getElementById('clinicAddress-input').value = this.getAttribute('data-address');
             document.getElementById('clinicID-input').value = this.getAttribute('data-id');
-            
+
             document.querySelectorAll('.timeslot-option').forEach(timeslot => {
                 timeslot.setAttribute('data-clinic', document.getElementById('clinicID-input').value);
             });
-            
-            document.querySelectorAll('.doctor-option').forEach(timeslot => {
-                timeslot.setAttribute('data-clinic', document.getElementById('clinicID-input').value);
-            });
-            
+
             selectedFields[1] = true;
             resetFields(2);
             closeCollapsible(1);
@@ -158,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
             closeCollapsible(3);
             closeCollapsible(4);
             closeCollapsible(5);
-            
+
         });
     });
 
@@ -168,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('serviceID-input').value = this.getAttribute('data-address');
             document.getElementById('price-input').value = this.getAttribute('data-price');
             selectedFields[2] = true;
-            selectedFields[3] = true;
+//            selectedFields[3] = true;
             resetFields(4);
             closeCollapsible(2);
             closeCollapsible(3);
@@ -178,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    document.querySelectorAll('.future').forEach(function(option) {
+    document.querySelectorAll('.future').forEach(function (option) {
         option.addEventListener('click', function () {
             selectedFields[3] = true;
             resetFields(5);
@@ -195,18 +187,9 @@ document.addEventListener('DOMContentLoaded', function () {
             selectedFields[4] = true;
             resetFields(6);
             closeCollapsible(4);
-            closeCollapsible(5);
         });
     });
 
-    document.querySelectorAll('.doctor-option').forEach(option => {
-        option.addEventListener('click', function () {
-            document.getElementById('doctor-input').value = this.innerText;
-            document.getElementById('doctorID-input').value = this.getAttribute('data-address');
-            selectedFields[5] = true;
-            closeCollapsible(5);
-        });
-    });
 
     function closeCollapsible(fieldNumber) {
         const header = document.querySelector(`.bookingfield-header h3[data-number="${fieldNumber}"]`).parentNode;
@@ -311,3 +294,8 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 });
+
+function menuToggle() {
+    const toggleMenu = document.querySelector(".menu");
+    toggleMenu.classList.toggle("active");
+}

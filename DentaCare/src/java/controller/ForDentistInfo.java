@@ -93,6 +93,7 @@ public class ForDentistInfo extends HttpServlet {
                 request.getRequestDispatcher("coWeb-dentist.jsp").forward(request, response);
             } else if (action.equalsIgnoreCase("edit")) {
                 request.setAttribute("defaultDentistId", request.getParameter("denID"));
+                 request.getRequestDispatcher("coWeb-dentist.jsp").forward(request, response);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ForDentistInfo.class.getName()).log(Level.SEVERE, null, ex);

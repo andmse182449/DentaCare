@@ -54,23 +54,8 @@
                 </div>
             </div>
         </nav>
-        <div class="opt-box">
-            <header>
-                <i class="bx bxs-check-shield"></i>
-            </header>
-            <h4>Enter OTP Code</h4>
-            <form id="otp-form" action="javascript:void(0);">
-                <div class="input-field">
-                    <input type="number">
-                    <input type="number" disabled>
-                    <input type="number" disabled>
-                    <input type="number" disabled>
-                </div>
-                
-                <input type="submit" value="Submit">
-            </form>
-        </div>
-        <div class="login-form hidden">
+        
+        <div class="login-form">
             <h1>Login Dentist</h1>
             <form id="" action="LoginActionServlet">
                 <div class="input-form">

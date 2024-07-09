@@ -59,8 +59,13 @@
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
+                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                         <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
+                        <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
                     </ul>
                 </div>
             </aside>
@@ -82,7 +87,7 @@
                 </div>
             </div>
         </div>
-                        
+
     </body>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {

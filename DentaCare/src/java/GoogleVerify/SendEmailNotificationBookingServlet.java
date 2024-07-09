@@ -45,6 +45,9 @@ public class SendEmailNotificationBookingServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
         try (PrintWriter out = response.getWriter()) {
             //Get parameter từ jsp
             HttpSession session = request.getSession();
@@ -61,6 +64,7 @@ public class SendEmailNotificationBookingServlet extends HttpServlet {
             BookingDTO booking = invoiceDao.getBookingClinic(bookingID);
             AccountDTO customer = accountDao.searchAccountByID(customerID);
             ClinicDTO clinic = invoiceDao.getClinic(staff.getClinicID());
+     
 
             try {
                 String token = TokenGenerator.generateToken(TOKEN_EXPIRATION_TIME);
@@ -70,6 +74,7 @@ public class SendEmailNotificationBookingServlet extends HttpServlet {
                 }
                 //set booking status thanh 5
                 bookingDao.updateStatusBookingComplete(bookingID, 5);
+      
                 String body = "<html>\n"
                         + "<head>\n"
                         + "    <meta charset=\"UTF-8\">\n"
@@ -142,7 +147,7 @@ public class SendEmailNotificationBookingServlet extends HttpServlet {
                         + "    </div>\n"
                         + "</body>\n"
                         + "</html>";
-
+                
                 SendEmail send = new SendEmail(customer.getEmail(), subject, body);
                 request.getRequestDispatcher("StaffViewBooking").forward(request, response);
             } catch (IOException e) {

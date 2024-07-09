@@ -77,7 +77,8 @@
                 <div>
                     <ul class="sidebar-list">
                         <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
-                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
                         <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                         <a href="ServiceController"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
@@ -318,50 +319,50 @@
                 <!--Custom JavaScript -->
                 <script src="admin-front-end/js/custom.js"></script>
                 <script>
-                                                            function submitForm(formElement) {
+                                        function submitForm(formElement) {
 
-                                                                formElement.submit();
-                                                            }
-                                                            document.querySelector("#create-button").addEventListener("click", function () {
-                                                                document.querySelector(".popup").classList.add("active");
-                                                            });
+                                            formElement.submit();
+                                        }
+                                        document.querySelector("#create-button").addEventListener("click", function () {
+                                            document.querySelector(".popup").classList.add("active");
+                                        });
 
-                                                            document.querySelector(".popup .close-btn").addEventListener("click", function () {
-                                                                document.querySelector(".popup").classList.remove("active");
-                                                            });
+                                        document.querySelector(".popup .close-btn").addEventListener("click", function () {
+                                            document.querySelector(".popup").classList.remove("active");
+                                        });
 
-                                                            document.addEventListener("DOMContentLoaded", function () {
-                                                                const alertBox = document.querySelector(".alert-error.sec");
-                                                                if (alertBox && alertBox.textContent.trim()) {
-                                                                    alertBox.style.display = "block"; // Show the alert if there's an error message
-                                                                    alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
-                                                                    setTimeout(function () {
-                                                                        alertBox.classList.remove("show");
-                                                                        setTimeout(function () {
-                                                                            alertBox.style.display = "none"; // Hide the alert after the fade-out animation
-                                                                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
-                                                                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
-                                                                }
-                                                            });
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const alertBox = document.querySelector(".alert-error.sec");
+                                            if (alertBox && alertBox.textContent.trim()) {
+                                                alertBox.style.display = "block"; // Show the alert if there's an error message
+                                                alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                                                setTimeout(function () {
+                                                    alertBox.classList.remove("show");
+                                                    setTimeout(function () {
+                                                        alertBox.style.display = "none"; // Hide the alert after the fade-out animation
+                                                    }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                                                }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                                            }
+                                        });
 
-                                                            document.addEventListener("DOMContentLoaded", function () {
-                                                                const alertBox2 = document.querySelector(".alert-message.sec");
-                                                                if (alertBox2 && alertBox2.textContent.trim()) {
-                                                                    alertBox2.style.display = "block"; // Show the alert if there's an error message
-                                                                    alertBox2.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
-                                                                    setTimeout(function () {
-                                                                        alertBox2.classList.remove("show");
-                                                                        setTimeout(function () {
-                                                                            alertBox2.style.display = "none"; // Hide the alert after the fade-out animation
-                                                                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
-                                                                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
-                                                                }
-                                                            });
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const alertBox2 = document.querySelector(".alert-message.sec");
+                                            if (alertBox2 && alertBox2.textContent.trim()) {
+                                                alertBox2.style.display = "block"; // Show the alert if there's an error message
+                                                alertBox2.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                                                setTimeout(function () {
+                                                    alertBox2.classList.remove("show");
+                                                    setTimeout(function () {
+                                                        alertBox2.style.display = "none"; // Hide the alert after the fade-out animation
+                                                    }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                                                }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                                            }
+                                        });
 
-                                                            let subMenu = document.getElementById("sub-menu-wrap");
-                                                            function toggleDropdown() {
-                                                                subMenu.classList.toggle("open-menu");
-                                                            }
+                                        let subMenu = document.getElementById("sub-menu-wrap");
+                                        function toggleDropdown() {
+                                            subMenu.classList.toggle("open-menu");
+                                        }
                 </script>
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {

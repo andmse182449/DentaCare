@@ -358,7 +358,7 @@
                         <span class="close-btn" onclick="closePopup('eventPopup')">&times;</span>
                         <h2>Set Dentist</h2>
                         <form id="addForm" method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
-                            <input type="hidden" name="offDate" id="eventDate">
+                            <input type="hidden" name="offDate" id="addEventDate"> <!-- Unique ID for add form -->
                             <label for="accountID">List of dentist:</label>
                             <select name="accountID">
                                 <c:forEach items="${requestScope.listAllDentist}" var="den">
@@ -373,7 +373,7 @@
 
                         <h2>Modify Dentist Schedule</h2>
                         <form id="modifyForm" method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
-                            <input type="hidden" name="offDate" id="eventDate">
+                            <input type="hidden" name="offDate" id="modifyEventDate"> <!-- Unique ID for modify form -->
                             <label for="oldAccountID">Current Dentist:</label>
                             <select name="oldAccountID">
                                 <c:forEach items="${requestScope.listAllDentist}" var="den">
@@ -394,6 +394,7 @@
                     </div>
                 </div>
 
+
                 <script>
                     function showPopup(popupId) {
                         document.getElementById(popupId).style.display = 'flex';
@@ -403,7 +404,7 @@
                         document.getElementById(popupId).style.display = 'none';
                     }
 
-                    // Function to check if the selected date is a Sunday
+// Function to check if the selected date is a Sunday
                     function isSunday(date) {
                         const dayOfWeek = new Date(date).getDay();
                         return dayOfWeek === 0; // 0 corresponds to Sunday
@@ -437,7 +438,8 @@
                         document.getElementById('confirmButton').addEventListener('click', () => {
                             closePopup('confirmationPopup');
                             showPopup('eventPopup');
-                            document.getElementById('eventDate').value = selectedDate;
+                            document.getElementById('addEventDate').value = selectedDate;
+                            document.getElementById('modifyEventDate').value = selectedDate;
                         });
 
                         document.querySelector('#successPopup .close-btn').addEventListener('click', () => {
@@ -488,6 +490,7 @@
                         });
                     <% } %>
                     });
+
                 </script>
 
                 <style>
