@@ -9,6 +9,7 @@
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
     <servlet>
         <servlet-name>SignOutServlet</servlet-name>
         <servlet-class>controller.SignOutServlet</servlet-class>
@@ -37,6 +38,55 @@
         <servlet-name>LoginChangePage</servlet-name>
         <servlet-class>controller.LoginChangePage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoadFromClinicToScheduleServlet</servlet-name>
+        <servlet-class>controller.LoadFromClinicToScheduleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DentistServlet</servlet-name>
+        <servlet-class>controller.DentistServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffServlet</servlet-name>
+        <servlet-class>controller.StaffServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>controller.ChangePasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <servlet-class>controller.UpdateProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendEmailAccountInfoServlet</servlet-name>
+        <servlet-class>GoogleVerify.SendEmailAccountInfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <url-pattern>/ChangePasswordServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <url-pattern>/UpdateProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffServlet</servlet-name>
+        <url-pattern>/StaffServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendEmailAccountInfoServlet</servlet-name>
+        <url-pattern>/SendEmailAccountInfoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadFromClinicToScheduleServlet</servlet-name>
+        <url-pattern>/LoadFromClinicToScheduleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DentistServlet</servlet-name>
+        <url-pattern>/DentistServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SignOutServlet</servlet-name>
         <url-pattern>/SignOutServlet</url-pattern>

@@ -68,8 +68,9 @@
                     <div class="alert sec">${requestScope.error}</div>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Service</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctor</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link">Clinic</a></li>
                         <li class="nav-item">
                             <div href="#" class="nav-link">
                                 <div class="action">
@@ -124,7 +125,7 @@
         </section>
         <section class="ftco-section">
             <div class="container">
-                   <div class="row justify-content-center mb-5 pb-5">
+                <div class="row justify-content-center mb-5 pb-5">
                     <div class="col-md-7 text-center heading-section ftco-animate">
                         <h2 class="mb-3" style="font-size: xxx-large;">Celebrities using services at DentaCare</h2>
                     </div>

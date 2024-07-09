@@ -67,8 +67,8 @@
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active"><a href="index.jsp" class="nav-link" style="color: black">Home</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=service" style="color: black" class="nav-link">Services</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=doctor" style="color: black" class="nav-link">Doctors</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=service" style="color: black" class="nav-link">Service</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" style="color: black" class="nav-link">Doctor</a></li>
                         <li class="nav-item cta"><a href="#" class="nav-link show-popup" data-target="#modalRequest">Log in</a></li>
                     </ul>
                 </div>

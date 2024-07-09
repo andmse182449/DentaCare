@@ -59,7 +59,7 @@ public class LoginFilter implements Filter {
         boolean isExcluded = excludedUrls.stream().anyMatch(path::startsWith);
 
         if (!isExcluded && session.getAttribute("account") == null) {
-            req.getRequestDispatcher("index.jsp").forward(request, response);
+            req.getRequestDispatcher("LoadDataServlet").forward(request, response);
         } else {
             Throwable problem = null;
             try {
@@ -92,6 +92,7 @@ public class LoginFilter implements Filter {
         // Initialize the set of excluded URLs
         excludedUrls = new HashSet<>();
         excludedUrls.add("/LoginActionServlet");
+        excludedUrls.add("/LoadDataServlet");
         excludedUrls.add("/LoginChangePage");
         excludedUrls.add("/RegisterServlet");
         excludedUrls.add("/GoogleLoginServlet");

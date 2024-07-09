@@ -62,7 +62,11 @@ public class StaffViewBooking extends HttpServlet {
                 Date nextDate = Date.from(nextDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 java.sql.Date sqlNextDate = new java.sql.Date(nextDate.getTime());
                 List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate);
+                 //Show revenue
+                Double revenue = daoStaffAccount.getRevenue(now);
                 //Set Attribute
+                request.setAttribute("style", "none");
+                request.setAttribute("dailyRevenue", revenue);
                 request.setAttribute("listUpcomingBookings", listBookingNextDate);
                 request.setAttribute("listBookingStaff", listBooking);
                 request.getRequestDispatcher("staffWeb-ViewBooking.jsp").forward(request, response);

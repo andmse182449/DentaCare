@@ -40,6 +40,7 @@ public class SettingServlet extends HttpServlet {
         String error = "";
         boolean flag1 = bk.setDepositPercent((int) p);
         boolean flag2 = bk.setLimitBooking(Integer.parseInt(limit_raw));
+        System.out.println(p + " and " + limit_raw);
         if (flag1 && flag2){
             ms += "Update Successfully!";
         } else if (flag1 && !flag2) {

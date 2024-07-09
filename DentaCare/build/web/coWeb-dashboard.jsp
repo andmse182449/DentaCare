@@ -72,12 +72,13 @@
                 <div>
                     <ul class="sidebar-list">
                         <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
-                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
                         <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                         <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
                         <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
-                        <a href="coWeb-setting.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">settings</span><div>Settings</div></li></a>
+                        <a href="coWeb-setting.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Setting</div></li></a>
                     </ul>
                 </div>
             </aside>
@@ -232,7 +233,7 @@
                                                         console.log('Female data:', female);
 
                                                         // Validate data is not null or undefined
-                                                        if (male && female && male.length > 0 && female.length > 0) {
+                                                        if (male && female && male.length >= 0 && female.length >= 0) {
                                                             var labels = ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71+'];
                                                             var data = {
                                                                 labels: labels,
@@ -428,4 +429,3 @@
     </script>
 </body>
 </html>
-
