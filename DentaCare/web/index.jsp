@@ -85,7 +85,7 @@
                                                 <i class="fa fa-chevron-right"></i><a href="login-staff.jsp">Login for Staff</a>
                                             </li>
                                             <li>
-                                                <i class="fa fa-chevron-right"></i><a href="login3">Login for Clinic Owner</a>
+                                                <i class="fa fa-chevron-right"></i><a href="login-co.jsp">Login for Clinic Owner</a>
                                             </li>
                                         </ul>
                                     </div>

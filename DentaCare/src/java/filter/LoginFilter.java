@@ -100,6 +100,7 @@ public class LoginFilter implements Filter {
         excludedUrls.add("/login.jsp");
         excludedUrls.add("/login-dentist.jsp");
         excludedUrls.add("/login-staff.jsp");
+        excludedUrls.add("/login-co.jsp");
         excludedUrls.add("/register.jsp");
         excludedUrls.add("/userWeb-verifyEmail.jsp");
         excludedUrls.add("/forgetPassword.jsp");

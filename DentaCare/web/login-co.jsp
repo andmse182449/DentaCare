@@ -56,7 +56,7 @@
         </nav>
         
         <div class="login-form">
-            <h1>Login Staff</h1>
+            <h1>Login Clinic Owner</h1>
             <form id="" action="LoginActionServlet">
                 <div class="input-form">
                     <input name="email" type="text" placeholder="Enter your email" required>
@@ -65,7 +65,7 @@
                     <input name="password" type="password" class="password" placeholder="Enter your password" required>
                 </div>
                 <a href="forget.jsp" class="text" style="margin-top: 10px; text-align: left;">Forgot password?</a>
-                <input type="hidden" name="key" value="nv">
+                <input type="hidden" name="key" value="co">
                 <button type="submit">login</button>
             </form>
         </div>

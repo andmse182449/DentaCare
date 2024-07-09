@@ -55,7 +55,7 @@
             </div>
         </nav>
         
-        <div class="login-form hidden">
+        <div class="login-form">
             <h1>Login Staff</h1>
             <form id="" action="LoginActionServlet">
                 <div class="input-form">
