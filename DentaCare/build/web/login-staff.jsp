@@ -54,22 +54,7 @@
                 </div>
             </div>
         </nav>
-        <div class="opt-box">
-            <header>
-                <i class="bx bxs-check-shield"></i>
-            </header>
-            <h4>Enter OTP Code</h4>
-            <form id="otp-form" action="javascript:void(0);">
-                <div class="input-field">
-                    <input type="number">
-                    <input type="number" disabled>
-                    <input type="number" disabled>
-                    <input type="number" disabled>
-                </div>
-                
-                <input type="submit" value="Submit">
-            </form>
-        </div>
+        
         <div class="login-form hidden">
             <h1>Login Staff</h1>
             <form id="" action="LoginActionServlet">
@@ -84,64 +69,6 @@
                 <button type="submit">login</button>
             </form>
         </div>
-        <script>
-            const inputs = document.querySelectorAll("input[type='number']"),
-                    button = document.querySelector("input[type='submit']"),
-                    otpbox = document.querySelector(".opt-box");
-            loginForm = document.querySelector(".login-form");
-
-// Iterate over all inputs
-            inputs.forEach((input, index1) => {
-                input.addEventListener("keyup", (e) => {
-                    const currentInput = input,
-                            nextInput = input.nextElementSibling,
-                            prevInput = input.previousElementSibling;
-
-                    // If the value has more than one character then clear it
-                    if (currentInput.value.length > 1) {
-                        currentInput.value = "";
-                        return;
-                    }
-                    // If the next input is disabled and the current value is not empty
-                    // enable the next input and focus on it
-                    if (nextInput && nextInput.hasAttribute("disabled") && currentInput.value !== "") {
-                        nextInput.removeAttribute("disabled");
-                        nextInput.focus();
-                    }
-
-                    // If the backspace key is pressed
-                    if (e.key === "Backspace") {
-                        inputs.forEach((input, index2) => {
-                            if (index1 <= index2 && prevInput) {
-                                input.setAttribute("disabled", true);
-                                input.value = "";
-                                prevInput.focus();
-                            }
-                        });
-                    }
-
-                    // If the fourth input (index 3) is not empty and has no disabled attribute
-                    // add active class if not then remove the active class
-                    if (!inputs[3].disabled && inputs[3].value !== "") {
-                        button.classList.add("active");
-                        return;
-                    }
-                    button.classList.remove("active");
-                });
-            });
-// Focus the first input (index 0) on window load
-            window.addEventListener("load", () => inputs[0].focus());
-
-            button.addEventListener("click", () => {
-                const otp = Array.from(inputs).map(input => input.value).join("");
-                if (otp === "4321") {
-                    otpbox.classList.add("hidden");
-                    loginForm.classList.remove("hidden");
-                    alert("OTP verified successfully!");
-                } else {
-                    alert("Incorrect OTP. Please try again.");
-                }
-            });
-        </script>
+        
     </body>
 </html>
