@@ -59,7 +59,7 @@ public class LoginFilter implements Filter {
         boolean isExcluded = excludedUrls.stream().anyMatch(path::startsWith);
 
         if (!isExcluded && session.getAttribute("account") == null) {
-            req.getRequestDispatcher("login.jsp").forward(request, response);
+            req.getRequestDispatcher("LoadDataServlet").forward(request, response);
         } else {
             Throwable problem = null;
             try {

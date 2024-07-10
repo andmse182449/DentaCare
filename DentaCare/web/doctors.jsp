@@ -325,8 +325,7 @@
                                                 <li>Specialities: ${p.getMajorName()}</li>
                                                 <li>Available at ${p.getClinicName()}</li>
                                             </ul>
-                                            <div class="doctor-buttons">
-                                                <!--                                                <button class="btn-detail">Watch in details</button>-->
+                                            <div class="doctor-buttons"  style="display: ${sessionScope.account == null ? 'none' : ''}">
                                                 <a href="BookingServlet" class="btn-appointment">Book Now</a>
                                             </div>
                                         </div>
