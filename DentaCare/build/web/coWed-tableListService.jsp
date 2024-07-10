@@ -196,8 +196,8 @@
                                                                     </select>
                                                                     <label>Description:</label>
                                                                     <input type="text" name="serviceDescription" value="${service.serviceDescription}"  required/>
-                                                                <label>Price (Min 500,000 and Max 5,000,000):</label>
-                                                                <input type="number" name="serviceMoney" value="${service.serviceMoney}" min="500000" max="5000000" required/>
+                                                                <label>Price (Min 200,000 and Max 5=20,000,000):</label>
+                                                                <input type="number" name="serviceMoney" value="${service.serviceMoney}" min="200000" max="20000000" required/>
                                                                 <input name="action" value="update" type="hidden" />
                                                                 <input type="submit" value="Update" />
                                                             </form>
@@ -223,8 +223,8 @@
                                                 </select>
                                                 <label>Description:</label>
                                                 <input type="text" name="serviceDescription" required/>
-                                                <label>Price (Min 500,000 and Max 5,000,000):</label>
-                                                <input type="number" name="serviceMoney" min="500000" max="5000000" required/>
+                                                <label>Price (Min 200,000 and Max 20,000,000):</label>
+                                                <input type="number" name="serviceMoney" min="200000" max="20000000" required/>
                                                 <input name="action" value="add" type="hidden" />
                                                 <input type="submit" value="Add" />
                                             </form>

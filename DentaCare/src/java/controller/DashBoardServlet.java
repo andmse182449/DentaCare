@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +112,14 @@ public class DashBoardServlet extends HttpServlet {
                 BookingDAO bookDao = new BookingDAO();
                 List<Map<String, Object>> results = bookDao.getTotalPriceByYearMonth(yearS1);
                 List<Map<String, Object>> allPriceInYear = bookDao.getTotalPriceByYear(yearS1);
-
+                // Format the total price
+                DecimalFormat df = new DecimalFormat("#");
+                String formattedTotalPrice = df.format(allPriceInYear.get(0).get("TotalPrice"));
+                StringBuilder formatted_price = new StringBuilder(formattedTotalPrice);
+                int length = formattedTotalPrice.length();
+                for (int i = length - 3; i > 0; i -= 3) {
+                    formatted_price.insert(i, '.');
+                }
                 // Total Time Slot
                 List<Map<String, Object>> timeResults = bookDao.getTotalTimeSlotsByYearMonth(yearS2, monthS);
                 System.out.println(timeResults);
@@ -131,7 +139,7 @@ public class DashBoardServlet extends HttpServlet {
                 request.setAttribute("female", female);
                 request.setAttribute("timeResults", timeResults);
                 request.setAttribute("results", results);
-                request.setAttribute("allPriceInYear", allPriceInYear);
+                request.setAttribute("allPriceInYear", formatted_price);
 
 //                if (("timeSlot").equals(key)) {
 //                    String yearStr2 = request.getParameter("year2");

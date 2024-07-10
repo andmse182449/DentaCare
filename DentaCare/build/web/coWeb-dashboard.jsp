@@ -93,6 +93,8 @@
                 <c:set value="${requestScope.countStaff}" var="countStaff" />
                 <c:set value="${requestScope.countUserAccount}" var="countUserAccount" />
                 <c:set value="${requestScope.month}" var="month" />
+                <c:set value="${requestScope.allPriceInYear}" var="allPriceInYear" />
+
 
                 <!-- Page Content -->
                 <div id="page-content-wrapper">
@@ -125,13 +127,28 @@
                                 <div class="hospital-tiles">
                                     <img src="images/img/money-mouth-face-svgrepo-com.png" alt="Top Dashboards" />
                                     <p>Total earning in year</p>
-                                    <c:forEach var="item" items="${allPriceInYear}">
-                                        <h2>$<c:out value="${item.TotalPrice}" /></h2>
-                                    </c:forEach>
+                                    <h2>${allPriceInYear} vnđ</h2> 
+                                    <%--<c:forEach var="item" items="${allPriceInYear}">--%>
+                                    <h2 class="money-format"></h2>
+                                    <%--</c:forEach>--%>
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const moneyElements = document.querySelectorAll('.money-format');
 
+                                moneyElements.forEach(element => {
+                                    const text = element.textContent;
+                                    const amount = text.match(/[\d,.]+/);
+                                    if (amount) {
+                                        const moneyValue = parseFloat(amount[0].replace(/,/g, ''));
+                                        const formattedMoney = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(moneyValue);
+                                        element.textContent = text.replace(amount[0], formattedMoney);
+                                    }
+                                });
+                            });
+                        </script>
 
                         <form action="DashBoardServlet?action=Table&year2=${year2}&month=${month}" method="Post" id="yearForm">
                             <div class="container-fluid">
