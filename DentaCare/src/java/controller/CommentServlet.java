@@ -62,11 +62,11 @@ public class CommentServlet extends HttpServlet {
         FeedbackDAO feedbackDAO = new FeedbackDAO();
         String bookingID = jsonInput.get("bookingID");
         AccountDTO account = (AccountDTO) session.getAttribute("account");
-        BadWordFilter check = new BadWordFilter();
-        String filteredText = check.filterBadWords(commentText);
+//        BadWordFilter check = new BadWordFilter();
+//        String filteredText = check.filterBadWords(commentText);
         try {
 
-            if (feedbackDAO.addComment(fbID, LocalDateTime.now(), filteredText, account.getAccountID(), bookingID) == true) {
+            if (feedbackDAO.addComment(fbID, LocalDateTime.now(), commentText, account.getAccountID(), bookingID) == true) {
                 System.out.println("oke em iu");
             } else {
                 System.out.println("như");
