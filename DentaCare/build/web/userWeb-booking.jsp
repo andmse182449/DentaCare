@@ -41,7 +41,8 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a href="LoginChangePage?action=home" class="nav-link">Home</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctor</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link">Clinic</a></li>
                         <li class="nav-item active"><a href="BookingServlet" class="nav-link" style="color: black">Book Appointment</a></li>
 
                         <div class="action">

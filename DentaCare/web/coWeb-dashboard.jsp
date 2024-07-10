@@ -62,23 +62,23 @@
             </header>
             <!-- SIDEBAR -->
             <%
-                        LocalDate now2 = LocalDate.now();
-                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-                        int currentYear2 = now2.getYear();
-                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
-                        int currentMonth2 = now2.getMonthValue(); // Get current month number
+                LocalDate now2 = LocalDate.now();
+                WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                int currentYear2 = now2.getYear();
+                int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                int currentMonth2 = now2.getMonthValue(); // Get current month number
             %>
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
                         <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
                         <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
                         <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                         <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
                         <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
-                        <a href="coWeb-setting.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Setting</div></li></a>
+                        <a href="coWeb-setting.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">settings</span><div>Setting</div></li></a>
                     </ul>
                 </div>
             </aside>
@@ -145,7 +145,7 @@
                                             YEAR 
                                             <select name="year1" id="selectYear" onchange="form.submit()">
                                                 <option value="">Select Year</option>
-                                                <% 
+                                                <%
                                                     int currentYear = Calendar.getInstance().get(Calendar.YEAR);
                                                     String selectedYear = request.getParameter("year1");
                                                     for (int i = currentYear - 5; i <= currentYear + 5; i++) {
@@ -159,7 +159,7 @@
 
                                             <script>
                                                 document.addEventListener('DOMContentLoaded', function () {
-                                                    var results = <%= new com.google.gson.Gson().toJson(request.getAttribute("results")) %>;
+                                                    var results = <%= new com.google.gson.Gson().toJson(request.getAttribute("results"))%>;
                                                     console.log(results);
                                                     if (results) {
                                                         var labels = [];
@@ -225,8 +225,8 @@
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', function () {
                                                         // Fetch the values from the request attributes
-                                                        var male = <%= new com.google.gson.Gson().toJson(request.getAttribute("male")) %>;
-                                                        var female = <%= new com.google.gson.Gson().toJson(request.getAttribute("female")) %>;
+                                                        var male = <%= new com.google.gson.Gson().toJson(request.getAttribute("male"))%>;
+                                                        var female = <%= new com.google.gson.Gson().toJson(request.getAttribute("female"))%>;
 
                                                         // Check if the data is being fetched correctly
                                                         console.log('Male data:', male);
@@ -333,7 +333,7 @@
                                                 Select year and Month
                                                 <select name="year2" id="selectYear" onchange="form.submit()">
                                                     <option value="">Select Year</option>
-                                                    <% 
+                                                    <%
                                                         currentYear = Calendar.getInstance().get(Calendar.YEAR);
                                                         selectedYear = request.getParameter("year2");
                                                         for (int i = currentYear - 5; i <= currentYear + 5; i++) {
@@ -365,7 +365,7 @@
                             <script>
                                 document.addEventListener('DOMContentLoaded', (event) => {
                                     const ctx = document.getElementById('bookingChart').getContext('2d');
-                                    var timeResults = <%= new com.google.gson.Gson().toJson(request.getAttribute("timeResults")) %>;
+                                    var timeResults = <%= new com.google.gson.Gson().toJson(request.getAttribute("timeResults"))%>;
 
                                     if (timeResults) {
                                         var labels = [];

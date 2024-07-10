@@ -327,7 +327,7 @@
                                             </ul>
                                             <div class="doctor-buttons">
                                                 <!--                                                <button class="btn-detail">Watch in details</button>-->
-                                                <button class="btn-appointment">Book Now</button>
+                                                <a href="BookingServlet" class="btn-appointment">Book Now</a>
                                             </div>
                                         </div>
                                         <div class="doctor-image" style="background-image: url(images/${p.getImage() != null ? p.getImage() : 'person_5.jpg'})"></div>
