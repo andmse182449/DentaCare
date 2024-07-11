@@ -33,9 +33,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light scrolled sleep awake">
             <div class="container">
-                <a class="navbar-brand" href="#">
-                    Denta
-                    <span>Care</span>
+                    <a class="navbar-brand" href="#">Denta<span>Care</span>
                 </a>
                 <div class="navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">

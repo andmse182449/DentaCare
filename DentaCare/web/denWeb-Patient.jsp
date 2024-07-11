@@ -25,7 +25,7 @@
     <body>
         <div class="header">
             <nav class="menu">
-                <span class="logo">logo</span>
+                <a class="navbar-brand" href="" style="color: black; font-weight: 400">Denta<span>Care</span></a>
                 <ul>
                     <li>
                         <%
@@ -35,10 +35,10 @@
                 int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
                 int currentMonth2 = now2.getMonthValue(); // Get current month number
                         %>
-                        <a href="LoadScheduleForEachDentistServlet?action=loadDenSchedule&clinicByID=${requestScope.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>">my schedule</a>
+                        <a href="LoadScheduleForEachDentistServlet?action=loadDenSchedule&clinicByID=${requestScope.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>">My Schedule</a>
                     </li>
-                    <li>
-                        <a href="LoadPatientOfDenServlet">my patient</a>
+                    <li class="active">
+                        <a href="LoadPatientOfDenServlet">My Patient</a>
                     </li>
                 </ul>
                 <div class="header-icon">
@@ -207,7 +207,6 @@
                 </div>
             </div>
         </div>
-        <%@include file="/footer.jsp" %>
         <script src="js/bookingHistory.js">
 
         </script>
