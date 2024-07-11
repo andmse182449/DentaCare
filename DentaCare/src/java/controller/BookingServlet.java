@@ -21,6 +21,7 @@ import dentistSchedule.DentistScheduleDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,6 +54,7 @@ import payment.Config;
  *
  * @author Admin
  */
+@WebServlet(name = "BookingServlet", urlPatterns = {"/BookingServlet"})
 public class BookingServlet extends HttpServlet {
 
     /**
@@ -122,6 +124,7 @@ public class BookingServlet extends HttpServlet {
             String formattedPrice = currencyFormatter.format(price);
             
             int percent = bookingDAO.getDepositPercent();
+            System.out.println(percent);
             String formattedDeposit = currencyFormatter.format(price * percent / 100);            
             int serviceID = Integer.parseInt(request.getParameter("serviceID"));
             int slotID = Integer.parseInt(request.getParameter("slotID"));

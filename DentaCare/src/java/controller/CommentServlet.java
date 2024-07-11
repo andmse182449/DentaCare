@@ -4,6 +4,7 @@
  */
 package controller;
 
+import BadWordFilter.BadWordFilter;
 import account.AccountDTO;
 import com.google.gson.Gson;
 import feedback.FeedbackDAO;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author ROG STRIX
@@ -58,10 +60,13 @@ public class CommentServlet extends HttpServlet {
         String fbID = generateUniqueFeedbackID();
         HttpSession session = request.getSession();
         FeedbackDAO feedbackDAO = new FeedbackDAO();
+        String bookingID = jsonInput.get("bookingID");
         AccountDTO account = (AccountDTO) session.getAttribute("account");
+//        BadWordFilter check = new BadWordFilter();
+//        String filteredText = check.filterBadWords(commentText);
         try {
 
-            if (feedbackDAO.addComment(fbID, LocalDateTime.now() , commentText, account.getAccountID()) == true) {
+            if (feedbackDAO.addComment(fbID, LocalDateTime.now(), commentText, account.getAccountID(), bookingID) == true) {
                 System.out.println("oke em iu");
             } else {
                 System.out.println("như");

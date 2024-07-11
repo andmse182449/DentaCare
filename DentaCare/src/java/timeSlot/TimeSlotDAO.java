@@ -49,7 +49,7 @@ public class TimeSlotDAO {
         }
         return list;
     }
-    
+
     public TimeSlotDTO getTimeSLotByID(int slotID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -79,6 +79,34 @@ public class TimeSlotDAO {
         return dto;
     }
 
+    public boolean modifyTime(String timePeriod, String oldTimePeriod) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            String query = "UPDATE TIMESLOT SET timePeriod = ? WHERE timePeriod = ? ";
+            stm = con.prepareStatement(query);
+            stm.setString(1, timePeriod);
+            stm.setString(2, oldTimePeriod);
+            stm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("An error occurred while closing the resources: ");
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 
-    
 }

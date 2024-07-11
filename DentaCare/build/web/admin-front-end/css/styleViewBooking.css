@@ -1,4 +1,3 @@
-/* Reset CSS */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f4f4;
@@ -104,7 +103,10 @@ form input[type="submit"]:hover {
 
 /* Booking List */
 #bookingList {
-    margin-top: 160px;
+    margin-top: 63px;
+}
+#bookingListUpcoming {
+    margin-top: 45px;
 }
 
 .booking-item {
@@ -129,32 +131,42 @@ form input[type="submit"]:hover {
     border-radius: 5px;
 }
 
+.booking-detail-upcoming {
+    margin-top: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.booking-detail-past {
+    margin-top: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 .hidden {
     display: none;
 }
 
 /* Button */
 button, input[type="button"] {
-    padding: 10px 20px;
+    padding: 10px;
     font-size: 1em;
-    cursor: pointer;
-    background-color: #007bff;
-    color: #fff;
     border: none;
     border-radius: 5px;
+    margin: 5px 0;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover, input[type="button"]:hover {
     background-color: #0056b3;
 }
-
-
-
-
-
-
-
 
 .booking-detail .dentist-info {
     display: flex;
@@ -183,11 +195,10 @@ button:hover, input[type="button"]:hover {
 
 .header-icon .fa-user {
     cursor: pointer;
-    transition: color 0.3s ease;
 }
 
 .header-icon .fa-user:hover {
-    color: #007bff; /* Change the color on hover */
+    color: #0056b3; /* Change the color on hover */
 }
 
 .sub-menu-wrap {
@@ -260,3 +271,47 @@ hr {
     background: #e1e1e1;
     margin: 10px 0;
 }
+
+.header-button{
+    display: flex;
+    gap: 150px;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.daily-revenue {
+    display: flex;
+    align-items: center;
+    background-color: #f0f8ff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 0;
+    width: fit-content;
+    position: absolute;
+    left: 15px;
+}
+
+.daily-revenue h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+
+
+
+
+
+
+
+
+

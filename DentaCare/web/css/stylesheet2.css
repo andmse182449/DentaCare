@@ -1,0 +1,241 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    font-family: "Montserrat", sans-serif;
+}
+.material-icons-outlined {
+    vertical-align: middle;
+    line-height: 1px;
+    font-size: 35px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 260px 1fr 1fr 1fr;
+    grid-template-rows: 0.2fr 3fr;
+    grid-template-areas:
+        "sidebar header header header"
+        "sidebar main main main";
+    height: 100vh;
+}
+
+/*----------- HEADER ------------*/
+.header {
+    grid-area: header;
+    height: 52px;
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 5%;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+    align-items: center;
+}
+
+.header-icon span{
+    padding: 0;
+    margin-left: 20px;
+}
+.material-symbols-outlined:hover {
+    cursor: pointer;
+}
+
+/* dropdown for header */
+.sub-menu-wrap {
+    position: absolute;
+    right: 5%;
+    width: 50%;
+    max-width: 300px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+
+.sub-menu-wrap.open-menu {
+    max-height: 400px;
+}
+
+.sub-menu {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(73, 127, 189, 0.1);
+    border-radius: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info h3 {
+    color: #1a1a1a;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.user-info .material-symbols-outlined {
+    color: #1a1a1a;
+    width: 60px;
+    margin-right: 15px;
+}
+
+.sub-menu hr {
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #ccc;
+    margin: 15px 0 10px 0;
+}
+
+.sub-menu-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #525252;
+    margin: 12px 0;
+}
+
+.sub-menu-link p {
+    font-size: 16px;
+    width: 100%;
+}
+
+.sub-menu-link i {
+    font-size: 16px;
+}
+
+.sub-menu-link .material-symbols-outlined {
+    color: #1a1a1a;
+    background: #e5e5e5;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 15px;
+}
+
+.sub-menu-link .chevron-right {
+    font-weight: 500;
+    transition: transform 0.5s;
+}
+
+.sub-menu-link:hover span {
+    transform: translateX(5px);
+}
+
+.sub-menu-link:hover p {
+    font-weight: 600;
+}
+
+.sub-menu-link:hover i {
+    font-size: 20px;
+}
+
+/*----------- Sideber ------------*/
+#sidebar {
+    grid-area: sidebar;
+    height: 100%;
+    background-color: #2f89fc;
+    overflow-y: auto;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    box-shadow: 6px 3px 8px rgba(73, 127, 189, 0.3);
+}
+
+.sidebar-list {
+    padding: 0;
+    margin-top: 7rem;
+    list-style-type: none;
+}
+
+.sidebar-list-item {
+    display: flex;
+    padding: 20px 20px 20px 20px;
+    font-size: 18px;
+    font-weight: 500;
+    justify-content: space-between;
+}
+
+.sidebar-list-item div {
+    width: 80%;
+}
+.sidebar-list a {
+    text-decoration: none;
+    color: #f4f4f4;
+}
+
+.sidebar-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+.sidebar-responsive {
+    display: inline !important;
+    position: absolute;
+    z-index: 12 !important;
+}
+
+.sidebar-list-item-selected {
+    background-color: #fff;
+    color: black;
+    font-weight: 700;
+}
+
+/*----------- Main ------------*/
+.main-container {
+    grid-area: main;
+    overflow-y: auto;
+    padding: 20px 60px;
+    color: #333;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 50px 0 50px;
+}
+
+
+/*----------- CREATE DENTIST FORM ------------*/
+
+
+/*----------- ALERT ------------*/
+.alert-error {
+    position: fixed;
+    top: 100px; /* Adjust this value to position the alert higher or lower */
+    left: 50%;
+    transform: translateX(-50%); /* Center the alert horizontally */
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    display: none;
+    z-index: 1000; /* Ensure the alert appears above other elements */
+}
+
+.alert-error.show {
+    display: block;
+    opacity: 1;
+}
+
+.alert-message {
+    position: fixed;
+    top: 100px; /* Adjust this value to position the alert higher or lower */
+    left: 50%;
+    transform: translateX(-50%); /* Center the alert horizontally */
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    display: none;
+    z-index: 1000; /* Ensure the alert appears above other elements */
+}
+
+.alert-message.show {
+    display: block;
+    opacity: 1;
+}

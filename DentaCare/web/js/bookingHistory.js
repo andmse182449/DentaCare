@@ -46,10 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
             option.setAttribute('style', 'border: none; background: none; color: red;');
             option.setAttribute('value', 'Expired');
             option.setAttribute('disabled', '');
-        } else if(option.getAttribute('data-check') === '1') {
-            option.setAttribute('style', 'border: none; background: none; color: blue;');
-            option.setAttribute('value', 'Check-in');
-            option.setAttribute('disabled', '');
         } else {
             option.setAttribute('style', 'background: red; color: #fff; border:none; width: 100px; border-radius: 50px; cursor: pointer;');
         }

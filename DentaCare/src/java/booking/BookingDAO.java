@@ -27,7 +27,7 @@ import utils.DBUtils;
  */
 public class BookingDAO {
 
-    public boolean createBooking(String bookingID, LocalDate createDay, LocalDate appointmentDay, float price, float deposit, 
+    public boolean createBooking(String bookingID, LocalDate createDay, LocalDate appointmentDay, float price, float deposit,
             int serviceID, int slotID,
             String customerID, String dentistID, int clinicID) throws SQLException {
         Connection con = null;
@@ -456,30 +456,30 @@ public class BookingDAO {
         }
     }
 
-    public List<BookingDTO> getAllBookingClinic(int clinicID, String fullName) {
+    public List<BookingDTO> getAllBookingClinic(int clinicID, Date now) {
         String sql = """
-                SELECT
-                    bookingID, customerID, createDay, appointmentDay, a.status, a.price,
-                    customer.fullName AS customerName, customer.phone,
-                    serviceName, timePeriod, dentist.fullName AS dentistName
-                FROM
-                    booking a
-                    INNER JOIN account customer ON a.customerID = customer.accountid
-                    LEFT JOIN account dentist ON a.dentistID = dentist.accountID
-                    INNER JOIN service c ON a.serviceid = c.serviceid
-                    INNER JOIN timeslot d ON a.slotid = d.slotid
-                WHERE
-                    a.clinicID = ? and customer.fullName like ?
-                ORDER BY
-                    appointmentDay, timePeriod;
-                """;
+            SELECT 
+                bookingID, customerID, createDay, appointmentDay, a.deposit, a.status, a.price, 
+                customer.fullName AS customerName, customer.phone, 
+                serviceName, timePeriod, dentist.fullName AS dentistName
+            FROM 
+                booking a
+                INNER JOIN account customer ON a.customerID = customer.accountid
+                LEFT JOIN account dentist ON a.dentistID = dentist.accountID
+                INNER JOIN service c ON a.serviceid = c.serviceid 
+                INNER JOIN timeslot d ON a.slotid = d.slotid
+            WHERE 
+                a.clinicID = ? and appointmentDay = ?
+            ORDER BY 
+                timePeriod, a.status;
+            """;
 
         List<BookingDTO> list = new ArrayList<>();
         try {
             Connection con = utils.DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, clinicID);
-            ps.setString(2, "%" + fullName + "%");
+            ps.setDate(2, now);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 BookingDTO booking = new BookingDTO();
@@ -487,6 +487,7 @@ public class BookingDAO {
                 booking.setCustomerID(rs.getString("customerid"));
                 booking.setAppointmentDay(rs.getDate("appointmentDay").toLocalDate());
                 booking.setCreateDay(rs.getDate("createday").toLocalDate());
+                booking.setDeposit(rs.getFloat("deposit"));
                 booking.setPrice(rs.getFloat("price"));
                 booking.setStatus(rs.getInt("status"));
                 booking.setFullNameDentist(rs.getString("dentistName"));
@@ -561,45 +562,38 @@ public class BookingDAO {
     }
 
     public List<BookingDTO> getAllBookingByIdAndDayForDen(String dentistID) {
-        String sql = """
-            SELECT * from BOOKING where dentistID = ?
-            """;
-
+        String sql = "SELECT * FROM BOOKING WHERE dentistID = ?";
         List<BookingDTO> list = new ArrayList<>();
-        try {
-            Connection con = utils.DBUtils.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
+
+        try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
             ps.setString(1, dentistID);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                String bookingID = rs.getString("bookingID");
-                LocalDate createDay = null;
-                java.sql.Date cdSql = rs.getDate("createDay");
-                if (cdSql != null) {
-                    createDay = cdSql.toLocalDate();
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    BookingDTO booking = new BookingDTO();
+                    booking.setBookingID(rs.getString("bookingID"));
+                    booking.setAppointmentDay(rs.getDate("appointmentDay").toLocalDate());
+                    booking.setCreateDay(rs.getDate("createDay").toLocalDate());
+                    booking.setStatus(rs.getInt("status"));
+                    booking.setPrice(rs.getFloat("price"));
+                    booking.setServiceID(rs.getInt("serviceID"));
+                    booking.setSlotID(rs.getInt("slotID"));
+                    booking.setCustomerID(rs.getString("customerID"));
+                    booking.setDentistID(rs.getString("dentistID"));
+                    booking.setClinicID(rs.getInt("clinicID"));
+
+                    // Assuming fullNameDentist, service, account, timeSlot, and medicalRecord are also fetched and set appropriately
+                    list.add(booking);
                 }
-                LocalDate appointmentDay = null;
-                java.sql.Date apSql = rs.getDate("appointmentDay");
-                if (apSql != null) {
-                    appointmentDay = apSql.toLocalDate();
-                }
-                int status = rs.getInt("status");
-                float price = rs.getFloat("price");
-                int serviceID = rs.getInt("serviceID");
-                int slotID = rs.getInt("slotID");
-                String customerID = rs.getString("customerID");
-                dentistID = rs.getString("dentistID");
-                int clinicID = rs.getInt("clinicID");
-                float deposit = rs.getFloat("deposit");
-                BookingDTO booking = new BookingDTO(bookingID, createDay, appointmentDay, status, price, deposit, serviceID, slotID,
-                        customerID, dentistID, clinicID);
-                list.add(booking);
             }
-            return list;
+
         } catch (SQLException e) {
-            System.out.println("getAllBookingClinic1: " + e.getMessage());
+            System.out.println("Error in getAllBookingByIdAndDayForDen: " + e.getMessage());
+            e.printStackTrace(); // Print the stack trace for detailed error information
         }
-        return null;
+
+        return list;
     }
 
     public List<Map<String, Object>> getAllBookingForDen2(String dentistID, String appointmentDay) throws SQLException {
@@ -607,25 +601,24 @@ public class BookingDAO {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-
         try {
             connection = DBUtils.getConnection();
             String sql = """
-        SELECT 
-            bookingID, createDay, appointmentDay, a.status, a.price, 
-            customer.fullName AS customerName, 
-            serviceName, timePeriod, dentist.fullName AS dentistName
-        FROM 
-            booking a
-            INNER JOIN account customer ON a.customerID = customer.accountid
-            LEFT JOIN account dentist ON a.dentistID = dentist.accountID
-            INNER JOIN service c ON a.serviceid = c.serviceid 
-            INNER JOIN timeslot d ON a.slotid = d.slotid
-        WHERE 
-            a.dentistID = ? and a.appointmentDay = ?
-        ORDER BY 
-            appointmentDay, timePeriod;
-        """;
+            SELECT 
+                bookingID, createDay, appointmentDay, a.status, a.price, 
+                customer.fullName AS customerName, 
+                serviceName, timePeriod, dentist.fullName AS dentistName
+            FROM 
+                booking a
+                INNER JOIN account customer ON a.customerID = customer.accountid
+                LEFT JOIN account dentist ON a.dentistID = dentist.accountID
+                INNER JOIN service c ON a.serviceid = c.serviceid 
+                INNER JOIN timeslot d ON a.slotid = d.slotid
+            WHERE 
+                a.dentistID = ? and a.appointmentDay = ?
+            ORDER BY 
+                appointmentDay, timePeriod;
+            """;
             statement = connection.prepareStatement(sql);
             statement.setString(1, dentistID);
             statement.setString(2, appointmentDay);
@@ -655,6 +648,12 @@ public class BookingDAO {
             if (connection != null) {
                 connection.close();
             }
+        }
+
+        // Check if results are empty and handle accordingly
+        if (results.isEmpty()) {
+            // Log a message or handle the case where no bookings were found
+            System.out.println("No bookings found for dentistID " + dentistID + " on appointmentDay " + appointmentDay);
         }
 
         return results;
@@ -743,8 +742,8 @@ public class BookingDAO {
                                        JOIN BOOKING AS b ON acc.accountID = b.customerID 
                                         JOIN TIMESLOT as s on s.slotID = b.slotID 
                                		JOIN SERVICE as se on se.serviceID = b.serviceID 
-                                        WHERE b.dentistID = ? 
-                                        AND (b.status = 2 OR b.status = 1)""";
+                                        WHERE b.dentistID = ?
+AND (b.status = 2 OR b.status = 1)""";
         Connection con = DBUtils.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);
@@ -833,36 +832,63 @@ public class BookingDAO {
 
     public int getDepositPercent() {
         String sql = "SELECT depositPercent FROM SETTING ";
+        int percent = 0;
         Connection con = DBUtils.getConnection();
         try {
-            PreparedStatement stm = con.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
             if (rs.next()) {
-
-                return rs.getInt("depositPercent");
+                percent = rs.getInt("depositPercent");
             }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-        return 0;
+        return percent;
     }
 
-    
-    
     public int limitBooking() {
         String sql = "SELECT limitBooking FROM SETTING ";
+        int limit = 0;
         Connection con = DBUtils.getConnection();
         try {
-            PreparedStatement stm = con.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
             if (rs.next()) {
-
-                return rs.getInt("limitBooking");
+                limit = rs.getInt("limitBooking");
             }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-        return 0;
+        return limit;
+    }
+    
+    public boolean setDepositPercent(int amount) {
+        String sql = "UPDATE SETTING SET depositPercent = ? ";
+        Connection con = DBUtils.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, amount);
+            int row = st.executeUpdate();
+            return row > 0;
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    public boolean setLimitBooking(int amount) {
+        String sql = "UPDATE SETTING SET limitBooking = ? ";
+        Connection con = DBUtils.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, amount);
+            int row = st.executeUpdate();
+            return row > 0;
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
 }

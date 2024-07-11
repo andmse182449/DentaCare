@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -55,25 +56,32 @@
 }
 
 .sub-menu-wrap {
+    display: none;
     position: absolute;
-    top: 70%;
-    right: 30px;
-    width: 300px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s;
+    top: 40px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    z-index: 1;
+    border-radius: 5px;
+    width: 200px;
+    width: 269px;
+    margin-right: 169px;
+    margin-top: 55px;
 }
 
 .sub-menu-wrap.open-menu {
-    max-height: 400px;
+    display: block;
+    width: 269px;
+    margin-right: 169px;
+    margin-top: 55px;
 }
 
 .sub-menu {
-    background-color: #fff;
-    padding: 20px;
-    margin: 10px;
-    box-shadow: 0 4px 8px rgba(73, 127, 189, 0.1);
-    border-radius: 10px;
+    padding: 5px;
+    width: 269px;
+    margin-right: 169px;
+    margin-top: 55px;
 }
 
 .user-info {
@@ -240,28 +248,13 @@ hr {
 }
 
 form input[type="text"],
-form input[type="email"],
-form input[type="date"] {
-    width: 100%;
-    border: none;
-    outline: none;
+form input[type="email"] {
+    width: 550px;
     background: none;
     font-size: 20px;
     color: #525252;
-    text-align: right;
     margin-bottom: 10px;
-}
-
-form input[type="submit"] {
-    background-color: #2f89fc;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100px;
-    text-align: center;
+    border-radius: 10px;
 }
 
 form input[type="submit"]:hover {
@@ -284,26 +277,6 @@ form input[type="submit"]:hover {
 }
 
 .alert-error.show {
-    display: block;
-    opacity: 1;
-}
-
-.alert-message {
-    position: fixed;
-    top: 100px; /* Adjust this value to position the alert higher or lower */
-    left: 50%;
-    transform: translateX(-50%); /* Center the alert horizontally */
-    background-color: green;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.5s ease-out;
-    display: none;
-    z-index: 1000; /* Ensure the alert appears above other elements */
-}
-
-.alert-message.show {
     display: block;
     opacity: 1;
 }

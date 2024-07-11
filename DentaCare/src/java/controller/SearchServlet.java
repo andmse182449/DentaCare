@@ -43,10 +43,20 @@ public class SearchServlet extends HttpServlet {
         String searchValue = request.getParameter("searchValue");
         try {
             AccountDAO accountDAO = new AccountDAO();
-            ClinicDAO clinicDAO = new ClinicDAO();
-//            ServiceDAO serviceDAO = new ServiceDAO();
-//            request.setAttribute("CLINIC", clinicDAO.getAllClinic());
             List<AccountDTO> list = accountDAO.searchDentists(searchValue);
+            for (int i = 0; i < list.size(); i++) {
+                AccountDTO fr = list.get(i);
+                for (int j = i + 1; j < list.size(); j++) {
+                    AccountDTO re = list.get(j);
+                    if (fr.getAccountID().equals(re.getAccountID())) {
+                        String m1 = fr.getMajorName();
+                        m1 += ", " + re.getMajorName();
+                        fr.setMajorName(m1);
+                        list.remove(j);
+                        j--;
+                    }
+                }
+            }
             if (list.isEmpty()) {
                 request.setAttribute("show", "none");
                 request.setAttribute("founded", "block");
@@ -79,7 +89,7 @@ public class SearchServlet extends HttpServlet {
                 request.setAttribute("page", page);
                 request.setAttribute("numberOfResults", list.size());
                 request.setAttribute("dentistList", arr);
-            
+
             }
             request.getRequestDispatcher("doctors.jsp").forward(request, response);
         } catch (SQLException ex) {

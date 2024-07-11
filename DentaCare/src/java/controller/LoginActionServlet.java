@@ -44,16 +44,19 @@ public class LoginActionServlet extends HttpServlet {
                 switch (checkAccount.getRoleID()) {
                     // admin
                     case 3 -> {
-                        LocalDate now2 = LocalDate.now();
-                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-                        int currentYear2 = now2.getYear();
-                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
-                        int currentMonth2 = now2.getMonthValue(); // Get current month number
+                        if (key.equals("co")) {
+                            LocalDate now2 = LocalDate.now();
+                            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                            int currentYear2 = now2.getYear();
+                            int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                            int currentMonth2 = now2.getMonthValue(); // Get current month number
 
-                        System.out.println(currentMonth2);
-
-                        session.setAttribute("account", checkAccount);
-                        response.sendRedirect("DashBoardServlet?action=dashboardAction&year1=" + currentYear2 + "&year2=" + currentYear2 + "&month=" + currentMonth2);
+                            session.setAttribute("account", checkAccount);
+                            response.sendRedirect("DashBoardServlet?action=dashboardAction&year1=" + currentYear2 + "&year2=" + currentYear2 + "&month=" + currentMonth2);
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
                     }
                     // staff
                     case 2 -> {
@@ -79,6 +82,7 @@ public class LoginActionServlet extends HttpServlet {
                     }
                     default -> {
                         if (key.equals("cus")) {
+                            request.setAttribute("loginSuccess", "true");
                             session.setAttribute("account", checkAccount);
                             request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
                         } else {

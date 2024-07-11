@@ -5,257 +5,104 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Modify Movie</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 20px;
-                background-color: #f9f9f9;
-                text-align: center
-            }
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+        <link href="admin-front-end/css/style.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/stylesheet.css">
+        <link rel="stylesheet" href="css/clinic.css">
 
-            .container {
-                max-width: 800px;
-                margin: 0 auto;
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
-            .table-container {
-                margin-bottom: 20px;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 20px;
-            }
-
-            th, td {
-                padding: 10px;
-                border-bottom: 1px solid #ddd;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-
-            .form-container {
-                text-align: center;
-                margin-top: 20px;
-            }
-
-            .button-container {
-                margin-top: 10px;
-            }
-            .search-form {
-                text-align: center;
-                margin-top: 20px;
-            }
-
-            .search-form input[type="text"] {
-                width: 50%;
-                padding: 10px;
-                margin-bottom: 10px;
-                box-sizing: border-box;
-            }
-
-            .search-form input[type="submit"] {
-                padding: 10px 20px;
-                background-color: #1aafff;
-                color: #fff;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            .search-form input[type="submit"]:hover {
-                background-color: #0056b3;
-            }
-
-            .movie-add {
-                text-align: center;
-                margin-top: 20px;
-            }
-
-            .movie-add input[type="text"],
-            .movie-add input[type="number"],
-            .movie-add input[type="file"] {
-                width: 50%;
-                padding: 10px;
-                margin-bottom: 10px;
-                box-sizing: border-box;
-            }
-
-            .check-button {
-                text-align: center;
-            }
-
-            .check-button input[type="submit"],
-            .check-button input[type="button"] {
-                padding: 10px 20px;
-                background-color: #007bff;
-                color: #fff;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                margin-top: 10px;
-            }
-
-            .check-button input[type="submit"]:hover,
-            .check-button input[type="button"]:hover {
-                background-color: #0056b3;
-            }
-
-            .check-button a {
-                text-decoration: none;
-            }
-
-            .check-button a input[type="button"] {
-                background-color: #dc3545;
-            }
-
-            .check-button a input[type="button"]:hover {
-                background-color: #c82333;
-            }
-            .form-container h1 {
-                font-size: 35px;
-                color: #333;
-                margin-bottom: 20px;
-                text-align: center;
-            }
-            .error-message {
-                font-weight: bold;
-                color: red;
-                text-align: center;
-            }
-
-            .success-message {
-                font-weight: bold;
-                color: green;
-                text-align: center;
-            }
-            .check-button {
-                text-align: center;
-            }
-
-            .check-button input[type="submit"],
-            .check-button input[type="button"] {
-                padding: 10px 20px;
-                background-color: red;
-                color: #fff;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                margin-top: 10px;
-            }
-
-            .check-button input[type="submit"]:hover,
-            .check-button input[type="button"]:hover {
-                background-color: #0056b3;
-            }
-
-            .check-button a {
-                text-decoration: none;
-            }
-
-            .check-button a input[type="button"] {
-                background-color: #dc3545;
-            }
-
-            .check-button a input[type="button"]:hover {
-                background-color: #c82333;
-            }
-            #sanpham3 {
-                display: flex;
-                flex-wrap: wrap; /* Wrap the clinic cards to form a grid */
-                gap: 20px; /* Space between each clinic card */
-            }
-
-            .clinic-link {
-                text-decoration: none; /* Remove underline from links */
-                color: inherit; /* Inherit text color */
-            }
-
-            .clinic-card {
-                width: 250px; /* Fixed width to ensure square shape */
-                height: 250px; /* Fixed height to ensure square shape */
-                border: 1px solid #ddd; /* Add a border around each card */
-                padding: 10px; /* Add padding inside each card */
-                border-radius: 8px; /* Optional: rounded corners for each card */
-                background-color: #f9f9f9; /* Optional: background color for each card */
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for a card */
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between; /* Distribute space evenly */
-                align-items: center; /* Center align the contents */
-                text-align: center; /* Center align the text */
-                transition: transform 0.2s; /* Optional: smooth hover effect */
-            }
-
-            .clinic-card:hover {
-                transform: scale(1.05); /* Optional: scale up on hover */
-            }
-
-            .clinic-card img {
-                width: 100px; /* Fixed width for the image */
-                height: 100px; /* Fixed height for the image */
-                object-fit: cover; /* Ensure image fits within the square */
-                margin-bottom: 10px; /* Space between the image and the text */
-            }
-
-            .clinic-card .first-line {
-                font-weight: bold; /* Make the first line bold */
-                margin-bottom: 5px; /* Space between the first line and the following text */
-            }
-
-            /* Optional: additional styling for other text elements */
-            .clinic-card p {
-                margin: 5px 0; /* Space between each paragraph */
-                font-size: 14px; /* Adjust font size */
-            }
-        </style>
     </head>
     <body>
-        <h1>Clinic List</h1>
-        <%
-    LocalDate now = LocalDate.now();
-    WeekFields weekFields = WeekFields.of(Locale.getDefault());
-    int currentYear = now.getYear();
-    int currentWeek = now.get(weekFields.weekOfWeekBasedYear());
-        %>
-        <div class="col-md-4">
+        <div class="grid-container">
+            <!-- HEADER -->
+            <header class="header">
+                <div><h1 style="font-weight: bold">CLINIC</h1></div>
+                <div class="header-icon">
+                    <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
+                    <!-- Dropdown Content -->
+                    <div class="sub-menu-wrap" id="sub-menu-wrap">
+                        <div class="sub-menu">
+                            <div class="user-info">
+                                <h3>${sessionScope.account.userName}</h3>
+                            </div>
+                            <hr>
 
-            <div id="sanpham3">
-                <c:forEach items="${requestScope.clinicList}" var="clinicList">
-                    <div class="clinic-card" data-url="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicList.clinicID}&year=<%=currentYear%>&week=<%=currentWeek%>">    
-                        <!--sua lai khuc nay-->
-                        <img src="images/combo03.PNG" class="img-responsive" />
-                        <p class="first-line">${clinicList.clinicID}</p>
-                        <p>${clinicList.clinicName}</p>
-                        <p>${clinicList.clinicAddress}</p>
-                        <p>${clinicList.city}</p>
-                        <p>${clinicList.hotline}</p>
+                            <a href="SignOutServlet" class="sub-menu-link">
+                                <span class="material-symbols-outlined">logout</span>
+                                <p>Logout</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </div>
                     </div>
-                </c:forEach>
+                </div>
+                <script>
+                    let subMenu = document.getElementById("sub-menu-wrap");
+                    function toggleDropdown() {
+                        subMenu.classList.toggle("open-menu");
+                    }
+                </script>
+
+            </header>
+            <!-- SIDEBAR -->
+            <%
+                LocalDate now2 = LocalDate.now();
+                WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                int currentYear2 = now2.getYear();
+                int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                int currentMonth2 = now2.getMonthValue(); // Get current month number
+%>
+            <aside id="sidebar">
+                <div>
+                    <ul class="sidebar-list">
+                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>    
+                        <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
+                        <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
+                        <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
+                        <a href="coWeb-setting.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">settings</span><div>Setting</div></li></a>
+
+                    </ul>
+                </div>
+            </aside>
+
+            <div class="row">
+                <div class="col-12">
+                    <div id="sanpham3" class="d-flex flex-nowrap overflow-auto">
+                        <c:forEach items="${requestScope.clinicList}" var="clinicList">
+                            <div class="p-2 clinic-card" data-url="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicList.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>">
+                                <img src="images/clinic1.jpg" class="img-responsive" />
+                                <p class="first-line">${clinicList.clinicID}</p>
+                                <p>${clinicList.clinicName}</p>
+                                <p>${clinicList.clinicAddress}</p>
+                                <p>${clinicList.city}</p>
+                                <p>${clinicList.hotline}</p>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
             </div>
         </div>
+
     </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const clinicCards = document.querySelectorAll('.clinic-card');
 
-</html>
-
-<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const clinicCards = document.querySelectorAll('.clinic-card');
-
-        clinicCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const url = card.getAttribute('data-url');
-                window.location.href = url;
+            clinicCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const url = card.getAttribute('data-url');
+                    window.location.href = url;
+                });
             });
         });
-    });
-</script>
+    </script>
+</html>
+
+

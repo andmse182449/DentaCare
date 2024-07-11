@@ -66,7 +66,7 @@ public class FeedbackDAO {
         ResultSet rs = null;
         FeedbackDTO dto = null;
         List<FeedbackDTO> list = new ArrayList<>();
-        String query = "SELECT feedbackID, feedbackDay, feedbackContent, fullName FROM FEEDBACK fb join ACCOUNT ac on fb.accountID = ac.accountID ORDER BY CASE WHEN ac.accountID = ? THEN 0 ELSE 1 END, feedbackDay DESC;";
+        String query = "SELECT feedbackID, feedbackDay, feedbackContent, fullName, bookingID FROM FEEDBACK fb join ACCOUNT ac on fb.accountID = ac.accountID ORDER BY CASE WHEN ac.accountID = ? THEN 0 ELSE 1 END, feedbackDay DESC;";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -77,12 +77,13 @@ public class FeedbackDAO {
                 LocalDateTime feedbackDay = rs.getTimestamp("feedbackDay").toLocalDateTime();
                 String feedbackContent = rs.getString("feedbackContent");
                 String fullName = rs.getString("fullName");
+                String bookingID = rs.getString("bookingID");
 
                 LocalDateTime pastDateTime = LocalDateTime.parse(feedbackDay.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 long minutesAgo = calculateMinutesAgo(pastDateTime);
                 String timeAgo = formatTimeAgo(pastDateTime, minutesAgo);
 
-                dto = new FeedbackDTO(feedbackID, timeAgo, feedbackContent, fullName);
+                dto = new FeedbackDTO(feedbackID, timeAgo, feedbackContent, fullName, bookingID);
                 list.add(dto);
             }
         } catch (SQLException e) {
@@ -99,10 +100,49 @@ public class FeedbackDAO {
         return list;
     }
 
-    public boolean addComment(String feedbackID, LocalDateTime feedbackDate, String text, String author) throws SQLException {
+    public List<FeedbackDTO> getAllFeedbacks() throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        String query = "INSERT INTO FEEDBACK VALUES (?, ?, ?, ?)";
+        ResultSet rs = null;
+        FeedbackDTO dto = null;
+        List<FeedbackDTO> list = new ArrayList<>();
+        String query = "SELECT feedbackID, feedbackDay, feedbackContent, fullName, bookingID FROM FEEDBACK fb join ACCOUNT ac on fb.accountID = ac.accountID";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String feedbackID = rs.getString("feedbackID");
+                LocalDateTime feedbackDay = rs.getTimestamp("feedbackDay").toLocalDateTime();
+                String feedbackContent = rs.getString("feedbackContent");
+                String fullName = rs.getString("fullName");
+                String bookingID = rs.getString("bookingID");
+
+                LocalDateTime pastDateTime = LocalDateTime.parse(feedbackDay.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                long minutesAgo = calculateMinutesAgo(pastDateTime);
+                String timeAgo = formatTimeAgo(pastDateTime, minutesAgo);
+
+                dto = new FeedbackDTO(feedbackID, timeAgo, feedbackContent, fullName, bookingID);
+                list.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
+
+    public boolean addComment(String feedbackID, LocalDateTime feedbackDate, String text, String author, String bookingID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        String query = "INSERT INTO FEEDBACK VALUES (?, ?, ?, ?, ?)";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
@@ -111,6 +151,7 @@ public class FeedbackDAO {
             stm.setTimestamp(2, Timestamp.valueOf(feedbackDate)); // Feedback Date (LocalDateTime to Timestamp)
             stm.setString(3, text);                           // Comment Text
             stm.setString(4, author);                         // Author                     // Clinic ID
+            stm.setString(5, bookingID);
 
             int rowsAffected = stm.executeUpdate();
             if (rowsAffected > 0) {
@@ -133,5 +174,85 @@ public class FeedbackDAO {
             }
         }
         return false;
+    }
+
+    public List<FeedbackDTO> getFeedbackByBookingID(String rw_accountID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        FeedbackDTO dto = null;
+        List<FeedbackDTO> list = new ArrayList<>();
+        String query = "SELECT feedbackID, feedbackDay, feedbackContent, username, bookingID FROM FEEDBACK fb join ACCOUNT ac on fb.accountID = ac.accountID WHERE bookingID = ?";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setString(1, rw_accountID);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String feedbackID = rs.getString("feedbackID");
+                LocalDateTime feedbackDay = rs.getTimestamp("feedbackDay").toLocalDateTime();
+                String feedbackContent = rs.getString("feedbackContent");
+                String fullName = rs.getString("username");
+                String bookingID = rs.getString("bookingID");
+
+                LocalDateTime pastDateTime = LocalDateTime.parse(feedbackDay.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+//                long minutesAgo = calculateMinutesAgo(pastDateTime);
+//                String timeAgo = formatTimeAgo(pastDateTime, minutesAgo);
+
+                dto = new FeedbackDTO(feedbackID, pastDateTime.toString(), feedbackContent, fullName, bookingID);
+                list.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
+
+    public List<FeedbackDTO> getAllFeedbacksByUser(String rw_accountID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        FeedbackDTO dto = null;
+        List<FeedbackDTO> list = new ArrayList<>();
+        String query = "SELECT feedbackID, feedbackDay, feedbackContent, accountID, bookingID FROM FEEDBACK WHERE accountID = ?";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setString(1, rw_accountID);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String feedbackID = rs.getString("feedbackID");
+                LocalDateTime feedbackDay = rs.getTimestamp("feedbackDay").toLocalDateTime();
+                String feedbackContent = rs.getString("feedbackContent");
+                String accountID = rs.getString("accountID");
+                String bookingID = rs.getString("bookingID");
+
+                LocalDateTime pastDateTime = LocalDateTime.parse(feedbackDay.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                long minutesAgo = calculateMinutesAgo(pastDateTime);
+                String timeAgo = formatTimeAgo(pastDateTime, minutesAgo);
+
+                dto = new FeedbackDTO(feedbackID, timeAgo, feedbackContent, accountID, bookingID);
+                list.add(dto);
+            }
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
     }
 }

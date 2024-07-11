@@ -70,6 +70,7 @@
                                 <c:otherwise><b>---</b></c:otherwise>
                             </c:choose>
                         </label><br>
+                        <label for="address">Address: <b>${account.getAddress() != null ? account.getAddress() : '---'}</b></label><br>
                         <a class="show-popup" href="#">Change information</a>
                     </div>
                     <c:set var="unallow" value="${requestScope.unallow}"/>
@@ -131,7 +132,10 @@
                         <input type="tel" class="form-control" id="phone" name="phone" value="${account.getPhone() != null ? account.getPhone() : ''}" maxlength="10" required>
                         <p id="errorMessage" style="color: red;"></p>
                     </div>
-
+                    <div class="form-group">
+                        <label for="address">Address</label><br>
+                        <input type="address" class="form-control" id="address" name="address" value="${account.getAddress() != null ? account.getAddress() : ''}">
+                    </div>
                     <div class="form-group">
                         <label for="dob">Date of Birth<span class="text-red-500">*</span></label><br>
                         <input type="date" class="form-control" id="dob" name="dob" value="${account.getDob() != null ? account.getDob() : ''}">
@@ -172,8 +176,9 @@
                     </div>
 
                     <div class="btnSec" style="display: flex; justify-content: center; gap: 1rem; margin-top: 20px;">
-                        <button class="close-btn" type="button">Cancel</button>
                         <input class="save-btn" type="submit" value="Save" />
+                        <button class="close-btn" type="button">Cancel</button>
+
                     </div>
                 </form>
             </div>

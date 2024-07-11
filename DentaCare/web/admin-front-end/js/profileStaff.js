@@ -13,11 +13,4 @@ function validateDate() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('profileForm');
-    form.addEventListener('submit', function(event) {
-        if (!validateDate()) {
-            event.preventDefault(); // Prevent form submission
-        }
-    });
-});
+

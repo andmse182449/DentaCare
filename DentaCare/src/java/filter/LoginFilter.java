@@ -91,8 +91,8 @@ public class LoginFilter implements Filter {
         }
         // Initialize the set of excluded URLs
         excludedUrls = new HashSet<>();
-        excludedUrls.add("/LoadDataServlet");
         excludedUrls.add("/LoginActionServlet");
+        excludedUrls.add("/LoadDataServlet");
         excludedUrls.add("/LoginChangePage");
         excludedUrls.add("/RegisterServlet");
         excludedUrls.add("/GoogleLoginServlet");
@@ -101,6 +101,7 @@ public class LoginFilter implements Filter {
         excludedUrls.add("/login.jsp");
         excludedUrls.add("/login-dentist.jsp");
         excludedUrls.add("/login-staff.jsp");
+        excludedUrls.add("/login-co.jsp");
         excludedUrls.add("/register.jsp");
         excludedUrls.add("/userWeb-verifyEmail.jsp");
         excludedUrls.add("/forgetPassword.jsp");
@@ -109,8 +110,7 @@ public class LoginFilter implements Filter {
         excludedUrls.add("/images");
         excludedUrls.add("/ForgetPasswordServlet");
         excludedUrls.add("/SendPasswordServlet");
-        
-// Exclude images
+        excludedUrls.add("/SearchServlet");// Exclude images
         // Add more URLs to exclude as needed
     }
 

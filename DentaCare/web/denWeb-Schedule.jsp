@@ -3,9 +3,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Calendar, java.util.GregorianCalendar" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="clinicSchedule.ClinicScheduleDTO" %>
 <%@ page import="java.util.List" %>
-<%@ page import="clinicSchedule.ClinicScheduleDAO" %>
 <%@ page import="account.AccountDAO" %>
 <%@ page import="account.AccountDTO" %>
 <%@ page import="dentistSchedule.DentistScheduleDAO" %>
@@ -25,52 +23,77 @@
         <!--<link rel="stylesheet" href="css/stylesheet.css">-->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+        <!--<link rel="stylesheet" href="css/co-denSchedule.css">-->
+        <link rel="stylesheet" href="css/selectCalendar.css">
         <link rel="stylesheet" href="css/clinicSchedule.css">
+        <link rel="stylesheet" href="css/stylesheet2.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     </head>
 
 
     <body>
+        <%
+                        LocalDate now2 = LocalDate.now();
+                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                        int currentYear2 = now2.getYear();
+                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                        int currentMonth2 = now2.getMonthValue(); // Get current month number
+        %>
         <div class="grid-container">
             <!-- HEADER -->
             <header class="header"> 
-                <div></div>
+                <div><h1 style="font-weight: bold">CLINIC</h1></div>
                 <div class="header-icon">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span class="material-symbols-outlined">mail</span>
-                    <span class="material-symbols-outlined">account_circle</span>
+                    <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
+                    <!-- Dropdown Content -->
+                    <div class="sub-menu-wrap" id="sub-menu-wrap">
+                        <div class="sub-menu">
+                            <div class="user-info">
+                                <h3>${sessionScope.account.userName}</h3>
+                            </div>
+                            <hr>
+
+                            <a href="SignOutServlet" class="sub-menu-link">
+                                <span class="material-symbols-outlined">logout</span>
+                                <p>Logout</p>
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
+                <script>
+                    let subMenu = document.getElementById("sub-menu-wrap");
+                    function toggleDropdown() {
+                        subMenu.classList.toggle("open-menu");
+                    }
+                </script>
+
             </header>
 
             <!-- SIDEBAR -->
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item">Dashboard</li></a>
-                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item">Manage Dentist</li></a>
-                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item">Manage Staff</li></a>
-                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item">Manage Clinic</li></a>
-                        <a href="ServiceController"><li class="sidebar-list-item">Manage Service</li></a>
-                        <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
+                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>    
+                        <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                        <a href="LoadAllDentaListServlet"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
+                        <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
+                        <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
+                        <a href="coWeb-setting.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">settings</span><div>Setting</div></li></a>
                     </ul>
                 </div>
             </aside>
-            <% ClinicScheduleDAO clinicScheduleDAO = new ClinicScheduleDAO(); %>
-            <%
-                        LocalDate now2 = LocalDate.now();
-                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-                        int currentYear2 = now2.getYear();
-                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
-            %>
+
             <!-- MAIN -->
             <div class="main-container">
-                <h2>Dentist</h2>
-
                 <c:set value="${clinicByID.clinicID}" var="clinicID" />
 
                 <div class="form-container">
-                    <h1>Dentist Schedule</h1>
+                    <h2>Dentist Schedule</h2>
                     <form method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}">
                         <!--                        <input type="hidden" name="action" value="load">-->
                         <table>
@@ -258,6 +281,27 @@
                     <c:set value="${requestScope.weekStr}" var="year"/>
                     <c:set value="${requestScope.weekStr}" var="week"/>
                     <br>
+                    <div class="calendar-box">
+                        <h2>Add multiple dentist</h2>
+                        <button id="openCalendarButton">Open Calendar</button>
+                        <form id="calendarForm" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" method=<label for="dentistSelect">Choose a dentist:</label>
+                            <select name="accountID">
+                                <c:forEach items="${requestScope.listAllDentist}" var="den">
+                                    <option value="${den.accountID}">${den.fullName}</option>
+                                </c:forEach>
+                            </select>
+                            <div id="calendarModal" style="display: none;">
+                                <div id="calendar"></div>
+                                <input type="hidden" id="date-input" name="selectedDaysDisplay">
+                                <input type="hidden" name="key" value="addMultiDen">
+                                <div id="selectedDaysDisplay"></div>
+                            </div>
+                            <br>
+                            <button type="submit">Add Dentist</button>
+                        </form>
+                    </div>
+                    <script src="js/selectCalendar.js"></script>
+                    <br>
                     <a href="LoadFromClinicToScheduleServlet?action=loadClinicSchedule&clinicByID=${clinicByID.clinicID}&year=<%=currentYear2%>&week=<%=currentWeek2%>" style="background-color: red;
                        color: white;
                        padding: 10px 20px;
@@ -273,7 +317,7 @@
                 <div id="confirmationPopup" class="popup">
                     <div class="popup-content">
                         <span class="close-btn" onclick="closePopup('confirmationPopup')">&times;</span>
-                        <p>Do you want to add dentist for this day ?</p>
+                        <p>Do you want to add/modify dentist for this day?</p>
                         <button id="confirmButton">OK</button>
                     </div>
                 </div>
@@ -286,6 +330,7 @@
                     </div>
                 </div>
 
+                <!-- Success Popup -->
                 <div id="successPopup" class="popup">
                     <div class="popup-content">
                         <span class="close-btn" onclick="closePopup('successPopup')">&times;</span>
@@ -293,41 +338,64 @@
                     </div>
                 </div>
 
+                <!-- Sunday Popup -->
                 <div id="sundayPopup" class="popup">
                     <div style="background-color: #ffe6e6;" class="popup-content">
                         <span class="close-btn" onclick="closePopup('sundayPopup')">&times;</span>
-                        <p>Dentists can not be allowed to add on Sundays !</p>
+                        <p>Dentists cannot be added on Sundays!</p>
                     </div>
                 </div>
 
+                <!-- Holiday Popup -->
                 <div id="holidayPopup" class="popup">
                     <div style="background-color: #ffe6e6;" class="popup-content">
                         <span class="close-btn" onclick="closePopup('holidayPopup')">&times;</span>
-                        <p>Dentists can not be allowed to add for the holidays !</p>
+                        <p>Dentists cannot be added for holidays!</p>
                     </div>
                 </div>
 
-                <!-- Second Popup for setting the event -->
+                <!-- Event Popup for setting the event -->
                 <div id="eventPopup" class="popup">
                     <div class="popup-content">
                         <span class="close-btn" onclick="closePopup('eventPopup')">&times;</span>
                         <h2>Set Dentist</h2>
-                        <form id="eventForm" method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
-                            <input type="hidden" name="offDate" id="eventDate">
-                            <label for="eventName">List of dentist:</label>
+                        <form id="addForm" method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
+                            <input type="hidden" name="offDate" id="addEventDate"> <!-- Unique ID for add form -->
+                            <label for="accountID">List of dentist:</label>
                             <select name="accountID">
                                 <c:forEach items="${requestScope.listAllDentist}" var="den">
                                     <option value="${den.accountID}">${den.fullName}</option>
                                 </c:forEach>
                             </select>
-                            <input type="hidden" name="key" value="addDenToSchedule" required>
-                            <br>
+                            <input type="hidden" name="key" value="addDenToSchedule">
                             <div class="button-container">
                                 <button type="submit">Set Dentist</button>
                             </div>
                         </form>
+
+                        <h2>Modify Dentist Schedule</h2>
+                        <form id="modifyForm" method="post" action="LoadFromClinicScheduleToDentistScheduleServlet?action=loadDenSchedule&clinicByID=${clinicByID.clinicID}" onsubmit="return submitForm(event)">
+                            <input type="hidden" name="offDate" id="modifyEventDate"> <!-- Unique ID for modify form -->
+                            <label for="oldAccountID">Current Dentist:</label>
+                            <select name="oldAccountID">
+                                <c:forEach items="${requestScope.listAllDentist}" var="den">
+                                    <option value="${den.accountID}">${den.fullName}</option>
+                                </c:forEach>
+                            </select>
+                            <label for="accountID">New Dentist:</label>
+                            <select name="accountID">
+                                <c:forEach items="${requestScope.listAllDentist}" var="den">
+                                    <option value="${den.accountID}">${den.fullName}</option>
+                                </c:forEach>
+                            </select>
+                            <input type="hidden" name="key" value="modifyDenToSchedule">
+                            <div class="button-container">
+                                <button type="submit">Modify Dentist Schedule</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+
 
                 <script>
                     function showPopup(popupId) {
@@ -336,26 +404,15 @@
 
                     function closePopup(popupId) {
                         document.getElementById(popupId).style.display = 'none';
-                        if (popupId === 'successPopup') {
-                            // Do nothing here to delay the reload until the close button is clicked
-                        }
                     }
 
-                    // Function to check if the selected date is a Sunday
+// Function to check if the selected date is a Sunday
                     function isSunday(date) {
                         const dayOfWeek = new Date(date).getDay();
                         return dayOfWeek === 0; // 0 corresponds to Sunday
                     }
 
                     document.addEventListener('DOMContentLoaded', () => {
-                        const clinicCards = document.querySelectorAll('.clinic-card');
-                        clinicCards.forEach(card => {
-                            card.addEventListener('click', () => {
-                                const url = card.getAttribute('data-url');
-                                window.location.href = url;
-                            });
-                        });
-
                         let selectedDate = '';
 
                         function handleDayClick(date, cell) {
@@ -364,7 +421,6 @@
                             cell.classList.add('selected');
 
                             if (isSunday(date)) {
-                                // Display the sundayPopup if it's a Sunday
                                 showPopup('sundayPopup');
                                 return; // Prevent further actions
                             }
@@ -373,7 +429,6 @@
                                 showPopup('confirmationPopup');
                             } else if (cell.classList.contains('table-cell2')) {
                                 showPopup('holidayPopup');
-                                return;
                             }
                         }
 
@@ -385,16 +440,21 @@
                         document.getElementById('confirmButton').addEventListener('click', () => {
                             closePopup('confirmationPopup');
                             showPopup('eventPopup');
-                            document.getElementById('eventDate').value = selectedDate;
+                            document.getElementById('addEventDate').value = selectedDate;
+                            document.getElementById('modifyEventDate').value = selectedDate;
                         });
 
                         document.querySelector('#successPopup .close-btn').addEventListener('click', () => {
                             closePopup('successPopup');
-                            // Reload the page after closing successPopup
-                            location.reload();
+                            location.reload(); // Reload the page after closing successPopup
                         });
 
-                        $('#eventForm').on('submit', function (e) {
+                        document.querySelector('#errorPopup .close-btn').addEventListener('click', () => {
+                            closePopup('errorPopup');
+                            location.reload(); // Reload the page after closing successPopup
+                        });
+
+                        $('#addForm, #modifyForm, #calendarForm').on('submit', function (e) {
                             e.preventDefault();
                             const formData = $(this).serialize();
                             $.ajax({
@@ -405,19 +465,18 @@
                                     if (response.success) {
                                         const successMessage = response.message;
                                         document.getElementById('successMessage').textContent = successMessage;
-                                        closePopup('eventPopup'); // Close eventPopup
+                                        closePopup('eventPopup');
                                         showPopup('successPopup');
                                     } else {
                                         document.getElementById('errorMessage').textContent = response.message;
                                         showPopup('errorPopup');
-                                        location.reload(); // Reload the page to show updated data
                                     }
                                 },
                                 error: function (jqXHR) {
                                     const response = jqXHR.responseJSON;
                                     if (response && !response.success) {
                                         document.getElementById('errorMessage').textContent = response.message;
-                                        closePopup('eventPopup'); // Close eventPopup
+                                        closePopup('eventPopup');
                                         showPopup('errorPopup');
                                     } else {
                                         alert('An error occurred. Please try again.');
@@ -433,6 +492,7 @@
                         });
                     <% } %>
                     });
+
                 </script>
 
                 <style>

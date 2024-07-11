@@ -68,9 +68,9 @@ body {
 .popup-container .popup-box {
     width: 800px;
     background: #f2f2f2;
-    border-radius: 6px;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-    padding: 30px;
+    padding: 25px;
     transform: scale(0);
 }
 
@@ -89,7 +89,7 @@ body {
     color: #333;
 }
 
-.popup-box .close-btn, .popup-box .save-btn {
+.popup-box .save-btn {
     width: 20%;
     height: 45px;
     background: #72b0f7;
@@ -102,7 +102,19 @@ body {
     color: #f2f2f2;
     font-weight: 500;
 }
-
+.popup-box .close-btn{
+    border: 1px solid #72b0f7;
+    width: 20%;
+    height: 45px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 13px;
+    color: black;
+    font-weight: 500;
+}
 /* Add this to your existing CSS file or create a new one */
 
 /* Change border color on input focus */

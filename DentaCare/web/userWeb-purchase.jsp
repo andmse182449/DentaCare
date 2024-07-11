@@ -191,3 +191,5 @@
     <script src="js/scriptBooking.js"></script>
 </body>
 </html>
+    </body>
+</html>

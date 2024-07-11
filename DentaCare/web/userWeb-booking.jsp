@@ -21,9 +21,9 @@
         <link rel="stylesheet" href="css/styleCalendar.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
-        
-        
-        
+
+
+
     </head>
     <body>
         <c:set var="account" value="${sessionScope.account}"/>
@@ -41,7 +41,8 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a href="LoginChangePage?action=home" class="nav-link">Home</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctor</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link">Clinic</a></li>
                         <li class="nav-item active"><a href="BookingServlet" class="nav-link" style="color: black">Book Appointment</a></li>
 
                         <div class="action">
@@ -134,7 +135,7 @@
             <!-- FORM SUBMIT BOOKING -->
             <div class="card">
                 <h1 style="font-size: 24px;">Booking Information</h1>
-                
+
                 <hr>
                 <form action="BookingServlet" id="frmCreateOrder" method="post">
                     <div class="booking-form">
@@ -151,12 +152,12 @@
                         <label for="service">Service</label>
                         <input type="text" name="service" id="service-input" class="input-field-2" required readonly>
                     </div>
-                    
+
                     <div class="booking-form">
                         <label for="price">Service Price</label>
                         <input type="text" name="price" id="price-input" class="input-field-3" style="font-style: italic;" required readonly>
                     </div>
-                    
+
                     <div class="booking-form">
                         <label for="date">Date</label>
                         <input type="text" name="date" id="date-input" class="input-field-4" required readonly>
@@ -166,7 +167,7 @@
                         <label for="time">Time</label>
                         <input type="text" name="timeslot" id="timeslot-input" class="input-field-5" required readonly>
                     </div>
-                    
+
 
 
                     <input type="hidden" name="action" value="confirm">
@@ -176,7 +177,7 @@
                     <input type="hidden" name="clinicID" id="clinicID-input">
 
                     <hr>
-                    
+
                     <div class="booking-form">
                         <input type="submit" value="Confirm Booking" class="confirm-booking-button">
                     </div>
@@ -242,63 +243,61 @@
         <!-- loader -->
         <div id="ftco-loader" class="show fullscreen"></div>
 
-            
+
         <script src="js/scriptBooking.js"></script>
-            
-        <script> 
-                    //Limit attempt of booking
-        document.addEventListener('DOMContentLoaded', function () {
-            const timeslotList = document.getElementById('timeslot-list');
 
-            const clinicLimit = "${requestScope.clinicLimit}";
-            const slotLimit = "${requestScope.slotLimit}";
-            const dayLimit = "${requestScope.dayLimit}";
+        <script>
+                                //Limit attempt of booking
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    const timeslotList = document.getElementById('timeslot-list');
 
-            function updateTimeslotAttributes() {
+                                    const clinicLimit = "${requestScope.clinicLimit}";
+                                    const slotLimit = "${requestScope.slotLimit}";
+                                    const dayLimit = "${requestScope.dayLimit}";
 
-                timeslotList.querySelectorAll('.timeslot-option').forEach(function (option) {
-                    const timeslotDate = option.getAttribute('data-date');
-                    const timeslotClinic = option.getAttribute('data-clinic');
-                    const timeslotID = option.getAttribute('data-address');
+                                    function updateTimeslotAttributes() {
 
-                    option.classList.remove('disabled');
-                    console.log(dayLimit);
-                    if (dayLimit.includes(timeslotDate) && clinicLimit.includes(timeslotClinic) && slotLimit.includes(timeslotID)) {
-                        option.classList.add('disabled');
-                    }
+                                        timeslotList.querySelectorAll('.timeslot-option').forEach(function (option) {
+                                            const timeslotDate = option.getAttribute('data-date');
+                                            const timeslotClinic = option.getAttribute('data-clinic');
+                                            const timeslotID = option.getAttribute('data-address');
 
-                });
-            }
+                                            option.classList.remove('disabled');
+                                            console.log(dayLimit);
+                                            if (dayLimit.includes(timeslotDate) && clinicLimit.includes(timeslotClinic) && slotLimit.includes(timeslotID)) {
+                                                option.classList.add('disabled');
+                                            }
 
-            document.querySelectorAll('.future').forEach(function (option) {
-                option.addEventListener('click', updateTimeslotAttributes);
-            });
+                                        });
+                                    }
 
-
-            document.querySelectorAll('.clinic-option').forEach(function (option) {
-                option.addEventListener('click', updateTimeslotAttributes);
-            });
-            // Initial check
-            updateTimeslotAttributes();
-        });
+                                    document.querySelectorAll('.future').forEach(function (option) {
+                                        option.addEventListener('click', updateTimeslotAttributes);
+                                    });
 
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const alertBox = document.querySelector(".alert-error.sec");
-            if (alertBox && alertBox.textContent.trim()) {
-                alertBox.style.display = "block"; // Show the alert if there's an error message
-                alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
-                setTimeout(function () {
-                    alertBox.classList.remove("show");
-                    setTimeout(function () {
-                        alertBox.style.display = "none"; // Hide the alert after the fade-out animation
-                    }, 600); // Adjust the delay (in milliseconds) to match the transition duration
-                }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
-            }
+                                    document.querySelectorAll('.clinic-option').forEach(function (option) {
+                                        option.addEventListener('click', updateTimeslotAttributes);
+                                    });
+                                    // Initial check
+                                    updateTimeslotAttributes();
+                                });
 
-        });
+
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    const alertBox = document.querySelector(".alert-error.sec");
+                                    if (alertBox && alertBox.textContent.trim()) {
+                                        alertBox.style.display = "block"; // Show the alert if there's an error message
+                                        alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                                        setTimeout(function () {
+                                            alertBox.classList.remove("show");
+                                            setTimeout(function () {
+                                                alertBox.style.display = "none"; // Hide the alert after the fade-out animation
+                                            }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                                        }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                                    }
+
+                                });
         </script>
     </body>
 </html>
-
-

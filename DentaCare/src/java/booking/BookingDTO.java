@@ -122,8 +122,7 @@ public class BookingDTO {
     public void setDentistID(String dentistID) {
         this.dentistID = dentistID;
     }
-
-    public int getClinicID() {
+public int getClinicID() {
         return clinicID;
     }
 

@@ -37,22 +37,29 @@ public class UpdateProfileServlet extends HttpServlet {
         String name = request.getParameter("fullName");
         String phone = request.getParameter("phone");
         String dob = request.getParameter("dob");
-//        String email = request.getParameter("gender");
+        String address = request.getParameter("address");
         String gender = request.getParameter("gender");
         HttpSession session = request.getSession();
+        String url = "user-information.jsp";
 
         try {
             AccountDTO account = (AccountDTO) session.getAttribute("account");
             AccountDAO accountDao = new AccountDAO();
-            AccountDTO result = accountDao.updateProfileAccount(name, phone, Boolean.parseBoolean(gender), account.getUserName(), dob);
+            AccountDTO result = accountDao.updateProfileAccount(name, phone, Boolean.parseBoolean(gender), account.getUserName(), dob, address);
             if (result != null) {
-                session.setAttribute("account", result);
-                request.setAttribute("success", "Update information successfully.");
-                response.sendRedirect("user-information.jsp");
+                if (account.getGoogleID() == null) {
+                    request.setAttribute("unallow", "");
+                    session.setAttribute("account", result);
+                    request.setAttribute("success", "Update information successfully.");
+                } else {
+                    request.setAttribute("unallow", "hidden");
+                    session.setAttribute("account", result);
+                    request.setAttribute("success", "Update information successfully.");
+                }
             } else {
                 request.setAttribute("error", "Update information fail.");
-                request.getRequestDispatcher("user-information.jsp").forward(request, response);
             }
+            request.getRequestDispatcher(url).forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(UpdateProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

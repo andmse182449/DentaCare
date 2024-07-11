@@ -28,11 +28,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin</title>
         <!--<link rel="stylesheet" href="css/stylesheet.css">-->
-        <link rel="stylesheet" href="css/dashboard.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+        <link rel="stylesheet" href="css/stylesheet.css">
+        <link rel="stylesheet" href="css/dashboard.css">
+
     </head>
     <body>
         <div class="grid-container">
@@ -59,15 +61,24 @@
                 </div>
             </header>
             <!-- SIDEBAR -->
+            <%
+                LocalDate now2 = LocalDate.now();
+                WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                int currentYear2 = now2.getYear();
+                int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                int currentMonth2 = now2.getMonthValue(); // Get current month number
+            %>
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
-                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
-                        <a href="coWeb-staff.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
+                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
+                        <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                         <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
-                        <a href="ManageStaffServlet"><li class="sidebar-list-item">Staff List</li></a>
+                        <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
+                        <a href="coWeb-setting.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">settings</span><div>Setting</div></li></a>
                     </ul>
                 </div>
             </aside>
@@ -82,6 +93,8 @@
                 <c:set value="${requestScope.countStaff}" var="countStaff" />
                 <c:set value="${requestScope.countUserAccount}" var="countUserAccount" />
                 <c:set value="${requestScope.month}" var="month" />
+                <c:set value="${requestScope.allPriceInYear}" var="allPriceInYear" />
+
 
                 <!-- Page Content -->
                 <div id="page-content-wrapper">
@@ -89,48 +102,67 @@
 
                         <!-- Row start -->
                         <div class="row gutters">
-                            <div class="col-lg-2 col-sm-4 col-12">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                 <div class="hospital-tiles">
-                                    <img src="images/img/hospital/patient.svg" alt="Best Dashboards" />
+                                    <img src="images/img/user-hand-up-svgrepo-com.png" alt="Best Dashboards" />
                                     <p>Customer</p>
                                     <h2>${countUserAccount}</h2>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-sm-4 col-12">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                 <div class="hospital-tiles">
-                                    <img src="images/img/hospital/doctor.svg" alt="Top Dashboards" />
+                                    <img src="images/img/dentist-1-svgrepo-com.png" alt="Top Dashboards" />
                                     <p>Dentist</p>
                                     <h2>${countDentist}</h2>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-sm-4 col-12">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                 <div class="hospital-tiles">
-                                    <img src="images/img/hospital/staff.svg" alt="Top Dashboards" />
+                                    <img src="images/img/customer-class-line-svgrepo-com (2).png" alt="Top Dashboards" />
                                     <p>Staff</p>
                                     <h2>${countStaff}</h2>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-sm-4 col-12">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                 <div class="hospital-tiles">
-                                    <img src="images/img/hospital/revenue.svg" alt="Top Dashboards" />
-                                    <p>Earnings</p>
-                                    <h2>$900k</h2>
+                                    <img src="images/img/money-mouth-face-svgrepo-com.png" alt="Top Dashboards" />
+                                    <p>Total earning in year</p>
+                                    <h2>${allPriceInYear} vnđ</h2> 
+                                    <%--<c:forEach var="item" items="${allPriceInYear}">--%>
+                                    <h2 class="money-format"></h2>
+                                    <%--</c:forEach>--%>
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const moneyElements = document.querySelectorAll('.money-format');
+
+                                moneyElements.forEach(element => {
+                                    const text = element.textContent;
+                                    const amount = text.match(/[\d,.]+/);
+                                    if (amount) {
+                                        const moneyValue = parseFloat(amount[0].replace(/,/g, ''));
+                                        const formattedMoney = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(moneyValue);
+                                        element.textContent = text.replace(amount[0], formattedMoney);
+                                    }
+                                });
+                            });
+                        </script>
 
                         <form action="DashBoardServlet?action=Table&year2=${year2}&month=${month}" method="Post" id="yearForm">
                             <div class="container-fluid">
                                 <div class="row">
+                                    <h1 class="mt-4">Total earning in year</h1>
                                     <div class="card mb-4">
                                         <div class="card-header">
-                                            Chart Example
+                                            Total earning in year
                                         </div>
                                         <div class="card-body">
                                             YEAR 
                                             <select name="year1" id="selectYear" onchange="form.submit()">
                                                 <option value="">Select Year</option>
-                                                <% 
+                                                <%
                                                     int currentYear = Calendar.getInstance().get(Calendar.YEAR);
                                                     String selectedYear = request.getParameter("year1");
                                                     for (int i = currentYear - 5; i <= currentYear + 5; i++) {
@@ -144,7 +176,7 @@
 
                                             <script>
                                                 document.addEventListener('DOMContentLoaded', function () {
-                                                    var results = <%= new com.google.gson.Gson().toJson(request.getAttribute("results")) %>;
+                                                    var results = <%= new com.google.gson.Gson().toJson(request.getAttribute("results"))%>;
                                                     console.log(results);
                                                     if (results) {
                                                         var labels = [];
@@ -197,89 +229,128 @@
                         </form>
 
                         <div class="container">
-                            <h1 class="mt-4">Patients by Age and Gender</h1>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="card mb-6">
-                                        <div class="card-header">
-                                            Patients by Age Group and Gender
-                                        </div>
-                                        <div class="card-body">
-                                            <canvas id="patientsChart"></canvas>
-                                            <script>
-                                                document.addEventListener('DOMContentLoaded', function () {
-                                                    // Sample data for patients by age group and gender
-                                                    var data = {
-                                                        labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71+'],
-                                                        datasets: [{
-                                                                label: 'Male',
-                                                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                                                                borderColor: 'rgba(54, 162, 235, 1)',
-                                                                borderWidth: 1,
-                                                                data: [15, 30, 45, 60, 50, 30, 20, 10] // Example data for males by age group
-                                                            }, {
-                                                                label: 'Female',
-                                                                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                                                                borderColor: 'rgba(255, 99, 132, 1)',
-                                                                borderWidth: 1,
-                                                                data: [10, 25, 40, 55, 45, 25, 15, 5] // Example data for females by age group
-                                                            }]
-                                                    };
+                                    <h1 class="mt-4">Patients by Age and Gender</h1>
+                                    <form action="DashBoardServlet?action=Table&year2=${year2}&month=${month}" method="Post" id="yearForm">
+                                        <div class="card mb-6">
+                                            <div class="card-header">
+                                                Patients by Age Group and Gender
+                                            </div>
+                                            <div class="card-body">
+                                                <canvas id="patientsChart"></canvas>
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function () {
+                                                        // Fetch the values from the request attributes
+                                                        var male = <%= new com.google.gson.Gson().toJson(request.getAttribute("male"))%>;
+                                                        var female = <%= new com.google.gson.Gson().toJson(request.getAttribute("female"))%>;
 
-                                                    var ctx = document.getElementById('patientsChart').getContext('2d');
-                                                    var patientsChart = new Chart(ctx, {
-                                                        type: 'bar',
-                                                        data: data,
-                                                        options: {
-                                                            responsive: true,
-                                                            plugins: {
-                                                                legend: {
-                                                                    position: 'top',
-                                                                },
-                                                                title: {
-                                                                    display: true,
-                                                                    text: 'Patients by Age Group and Gender'
-                                                                }
-                                                            },
-                                                            scales: {
-                                                                x: {
-                                                                    stacked: true,
-                                                                    title: {
-                                                                        display: true,
-                                                                        text: 'Age Group'
+                                                        // Check if the data is being fetched correctly
+                                                        console.log('Male data:', male);
+                                                        console.log('Female data:', female);
+
+                                                        // Validate data is not null or undefined
+                                                        if (male && female && male.length >= 0 && female.length >= 0) {
+                                                            var labels = ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71+'];
+                                                            var data = {
+                                                                labels: labels,
+                                                                datasets: [{
+                                                                        label: 'Male',
+                                                                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                                                        borderColor: 'rgba(54, 162, 235, 1)',
+                                                                        borderWidth: 1,
+                                                                        data: []
+                                                                    }, {
+                                                                        label: 'Female',
+                                                                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                                                        borderColor: 'rgba(255, 99, 132, 1)',
+                                                                        borderWidth: 1,
+                                                                        data: []
+                                                                    }]
+                                                            };
+
+                                                            // Populate data array for males
+                                                            labels.forEach(function (label) {
+                                                                var maleCount = 0;
+                                                                var femaleCount = 0;
+
+                                                                // Find the corresponding count in male and female data
+                                                                male.forEach(function (item) {
+                                                                    if (item.age_range === label) {
+                                                                        maleCount = item.count;
                                                                     }
-                                                                },
-                                                                y: {
-                                                                    stacked: true,
-                                                                    title: {
-                                                                        display: true,
-                                                                        text: 'Number of Patients'
+                                                                });
+
+                                                                female.forEach(function (item) {
+                                                                    if (item.age_range === label) {
+                                                                        femaleCount = item.count;
+                                                                    }
+                                                                });
+
+                                                                data.datasets[0].data.push(maleCount);
+                                                                data.datasets[1].data.push(femaleCount);
+                                                            });
+
+                                                            var ctx = document.getElementById('patientsChart').getContext('2d');
+                                                            var patientsChart = new Chart(ctx, {
+                                                                type: 'bar',
+                                                                data: data,
+                                                                options: {
+                                                                    responsive: true,
+                                                                    plugins: {
+                                                                        legend: {
+                                                                            position: 'top',
+                                                                        },
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: 'Patients by Age Group and Gender'
+                                                                        }
                                                                     },
-                                                                    ticks: {
-                                                                        beginAtZero: true
+                                                                    scales: {
+                                                                        x: {
+                                                                            stacked: true,
+                                                                            title: {
+                                                                                display: true,
+                                                                                text: 'Age Group'
+                                                                            }
+                                                                        },
+                                                                        y: {
+                                                                            stacked: true,
+                                                                            title: {
+                                                                                display: true,
+                                                                                text: 'Number of Patients'
+                                                                            },
+                                                                            ticks: {
+                                                                                beginAtZero: true
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
-                                                            }
+                                                            });
+                                                        } else {
+                                                            console.log("No data available for the selected year and month.");
                                                         }
                                                     });
-                                                });
-                                            </script>
-                                        </div>
-                                    </div>
-                                </div>
+                                                </script>
 
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                                 <!-- Second Chart -->
+
                                 <div class="col-md-6">
+                                    <h1 class="mt-4">Booking Time Slot Overview</h1>
                                     <div class="card mb-6">
                                         <div class="card-header">
-                                            Booking Status Overview
+                                            Booking Time Slot Overview
                                         </div>
                                         <div class="card-body">
                                             <form action="DashBoardServlet?action=Table&year1=${year1}" method="post" id="yearForm">
                                                 Select year and Month
                                                 <select name="year2" id="selectYear" onchange="form.submit()">
                                                     <option value="">Select Year</option>
-                                                    <% 
+                                                    <%
                                                         currentYear = Calendar.getInstance().get(Calendar.YEAR);
                                                         selectedYear = request.getParameter("year2");
                                                         for (int i = currentYear - 5; i <= currentYear + 5; i++) {
@@ -311,7 +382,7 @@
                             <script>
                                 document.addEventListener('DOMContentLoaded', (event) => {
                                     const ctx = document.getElementById('bookingChart').getContext('2d');
-                                    var timeResults = <%= new com.google.gson.Gson().toJson(request.getAttribute("timeResults")) %>;
+                                    var timeResults = <%= new com.google.gson.Gson().toJson(request.getAttribute("timeResults"))%>;
 
                                     if (timeResults) {
                                         var labels = [];
@@ -375,4 +446,3 @@
     </script>
 </body>
 </html>
-

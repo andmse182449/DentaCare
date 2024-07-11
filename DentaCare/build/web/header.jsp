@@ -37,7 +37,7 @@
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a href="index.jsp" class="nav-link" style="color: black">Home</a></li>
+                        <li class="nav-item active"><a href="LoadDataServlet" class="nav-link" style="color: black">Home</a></li>
                         <li class="nav-item"><a href="about.html" class="nav-link" style="color: black">About</a></li>
                         <li class="nav-item"><a href="services.html" class="nav-link" style="color: black">Services</a></li>
                         <li class="nav-item"><a href="doctors.html" class="nav-link" style="color: black">Doctors</a></li>
