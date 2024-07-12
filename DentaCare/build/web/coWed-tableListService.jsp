@@ -4,6 +4,7 @@
     Author     : ADMIN
 --%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Calendar, java.util.GregorianCalendar" %>
 <%@ page import="java.text.SimpleDateFormat" %>
@@ -178,7 +179,7 @@
                                                     <td>${service.serviceName}</td>
                                                     <td>${service.serviceType}</td>
                                                     <td style="white-space: pre-wrap;">${service.serviceDescription}</td>
-                                                    <td class="money-format">${service.serviceMoney}</td>
+                                                    <td><fmt:formatNumber value="${service.serviceMoney}" type="currency" currencyCode="VND" maxFractionDigits="0"/></td>
                                                     <td>
                                                         <button onclick="toggleEditForm(this)">Edit</button>
                                                         <div class="popup-overlay"></div>
@@ -273,7 +274,7 @@
                                                     <td>${service.serviceName}</td>
                                                     <td>${service.serviceType}</td>
                                                     <td style="white-space: pre-wrap;">${service.serviceDescription}</td>
-                                                    <td class="money-format">${service.serviceMoney}</td>
+                                                    <td><fmt:formatNumber value="${service.serviceMoney}" type="currency" currencyCode="VND" maxFractionDigits="0"/></td>
                                                     <td>
                                                         <a style="text-decoration: none; color: black;" href="ServiceController?action=addAgain&serviceId=${service.serviceID}"><i class="fa-solid fa-plus"></i></a>
                                                     </td>
@@ -365,16 +366,22 @@
                                         }
                 </script>
                 <script>
+                    function formatMoney(value) {
+                        // Ensure value is treated as a number
+                        value = Number(value);
+                        return value.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+                    }
+
                     document.addEventListener('DOMContentLoaded', function () {
                         const moneyElements = document.querySelectorAll('.money-format');
 
                         moneyElements.forEach(element => {
-                            const text = element.textContent;
-                            const amount = text.match(/[\d,.]+/);
-                            if (amount) {
-                                const moneyValue = parseFloat(amount[0].replace(/,/g, ''));
-                                const formattedMoney = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(moneyValue);
-                                element.textContent = text.replace(amount[0], formattedMoney);
+                            let text = element.textContent.trim();
+                            // Convert to number and format
+                            const amount = parseFloat(text);
+                            if (!isNaN(amount)) {
+                                const formattedMoney = formatMoney(amount);
+                                element.textContent = formattedMoney;
                             }
                         });
                     });

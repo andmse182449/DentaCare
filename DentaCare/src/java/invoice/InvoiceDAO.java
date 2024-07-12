@@ -169,5 +169,7 @@ public class InvoiceDAO {
         int maxID = maxInvoiceID(); // Get the max existing ID
         return prefix + String.format("%02d", ++maxID); // IN202400001
     }
+    
+   
 
 }

@@ -238,20 +238,20 @@ public class StaffAccountDAO {
         return list;
     }
 
-    public double getRevenue(Date today) {
+    public Long getRevenue(Date today) {
         String sql = "SELECT SUM(price) AS revenue FROM booking WHERE appointmentday = ? and status = 2";
         try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             java.sql.Date sqlDate = new java.sql.Date(today.getTime());
             ps.setDate(1, sqlDate);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getDouble("revenue");
+                    return rs.getLong("revenue");
                 }
             }
         } catch (SQLException e) {
             System.out.println("Error in getRevenue: " + e.getMessage());
         }
-        return 0;
+        return null;
     }
 
     public List<LocalDate> getPreviousDaysInCurrentMonth(LocalDate targetDate) {

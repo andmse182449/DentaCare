@@ -63,7 +63,8 @@ public class StaffViewBooking extends HttpServlet {
                 java.sql.Date sqlNextDate = new java.sql.Date(nextDate.getTime());
                 List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate);
                  //Show revenue
-                Double revenue = daoStaffAccount.getRevenue(now);
+                Long revenue = daoStaffAccount.getRevenue(now);
+                
                 //Set Attribute
                 request.setAttribute("style", "none");
                 request.setAttribute("dailyRevenue", revenue);
@@ -89,7 +90,7 @@ public class StaffViewBooking extends HttpServlet {
                 java.sql.Date sqlNextDate = new java.sql.Date(nextDate.getTime());
                 List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate);
                 //Show revenue
-                Double revenue = daoStaffAccount.getRevenue(now);
+                Long revenue = daoStaffAccount.getRevenue(now);
 
                 //Set Attribute
                 request.setAttribute("style", "none");
@@ -133,7 +134,9 @@ public class StaffViewBooking extends HttpServlet {
                     request.getRequestDispatcher("staffWeb-viewInvoice.jsp").forward(request, response);
                     return;
                 }
-            } else if (action.equals("pastBookingList")) {
+            } 
+            
+            else if (action.equals("pastBookingList")) {
                 LocalDate today = LocalDate.now();
                 List<LocalDate> result = daoStaffAccount.getPreviousDaysInCurrentMonth(today);
                 Map<LocalDate, List<BookingDTO>> bookingsByDate = new TreeMap<>(Collections.reverseOrder());
@@ -164,7 +167,7 @@ public class StaffViewBooking extends HttpServlet {
                 java.sql.Date sqlNextDate = new java.sql.Date(nextDate.getTime());
                 List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate);
                 //Show revenue
-                Double revenue = daoStaffAccount.getRevenue(now);
+                Long revenue = daoStaffAccount.getRevenue(now);
                 //Set Attribute
                 request.setAttribute("style", "none");
                 request.setAttribute("dailyRevenue", revenue);

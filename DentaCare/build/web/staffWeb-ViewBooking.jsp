@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -48,7 +49,7 @@
 
                 <div class="header-button">
                     <div class="daily-revenue">
-                        <h3 class="money-format">Daily Revenue: ${dailyRevenue}</h3>
+                        <h3>Daily Revenue: <fmt:formatNumber value="${dailyRevenue}" type="currency" currencyCode="VND" maxFractionDigits="0"/></h3>
                     </div>
                     <form>
                         <input type="text" name="nameBooking" placeholder="Search by Name" />
@@ -111,24 +112,18 @@
                                     <input type="submit" value="Assign" <c:if test="${booking.status != 5}">disabled</c:if> />
                                     </form>
                                 </div>
-                                <div style="display: flex; margin-top: 15px;">
-                                    <strong>Price:</strong>
-                                    <p style="margin-left: 13px; margin-top: 0px;" class="money-format">${booking.price}</p>
-                            </div>
-                            <div style="display: flex; margin-top: -2px;">
-                                <strong>Deposit:</strong>
-                                <p style="margin-left: 13px; margin-top: 0px;" class="money-format">${booking.deposit}</p>
-                            </div>
+                                <p><strong>Price: </strong><fmt:formatNumber value="${booking.price}" type="currency" currencyCode="VND" maxFractionDigits="0"/></p>
+                            <p><strong>Deposit: </strong><fmt:formatNumber value="${booking.deposit}" type="currency" currencyCode="VND" maxFractionDigits="0"/></p>
                             <div style="display: flex; justify-content: space-between;">
                                 <div style="display: flex; gap: 20px">
-                                    <c:if test="${booking.status == 2}">
-                                        <form action="./StaffViewBooking" method="post">
-                                            <input type="hidden" name="action" value="viewInvoice" />
-                                            <input name="bookingID" value="${booking.bookingID}" type="hidden" />
-                                            <input name="customerID" value="${booking.customerID}" type="hidden" />
-                                            <input type="submit" value="View Invoice" />
-                                        </form>
-                                    </c:if>
+
+                                    <form action="./StaffViewBooking" method="post">
+                                        <input type="hidden" name="action" value="viewInvoice" />
+                                        <input name="bookingID" value="${booking.bookingID}" type="hidden" />
+                                        <input name="customerID" value="${booking.customerID}" type="hidden" />
+                                        <input type="submit" value="View Invoice" />
+                                    </form>
+
                                 </div>
                                 <button style="margin-left: 445px; height: 42px; margin-top: 15px; z-index: 899" onclick="closeDetail('${status.index}', event)">Close</button>
                             </div>
@@ -162,14 +157,8 @@
                             <p><strong>Service Name:</strong> ${booking.service.serviceName}</p>
                             <p><strong>Customer Name:</strong> ${booking.account.fullName}</p>
                             <p><strong>Customer Phone:</strong> ${booking.account.phone}</p>
-                            <div style="display: flex; margin-top: 15px;">
-                                <strong>Price:</strong>
-                                <p style="margin-left: 13px; margin-top: 0px;" class="money-format">${booking.price}</p>
-                            </div>
-                            <div style="display: flex; margin-top: -2px;">
-                                <strong>Deposit:</strong>
-                                <p style="margin-left: 13px; margin-top: 0px;" class="money-format">${booking.deposit}</p>
-                            </div>
+                            <p><strong>Price: </strong><fmt:formatNumber value="${booking.price}" type="currency" currencyCode="VND" maxFractionDigits="0"/></p>
+                            <p><strong>Deposit: </strong><fmt:formatNumber value="${booking.deposit}" type="currency" currencyCode="VND" maxFractionDigits="0"/></p>
                             <div style="display: flex; justify-content: space-between;">
                                 <div style="display: flex; gap: 20px">
                                     <c:if test="${booking.status == 0}">
@@ -264,24 +253,18 @@
                                 <p><strong>Service Name:</strong> ${booking.service.serviceName}</p>
                                 <p><strong>Customer Name:</strong> ${booking.account.fullName}</p>
                                 <p><strong>Customer Phone:</strong> ${booking.account.phone}</p>
-                                <div style="display: flex; margin-top: 15px;">
-                                    <strong>Price:</strong>
-                                    <p style="margin-left: 13px; margin-top: 0px;" class="money-format">${booking.price}</p>
-                                </div>
-                                <div style="display: flex; margin-top: -2px;">
-                                    <strong>Deposit:</strong>
-                                    <p style="margin-left: 13px; margin-top: 0px;" class="money-format">${booking.deposit}</p>
-                                </div>
+                                <p><strong>Price: </strong><fmt:formatNumber value="${booking.price}" type="currency" currencyCode="VND" maxFractionDigits="0"/></p>
+                                <p><strong>Deposit: </strong><fmt:formatNumber value="${booking.deposit}" type="currency" currencyCode="VND" maxFractionDigits="0"/></p>
                                 <div style="display: flex; justify-content: space-between;">
                                     <div style="display: flex; gap: 20px">
-                                        <c:if test="${booking.status == 2}">
-                                            <form action="./StaffViewBooking" method="post">
-                                                <input type="hidden" name="action" value="viewInvoice" />
-                                                <input name="bookingID" value="${booking.bookingID}" type="hidden" />
-                                                <input name="customerID" value="${booking.customerID}" type="hidden" />
-                                                <input type="submit" value="View Invoice" />
-                                            </form>
-                                        </c:if>
+
+                                        <form action="./StaffViewBooking" method="post">
+                                            <input type="hidden" name="action" value="viewInvoice" />
+                                            <input name="bookingID" value="${booking.bookingID}" type="hidden" />
+                                            <input name="customerID" value="${booking.customerID}" type="hidden" />
+                                            <input type="submit" value="View Invoice" />
+                                        </form>
+
                                     </div>
                                     <button style="margin-left: 445px; height: 42px; margin-top: 15px; z-index: 899" onclick="closeDetailPast('${entry.key}-${status.index}', event)">Close</button>
                                 </div>
@@ -340,16 +323,22 @@
                 subMenu.classList.toggle("open-menu");
             }
 
+            function formatMoney(value) {
+                // Ensure value is treated as a number
+                value = Number(value);
+                return value.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+            }
+
             document.addEventListener('DOMContentLoaded', function () {
                 const moneyElements = document.querySelectorAll('.money-format');
 
                 moneyElements.forEach(element => {
-                    const text = element.textContent;
-                    const amount = text.match(/[\d,.]+/);
-                    if (amount) {
-                        const moneyValue = parseFloat(amount[0].replace(/,/g, ''));
-                        const formattedMoney = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(moneyValue);
-                        element.textContent = text.replace(amount[0], formattedMoney);
+                    let text = element.textContent.trim();
+                    // Convert to number and format
+                    const amount = parseFloat(text);
+                    if (!isNaN(amount)) {
+                        const formattedMoney = formatMoney(amount);
+                        element.textContent = formattedMoney;
                     }
                 });
             });

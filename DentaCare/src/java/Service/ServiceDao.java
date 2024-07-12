@@ -122,7 +122,7 @@ public class ServiceDAO {
                 service.setServiceID(rs.getInt("serviceid"));
                 service.setServiceName(rs.getString("servicename"));
                 service.setServiceType(rs.getString("servicetype"));
-                service.setServiceMoney(rs.getFloat("price"));
+                service.setServiceMoney(rs.getLong("price"));
                 service.setServiceDescription(rs.getString("description"));
                 list.add(service);
             }
@@ -145,7 +145,7 @@ public class ServiceDAO {
                 service.setServiceID(rs.getInt("serviceid"));
                 service.setServiceName(rs.getString("servicename"));
                 service.setServiceType(rs.getString("servicetype"));
-                service.setServiceMoney(rs.getFloat("price"));
+                service.setServiceMoney(rs.getLong("price"));
                 service.setServiceDescription(rs.getString("description"));
                 list.add(service);
             }

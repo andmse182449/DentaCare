@@ -4,6 +4,7 @@
     Author     : ADMIN
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -126,16 +127,16 @@
                     <tr>
                         <td>${bookingInvoice.service.serviceName}</td>
                         <td>${bookingInvoice.timeSlot.timePeriod} ${bookingInvoice.appointmentDay}</td>
-                        <td class="money-format">${bookingInvoice.price}</td>
+                        <td><fmt:formatNumber value="${bookingInvoice.price}" type="currency" currencyCode="VND" maxFractionDigits="0"/></td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="totals">
-                <p class="money-format">Subtotal: ${bookingInvoice.price}</p>
-                <p class="money-format">Deposit: ${bookingInvoice.deposit}</p>
+                <p class="money-format">Subtotal: <fmt:formatNumber value="${bookingInvoice.price}" type="currency" currencyCode="VND" maxFractionDigits="0"/></p>
+                <p class="money-format">Deposit: <fmt:formatNumber value="${bookingInvoice.deposit}" type="currency" currencyCode="VND" maxFractionDigits="0"/></p>
                 <c:set var="total" value="${bookingInvoice.price - bookingInvoice.deposit}" />
-                <p class="money-format">Total: <c:out value="${total}" /></p>
+                <p class="money-format">Total: <fmt:formatNumber value="${total}" type="currency" currencyCode="VND" maxFractionDigits="0"/></p>
             </div>
 
             <form style="text-align: right" action="./SendBookingNotificationServlet" method="post">
@@ -148,16 +149,22 @@
             </div>
         </div>
         <script>
+            function formatMoney(value) {
+                // Ensure value is treated as a number
+                value = Number(value);
+                return value.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+            }
+
             document.addEventListener('DOMContentLoaded', function () {
                 const moneyElements = document.querySelectorAll('.money-format');
 
                 moneyElements.forEach(element => {
-                    const text = element.textContent;
-                    const amount = text.match(/[\d,.]+/);
-                    if (amount) {
-                        const moneyValue = parseFloat(amount[0].replace(/,/g, ''));
-                        const formattedMoney = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(moneyValue);
-                        element.textContent = text.replace(amount[0], formattedMoney);
+                    let text = element.textContent.trim();
+                    // Convert to number and format
+                    const amount = parseFloat(text);
+                    if (!isNaN(amount)) {
+                        const formattedMoney = formatMoney(amount);
+                        element.textContent = formattedMoney;
                     }
                 });
             });
