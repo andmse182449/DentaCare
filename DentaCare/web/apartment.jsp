@@ -217,7 +217,9 @@
                                                 </svg>
                                                 <span>Contact: ${p.getHotline()}</span>
                                             </div>
-                                            <a href="#" class="button">Book Now</a>
+                                            <div style="display: ${sessionScope.account == null ? 'none' : ''}">
+                                                <a href="BookingServlet" class="button">Book Now</a>
+                                            </div>
                                         </div>
 
                                     </div>

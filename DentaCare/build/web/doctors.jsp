@@ -325,9 +325,8 @@
                                                 <li>Specialities: ${p.getMajorName()}</li>
                                                 <li>Available at ${p.getClinicName()}</li>
                                             </ul>
-                                            <div class="doctor-buttons">
-                                                <!--                                                <button class="btn-detail">Watch in details</button>-->
-                                                <button class="btn-appointment">Book Now</button>
+                                            <div class="doctor-buttons"  style="display: ${sessionScope.account == null ? 'none' : ''}">
+                                                <a href="BookingServlet" class="btn-appointment">Book Now</a>
                                             </div>
                                         </div>
                                         <div class="doctor-image" style="background-image: url(images/${p.getImage() != null ? p.getImage() : 'person_5.jpg'})"></div>

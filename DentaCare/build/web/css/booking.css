@@ -205,11 +205,33 @@ h1 {
 
 .bookingfield-content ul {
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap;
     list-style-type: none;
     padding: 0;
 }
 
+.bookingfield-content ul li {
+    flex: 1 1 22%; /* This sets each item to take up approximately 22% of the width */
+    margin: 1%;
+    box-sizing: border-box;
+    text-align: center; /* Center-aligns the text inside each item */
+    padding: 10px; /* Adjust padding as needed */
+    border: 1px solid #ccc; /* Add border for better visibility */
+    border-radius: 5px; /* Optional: Add border-radius for rounded corners */
+}
+
+@media (max-width: 1200px) {
+    .bookingfield-content ul li {
+        flex: 1 1 45%; /* Two items per row on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .bookingfield-content ul li {
+        flex: 1 1 100%; /* One item per row on small screens */
+    }
+}
+ 
 .bookingfield-content li {
     padding: 10px;
     border: 1px solid #ddd;

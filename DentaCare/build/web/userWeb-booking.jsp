@@ -33,15 +33,14 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light scrolled sleep awake">
             <div class="container">
-                <a class="navbar-brand" href="#">
-                    Denta
-                    <span>Care</span>
+                    <a class="navbar-brand" href="#">Denta<span>Care</span>
                 </a>
                 <div class="navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a href="LoginChangePage?action=home" class="nav-link">Home</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Services</a></li>
-                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctors</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctor</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link">Clinic</a></li>
                         <li class="nav-item active"><a href="BookingServlet" class="nav-link" style="color: black">Book Appointment</a></li>
 
                         <div class="action">

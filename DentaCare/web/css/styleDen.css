@@ -1,5 +1,6 @@
 
 * {
+    font-family: sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -7,11 +8,11 @@
 
 /* HEADER */
 .header {
-    background: #2f89fc;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);  
 }
 
 .menu {
@@ -39,20 +40,42 @@
     margin: 10px 20px;
 }
 
-.menu ul li a {
-    color: #fff;
+.menu ul li {
+    color: black;
     text-decoration: none;
     font-size: 20px;
 }
 
-.menu ul li a:hover {
-    text-decoration: underline;
+.menu ul .active > a {
+    color: #2f89fc;
 }
 
+
+.menu ul li a {
+    font-size: 13px;
+    padding-top: .9rem;
+    padding-bottom: .9rem;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: 400;
+    opacity: 1 !important;
+    text-decoration: none;
+    color: black;
+}
+
+
+
+.menu ul li a:hover {
+    text-decoration: underline;
+    color: #2f89fc;
+}
+
+
 .menu .material-symbols-outlined {
-    color: #e1e1e8;
+    color: black;
     cursor: pointer;
     font-size: 32px;
+    padding-left: 20px;
 }
 
 .sub-menu-wrap {
@@ -279,4 +302,38 @@ form input[type="submit"]:hover {
 .alert-error.show {
     display: block;
     opacity: 1;
+}
+
+
+.navbar-brand {
+    line-height: 1;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+.navbar-brand {
+    display: inline-block;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
+}
+
+a {
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+}
+
+a {
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+}
+
+
+.navbar-brand span {
+    font-weight: 700;
 }

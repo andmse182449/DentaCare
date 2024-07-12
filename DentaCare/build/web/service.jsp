@@ -188,13 +188,8 @@
                 <div class="service-card">
                     <img src="images/nieng2.jpg" alt="Invisalign Teen Comp">
                     <h3>${service.getServiceName()}</h3>
-<!--                    <ul class="location-prices">
-                        <li><input type="radio" name="location1"> Tp. Hồ Chí Minh <span>133.000.000đ</span></li>
-                        <li><input type="radio" name="location1"> Hà Nội <span>127.000.000đ</span></li>
-                    </ul>-->
-                    <div class="buttons">
-                        <button class="detail-button">Book Now</button>
-<!--                        <button class="book-button">Đặt lịch ngay</button>-->
+                    <div class="buttons" style="display: ${sessionScope.account == null ? 'none' : ''}">
+                        <a href="BookingServlet" class="btn-appointment">Book Now</a>
                     </div>
                 </div>
             </c:forEach>

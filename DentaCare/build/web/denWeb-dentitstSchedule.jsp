@@ -42,13 +42,13 @@
     <body>
         <div class="header">
             <nav class="menu">
-                <span class="logo">logo</span>
-                <ul>
-                    <li>
-                        <a href="#">my schedule</a>
+                <a class="navbar-brand" href="" style="color: black">Denta<span>Care</span></a>
+                <ul style="color: black;">
+                    <li class="active">
+                        <a href="#">My Schedule</a>
                     </li>
                     <li>
-                        <a href="LoadPatientOfDenServlet">my patient</a>
+                        <a href="LoadPatientOfDenServlet">My Patient</a>
                     </li>
                 </ul>
                 <!--icon-->

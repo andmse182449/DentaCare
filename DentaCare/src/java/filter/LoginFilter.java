@@ -109,7 +109,8 @@ public class LoginFilter implements Filter {
         excludedUrls.add("/js");  // Exclude JavaScript files
         excludedUrls.add("/images");
         excludedUrls.add("/ForgetPasswordServlet");
-        excludedUrls.add("/SendPasswordServlet");// Exclude images
+        excludedUrls.add("/SendPasswordServlet");
+        excludedUrls.add("/SearchServlet");// Exclude images
         // Add more URLs to exclude as needed
     }
 

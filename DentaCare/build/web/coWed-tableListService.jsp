@@ -68,22 +68,24 @@
             <!-- SIDEBAR -->
             <!-- SIDEBAR -->
             <%
-                        LocalDate now2 = LocalDate.now();
-                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-                        int currentYear2 = now2.getYear();
-                        int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
-                        int currentMonth2 = now2.getMonthValue(); // Get current month number
+                LocalDate now2 = LocalDate.now();
+                WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                int currentYear2 = now2.getYear();
+                int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                int currentMonth2 = now2.getMonthValue(); // Get current month number
             %>
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
                         <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
                         <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
                         <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                         <a href="ServiceController"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
                         <a href="ManageCustomerServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">group</span><div>Manage Customer</div></li></a>
+                        <a href="coWeb-setting.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">settings</span><div>Setting</div></li></a>
+
                     </ul>
                 </div>
             </aside>
@@ -195,8 +197,8 @@
                                                                     </select>
                                                                     <label>Description:</label>
                                                                     <input type="text" name="serviceDescription" value="${service.serviceDescription}"  required/>
-                                                                <label>Price (Min 500,000 and Max 5,000,000):</label>
-                                                                <input type="number" name="serviceMoney" value="${service.serviceMoney}" min="500000" max="5000000" required/>
+                                                                <label>Price (Min 200,000 and Max 5=20,000,000):</label>
+                                                                <input type="number" name="serviceMoney" value="${service.serviceMoney}" min="200000" max="20000000" required/>
                                                                 <input name="action" value="update" type="hidden" />
                                                                 <input type="submit" value="Update" />
                                                             </form>
@@ -222,8 +224,8 @@
                                                 </select>
                                                 <label>Description:</label>
                                                 <input type="text" name="serviceDescription" required/>
-                                                <label>Price (Min 500,000 and Max 5,000,000):</label>
-                                                <input type="number" name="serviceMoney" min="500000" max="5000000" required/>
+                                                <label>Price (Min 200,000 and Max 20,000,000):</label>
+                                                <input type="number" name="serviceMoney" min="200000" max="20000000" required/>
                                                 <input name="action" value="add" type="hidden" />
                                                 <input type="submit" value="Add" />
                                             </form>

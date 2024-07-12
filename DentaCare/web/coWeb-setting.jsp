@@ -1,6 +1,9 @@
 <%@page import="booking.BookingDAO" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.time.*" %>
+<%@ page import="java.time.temporal.WeekFields" %>
+<%@ page import="java.util.Locale" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -81,11 +84,19 @@
                 </div>
             </header>
             <!-- SIDEBAR -->
+            <%
+                LocalDate now2 = LocalDate.now();
+                WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                int currentYear2 = now2.getYear();
+                int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                int currentMonth2 = now2.getMonthValue(); // Get current month number
+%>
             <aside id="sidebar">
                 <div>
                     <ul class="sidebar-list">
-                        <a href="coWeb-dashboard.jsp"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
-                        <a href="coWeb-dentist.jsp"><li class="sidebar-list-item "><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
+                        <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item "><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
+                        <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
                         <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                         <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>
@@ -108,7 +119,7 @@
                 <form action="SettingServlet" method="post" id="settings-form">
                     <div class="form-group">
                         <label for="deposit-percent">Deposit Percent</label>
-                        <input type="number" id="deposit-percent" name="percent" min="0" max="100" value = "<%= percent %>" required>
+                        <input type="number" id="deposit-percent" name="percent" min="0" max="100" value = "<%= percent%>" required>
                     </div>
                     <div class="form-group">
                         <label for="limit-booking">Limit Booking</label>
