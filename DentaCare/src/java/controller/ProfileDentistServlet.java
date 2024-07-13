@@ -69,9 +69,12 @@ public class ProfileDentistServlet extends HttpServlet {
             AccountDAO accountDao = new AccountDAO();
             if (action == null) {
                 AccountDTO account = (AccountDTO) session.getAttribute("account");
+                int clinicByID = account.getClinicID();
+                System.out.println(clinicByID);
+                request.setAttribute("clinicByID", clinicByID);
                 request.setAttribute("account", account);
-                request.getRequestDispatcher("denWeb-ProfileDentist.jsp").forward(request, response);
-            } else if (action.equals("updateProfileDentist")) {
+                request.getRequestDispatcher("denWeb-dentistProfile.jsp").forward(request, response);
+            } else if (action.equals("updateProfileStaff")) {
                 String accountId = request.getParameter("accountId");
                 String userName = request.getParameter("username");
                 String fullName = request.getParameter("fullName");
@@ -100,6 +103,11 @@ public class ProfileDentistServlet extends HttpServlet {
                     }
                 }
 
+                if (phone == null || address == null || dobStr == null) {
+                    phone = "";
+                    address = "";
+                    dobStr = "";
+                }
                 LocalDate dob = null;
                 if (dobStr != null && !dobStr.isEmpty()) {
                     try {
@@ -126,11 +134,11 @@ public class ProfileDentistServlet extends HttpServlet {
                 staff.setImage(fileName);
                 staff.setEmail(email);
                 dao.UpdateProfileStaff(staff);
-
+                
                 session.setAttribute("account", staff);
-                request.getRequestDispatcher("denWeb-ProfileDentist.jsp").forward(request, response);
+                request.getRequestDispatcher("denWeb-dentistProfile.jsp").forward(request, response);
             } else if (action.equals("changePassword")) {
-                request.getRequestDispatcher("denWeb-ChangePassword.jsp").forward(request, response);
+                request.getRequestDispatcher("denWeb-changePassword.jsp").forward(request, response);
             } else if (action.equals("updatePassword")) {
                 AccountDTO staff = (AccountDTO) session.getAttribute("account");
                 Encoder encoder = new Encoder();
@@ -141,7 +149,7 @@ public class ProfileDentistServlet extends HttpServlet {
                 if (oldPassword == null || newPassword1 == null || newPassword2 == null) {
                     String error = "Fill all fields";
                     request.setAttribute("error", error);
-                    request.getRequestDispatcher("ProfileDentistServlet?action=changePassword").forward(request, response);
+                    request.getRequestDispatcher("ProfileStaffServlet?action=changePassword").forward(request, response);
                     return;
                 }
 

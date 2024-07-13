@@ -3,31 +3,64 @@ h2 {
     text-align: center;
     color: #2f89fc;
     font-size: 28px;
-    margin-bottom: 20px;
     font-weight: bold;
     margin-top: 30px;
     margin-bottom: 40px;
-
 }
 
 /* Table styling */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin: 20px auto; /* Center the table */
 }
 
 th, td {
     border: 1px solid #ddd;
     text-align: center;
-    padding: 15px;
+    padding: 25px;
     font-size: 16px;
 }
 
+/* Table header styling */
 th {
     background-color: #2f89fc;
     color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    position: relative;
 }
+
+/* Select dropdown styling */
+th select {
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+
+th select:hover {
+    border-color: #2f89fc;
+}
+
+/* Label styling */
+th label {
+    display: block;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+/* Align text in the header */
+th span {
+    display: block;
+    margin-bottom: 5px;
+}
+
 
 .working-day {
     background-color: #99ff99;
@@ -160,6 +193,7 @@ button:hover {
     justify-content: center;
 }
 
+/* Confirmation popup styles */
 #confirmationPopup .popup-content {
     background-color: #ecf0f1; /* light gray background */
     max-width: 400px;
@@ -193,7 +227,7 @@ button:hover {
 
 /* Calendar box styles */
 .calendar-box {
-    max-width: 100%;
+    max-width: 90%; /* Adjust max-width for responsiveness */
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -245,6 +279,7 @@ button:hover {
     border: 1px solid #ccc;
     padding: 10px;
     background-color: #fff;
+    margin: 20px 0;
 }
 
 #calendarModal button[type="submit"] {
@@ -259,6 +294,7 @@ button:hover {
 #calendarModal button[type="submit"]:hover {
     background-color: #0056b3;
 }
+
 .form-container {
     max-width: 1500px; /* Adjust max-width as needed */
     margin: 0 auto; /* Center align the container */

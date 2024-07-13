@@ -1,212 +1,95 @@
 <%-- 
     Document   : denWeb-dentistProfile
-    Created on : May 28, 2024, 11:21:51 AM
-    Author     : Admin
+    Created on : May 29, 2024, 7:23:52 PM
+    Author     : ADMIN
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>User Profile</title>
-        <link rel="icon" href="images/logo_dentist.jpg" type="image/png">
-        <link rel="stylesheet" href="css/styleDen.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<%@ page import="java.time.LocalDate, java.time.temporal.WeekFields, java.util.Locale" %>
+<%@ page import="java.util.Calendar, java.util.GregorianCalendar" %>
+<%@page import="account.*" %>
 
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Profile Staff</title>
+        <link href="admin-front-end/css/styleProfileStaff.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" rel="stylesheet">
     </head>
     <body>
-        <!-- MENU -->
-        <div class="header">
-            <nav class="menu">
-                <span class="logo">logo</span>
-                <ul>
-                    <li>
-                        <a href="#">my schedule</a>
-                    </li>
-                    <li>
-                        <a href="#">my patient</a>
-                    </li>
-                </ul>
-                <div class="header-icon">
-                    <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
-                    <!-- Dropdown Content -->
-                    <div class="sub-menu-wrap" id="sub-menu-wrap">
-                        <div class="sub-menu">
-                            <div class="user-info">
-                                <h3>${sessionScope.account.userName}</h3>
-                            </div>
-                            <hr>
+        <%
+            LocalDate now2 = LocalDate.now();
+            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+            int currentYear2 = now2.getYear();
+            int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+            AccountDTO account = (AccountDTO) session.getAttribute("account");
+            int clinicID = account.getClinicID();         
+        %>
 
-                            <a href="SignOutServlet" class="sub-menu-link">
-                                <span class="material-symbols-outlined">logout</span>
-                                <p>Logout</p>
-                                <i class="fa fa-chevron-right"></i>
-                            </a>
-                        </div>
-                    </div>
+    <div class="container rounded bg-white mt-5 mb-5">
+        <div><a class="back-link" href="LoadScheduleForEachDentistServlet?action=loadDenSchedule&clinicByID=<%=clinicID%>&year=<%=currentYear2%>&week=<%=currentWeek2%>">Back</a></div>
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                    <img class="rounded-circle mt-5" width="150px" src="images/${account.image}">
+                    <span class="font-weight-bold">${account.fullName}</span>
+                    <span class="text-black-50">${account.email}</span>
+                    <span> </span>
                 </div>
-                <script>
-                    let subMenu = document.getElementById("sub-menu-wrap");
-                    function toggleDropdown() {
-                        subMenu.classList.toggle("open-menu");
-                    }
-                </script>
-                <div class="sub-menu-wrap" id="sub-menu-wrap">
-                    <div class="sub-menu">
-                        <div class="user-info">
-                            <h3>${sessionScope.account.userName}</h3>
-                        </div>
-                        <hr>
-                        <form action="DentistServlet" method="post" style="display: inline;">
-                            <input type="hidden" name="action" value="profile">
-                            <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
-                            <button type="submit" class="sub-menu-link" style="border: none; background: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: space-between; width: 100%; cursor: pointer;">
-                                <div style="display: flex; align-items: center;">
-                                    <span class="material-symbols-outlined">person</span>
-                                    <p>Profile</p>
+            </div>
+            <div class="col-md-5 border-right">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Profile Settings</h4>
+                    </div>
+                    <div>
+                        <form action="./ProfileStaffServlet" method="post" enctype="multipart/form-data">
+                            <div class="row mt-3">
+                                <input type="hidden" value="${account.accountID}" name="accountId" />
+                                <div class="col-md-12">
+                                    <label class="labels">UserName</label>
+                                    <input type="text" class="form-control" placeholder="Username" name="username" value="${account.userName}" required readonly>
                                 </div>
-                                <i class="fa fa-chevron-right"></i>
-                            </button>
+                                <div class="col-md-12">
+                                    <label class="labels">Full Name</label>
+                                    <input type="text" class="form-control" placeholder="Full Name" name="fullName" value="${account.fullName}">
+                                    <input type="hidden" class="form-control" placeholder="Full Name" name="email" value="${account.email}">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="labels">Phone</label>
+                                    <input type="text" class="form-control" placeholder="Phone" name="phone" value="${account.phone}">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="labels">Address</label>
+                                    <input type="text" class="form-control" placeholder="Address" name="address" value="${account.address}">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="labels">Date of birth</label>
+                                    <input type="text" class="form-control" placeholder="Date of birth (dd/MM/yyyy)" name="dob" value="${account.dob}">
+                                    <small id="dobError" style="color:red; display:none;">Please enter a valid date in dd/MM/yyyy format.</small>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="labels">Gender</label><br>
+                                    <input type="radio" class="form-control-radio" name="gender" value="Male" ${account.gender ? 'checked' : ''}> Male
+                                    <input type="radio" class="form-control-radio" name="gender" value="Female" ${!account.gender ? 'checked' : ''}> Female                                 
+                                </div>
+                                <div style="margin-top: 10px;" class="col-md-12">
+                                    <label class="labels">Profile Image</label>
+                                    <input value="${account.image}" type="file" name="edit-image" id="edit-image" accept="image/png, image/jpg">
+                                </div>
+                                <input type="hidden" value="updateProfileStaff" name="action" />
+                            </div>
+                            <input type="submit" value="Save Profile" />
                         </form>
-                        <a href="SignOutServlet" class="sub-menu-link">
-                            <span class="material-symbols-outlined">logout</span>
-                            <p>Sign out</p>
-                            <i class="fa fa-chevron-right"></i>
-                        </a>
                     </div>
-                </div>
-            </nav>
-        </div >
-        <!-- MAIN -->
-        <div class="alert-error sec">${error}</div>
-        <div class="alert-message sec">${message}</div>
-        <div class="container user">
-            <nav class="navbar user">
-                <ul>
-                    <li>
-                        <a href="#" onclick="updateDenProfile()">Update profile</a>
-                    </li>
-                    <li>
-                        <a href="#">Change password</a>
-                    </li>
-                    <li>
-                        <a href="SignOutServlet">Sign out</a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="content active" id="userProfileContent">
-                <h1 style="padding: 30px 30px 0 30px;">DENTIST PROFILE</h1>
-                <br>
-                <div class="form-profile">
-                    <form action="DentistServlet" id="dentist-profile-form">
-                        <div class="card-content">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="label"><h6>Name</h6></div>
-                                    <input type="text" name="den-fullName" value="${requestScope.account.fullName.trim()}" required readonly>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="label"><h6>Phone</h6></div>
-                                    <input type="text" name="den-phone" value="${requestScope.account.phone.trim()}" required readonly>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="label"><h6>Address</h6></div>
-                                    <input type="text" name="den-address" value="${requestScope.account.address.trim()}" required readonly>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="label"><h6>Email</h6></div>
-                                    <input type="email" name="den-email" value="${requestScope.account.email.trim()}" required readonly>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="label"><h6>Date of Birth</h6></div>
-                                    <input type="date" name="den-dob" value="${requestScope.account.dob}" required readonly>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="label"><h6>Gender</h6></div>
-                                    <div class="label">
-                                        <label style="font-size: 16px">Male</label>
-                                        <input type="radio" name="den-gender" value="true" ${requestScope.account.gender == 'true' ? 'checked' : ''} disabled style="margin-right: 15px;">
-                                        <label style="font-size: 16px">Female</label>
-                                        <input type="radio" name="den-gender" value="false" ${requestScope.account.gender == 'false' ? 'checked' : ''}  disabled>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="action" value="update">
-                            <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
-                            <input type="submit" id="saveDenButton" value="Save" style="display: none;">
-                        </div>
-                    </form>
-                </div>
-
-                <div class="form-profile">
-                    <h5>Job Description</h5>
-                    <div class="row">
-                        <div class="label"><h6>Clinic</h6></div>
-                        <div style="font-size: 20px;">${requestScope.clinic}</div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="label"><h6>Major</h6></div>
-                        <div style="font-size: 20px;">${requestScope.clinic}</div>
-                    </div>
-                    <hr>
                 </div>
             </div>
         </div>
-        <script>
-            let subMenu = document.getElementById("sub-menu-wrap");
-            function toggleMenu() {
-                subMenu.classList.toggle("open-menu");
-            }
-            function updateDenProfile() {
-                const inputs = document.querySelectorAll(
-                        '#dentist-profile-form input[type="text"], #dentist-profile-form input[type="email"], #dentist-profile-form input[type="radio"], #dentist-profile-form input[type="date"]'
-                        );
-                inputs.forEach((input) => {
-                    input.removeAttribute("readonly");
-                    input.removeAttribute("disabled");
-                });
-                document.getElementById("saveDenButton").style.display = "block";
-                document.getElementById("den-name").focus();
-            }
+    </div>
+    <script src="admin-front-end/js/profileStaff.js"></script>    
 
-            document.addEventListener("DOMContentLoaded", function () {
-                const alertBox = document.querySelector(".alert-error.sec");
-                if (alertBox && alertBox.textContent.trim()) {
-                    alertBox.style.display = "block"; // Show the alert if there's an error message
-                    alertBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
-                    setTimeout(function () {
-                        alertBox.classList.remove("show");
-                        setTimeout(function () {
-                            alertBox.style.display = "none"; // Hide the alert after the fade-out animation
-                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
-                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
-                }
-            });
-
-            document.addEventListener("DOMContentLoaded", function () {
-                const alertBox2 = document.querySelector(".alert-message.sec");
-                if (alertBox2 && alertBox2.textContent.trim()) {
-                    alertBox2.style.display = "block"; // Show the alert if there's an error message
-                    alertBox2.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
-                    setTimeout(function () {
-                        alertBox2.classList.remove("show");
-                        setTimeout(function () {
-                            alertBox2.style.display = "none"; // Hide the alert after the fade-out animation
-                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
-                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
-                }
-            });
-
-        </script>
-    </body>
+</body>
 </html>
