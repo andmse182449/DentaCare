@@ -29,9 +29,10 @@ function generateCalendar(year, month) {
         var currentDate = new Date(year, month, i);
         var dayClass = 'day';
         var check = new Date(year, month, i).toLocaleDateString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'});
-        if (currentDate.toDateString() === today.toDateString()) {
+        if (currentDate.getDay() === 0) { // Disable Sundays
+            dayClass += ' past';
+        } else if (currentDate.toDateString() === today.toDateString()) {
             dayClass += ' current';
-
         } else if (currentDate < today || currentDate > lastSelectableDate || (listDayOffValue.includes(check) && listDayOffValue.includes('clinicID=' + clinic))) {
             dayClass += ' past';
         } else {
