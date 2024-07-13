@@ -265,7 +265,6 @@
                                 </c:forEach>
                                 </tr>
                             </table>
-                            <button id="modifyTimeSlotButton">Modify Time Slot</button>
                         </div>
 
                         <div class="center-button">

@@ -32,7 +32,7 @@
         <title>Dentist</title>
         <link rel="stylesheet" href="css/styleDen.css">
         <link rel="stylesheet" href="css/co-denSchedule.css">
-        
+
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -61,12 +61,12 @@
                                 <h3>${sessionScope.account.userName}</h3>
                             </div>
                             <hr>
-                            <a href="ProfileStaffServlet" class="sub-menu-link">
+                            <a href="ProfileDentistServlet" class="sub-menu-link">
                                 <p>Profile</p>
                                 <i class="fa fa-chevron-right"></i>
                             </a>
                             <hr>
-                            <a href="ProfileStaffServlet?action=changePassword" class="sub-menu-link">
+                            <a href="ProfileDentistServlet?action=changePassword" class="sub-menu-link">
                                 <p>Change Password</p>
                                 <i class="fa fa-chevron-right"></i>
                             </a>
@@ -130,7 +130,7 @@
                     <table>
                         <tr>
                             <th>
-                                YEAR 
+                                <span>YEAR</span>
                                 <select name="year" onchange="this.form.submit()">
                                     <option value="">Select Year</option>
                                     <%
@@ -142,8 +142,8 @@
                                         }
                                     %>
                                 </select> 
-                                <br>
-                                WEEK
+
+                                <span>WEEK</span>
                                 <select name="week" onchange="this.form.submit()" id="weekSelect">
                                     <option value="">Select Week</option>
                                     <%
