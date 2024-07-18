@@ -264,6 +264,7 @@
                                 </c:forEach>
                                 </tr>
                             </table>
+                            <input type="hidden" id="modifyTimeSlotButton">
                         </div>
 
                         <div class="center-button">
