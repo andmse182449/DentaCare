@@ -73,30 +73,6 @@
                         subMenu.classList.toggle("open-menu");
                     }
                 </script>
-                <div class="sub-menu-wrap" id="sub-menu-wrap">
-                    <div class="sub-menu">
-                        <div class="user-info">
-                            <h3>${sessionScope.account.userName}</h3>
-                        </div>
-                        <hr>
-                        <form action="DentistServlet" method="post" style="display: inline;">
-                            <input type="hidden" name="action" value="profile">
-                            <input type="hidden" name="accountID" value="${sessionScope.account.accountID}">
-                            <button type="submit" class="sub-menu-link" style="border: none; background: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: space-between; width: 100%; cursor: pointer;">
-                                <div style="display: flex; align-items: center;">
-                                    <span class="material-symbols-outlined">person</span>
-                                    <p>Profile</p>
-                                </div>
-                                <i class="fa fa-chevron-right"></i>
-                            </button>
-                        </form>
-                        <a href="SignOutServlet" class="sub-menu-link">
-                            <span class="material-symbols-outlined">logout</span>
-                            <p>Sign out</p>
-                            <i class="fa fa-chevron-right"></i>
-                        </a>
-                    </div>
-                </div>
             </nav>
         </div>
         <div class="container user">
