@@ -456,7 +456,7 @@ public class BookingDAO {
         }
     }
 
-    public List<BookingDTO> getAllBookingClinic(int clinicID, Date now) {
+    public List<BookingDTO> getAllBookingClinic(int clinicID, Date now, Date next) {
         String sql = """
             SELECT 
                 bookingID, customerID, createDay, appointmentDay, a.deposit, a.status, a.price, 
@@ -469,7 +469,7 @@ public class BookingDAO {
                 INNER JOIN service c ON a.serviceid = c.serviceid 
                 INNER JOIN timeslot d ON a.slotid = d.slotid
             WHERE 
-                a.clinicID = ? and appointmentDay = ?
+                a.clinicID = ? and appointmentDay = ? or appointmentDay = ?
             ORDER BY 
                 timePeriod, a.status;
             """;
@@ -480,6 +480,7 @@ public class BookingDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, clinicID);
             ps.setDate(2, now);
+            ps.setDate(3, next);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 BookingDTO booking = new BookingDTO();

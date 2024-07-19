@@ -55,13 +55,16 @@ public class StaffViewBooking extends HttpServlet {
                 request.setAttribute("listNameDentist1", listNameDentist);
                 //Show list booking ngay hom nay
                 java.sql.Date sqlDate = new java.sql.Date(now.getTime());
-                List<BookingDTO> listBooking = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlDate);
+                List<BookingDTO> listBooking = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlDate,sqlDate);
                 //Show list booking ngày mai
                 LocalDate today = LocalDate.now();
                 LocalDate nextDay = today.plusDays(1);
+                LocalDate nextDay1 = today.plusDays(2);
                 Date nextDate = Date.from(nextDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date nextDate1 = Date.from(nextDay1.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 java.sql.Date sqlNextDate = new java.sql.Date(nextDate.getTime());
-                List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate);
+                java.sql.Date sqlNextDate1 = new java.sql.Date(nextDate1.getTime());
+                List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate,sqlNextDate1);
                  //Show revenue
                 Long revenue = daoStaffAccount.getRevenue(now);
                 
@@ -82,13 +85,16 @@ public class StaffViewBooking extends HttpServlet {
                 request.setAttribute("listNameDentist1", listNameDentist);
                 //Show list booking ngay hom nay
                 java.sql.Date sqlDate = new java.sql.Date(now.getTime());
-                List<BookingDTO> listBooking = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlDate);
+                List<BookingDTO> listBooking = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlDate,sqlDate);
                 //Show list booking ngày mai
                 LocalDate today = LocalDate.now();
                 LocalDate nextDay = today.plusDays(1);
+                LocalDate nextDay1 = today.plusDays(2);
                 Date nextDate = Date.from(nextDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date nextDate1 = Date.from(nextDay1.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 java.sql.Date sqlNextDate = new java.sql.Date(nextDate.getTime());
-                List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate);
+                java.sql.Date sqlNextDate1 = new java.sql.Date(nextDate1.getTime());
+                List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate,sqlNextDate1);
                 //Show revenue
                 Long revenue = daoStaffAccount.getRevenue(now);
 
@@ -143,7 +149,7 @@ public class StaffViewBooking extends HttpServlet {
                 for (LocalDate date : result) {
                     Date nextDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
                     java.sql.Date sqlDate = new java.sql.Date(nextDate.getTime());
-                    List<BookingDTO> pastListBookingEachDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlDate);
+                    List<BookingDTO> pastListBookingEachDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlDate,sqlDate);
                     System.out.println("Date: " + sqlDate + ", Number of bookings: " + pastListBookingEachDate.size());
                     if (!pastListBookingEachDate.isEmpty()) {
                         bookingsByDate.put(date, pastListBookingEachDate);
@@ -159,13 +165,16 @@ public class StaffViewBooking extends HttpServlet {
                 request.setAttribute("listNameDentist1", listNameDentist);
                 //Show list booking ngay hom nay
                 java.sql.Date sqlDate = new java.sql.Date(now.getTime());
-                List<BookingDTO> listBooking = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlDate);
+                List<BookingDTO> listBooking = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlDate,sqlDate);
                 //Show list booking ngày mai
                 LocalDate today = LocalDate.now();
                 LocalDate nextDay = today.plusDays(1);
+                LocalDate nextDay1 = today.plusDays(2);
                 Date nextDate = Date.from(nextDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date nextDate1 = Date.from(nextDay1.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 java.sql.Date sqlNextDate = new java.sql.Date(nextDate.getTime());
-                List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate);
+                java.sql.Date sqlNextDate1 = new java.sql.Date(nextDate1.getTime());
+                List<BookingDTO> listBookingNextDate = daoBooking.getAllBookingClinic(staff.getClinicID(), sqlNextDate,sqlNextDate1);
                 //Show revenue
                 Long revenue = daoStaffAccount.getRevenue(now);
                 //Set Attribute
