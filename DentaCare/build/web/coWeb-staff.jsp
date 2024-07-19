@@ -33,8 +33,8 @@
     <body>
         <div class="grid-container">
             <!-- HEADER -->
-            <header class="header">
-                <div><h1>MANAGE STAFF</h1></div>
+            <header class="header" style="height: 110px;">
+                <div><h1 style="font-size: 2rem; font-weight: bold;">MANAGE STAFF</h1></div>
                 <div class="header-icon">
                     <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
                     <!-- Dropdown Content -->
