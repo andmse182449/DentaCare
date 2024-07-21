@@ -39,12 +39,6 @@ public class SendEmailAccountInfoServlet extends HttpServlet {
         AccountDAO dao = new AccountDAO();
         AccountDTO account = dao.findAccountByEmail(mail_raw);
         System.out.println(account.toString());
-        String verify_code_page = "";
-        if (account.getRoleID()== 1) {
-            verify_code_page = "1234";
-        } else if (account.getRoleID() == 2) {
-            verify_code_page = "4321";
-        }
         try {
             if (account == null) {
                 request.setAttribute("error", "Your email has not been registered !");
@@ -67,7 +61,6 @@ public class SendEmailAccountInfoServlet extends HttpServlet {
                         + "<br>"
                         + "\t - Username: " + account.getUserName() + "<br>"
                         + "\t - Password: " + "abc@demo" + "<br>"
-                        + "\t - Verify Code page: " + verify_code_page
                         + "<br><br>"
                         + "Remember to change your password on the firs time login.<br>"
                         + "For security reasons, do not share information with anyone<br><br>"

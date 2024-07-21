@@ -136,6 +136,17 @@ public class LoadFromClinicScheduleToDentistScheduleServlet extends HttpServlet 
                         List<String> alreadyScheduledDates = new ArrayList<>();
                         List<String> addedDates = new ArrayList<>();
                         boolean allAddedSuccessfully = true;
+                        String selectedDaysDisplay = request.getParameter("selectedDaysDisplay");
+
+                        for (DayOffScheduleDTO dayOffScheduleDTO : off) {
+                            if (dayOffScheduleDTO.getDayOff().equals(selectedDaysDisplay)) {
+                                response.setContentType("application/json");
+                                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                                out.print("{\"success\": false, \"message\": \"Please do not choose the event day !\"}");
+                                out.flush();
+                                return;
+                            }
+                        }
 
                         for (String date : words) {
                             if (date != null) {
