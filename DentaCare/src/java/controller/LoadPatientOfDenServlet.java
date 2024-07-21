@@ -90,7 +90,7 @@ public class LoadPatientOfDenServlet extends HttpServlet {
             MedicalRecordDAO meDao = new MedicalRecordDAO();
             DayOffScheduleDAO offDao = new DayOffScheduleDAO();
             List<DayOffScheduleDTO> offList = offDao.getAllOffDate(account.getClinicID());
-            int count = meDao.countRecord();
+            int count = meDao.countRecord() + 1;
             String bookingID = request.getParameter("bookingID");
             String result = request.getParameter("result");
             String reExanime = request.getParameter("reExanime");
@@ -116,22 +116,21 @@ public class LoadPatientOfDenServlet extends HttpServlet {
                 if (meDao.checkExist(bookingID) == null) {
                     String oldReExanime = request.getParameter("reExanime0");
                     for (DayOffScheduleDTO dayOffScheduleDTO : offList) {
-                        if (dentDao.checkAlreadyDentistInDenSche(account.getAccountID(), reExanime) == null) {
-                            if (dentDao.checkAlreadyDentistInDenSche(account.getAccountID(), oldReExanime) == null) {
-                                if (dayOffScheduleDTO.getDayOff().equals(reExanime)) {
-                                    request.setAttribute("message", "This day is an day off, please choose another day !");
-                                    request.getRequestDispatcher("LoadPatientOfDenServlet").forward(request, response);
-                                    return;
+                        if (dentDao.checkAlreadyDentistInDenSche(account.getAccountID(), oldReExanime) == null) {
+                            if (dayOffScheduleDTO.getDayOff().equals(reExanime)) {
+                                request.setAttribute("message", "This day is an day off, please choose another day !");
+                                request.getRequestDispatcher("LoadPatientOfDenServlet").forward(request, response);
+                                return;
+                            } else {
+                                if (dentDao.checkAlreadyDentistInDenSche(account.getAccountID(), reExanime) != null) {
+                                    boolean addNewRecord = meDao.addNewRecord(medicalRecordID, result, bookingID, reExanime);
+                                    request.setAttribute("message", "Add New Record Completed");
+                                    break;
                                 } else {
                                     boolean addNewRecord = meDao.addNewRecord(medicalRecordID, result, bookingID, reExanime);
                                     boolean addDenToSche = dentDao.addDenToSche(account.getAccountID(), reExanime);
                                     request.setAttribute("message", "Add New Record Completed");
-                                }
-                            } else {
-                                if (dayOffScheduleDTO.getDayOff().equals(reExanime)) {
-                                    isDayOff = true;
-                                } else {
-                                    isDayOff = false;
+                                    break;
                                 }
                             }
                         } else {
@@ -164,7 +163,7 @@ public class LoadPatientOfDenServlet extends HttpServlet {
                                     return;
                                 } else {
                                     meDao.modifyEvent(bookingID, result, reExanime);
-                                    boolean addDenToSche = dentDao.addDenToSche(account.getAccountID(), reExanime);
+                                    boolean modifyScheduleOfDentist = dentDao.modifyScheduleOfDentist(account.getAccountID(), reExanime, oldReExanime);
                                     request.setAttribute("message", "Modify Record Completed");
                                 }
                             } else {

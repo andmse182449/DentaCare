@@ -28,6 +28,15 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
         <link href="admin-front-end/css/style.min.css" rel="stylesheet">
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+                color: #333;
+                font-family: "Montserrat", sans-serif;
+            }
+        </style>
 
     </head>
     <body>
@@ -62,7 +71,7 @@
                 int currentYear2 = now2.getYear();
                 int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
                 int currentMonth2 = now2.getMonthValue(); // Get current month number
-%>
+            %>
             <aside id="sidebar">
                 <!-- SIDEBAR -->
                 <aside id="sidebar">
@@ -70,7 +79,7 @@
                         <ul class="sidebar-list">
                             <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>
                             <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
-                            <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
+<!--                            <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>-->
                             <a href="ManageStaffServlet"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                             <a href="LoadAllDentaListServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                             <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>

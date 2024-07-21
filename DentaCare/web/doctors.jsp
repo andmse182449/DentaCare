@@ -181,6 +181,7 @@
                         <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Service</a></li>
                         <li class="nav-item active"><a href="#" class="nav-link">Doctor</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link">Clinic</a></li>
+                        <li class="nav-item"><a href="BookingServlet" class="nav-link">Booking Appointment</a></li>
                             <c:set var="account" value="${sessionScope.account}"/>
                             <c:choose>
                                 <c:when test="${account == null}">

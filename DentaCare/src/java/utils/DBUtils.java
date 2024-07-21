@@ -35,6 +35,6 @@ public class DBUtils {
     private final static String dbName = "DentaCare";
     private final static String instance = "";
     private final static String userID = "sa";
-    private final static String password = "12345";
+    private final static String password = "1234567890";
 
 }

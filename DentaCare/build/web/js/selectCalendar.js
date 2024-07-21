@@ -21,7 +21,9 @@ function generateCalendar(year, month) {
     for (var i = 1; i <= daysInMonth; i++) {
         var currentDate = new Date(year, month, i);
         var dayClass = 'day';
-        if (currentDate.toDateString() === today.toDateString()) {
+        if (currentDate.getDay() === 0) { // Disable Sundays
+            dayClass += ' past';
+        } else if (currentDate.toDateString() === today.toDateString()) {
             dayClass += ' current';
         } else if (currentDate < today || currentDate > lastSelectableDate) {
             dayClass += ' past';

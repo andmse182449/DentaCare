@@ -86,7 +86,7 @@
                 <div class="bill-from">
                     <h2>Bill From</h2>
                     <p>Name: ${bookingInvoice.fullNameDentist}</p>
-                    <p>Company Name: ${clinic.clinicName}</p>
+                    <p>Clinic Name: ${clinic.clinicName}</p>
                     <p>Street Address: ${clinic.clinicAddress}</p>
                     <p>City, ST ZIP Code: ${clinic.city}</p>
                     <p>Phone: ${clinic.hotline}</p>
@@ -119,7 +119,7 @@
                     <tr>
                         <th>Description</th>
                         <th>Appointment Time/Date</th>
-                        <th>Price ($)</th>
+                        <th>Price (VND)</th>
                     </tr>
                 </thead>
                 <tbody>

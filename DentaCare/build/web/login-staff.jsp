@@ -31,8 +31,25 @@
                 display: none;
                 z-index: 1000; /* Ensure the alert appears above other elements */
             }
-
+            .success {
+                position: fixed;
+                top: 100px; /* Adjust this value to position the alert higher or lower */
+                left: 50%;
+                transform: translateX(-50%); /* Center the alert horizontally */
+                background-color: #22bb33;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                opacity: 0;
+                transition: opacity 0.5s ease-out;
+                display: none;
+                z-index: 1000; /* Ensure the alert appears above other elements */
+            }
             .alert.show {
+                display: block;
+                opacity: 1;
+            }
+            .success.show {
                 display: block;
                 opacity: 1;
             }
@@ -54,21 +71,53 @@
                 </div>
             </div>
         </nav>
-        
+        <c:set var="err" value="${requestScope.error}"/>
+        <c:set var="suc" value="${requestScope.success}"/>
+        <div class="alert sec">${err}</div>
+        <div class="success sec">${suc}</div>
         <div class="login-form">
+
             <h1>Login Staff</h1>
             <form id="" action="LoginActionServlet">
                 <div class="input-form">
-                    <input name="email" type="text" placeholder="Enter your email" required>
+                    <input name="email" type="text" placeholder="Enter your username" required>
                 </div>
                 <div class="input-form">
                     <input name="password" type="password" class="password" placeholder="Enter your password" required>
                 </div>
-                <a href="forget.jsp" class="text" style="margin-top: 10px; text-align: left;">Forgot password?</a>
+                <a href="forgetPassword.jsp" class="text" style="margin-top: 10px; text-align: left;">Forgot password?</a>
                 <input type="hidden" name="key" value="nv">
                 <button type="submit">login</button>
             </form>
         </div>
-        
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const alertBox2 = document.querySelector(".alert.sec");
+                if (alertBox2 && alertBox2.textContent.trim()) {
+                    alertBox2.style.display = "block"; // Show the alert if there's an error message
+                    alertBox2.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                    setTimeout(function () {
+                        alertBox2.classList.remove("show");
+                        setTimeout(function () {
+                            alertBox2.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                }
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                const successBox = document.querySelector(".success.sec");
+                if (successBox && successBox.textContent.trim()) {
+                    successBox.style.display = "block"; // Show the alert if there's an error message
+                    successBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                    setTimeout(function () {
+                        successBox.classList.remove("show");
+                        setTimeout(function () {
+                            successBox.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                }
+            });
+        </script>
+
     </body>
 </html>

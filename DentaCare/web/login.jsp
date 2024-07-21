@@ -89,8 +89,8 @@
                     <form action="LoginActionServlet" method="POST">
 
                         <div class="input-field">
-                            <input name="email" type="text" placeholder="Enter your email" required>
-                            <i class="uil uil-envelope icon"></i>
+                            <input name="email" type="text" placeholder="Enter your username" required>
+                            <i class="uil uil-user icon"></i>
                         </div>
 
                         <div class="input-field">

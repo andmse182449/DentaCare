@@ -28,6 +28,7 @@ public class LoginActionServlet extends HttpServlet {
         String password = request.getParameter("password");
         String key = request.getParameter("key");
         HttpSession session = request.getSession();
+        String url = "login.jsp";
         try {
             AccountDAO dao = new AccountDAO();
             // check email
@@ -95,8 +96,15 @@ public class LoginActionServlet extends HttpServlet {
             } else {
                 if (!checkPass.equals(password) || !checkName.equals(userName)) {
                     request.setAttribute("error", "Password or Username is not correct!");
+                    if (key.equals("co")) {
+                        url = "login-co.jsp";
+                    } else if (key.equals("nv")) {
+                        url = "login-staff.jsp";
+                    } else if (key.equals("bs")) {
+                        url = "login-dentist.jsp";
+                    }
                 }
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher(url).forward(request, response);
             }
         } catch (SQLException ex) {
             System.out.println("SQL: " + ex);

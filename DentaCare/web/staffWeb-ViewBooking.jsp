@@ -90,6 +90,7 @@
                                     <c:when test="${booking.status == 1}">Checked-in</c:when>
                                     <c:when test="${booking.status == 2}">Completed</c:when>
                                     <c:when test="${booking.status == 5}">Placed and Sent Email</c:when>
+                                    <c:when test="${booking.status == 0}">Placed</c:when>
                                     <c:otherwise>Unknown</c:otherwise>
                                 </c:choose>
                             </p>
@@ -109,7 +110,7 @@
                                     <input name="bookingID" value="${booking.bookingID}" type="hidden" />
                                     <input type="hidden" name="openBookingDetail" value="${status.index}" />
                                     <input type="hidden" name="bookingDate" value="${selectedDate}" />
-                                    <input type="submit" value="Assign" <c:if test="${booking.status != 5}">disabled</c:if> />
+                                    <input type="submit" value="Assign" <c:if test="${booking.status != 5 && booking.status != 0 }">disabled</c:if> />
                                     </form>
                                 </div>
                                 <p><strong>Price: </strong><fmt:formatNumber value="${booking.price}" type="currency" currencyCode="VND" maxFractionDigits="0"/></p>

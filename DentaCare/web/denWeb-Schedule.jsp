@@ -29,6 +29,15 @@
         <link rel="stylesheet" href="css/stylesheet2.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+                color: #333;
+                font-family: "Montserrat", sans-serif;
+            }
+        </style>
 
     </head>
 
@@ -43,8 +52,8 @@
         %>
         <div class="grid-container">
             <!-- HEADER -->
-            <header class="header"> 
-                <div><h1 style="font-weight: bold">CLINIC</h1></div>
+            <header class="header" style="height: 110px;"> 
+                <div><h1 style="font-size: 2rem; font-weight: bold;">CLINIC</h1></div>
                 <div class="header-icon">
                     <span class="material-symbols-outlined" style="font-size: 32px;" onclick="toggleDropdown()">account_circle</span>
                     <!-- Dropdown Content -->
@@ -78,7 +87,7 @@
                     <ul class="sidebar-list">
                         <a href="DashBoardServlet?action=dashboardAction&year1=<%=currentYear2%>&year2=<%=currentYear2%>&month=<%=currentMonth2%>"><li class="sidebar-list-item"><span class="material-symbols-outlined">monitoring</span> <div>Dashboard</div></li></a>    
                         <a href="ForDentistInfo?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Dentist</div></li></a>
-                        <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>
+<!--                        <a href="DentistMajorServlet?action=forward"><li class="sidebar-list-item"><span class="material-symbols-outlined">groups_2</span><div>Manage Major</div></li></a>-->
                         <a href="ManageStaffServlet"><li class="sidebar-list-item"><span class="material-symbols-outlined">supervisor_account</span><div>Manage Staff</div></li></a>
                         <a href="LoadAllDentaListServlet"><li class="sidebar-list-item sidebar-list-item-selected"><span class="material-symbols-outlined">home_health</span><div>Manage Clinic</div></li></a>
                         <a href="ServiceController"><li class="sidebar-list-item"><span class="material-symbols-outlined">dentistry</span><div>Manage Service</div></li></a>

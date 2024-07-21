@@ -25,6 +25,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
@@ -81,6 +82,13 @@ public class BookingServlet extends HttpServlet {
         DentistScheduleDAO dentistScheduleDAO = new DentistScheduleDAO();
         DayOffScheduleDAO dayOffDAO = new DayOffScheduleDAO();
 
+        HttpSession session = request.getSession();
+        AccountDTO a = (AccountDTO) session.getAttribute("account");
+        if (a == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        
         if (action == null || action == "" || action.equals("book")) {
             try {
                 List<ClinicDTO> listClinic = clinicDAO.getAllClinic();

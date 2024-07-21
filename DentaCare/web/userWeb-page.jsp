@@ -10,6 +10,7 @@
 
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700" rel="stylesheet">
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
         <link href="css/drop-down.css" rel="stylesheet"/>
 
@@ -51,7 +52,7 @@
                         <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link">Service</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link">Doctor</a></li>
                         <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link">Clinic</a></li>
-                        <li class="nav-item"><a href="BookingServlet" class="nav-link">Book Appointment</a></li>
+                        <li class="nav-item"><a href="BookingServlet" class="nav-link">Booking Appointment</a></li>
                             <c:set var="account" value="${sessionScope.account}"/>
                             <c:choose>
                                 <c:when test="${account == null}">

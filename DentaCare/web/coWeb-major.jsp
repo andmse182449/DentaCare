@@ -26,8 +26,16 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <link rel="stylesheet" href="css/denSpec.css">
+        
     </head>
     <style>
+        body {
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+                color: #333;
+                font-family: "Montserrat", sans-serif;
+            }
         .find-section {
             font-family: Arial, sans-serif;
             display: flex;

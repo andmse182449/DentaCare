@@ -1223,6 +1223,7 @@ public class AccountDAO implements Serializable {
                     + "    COUNT(gender) AS Numb\n"
                     + "FROM ACCOUNT \n"
                     + "WHERE gender = 1 \n"
+                    + "AND roleID = 0 \n"
                     + "GROUP BY CASE \n"
                     + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 0 AND 10 THEN '0-10'\n"
                     + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 11 AND 20 THEN '11-20'\n"
@@ -1283,6 +1284,7 @@ public class AccountDAO implements Serializable {
                     + "    COUNT(gender) AS Numb\n"
                     + "FROM ACCOUNT \n"
                     + "WHERE gender = 0 \n"
+                    + "AND roleID = 0 \n"
                     + "GROUP BY CASE \n"
                     + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 0 AND 10 THEN '0-10'\n"
                     + "             WHEN YEAR(GETDATE()) - YEAR(dob) BETWEEN 11 AND 20 THEN '11-20'\n"
@@ -1412,7 +1414,7 @@ public class AccountDAO implements Serializable {
         }
         return flag;
     }
-    
+
     public boolean updateProfileDentist(AccountDTO staff) {
         String sql = "UPDATE account SET username = ?, fullname = ?, phone = ?, address = ?, dob = ?, gender = ?, image = ? WHERE accountId = ?";
         try (Connection con = utils.DBUtils.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
