@@ -1,7 +1,9 @@
-package GoogleLogin;
 
+package GoogleLogin;
+import Service.ServiceDAO;
 import account.AccountDAO;
 import account.AccountDTO;
+import clinic.ClinicDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import jakarta.servlet.RequestDispatcher;
@@ -34,17 +36,26 @@ public class GoogleLoginServlet extends HttpServlet {
                 RequestDispatcher dis = request.getRequestDispatcher("loginGoogle.jsp");
                 dis.forward(request, response);
             } else {
+                AccountDAO accountDAO = new AccountDAO();
+                ClinicDAO clinicDAO = new ClinicDAO();
+                ServiceDAO serviceDAO = new ServiceDAO();
+                request.setAttribute("CLINIC", clinicDAO.getAllClinic());
+                request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+                request.setAttribute("DENTIST", accountDAO.getAllDentists());
+
                 String accessToken = GoogleUtils.getToken(code);
                 GoogleDTO googlePojo = GoogleUtils.getUserInfo(accessToken);
 
-                AccountDAO accountDAO = new AccountDAO();
-                int numOfUsers = accountDAO.countAccount();
-                String accountId = "CUS" + Year.now().getValue() + String.format("%03d", numOfUsers + 1);
+                
+                int numOfUsers = accountDAO.countUserAccount();
                 AccountDTO checkAccountGG = accountDAO.checkAccountGG(googlePojo.getEmail());
                 if (checkAccountGG == null) {
-                    checkAccountGG = accountDAO.createAccountGG(googlePojo.getId(), googlePojo.getEmail(), accountId);
+                    String accountId = "CUS" + Year.now().getValue() % 100 + String.format("%05d", numOfUsers + 1);
+                    accountDAO.createAccountGG(googlePojo.getId(), googlePojo.getEmail(), accountId);
+                    checkAccountGG = accountDAO.checkAccountGG(googlePojo.getEmail());
                 }
-
+                //String name = checkAccountGG.getUserName();
+                
                 session.setAttribute("account", checkAccountGG);
                 request.getRequestDispatcher(url).forward(request, response);
             }

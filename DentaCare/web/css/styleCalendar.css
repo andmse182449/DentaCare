@@ -1,0 +1,65 @@
+
+#calendar {
+    margin: 0 auto;
+}
+
+
+.month h2 {
+    color: #333;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+.day {
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-weight: 500;
+}
+
+.future:hover {
+    cursor: pointer;
+    background-color:#1c77ff;
+    color: white;   
+}
+
+.current {
+    background-color: #9dc7ff; /* Light gray background */
+    font-weight: bolder;
+    color: rgb(247, 250, 255);
+}
+
+.selected-calendar {
+    background-color: #1023f8; /* Light yellow background */
+    color: white;
+}   
+
+.past {
+    color: rgb(209 213 219);
+    background-color: rgb(255 255 255);
+}
+
+.past, .current:hover {
+    cursor: not-allowed;
+}
+
+.navigation {
+    text-align: right;
+}
+
+.navigation button {
+    background: none;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    margin: 0;
+    font-weight: lighter;
+}
+
+.navigation button:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}

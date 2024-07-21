@@ -31,28 +31,7 @@
     <body>
         <footer class="ftco-footer ftco-bg-dark ftco-section" style="
                 background-color: white;">
-            <div class="container">
-                <div class="row mb-5" >
-                    <div class="col-md-6" >
-                        <div class="ftco-footer-widget mb-4">
-                            <h2 class="ftco-heading-2" style="color: black">DentaCare.</h2>
-                            <p style="color: black">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="ftco-footer-widget mb-4 ml-md-5">
-                            <h2 class="ftco-heading-2" style="color: black">Quick Links</h2>
-                            <ul class="list-unstyled">
-                                <li><a href="#" class="py-2 d-block" style="color: black">About</a></li>
-                                <li><a href="#" class="py-2 d-block" style="color: black">Features</a></li>
-                                <li><a href="#" class="py-2 d-block" style="color: black">Projects</a></li>
-                                <li><a href="#" class="py-2 d-block" style="color: black">Blog</a></li>
-                                <li><a href="#" class="py-2 d-block" style="color: black">Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
+            <div class="container">               
                 <div class="row">
                     <div class="col-md-12 text-center">
 

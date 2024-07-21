@@ -38,25 +38,23 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="index.jsp" style="color: black">Denta<span>Care</span></a>
+                <a class="navbar-brand" href="HomeServlet" style="color: black">Denta<span>Care</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
                 </button>
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a href="index.jsp" class="nav-link" style="color: black">Home</a></li>
-                        <li class="nav-item"><a href="about.html" class="nav-link" style="color: black">About</a></li>
-                        <li class="nav-item"><a href="services.html" class="nav-link" style="color: black">Services</a></li>
-                        <li class="nav-item"><a href="doctors.html" class="nav-link" style="color: black">Doctors</a></li>
-                        <li class="nav-item"><a href="blog.html" class="nav-link" style="color: black">Blog</a></li>
-                        <li class="nav-item"><a href="contact.html" class="nav-link" style="color: black">Contact</a></li>
+                        <li class="nav-item active"><a href="LoginChangePage?action=home" class="nav-link" style="color: black">Home</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=service" class="nav-link" style="color: black">Service</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" class="nav-link" style="color: black">Doctor</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link" style="color: black">Clinic</a></li>
                         <li class="nav-item">
                             <c:set var="account" value="${sessionScope.account}"/>
                             <div href="contact.html" class="nav-link" style="color: black">
                                 <div class="action">
                                     <div class="" onclick="menuToggle();">
-                                        <a href="#" style="color:black">${account.getUserName()}My profile</a>
+                                        <a href="#" style="color:black">${account.getUserName()}</a>
                                     </div>
                                     <div class="menu">
                                         <ul>

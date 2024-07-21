@@ -1,7 +1,10 @@
 package controller;
 
+import Service.ServiceDAO;
 import account.AccountDAO;
 import account.AccountDTO;
+import clinic.ClinicDAO;
+
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +12,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
+import java.time.LocalDate;
+import static java.time.LocalDate.now;
+import java.time.Month;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 
 public class LoginActionServlet extends HttpServlet {
 
@@ -17,6 +26,7 @@ public class LoginActionServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String userName = request.getParameter("email");
         String password = request.getParameter("password");
+        String key = request.getParameter("key");
         HttpSession session = request.getSession();
         try {
             AccountDAO dao = new AccountDAO();
@@ -26,30 +36,65 @@ public class LoginActionServlet extends HttpServlet {
             String checkName = dao.checkExistName(userName);
             // check password
             if (checkAccount != null) {
-                switch (checkAccount.isRoleID()) {
+                ClinicDAO clinicDAO = new ClinicDAO();
+                ServiceDAO serviceDAO = new ServiceDAO();
+                request.setAttribute("CLINIC", clinicDAO.getAllClinic());
+                request.setAttribute("SERVICE", serviceDAO.listAllServiceActive());
+                request.setAttribute("DENTIST", dao.getAllDentists());
+                switch (checkAccount.getRoleID()) {
                     // admin
-                    case 4 -> {
-                        response.sendRedirect("adminWeb-page.jsp");
+                    case 3 -> {
+                        if (key.equals("co")) {
+                            LocalDate now2 = LocalDate.now();
+                            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                            int currentYear2 = now2.getYear();
+                            int currentWeek2 = now2.get(weekFields.weekOfWeekBasedYear());
+                            int currentMonth2 = now2.getMonthValue(); // Get current month number
+
+                            session.setAttribute("account", checkAccount);
+                            response.sendRedirect("DashBoardServlet?action=dashboardAction&year1=" + currentYear2 + "&year2=" + currentYear2 + "&month=" + currentMonth2);
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
                     }
                     // staff
-                    case 3 -> {
-                        response.sendRedirect("staffWeb-page.jsp");
-                    }
-                    //dentist
                     case 2 -> {
-                        response.sendRedirect("dentistWeb-page.jsp");
+                        if (key.equals("nv")) {
+                            session.setAttribute("account", checkAccount);
+                            request.setAttribute("action", "staffLogin");
+                            request.getRequestDispatcher("StaffServlet").forward(request, response);
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
+                    }
+                    // dentist
+                    case 1 -> {
+                        if (key.equals("bs")) {
+                            session.setAttribute("account", checkAccount);
+                            request.setAttribute("action", "dentistLogin");
+                            request.getRequestDispatcher("DentistServlet").forward(request, response);
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
                     }
                     default -> {
-                        response.sendRedirect("userWeb-page.jsp");
+                        if (key.equals("cus")) {
+                            request.setAttribute("loginSuccess", "true");
+                            session.setAttribute("account", checkAccount);
+                            request.getRequestDispatcher("userWeb-page.jsp").forward(request, response);
+                        } else {
+                            request.setAttribute("error", "Something went wrong!");
+                            request.getRequestDispatcher("SignOutServlet").forward(request, response);
+                        }
+
                     }
                 }
-                session.setAttribute("account", checkAccount);
             } else {
-                if (!checkPass.equals(password) && checkName.equals(userName)) {
-                    request.setAttribute("error", "Password is not corrected !");
-                } else  {
-                    request.setAttribute("error", "User name is not matched with any !");
-
+                if (!checkPass.equals(password) || !checkName.equals(userName)) {
+                    request.setAttribute("error", "Password or Username is not correct!");
                 }
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
@@ -58,7 +103,8 @@ public class LoginActionServlet extends HttpServlet {
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

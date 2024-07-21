@@ -31,8 +31,25 @@
                 display: none;
                 z-index: 1000; /* Ensure the alert appears above other elements */
             }
-
+            .success {
+                position: fixed;
+                top: 100px; /* Adjust this value to position the alert higher or lower */
+                left: 50%;
+                transform: translateX(-50%); /* Center the alert horizontally */
+                background-color: #22bb33;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                opacity: 0;
+                transition: opacity 0.5s ease-out;
+                display: none;
+                z-index: 1000; /* Ensure the alert appears above other elements */
+            }
             .alert.show {
+                display: block;
+                opacity: 1;
+            }
+            .success.show {
                 display: block;
                 opacity: 1;
             }
@@ -42,31 +59,28 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="index.jsp" style="color: black">Denta<span>Care</span></a>
+                <a class="navbar-brand" href="LoadDataServlet" style="color: black">Denta<span>Care</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
                 </button>
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a href="index.jsp" class="nav-link" style="color: black">Home</a></li>
-                        <li class="nav-item"><a href="about.html" class="nav-link" style="color: black">About</a></li>
-                        <li class="nav-item"><a href="services.html" class="nav-link" style="color: black">Services</a></li>
-                        <li class="nav-item"><a href="doctors.html" class="nav-link" style="color: black">Doctors</a></li>
-                        <li class="nav-item"><a href="blog.html" class="nav-link" style="color: black">Blog</a></li>
-                        <li class="nav-item"><a href="contact.html" class="nav-link" style="color: black">Contact</a></li>
-                        <li class="nav-item cta"><a href="#" class="nav-link show-popup" data-target="#modalRequest">Log in</a></li>
+                        <li class="nav-item"><a href="LoadDataServlet" class="nav-link" style="color: black">Home</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=service" style="color: black" class="nav-link">Service</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=doctor" style="color: black" class="nav-link">Doctor</a></li>
+                        <li class="nav-item"><a href="LoginChangePage?action=clinic" class="nav-link" style="color: black">Clinic</a></li>
+                        <li class="nav-item cta"><a href="#" class="nav-link show-popup" data-target="#modalRequest" >Log in</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
-
-        <c:set var="ac" value="${requestScope.ac}"/>
         <c:set var="err" value="${requestScope.error}"/>
-
+        <c:set var="suc" value="${requestScope.success}"/>
+        <c:set var="email" value="${requestScope.email}"/>
         <div class="container-login${ac}">
             <div class="alert sec">${err}</div>
-
+            <div class="success sec">${suc}</div>
             <div class="forms">
 
                 <div class="form login">
@@ -86,14 +100,9 @@
                         </div>
 
                         <div class="checkbox-text">
-                            <div class="checkbox-content">
-                                <input type="checkbox" id="logCheck">
-                                <label for="logCheck" class="text">Remember me</label>
-                            </div>
-
-                            <a href="forget.jsp" class="text">Forgot password?</a>
+                            <a href="forgetPassword.jsp" class="text">Forgot password?</a>
                         </div>
-
+                        <input type="hidden" name="key" value="cus">
                         <div class="input-field button">
                             <input type="submit" value="Login">
                         </div>
@@ -112,7 +121,7 @@
 
                     <div class="login-signup">
                         <span class="text">Not a member?
-                            <a href="#" class="text signup-link">Signup Now</a>
+                            <a href="userWeb-verifyEmail.jsp">Signup Now</a>
                         </span>
                     </div>
                 </div>
@@ -123,14 +132,14 @@
 
                     <span class="title">Registration</span>
 
-                    <form action="RegisterServlet" method="POST">
+                    <form action="RegisterServlet?action=register" method="POST">
 
                         <div class="input-field">
                             <input name="register-name" type="text" placeholder="Enter your name" required>
                             <i class="uil uil-user"></i>
                         </div>
                         <div class="input-field">
-                            <input name="register-mail" type="text" placeholder="Enter your email" required>
+                            <input name="key" type="text" value="${email}" readonly >
                             <i class="uil uil-envelope icon"></i>
                         </div>
                         <div class="input-field">
@@ -147,11 +156,11 @@
                             <input type="submit" value="Signup">
                         </div>
                     </form>
-                    <div class="login-signup">
-                        <span class="text">Already a member?
-                            <a href="#" class="text login-link">Login Now</a>
-                        </span>
-                    </div>
+                    <!--                    <div class="login-signup">
+                                            <span class="text">Already a member?
+                                                <a href="#" class="text login-link">Login Now</a>
+                                            </span>
+                                        </div>-->
                 </div>
 
             </div>
@@ -172,7 +181,19 @@
                     }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
                 }
             });
-
+            document.addEventListener("DOMContentLoaded", function () {
+                const successBox = document.querySelector(".success.sec");
+                if (successBox && successBox.textContent.trim()) {
+                    successBox.style.display = "block"; // Show the alert if there's an error message
+                    successBox.classList.add("show"); // Add the 'show' class to trigger the fade-in animation
+                    setTimeout(function () {
+                        successBox.classList.remove("show");
+                        setTimeout(function () {
+                            successBox.style.display = "none"; // Hide the alert after the fade-out animation
+                        }, 600); // Adjust the delay (in milliseconds) to match the transition duration
+                    }, 1500); // Adjust the delay (in milliseconds) to control how long the alert stays visible
+                }
+            });
             function verifyPasswords(event) {
                 event.preventDefault(); // Prevent form submission
                 const password = document.getElementsByName("register-pass")[0].value;

@@ -2,7 +2,7 @@ package account;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-
+import java.util.Objects;
 
 public class AccountDTO implements Serializable {
 
@@ -14,15 +14,21 @@ public class AccountDTO implements Serializable {
     private String fullName;
     private String phone;
     private String address;
+    private String image;
     private String googleID;
     private String googleName;
     private boolean gender;
     private int roleID;
+    private int status;
+    private int clinicID;
+    private String majorName;
+    private String introduction;
+    private String clinicName;
 
     public AccountDTO() {
     }
 
-    public AccountDTO(String accountID, String userName, String password, String email, LocalDate dob, String fullName, String phone, String address, boolean gender,String googleID, String googleName, int roleID) {
+    public AccountDTO(String accountID, String userName, String password, String email, LocalDate dob, String fullName, String phone, String address, String image, boolean gender, String googleID, String googleName, int roleID, int status, int clinicID) {
         this.accountID = accountID;
         this.userName = userName;
         this.password = password;
@@ -35,6 +41,32 @@ public class AccountDTO implements Serializable {
         this.googleName = googleName;
         this.gender = gender;
         this.roleID = roleID;
+        this.status = status;
+        this.clinicID = clinicID;
+        this.image = image;
+    }
+
+    public AccountDTO(String accountID, String email, LocalDate dob, String fullName, String phone, String address, String image, boolean gender, int status, String clinicName, String majorName, String introduction) {
+        this.accountID = accountID;
+        this.email = email;
+        this.dob = dob;
+        this.fullName = fullName;
+        this.phone = phone;
+        this.address = address;
+        this.image = image;
+        this.gender = gender;
+        this.status = status;
+        this.clinicName = clinicName;
+        this.majorName = majorName;
+        this.introduction = introduction;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getAccountID() {
@@ -125,7 +157,7 @@ public class AccountDTO implements Serializable {
         this.gender = gender;
     }
 
-    public int isRoleID() {
+    public int getRoleID() {
         return roleID;
     }
 
@@ -133,11 +165,83 @@ public class AccountDTO implements Serializable {
         this.roleID = roleID;
     }
 
-    @Override
-    public String toString() {
-        return "AccountDTO{" + "accountID=" + accountID + ", userName=" + userName + ", password=" + password + ", email=" + email + ", dob=" + dob + ", fullName=" + fullName + ", phone=" + phone + ", address=" + address + ", googleID=" + googleID + ", googleName=" + googleName + ", gender=" + gender + ", roleID=" + roleID + '}';
+    public int getStatus() {
+        return status;
     }
 
- 
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
+    public int getClinicID() {
+        return clinicID;
+    }
+
+    public void setClinicID(int clinicID) {
+        this.clinicID = clinicID;
+    }
+
+    public String getMajorName() {
+        return majorName;
+    }
+
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public String getClinicName() {
+        return clinicName;
+    }
+
+    public void setClinicName(String clinicName) {
+        this.clinicName = clinicName;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("AccountDTO{");
+        sb.append("accountID=").append(accountID);
+        sb.append(", userName=").append(userName);
+        sb.append(", password=").append(password);
+        sb.append(", email=").append(email);
+        sb.append(", dob=").append(dob);
+        sb.append(", fullName=").append(fullName);
+        sb.append(", phone=").append(phone);
+        sb.append(", address=").append(address);
+        sb.append(", image=").append(image);
+        sb.append(", googleID=").append(googleID);
+        sb.append(", googleName=").append(googleName);
+        sb.append(", gender=").append(gender);
+        sb.append(", roleID=").append(roleID);
+        sb.append(", status=").append(status);
+        sb.append(", clinicID=").append(clinicID);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountID, majorName);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        AccountDTO other = (AccountDTO) obj;
+        return Objects.equals(accountID, other.accountID) && Objects.equals(majorName, other.majorName);
+    }
 }
