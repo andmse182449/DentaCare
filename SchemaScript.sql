@@ -111,6 +111,7 @@ CREATE TABLE [dbo].[FEEDBACK](
 	[feedbackDay] [datetime] NULL,
 	[feedbackContent] [nvarchar](max) NULL,
 	[accountID] [varchar](10) NULL,
+	[bookingID] [varchar](10) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[feedbackID] ASC
@@ -345,6 +346,11 @@ GO
 ALTER TABLE [dbo].[PAYMENT] CHECK CONSTRAINT [FK_bookingID2]
 GO
 ALTER TABLE [dbo].[INVOICE]  WITH CHECK ADD  CONSTRAINT [FK_bookingID3] FOREIGN KEY([bookingID])
+REFERENCES [dbo].[BOOKING] ([bookingID])
+GO
+ALTER TABLE [dbo].[INVOICE] CHECK CONSTRAINT [FK_bookingID3]
+GO
+ALTER TABLE [dbo].[FEEDBACK]  WITH CHECK ADD  CONSTRAINT [FK_bookingID4] FOREIGN KEY([bookingID])
 REFERENCES [dbo].[BOOKING] ([bookingID])
 GO
 ALTER TABLE [dbo].[INVOICE] CHECK CONSTRAINT [FK_bookingID3]
