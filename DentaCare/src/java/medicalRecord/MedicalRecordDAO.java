@@ -86,6 +86,23 @@ public class MedicalRecordDAO {
             throw e; // Optionally rethrow the exception to propagate it up the call stack
         }
     }
+    
+     public boolean addNewRecordWithoutDate(String medicalRecordID, String results, String bookingID) throws SQLException {
+        String query = "INSERT INTO MEDIICALRECORDS (medicalRecordID, results, bookingID) VALUES (?, ?, ?)";
+        try (Connection con = DBUtils.getConnection(); PreparedStatement stm = con.prepareStatement(query)) {
+
+            stm.setString(1, medicalRecordID);
+            stm.setString(2, results);
+            stm.setString(3, bookingID);
+
+            int rowsAffected = stm.executeUpdate();
+            return rowsAffected > 0; // Return true if insertion was successful
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // Optionally rethrow the exception to propagate it up the call stack
+        }
+    }
 
     public int countRecord() {
         String sql = "SELECT COUNT(*) AS Numb FROM MEDIICALRECORDS";
@@ -109,6 +126,20 @@ public class MedicalRecordDAO {
             stm.setString(1, results);
             stm.setString(2, reExanime);
             stm.setString(3, bookingID);
+
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred during the update operation: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    public void modifyEventWithoutReExam(String bookingID, String results) {
+        String query = "UPDATE MEDIICALRECORDS SET results = ?, reExanime = NULL WHERE bookingID = ?";
+        try (Connection con = DBUtils.getConnection(); PreparedStatement stm = con.prepareStatement(query)) {
+
+            stm.setString(1, results);
+            stm.setString(2, bookingID);
 
             stm.executeUpdate();
         } catch (SQLException e) {

@@ -172,7 +172,7 @@
                                             Result: <input required type="text" name="result"/> <br>
                                             <input type="hidden" name="bookingID" value="${booking.bookingID}"/>
                                             <input  type="hidden" name="reExanime0" value="${booking.medicalRecord.getReExanime()}"/>
-                                            ReExamine: <input required type="date" name="reExanime" />
+                                            ReExamine: <input type="date" name="reExanime" />
                                             <input type="submit" value="Add Result" id="bookingStatus1"  />
                                         </form>
                                     </div>

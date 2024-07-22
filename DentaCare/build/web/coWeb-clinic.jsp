@@ -232,7 +232,7 @@
                                                     }
                                                 }
                                             if (!isWorkingDay) {
-                                                out.println("<td class=\"event-day\">" + "di lam ne`" + "</td>");
+                                                out.println("<td class=\"event-day\">" + "Working day" + "</td>");
                                             } else {
                                                 out.println("<td class=\"working-day\">" + checkEvent + "</td>");
                                             }

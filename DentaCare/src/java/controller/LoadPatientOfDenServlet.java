@@ -97,7 +97,15 @@ public class LoadPatientOfDenServlet extends HttpServlet {
             String medicalRecordID = "MEDIRE" + count;
 
             if (reExanime == null || reExanime.isEmpty()) {
-                request.setAttribute("message", "The date parameter is missing or empty!");
+                if (meDao.checkExist(bookingID) == null) {
+                    meDao.addNewRecordWithoutDate(medicalRecordID, result, bookingID);
+                    request.setAttribute("message", "Add New Record Completed");
+                } else {
+                    meDao.modifyEventWithoutReExam(bookingID, result);
+                    request.setAttribute("message", "Modify Record Completed");
+                }
+                request.setAttribute("action", "load");
+                request.getRequestDispatcher("LoadPatientOfDenServlet").forward(request, response);
                 return;
             }
             try {

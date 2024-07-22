@@ -265,7 +265,7 @@
                                                 if (currentDate.equals(dentistScheduleDTO.getWorkingDate())) {
                                                     if (dentistScheduleDTO.getAccountID() != null) {
                                                         isWorkingDay = true;
-                                                        workingDayInfo = "di lam`";
+                                                        workingDayInfo = "Working Day";
                                                         break;
                                                     }
                                                 }
